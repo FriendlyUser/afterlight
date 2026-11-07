@@ -1,0 +1,8 @@
+<!doctype html><html><head><meta charset="utf-8">
+<script type="importmap">{"imports":{"three":"../vendor/three/three.module.js","three/addons/":"../vendor/three/addons/"}}</script>
+<style>body{background:#4a4858;margin:0;display:flex;flex-wrap:wrap;align-items:flex-end} canvas{image-rendering:pixelated;margin:6px}</style></head><body>
+<script type="module">
+import { getMonsterSprite, MONSTER_TYPES } from '../src/render/MonsterFactory.js';
+const colors=['#4ab0c0','#8a6a5a','#c06040','#6a5a9a','#d0a040','#5a8a4a','#a04a6a','#7a8a9a'];
+MONSTER_TYPES.forEach((t,i)=>{ if(t==='humanoid') return; const s=getMonsterSprite({type:t,color:colors[i%8],size: t==='drake'||t==='golem'||t==='knight'?2:1.5,seed:i+1}); s.canvas.style.width=s.canvas.width*2.5+'px'; document.body.appendChild(s.canvas);});
+</script></body></html>

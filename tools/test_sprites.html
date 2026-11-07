@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8">
+<script type="importmap">{"imports":{"three":"../vendor/three/three.module.js","three/addons/":"../vendor/three/addons/"}}</script>
+<style>body{background:#556;margin:0} canvas{image-rendering:pixelated;margin:4px}</style></head><body>
+<div id="out"></div>
+<script type="module">
+import { getCharacterSheet } from '../src/render/SpriteFactory.js';
+const looks = [
+ {id:'wren', skin:'#f2cba5', hair:{style:'ponytail',color:'#c0642e'}, eyes:'#2f6b4f', outfit:{style:'tunic',main:'#3f6fa8',accent:'#efe2c4',trim:'#b5803a',pants:'#4a3a2c',boots:'#5a3a24'}, acc:['scarf'], weapon:'sword'},
+ {id:'ilse', skin:'#e9c09a', hair:{style:'bob',color:'#2f2a3a'}, eyes:'#6a4a8a', outfit:{style:'dress',main:'#6f9a6a',accent:'#f3ead2',trim:'#8a5a3a'}, weapon:'staff', blush:true},
+ {id:'bram', skin:'#d9a57c', hair:{style:'spiky',color:'#e3c25a'}, outfit:{style:'armor',main:'#888',metal:'#a9b3c2',accent:'#c03a3a',trim:'#d7a83a',pants:'#3a3a4a'}, acc:['cape'], capeColor:'#a83232', weapon:'sword', shield:true, build:'large'},
+ {id:'sable', skin:'#f4ddd0', hair:{style:'long',color:'#1a1824'}, eyes:'#b03a5a', outfit:{style:'robe',main:'#2a2638',accent:'#c8c0d8',trim:'#7a6aa8'}, weapon:'rod'},
+ {id:'pip', skin:'#c98e62', hair:{style:'messy',color:'#3a2a1a'}, outfit:{style:'rags',main:'#8a6a3a',accent:'#4a6a3a',pants:'#5a4a3a'}, acc:['bandana'], build:'child', weapon:'dagger'},
+ {id:'corvin', skin:'#e0b08a', hair:{style:'short',color:'#3a3030'}, outfit:{style:'coat',main:'#5a2a2a',accent:'#e8dcc0',trim:'#c9a24a'}, acc:['hat_wide','beard'], weapon:'gun'},
+ {id:'cassian', skin:'#efd2b8', hair:{style:'long',color:'#d8d4cc'}, outfit:{style:'priest',main:'#efe8d8',accent:'#d0b060',trim:'#c9a24a'}, acc:['circlet'], build:'tall', weapon:'staff'},
+];
+for (const l of looks) { const s = getCharacterSheet(l); s.canvas.style.width = s.canvas.width*3+'px'; document.getElementById('out').appendChild(s.canvas); }
+document.title='done';
+</script></body></html>
