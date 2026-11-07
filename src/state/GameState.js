@@ -173,6 +173,8 @@ export class GameState {
 const SLOT_KEY = (n) => `afterlight.save.${n}`;
 export const SAVE_SLOTS = 6;
 export const AUTO_SLOT = 'auto';
+const SAVE_FILE_FORMAT = 'afterlight-save'; // marks exported save files
+const MAX_SAVE_FILE = 5_000_000; // characters; real saves are a few dozen KB
 
 export const SaveStore = {
   write(slot, state) {
@@ -209,4 +211,29 @@ export const SaveStore = {
     return best;
   },
   remove(slot) { try { localStorage.removeItem(SLOT_KEY(slot)); } catch { /* ignore */ } },
+
+  /** A slot as a portable save file (JSON text), or null if the slot is empty. */
+  exportFile(slot) {
+    const rec = this.read(slot);
+    if (!rec) return null;
+    return JSON.stringify({ format: SAVE_FILE_FORMAT, version: SAVE_VERSION, exportedAt: new Date().toISOString(), ...rec });
+  },
+
+  /**
+   * Store a save file's contents in `slot`. Throws an Error with a player-facing
+   * message if the text isn't an intact Afterlight save; the slot is untouched then.
+   */
+  importFile(slot, text) {
+    if (text.length > MAX_SAVE_FILE) throw new Error('That file is far too large to be a save.');
+    let rec;
+    try { rec = JSON.parse(text); } catch { throw new Error('That file is not a save file.'); }
+    if (rec?.format !== SAVE_FILE_FORMAT || !rec.data || !rec.summary) throw new Error('That file is not an Afterlight save.');
+    if ((rec.data.version || 1) > SAVE_VERSION) throw new Error('That save is from a newer version of the game.');
+    try { GameState.deserialize(rec.data); } catch { throw new Error('That save file is damaged.'); }
+    try {
+      localStorage.setItem(SLOT_KEY(slot), JSON.stringify({ summary: rec.summary, data: rec.data }));
+    } catch {
+      throw new Error('The browser refused to store the save (storage full or blocked).');
+    }
+  },
 };

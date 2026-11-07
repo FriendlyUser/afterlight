@@ -38,7 +38,10 @@ python3 -m http.server 8765
 ```
 
 Then open **<http://localhost:8765/>** in a modern browser with WebGL2 (Chrome, Edge,
-Firefox or Safari). Saves are kept in the browser.
+Firefox or Safari). Saves (6 slots + an autosave) are kept in the browser, separately
+for each site address. To back one up or move it to another computer or to the hosted
+version, press <kbd>F</kbd> on a slot in the Save / Load screen to export it to a file
+or import one.
 
 ## Controls
 
@@ -50,7 +53,7 @@ Firefox or Safari). Saves are kept in the browser.
 | Cancel · back | <kbd>X</kbd> <kbd>Backspace</kbd> <kbd>Esc</kbd> | <kbd>B</kbd> |
 | Open the menu | <kbd>C</kbd> <kbd>Tab</kbd> <kbd>Esc</kbd> | <kbd>Y</kbd> / <kbd>Start</kbd> |
 | Switch leader (field) · Surge (battle) | <kbd>Q</kbd> / <kbd>E</kbd> | <kbd>LB</kbd> / <kbd>RB</kbd> |
-| Auto-battle (battle) · Optimize (Equipment) | <kbd>F</kbd> | <kbd>Back</kbd> |
+| Auto-battle (battle) · Optimize (Equipment) · Export / Import (save slots) | <kbd>F</kbd> | <kbd>Back</kbd> |
 
 Settings include text size and speed, encounter rate, difficulty (Story / Normal /
 Hard), battle speed, the minimap, and reduced flashes & screen shake.

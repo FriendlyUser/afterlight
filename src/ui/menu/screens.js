@@ -355,7 +355,7 @@ const GUIDE = [
   ['Crests', '_One Crest, one life_ — or so they say. Your *primary* Crest sets your stats, weapons and armor, and grants its Arts. A *secondary* Crest adds its learned Arts too. Crests rank up (1–10) with CP earned in battle; each rank teaches an Art or a Support. Braided (Tier II) Crests open when two prerequisite Crests reach rank 5.'],
   ['Supports', 'Supports are passive abilities learned from any Crest rank. Once learned they belong to you, whatever Crest you wear. Equip them in *Supports* within your Support Point budget, which grows with level.'],
   ['Equipment', 'Weapons and armor depend on your primary Crest. In *Equipment*, press *F* to Optimize. Accessories fit anyone.'],
-  ['Hearthstones', 'Golden crystals restore the party and let you save. You can also save from the menu almost anywhere outside dungeons.'],
+  ['Saving', 'Golden *Hearthstones* restore the party and let you save; you can also save from the menu almost anywhere, and the game autosaves whenever you enter a new area. Saves live in this browser. Press *F* on a save slot to *export* it to a file or *import* one, to keep a backup or carry your game to another computer.'],
   ['Encounters', 'The orb in the lower-left warms from green to red as a random battle approaches. Settings can halve or disable random encounters.'],
 ];
 

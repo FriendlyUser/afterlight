@@ -52,7 +52,7 @@ export class TitleScene {
       ...(this.hasSave ? [{ id: 'continue', label: 'Continue' }] : []),
       { id: 'new', label: 'New Game' },
       ...(this.clearSlot !== null ? [{ id: 'ngplus', label: 'New Game+' }] : []),
-      { id: 'load', label: 'Load Game', disabled: !this.hasSave },
+      { id: 'load', label: 'Load Game' }, // always open: it's also where save files are imported
     ];
     this.index = 0;
     this.renderMenu();

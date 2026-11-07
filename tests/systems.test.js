@@ -33,6 +33,23 @@ export async function run(game, h) {
   SaveStore.write(5, st);
   const back = GameState.deserialize(SaveStore.read(5).data);
   h.expect(back.gold === 4321 && back.party.length === 6 && back.characters.ilse.level === 20, 'save/load round trip');
+  // Export a slot to a file and import it into another slot
+  {
+    const file = SaveStore.exportFile(5);
+    SaveStore.remove(4);
+    SaveStore.importFile(4, file);
+    const copy = GameState.deserialize(SaveStore.read(4).data);
+    h.expect(JSON.parse(file).format === 'afterlight-save' && copy.gold === 4321 && copy.characters.ilse.level === 20
+      && SaveStore.read(4).summary.location === SaveStore.read(5).summary.location, 'save file export → import round trip');
+    const rejects = (text) => { try { SaveStore.importFile(4, text); return false; } catch { return true; } };
+    const damaged = JSON.stringify({ ...JSON.parse(file), data: { party: [] } });
+    const newer = JSON.stringify({ ...JSON.parse(file), data: { ...JSON.parse(file).data, version: 99 } });
+    h.expect(rejects('not json') && rejects('{"hello":1}') && rejects(damaged) && rejects(newer)
+      && GameState.deserialize(SaveStore.read(4).data).gold === 4321, 'bad save files are refused and the slot is untouched');
+    SaveStore.remove(3);
+    h.expect(SaveStore.exportFile(3) === null, 'empty slots export nothing');
+    SaveStore.remove(4);
+  }
   SaveStore.remove(5);
   // New Game+ keeps levels and items but restarts the story
   {

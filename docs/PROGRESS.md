@@ -108,6 +108,11 @@ done directly this session:
   A follower steps out of view while its character is on the map as another actor
   (cutscene spawns, hub NPCs), so scripts never show anyone twice; dream maps are
   `solo`. With no room behind the leader they regroup to the side, or wait out of sight.
+- **Save files:** F on a Save / Load slot exports it as a JSON file or imports
+  one (`SaveStore.exportFile` / `importFile`, browser helpers in `src/ui/files.js`).
+  Imports are validated (format marker, game version, a full deserialize) before the slot
+  is touched. Load Game on the title is always available so a fresh browser can import.
+  Tests: `systems` (round trip + rejected files) and `save_files` (the save-screen flow).
 - **Minimap** (`src/world/Minimap.js`): floor plan drawn once per map plus a facing
   arrow; hidden in cutscenes, single rooms (<300 tiles), maps with `noMinimap` (the hedge
   maze), or via Settings → Minimap.
