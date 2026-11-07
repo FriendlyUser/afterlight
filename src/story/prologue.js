@@ -253,6 +253,7 @@ export const PRO = {
     await s.say('Ysolde', 'Your father would have gone _with_ you.', { speed: 0.6 });
     await s.move('player', [[3, 6], [2, 3]], 6);
     await s.fadeOut(1.2);
+    s.heal(); // supper and an evening at home: the party meets the storm rested
     s.setFlag('lfNight');
     s.stopMusic(1.5);
     await s.wait(1.0);

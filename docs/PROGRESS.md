@@ -59,6 +59,12 @@ Headless Windows Chrome via WSL, against the local server.
   (tier gear, Crests ranked by level, secondary Crest + Supports from L20, the shared
   auto-play). `EXTRA='only=<regex>&n=16&party=a,b,c,d&lvadj=-3'` narrows/varies it;
   `EXTRA='troop=<id>&lv=<n>' tools/test.sh fightlog 100000` prints one fight turn by turn.
+- Prologue balance: `tools/test.sh prologue_balance 300000` plays the opening with the
+  party the story really gives you (Wren + Ilse at L1, starting gear, Crests sealed, 4
+  Tonics) on Normal: each Tide Caves encounter fresh, then the prologue through
+  Brinefang as one run with HP, Tonics and EXP carrying over. The equal-level `balance`
+  sim can't see this stretch (it showed every prologue troop at 100% while a real L1
+  party lost 59% of Tide Bat fights). `EXTRA='diff=0|2'` for Story / Hard.
 - Crest viability: `tools/test.sh crest_balance 900000` — Wren takes each of the 24 Crests
   as primary against six mid/late bosses.
 - Visuals: `tools/shot.sh "<url>" out.png 9000` (page + UI); `tools/frame.sh
@@ -118,6 +124,14 @@ done directly this session:
   Imports are validated (format marker, game version, a full deserialize) before the slot
   is touched. Load Game on the title is always available so a fresh browser can import.
   Tests: `systems` (round trip + rejected files) and `save_files` (the save-screen flow).
+- **Prologue rebalance (Normal):** a level-1 Wren + Ilse used to win only 41% of Tide Bat
+  fights and 27% of the mixed troop; just 18% of runs got through the prologue. Now the
+  Tide Bat is level 2 (spd ×1.35, evade 10, bites less), `tc_mix` is bat + crab + jelly
+  (the eel stays in `tc_eel` and the brooch fight), supper at home and the morning
+  after (Nana's) restore the party, and a tip at the cave mouth explains Tonics,
+  Hearthstones, fleeing and autosave. Every cave fight is now a 99%+ win at L1 that
+  still costs ~half the party's HP and 1–1.5 Tonics; 91% of runs clear the prologue
+  through Brinefang in one go (Story 100%; Hard stays a grind).
 - **Minimap** (`src/world/Minimap.js`): floor plan drawn once per map plus a facing
   arrow; hidden in cutscenes, single rooms (<300 tiles), maps with `noMinimap` (the hedge
   maze), or via Settings → Minimap.

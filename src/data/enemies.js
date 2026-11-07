@@ -51,9 +51,9 @@ const LIST = [
     skills: [['attack', 2], ['e_peck', 2]], drops: [['tonic', 0.1]], steal: ['tonic', 'eye_drops'],
     desc: 'Lanternfall\'s gulls have always been bold. These have gotten worse.',
   }),
-  E('cave_bat', 'Tide Bat', 3, { type: 'bat', color: '#5a4a6a', eye: '#ff6040' }, {
-    stats: { hp: 0.75, spd: 1.4, evade: 12 }, weak: ['pierce', 'light'], poise: 2,
-    skills: [['attack', 2], ['e_bite', 2], ['e_drain', 1]], drops: [['eye_drops', 0.15]], steal: ['eye_drops', 'tonic'],
+  E('cave_bat', 'Tide Bat', 2, { type: 'bat', color: '#5a4a6a', eye: '#ff6040' }, {
+    stats: { hp: 0.75, spd: 1.35, evade: 10 }, weak: ['pierce', 'light'], poise: 2,
+    skills: [['attack', 3], ['e_bite', 2], ['e_drain', 1]], drops: [['eye_drops', 0.15]], steal: ['eye_drops', 'tonic'],
     desc: 'Nests where the tide caves never dry.',
   }),
   E('tide_eel', 'Tide Eel', 3, { type: 'serpent', color: '#3a7a6a', accent: '#a0e0c0', eye: '#f0f060', seed: 3 }, {

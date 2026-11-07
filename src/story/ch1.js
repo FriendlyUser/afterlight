@@ -39,6 +39,7 @@ export const CH1 = {
     s.remove('girl');
     s.remove('bram_h');
     await s.join('sable');
+    s.heal(); // the morning after the storm: everyone slept, and Nana fed them
     s.objective('The Kindling begins at noon. Go to the Lantern on the northwest bluff.');
     s.journal('The girl from the sea has no name, so I gave her one: Sable. She has a Crest already — black, like a closed eye.');
   },

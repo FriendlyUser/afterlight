@@ -12,7 +12,7 @@ export const TROOPS = {
   lf_gull_jelly: T(['gull_harrier', 'brine_jelly']),
   tc_bats: T(['cave_bat', 'cave_bat']),
   tc_eel: T(['tide_eel', 'brine_jelly']),
-  tc_mix: T(['cave_bat', 'tide_eel', 'sand_crab']),
+  tc_mix: T(['cave_bat', 'sand_crab', 'brine_jelly']), // the eel is saved for tc_eel and the brooch
   tc_jelly3: T(['brine_jelly', 'brine_jelly', 'brine_jelly']),
   boss_drowned_hound: T(['drowned_hound'], { boss: true, music: 'boss', canFlee: false }),
   boss_brinefang: T(['brinefang'], { boss: true, music: 'boss', canFlee: false }),
