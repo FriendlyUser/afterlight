@@ -231,6 +231,8 @@ export class SettingsScreen extends Screen {
       { key: 'encounters', label: 'Encounter Rate', value: ['Normal', 'Half', 'Off (story only)'][s.encounters || 0], step: 1, min: 0, max: 2 },
       { key: 'difficulty', label: 'Difficulty', value: ['Story', 'Normal', 'Hard'][s.difficulty ?? 1], step: 1, min: 0, max: 2 },
       { key: 'battleSpeed', label: 'Battle Speed', value: ['Normal', 'Fast', 'Fastest'][s.battleSpeed || 0], step: 1, min: 0, max: 2 },
+      { key: 'fastMode', label: 'Fast Mode (T)', value: s.fastMode ? 'On' : 'Off', toggle: true },
+      { key: 'fastSpeed', label: 'Fast Mode Speed', value: `${s.fastSpeed || 3}×`, step: 1, min: 2, max: 4 },
       { key: 'reduceEffects', label: 'Flashes & Shake', value: s.reduceEffects ? 'Reduced' : 'Full', toggle: true },
       { key: 'hideMinimap', label: 'Minimap', value: s.hideMinimap ? 'Off' : 'On', toggle: true },
     ];
@@ -347,7 +349,7 @@ export class JournalScreen extends Screen {
 // =====================================================================
 
 const GUIDE = [
-  ['Controls', 'Move with the arrow keys or WASD; hold *Shift* to run. *Z*/*Enter* confirms and talks, *X*/*Esc* cancels, *C* opens the menu. In battle, *Q*/*E* adjusts Surge and *F* toggles Auto-battle. Gamepads work too.'],
+  ['Controls', 'Move with the arrow keys or WASD; hold *Shift* to run. *Z*/*Enter* confirms and talks, *X*/*Esc* cancels, *C* opens the menu. In battle, *Q*/*E* adjusts Surge and *F* toggles Auto-battle. *T* toggles *Fast Mode*, which runs walking, cutscenes and battles at 2–4× (set the speed in Settings). Gamepads work too.'],
   ['Turn Order', 'Battles flow on a timeline (top-left). Fast characters act more often. Quick Arts let you act again sooner; heavy Arts push your next turn back. Haste and Slow bend the timeline.'],
   ['Poise & Breaks', 'Every foe carries a *Poise* shield (the number under it). Hitting a *weakness* chips one point. At zero the foe *Breaks*: it loses its next turn and takes 50% more damage until it recovers. Weaknesses start hidden — experiment, or use *Scan*.'],
   ['Afterglow', 'The party shares the *Afterglow* gauge (three segments). It fills when you hit weaknesses, Break foes, land criticals and take hits. Spend it on *Surge* (Q/E before acting: up to +150% power and extra Poise damage) or on *Link Arts* — combination techniques between specific friends.'],

@@ -11,10 +11,10 @@ const KEYS = {
   Escape: ['cancel', 'menu'], KeyC: ['menu'], Tab: ['menu'],
   ShiftLeft: ['run'], ShiftRight: ['run'],
   KeyQ: ['pageLeft'], KeyE: ['pageRight'],
-  KeyF: ['info'], KeyM: ['map'],
+  KeyF: ['info'], KeyM: ['map'], KeyT: ['fast'],
 };
 
-const PAD_BUTTONS = { 0: 'confirm', 1: 'cancel', 2: 'run', 3: 'menu', 9: 'menu', 4: 'pageLeft', 5: 'pageRight', 12: 'up', 13: 'down', 14: 'left', 15: 'right', 8: 'info' };
+const PAD_BUTTONS = { 0: 'confirm', 1: 'cancel', 2: 'run', 3: 'menu', 9: 'menu', 4: 'pageLeft', 5: 'pageRight', 12: 'up', 13: 'down', 14: 'left', 15: 'right', 8: 'info', 10: 'fast' };
 
 const REPEAT_DELAY = 0.32;
 const REPEAT_RATE = 0.075;

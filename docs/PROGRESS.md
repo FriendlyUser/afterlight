@@ -108,6 +108,11 @@ done directly this session:
   A follower steps out of view while its character is on the map as another actor
   (cutscene spawns, hub NPCs), so scripts never show anyone twice; dream maps are
   `solo`. With no room behind the leader they regroup to the side, or wait out of sight.
+- **Fast Mode** (T / left-stick click, Settings → Fast Mode / Fast Mode Speed 2–4×): scales
+  the game clock (`Game.speedFactor`) — walking, NPCs, cutscenes, battles (stacking with
+  Battle Speed) and dialogue typing — but not the UI clock, so menus, key repeat and the
+  fishing minigame keep real-time timing. "▶▶ ×3" badge while on. Test: `fast_mode`
+  (clock and walking scale ×3); ch3 and c78_balance also pass with it switched on.
 - **Save files:** F on a Save / Load slot exports it as a JSON file or imports
   one (`SaveStore.exportFile` / `importFile`, browser helpers in `src/ui/files.js`).
   Imports are validated (format marker, game version, a full deserialize) before the slot

@@ -201,10 +201,10 @@ class DialogueBox {
 
   update(dt) {
     if (this.done) return;
-    if (this.pause > 0) { this.pause -= dt; return; }
+    if (this.pause > 0) { this.pause -= dt * this.ui.game.speedFactor; return; }
     const ts = this.ui.game.state?.settings?.textSpeed ?? 1;
     if (ts >= 3) { this.finish(); return; }
-    this.acc += dt * CHARS_PER_SEC * (this.opts.speed || 1) * [0.6, 1, 1.8][ts];
+    this.acc += dt * this.ui.game.speedFactor * CHARS_PER_SEC * (this.opts.speed || 1) * [0.6, 1, 1.8][ts];
     while (this.acc >= 1 && this.shown < this.chars.length) {
       this.acc -= 1;
       const c = this.chars[this.shown++];

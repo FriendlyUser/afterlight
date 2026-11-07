@@ -123,6 +123,7 @@ em { color: #e8dcff; }
 .cc-rule { width: 280px; height: 1px; margin-top: 18px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
 
 /* ---------- HUD ---------- */
+.fast-badge { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); padding: 3px 12px; font-family: var(--font-caps); font-size: 14px; letter-spacing: 0.12em; color: #ffe0a0; background: rgba(12, 10, 20, 0.6); border: 1px solid rgba(255, 210, 140, 0.45); border-radius: 12px; pointer-events: none; z-index: 40; }
 .minimap { position: absolute; right: 18px; top: 18px; padding: 5px; background: rgba(12, 10, 20, 0.55); border: 1px solid rgba(255, 228, 180, 0.3); border-radius: 4px; pointer-events: none; }
 .minimap canvas { display: block; max-width: 168px; max-height: 168px; image-rendering: pixelated; opacity: 0.92; }
 .danger { position: absolute; left: 22px; bottom: 22px; width: 18px; height: 18px; border-radius: 50%; background: #5ad07a; box-shadow: 0 0 10px #5ad07a; opacity: 0.85; transition: background 0.4s, box-shadow 0.4s; }

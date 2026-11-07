@@ -54,9 +54,10 @@ or import one.
 | Open the menu | <kbd>C</kbd> <kbd>Tab</kbd> <kbd>Esc</kbd> | <kbd>Y</kbd> / <kbd>Start</kbd> |
 | Switch leader (field) · Surge (battle) | <kbd>Q</kbd> / <kbd>E</kbd> | <kbd>LB</kbd> / <kbd>RB</kbd> |
 | Auto-battle (battle) · Optimize (Equipment) · Export / Import (save slots) | <kbd>F</kbd> | <kbd>Back</kbd> |
+| Fast Mode on / off (2–4×, set in Settings) | <kbd>T</kbd> | Left-stick click |
 
 Settings include text size and speed, encounter rate, difficulty (Story / Normal /
-Hard), battle speed, the minimap, and reduced flashes & screen shake.
+Hard), battle speed, Fast Mode speed, the minimap, and reduced flashes & screen shake.
 
 ## Features
 
@@ -66,7 +67,7 @@ post-game descent through the 30-floor Gloam Abyss.
 **Battle** — a turn-order timeline, Poise & Break, and the shared Afterglow gauge for
 Surge and duo/trio Link Arts. Bosses telegraph their big attacks: Guard against them,
 or Break the boss while it winds up to interrupt them. Swap party members mid-fight,
-or hand it to auto-battle.
+or hand it to auto-battle — and turn on Fast Mode to fly through fights and cutscenes.
 
 **Class customization** — 24 Crests (8 callings, 10 braided, 6 legendary) × 10 ranks,
 a primary and a secondary Crest per character, Supports on a point budget, and 300+ Arts.

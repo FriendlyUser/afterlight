@@ -35,6 +35,18 @@ export class Game {
     const reduced = !!settings.reduceEffects;
     this.renderer.flashScale = reduced ? 0.25 : 1;
     this.shakeScale = reduced ? 0.3 : 1;
+    this.showFastBadge(settings.fastMode ? settings.fastSpeed || 3 : 0);
+  }
+
+  /** Small "▶▶ ×3" badge in the corner while Fast Mode is on. */
+  showFastBadge(speed) {
+    if (!this.fastBadge) {
+      this.fastBadge = document.createElement('div');
+      this.fastBadge.className = 'fast-badge';
+      document.getElementById('app')?.appendChild(this.fastBadge);
+    }
+    this.fastBadge.textContent = speed ? `▶▶ ×${speed}` : '';
+    this.fastBadge.style.display = speed ? '' : 'none';
   }
 
   /** Inject subsystems created in main.js (keeps construction order explicit). */
@@ -60,10 +72,29 @@ export class Game {
     return ready;
   }
 
+  /**
+   * Fast Mode multiplier (Settings / T / left-stick click). It scales the game clock —
+   * walking, cutscenes, battles, dialogue typing — but not the UI clock, so menus,
+   * key repeat and minigame timing stay real-time.
+   */
+  get speedFactor() {
+    const s = this.state?.settings;
+    return s?.fastMode ? s.fastSpeed || 3 : 1;
+  }
+
+  toggleFastMode() {
+    const s = this.state.settings;
+    s.fastMode = !s.fastMode;
+    this.applySettings(s);
+    this.audio?.sfx('cursor');
+    this.ui?.toast(s.fastMode ? `Fast Mode ×${s.fastSpeed || 3}` : 'Fast Mode off', 1200);
+  }
+
   tick(rawDt) {
-    const dt = rawDt * this.timeScale;
+    const dt = rawDt * this.timeScale * this.speedFactor;
     this.time += dt;
     this.input.update(rawDt);
+    if (this.input.pressed('fast') && this.state) { this.input.consume('fast'); this.toggleFastMode(); }
 
     for (const task of [...this.tasks]) {
       if (task(dt)) this.tasks.delete(task);
