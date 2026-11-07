@@ -1,84 +1,161 @@
-# AFTERLIGHT
+<div align="center">
+
+<img src="docs/screenshots/title.jpg" alt="Afterlight title screen: a lighthouse at dusk over a seaside village" width="820">
+
+# Afterlight
 
 *The world ended on the day I came of age. This is what we built after.*
 
 A 2D-HD JRPG built with three.js — pixel-art characters in lit, depth-of-field
 dioramas — about a girl who causes the end of the world at sixteen, and grows up anyway.
 
-## Play
+**[▶ Play in your browser](https://friendlyuser.github.io/afterlight/)** · [Run it locally](#run-it-locally) · [Controls](#controls) · [Features](#features) · [Build & deploy](#build--deploy)
+
+</div>
+
+---
+
+## Screenshots
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/town.jpg" alt="Exploring the city of Aurenne with the party and minimap"><br><sub><b>Aurenne</b> — the party walks the city as a caravan.</sub></td>
+    <td width="50%"><img src="docs/screenshots/battle-storm.jpg" alt="Battle against the Thunderhead, a living storm cloud"><br><sub><b>The Thunderhead</b> — telegraphed attacks you can Guard or Break.</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/crests.jpg" alt="Crest screen showing ranks, Arts and Supports"><br><sub><b>Crests</b> — 24 classes, 10 ranks each, primary + secondary.</sub></td>
+    <td width="50%"><img src="docs/screenshots/worldmap.jpg" alt="World map of Solmere with travel destinations"><br><sub><b>Solmere</b> — fast travel across the world (before it breaks).</sub></td>
+  </tr>
+</table>
+
+## Run it locally
+
+No install and no build step: every sprite, texture and note of music is generated at
+runtime (only the fonts are files). The game just needs to be served over HTTP:
 
 ```bash
 python3 -m http.server 8765
 ```
-Open <http://localhost:8765/> in a modern browser (WebGL2). No build step, no assets:
-every sprite, texture and note of music is generated at runtime (only the fonts are
-files, in `fonts/`).
 
-**Controls:** arrows/WASD move · Shift run · Z/Enter confirm & talk · X/Esc cancel ·
-C menu · Q/E switch leader (field) or Surge (battle) · F auto-battle / optimize gear.
-Gamepads work. Settings include text size/speed, encounter rate, difficulty (Story /
-Normal / Hard), battle speed, minimap, and reduced flashes & shake.
+Then open **<http://localhost:8765/>** in a modern browser with WebGL2 (Chrome, Edge,
+Firefox or Safari). Saves are kept in the browser.
 
-## Web build (Vite)
-The game needs no build to run or develop. For a release, Vite bundles and minifies it
-into `dist/` (one HTML file, a CSS file, ~25 JS chunks: the engine, three.js, and one per
-chapter; ~2.9 MB, ~0.9 MB gzipped). Upload the contents of `dist/` to any static host
-(itch.io HTML5, GitHub Pages, Netlify…); all paths are relative.
+## Controls
 
-```bash
-npm install          # once (Vite is the only dependency)
-npm run build        # -> dist/
-npm run preview      # serve dist/ on http://localhost:8767/
-npm run dev          # optional Vite dev server on http://localhost:8766/
-```
-From WSL without Linux Node, use `tools/npm.sh install`, `tools/npm.sh run build`, etc.:
-it runs the Windows npm against the WSL folder (and makes Vite poll for file changes,
-since native watching doesn't work across that share). Windows npm can't delete a
-`node_modules/` on that share, so for `npm ci` remove the folder from WSL first.
+| Action | Keyboard | Gamepad |
+|---|---|---|
+| Move | <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> or <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> | D-pad / left stick |
+| Run (hold) | <kbd>Shift</kbd> | <kbd>X</kbd> |
+| Confirm · talk · examine | <kbd>Z</kbd> <kbd>Enter</kbd> <kbd>Space</kbd> | <kbd>A</kbd> |
+| Cancel · back | <kbd>X</kbd> <kbd>Backspace</kbd> <kbd>Esc</kbd> | <kbd>B</kbd> |
+| Open the menu | <kbd>C</kbd> <kbd>Tab</kbd> <kbd>Esc</kbd> | <kbd>Y</kbd> / <kbd>Start</kbd> |
+| Switch leader (field) · Surge (battle) | <kbd>Q</kbd> / <kbd>E</kbd> | <kbd>LB</kbd> / <kbd>RB</kbd> |
+| Auto-battle (battle) · Optimize (Equipment) | <kbd>F</kbd> | <kbd>Back</kbd> |
 
-### GitHub Pages
-`.github/workflows/pages.yml` builds and publishes the game on every push to `main`
-(or manually from the Actions tab): `npm ci` → `npm run build` → deploy `dist/`.
-1. Push this folder as the repository root (the workflow must sit at `.github/` there).
-2. In the repository's Settings → Pages, set Source to **GitHub Actions** (once).
-3. Push to `main`; the game appears at `https://<user>.github.io/<repo>/`.
-
-`dist/` and `node_modules/` are git-ignored; CI rebuilds them. Commit
-`package-lock.json` so `npm ci` installs the exact same Vite.
-
-Notes: three.js stays vendored in `vendor/three` and both setups use it; the headless
-tests run against the unbundled source, and the build leaves the test harness out.
-The fonts (Alegreya, Alegreya Sans SC, Cinzel; Latin subsets) are self-hosted in
-`fonts/` with their OFL licenses, so the game makes no external requests and works
-offline; the build copies the licenses to `dist/fonts/`.
+Settings include text size and speed, encounter rate, difficulty (Story / Normal /
+Hard), battle speed, the minimap, and reduced flashes & screen shake.
 
 ## Features
-- **Battle:** conditional-turn timeline, Poise & Break, the shared Afterglow gauge
-  (Surge and duo/trio Link Arts), status effects, scripted bosses whose telegraphed
-  attacks you can Guard against or interrupt with a Break, Swap, auto-battle.
-- **24 Crests** (8 callings, 10 braided, 6 legendary) × 10 ranks; primary + secondary
-  Crest; Support abilities with a point budget; 300+ Arts.
-- **Story:** 14 chapters across three acts (~74k words of scenes), plus a post-game descent.
-- **Side content:** the Hunters' Lodge bounty board (10 marks + 2 hidden hunts), four
-  optional dungeons, fishing, per-town side quests, New Game+.
-- Procedural pixel art for characters, monsters, tiles and props; WebAudio soundtrack;
-  the party walks the world together as a caravan; a minimap outdoors and in dungeons.
 
-## Project layout
-- `src/core` loop & input · `src/render` renderer, post FX, procedural art · `src/world`
-  field, maps, actors, world map · `src/battle` rules, AI, presentation · `src/ui` menus ·
-  `src/audio` synth & songs · `src/state` save data · `src/data` game data & content packs ·
-  `src/story` scripted scenes · `tools/` map painter & test runners · `tests/` headless tests.
-- Docs: `docs/STORY.md` (story bible), `docs/AUTHORING.md` (content guide),
-  `docs/PROGRESS.md` (status).
+**Story** — 14 chapters across three acts (~74k words of scenes), two endings, and a
+post-game descent through the 30-floor Gloam Abyss.
 
-## Debug & tests
-`?map=<id>&x=&y=&party=ilse,bram&lv=20` jumps into a map; add `&battle=<troop>&bg=<bg>`,
-`&menu=crests|world|settings|shop:<id>`, `&flags=a,b`. Headless (Windows Chrome via WSL):
-- `tools/test.sh validate 40000` — cross-reference checks for all content.
-- `SIM=240 tools/test.sh <test> 2400000` — one story smoke test (`tests/<test>.test.js`).
-- `SIM=240 tools/test_all.sh [regex]` — the suite, one test at a time.
-- `tools/test.sh balance 1500000` — simulate every troop; `crest_balance` — every Crest;
-  `EXTRA='troop=<id>' tools/test.sh fightlog 100000` — one fight, turn by turn.
-- `tools/shot.sh "<url>" out.png 9000` — screenshot; `tools/frame.sh "map=…&battle=…" out.jpg`
-  — the rendered 3D frame (use for battles). See `docs/PROGRESS.md` for details.
+**Battle** — a turn-order timeline, Poise & Break, and the shared Afterglow gauge for
+Surge and duo/trio Link Arts. Bosses telegraph their big attacks: Guard against them,
+or Break the boss while it winds up to interrupt them. Swap party members mid-fight,
+or hand it to auto-battle.
+
+**Class customization** — 24 Crests (8 callings, 10 braided, 6 legendary) × 10 ranks,
+a primary and a secondary Crest per character, Supports on a point budget, and 300+ Arts.
+
+**Exploration** — 145 hand-laid maps, a party that follows you, a minimap, a world map
+with fast travel, fishing, per-town side quests, the Hunters' Lodge bounty board
+(10 marks + 2 hidden hunts), four optional dungeons, and New Game+.
+
+**Presentation** — three.js 2D-HD rendering (bloom, tilt-shift depth of field, color
+grading) with procedural pixel art for characters, monsters, tiles and props, and a
+WebAudio soundtrack of 29 songs.
+
+## Build & deploy
+
+The game runs as-is, but for a release Vite bundles and minifies it into `dist/`:
+an HTML file, a stylesheet, fonts, and ~25 JS chunks (the engine, three.js, one per
+chapter) — about 3 MB, under 1 MB gzipped. All paths are relative, so `dist/` works on
+any static host (GitHub Pages, itch.io, Netlify…).
+
+```bash
+npm install       # once — Vite is the only dependency
+npm run build     # bundle into dist/
+npm run preview   # serve dist/ on http://localhost:8767/
+npm run dev       # optional: Vite dev server on http://localhost:8766/
+```
+
+**GitHub Pages:** [`.github/workflows/pages.yml`](.github/workflows/pages.yml) runs
+`npm ci` → `npm run build` → deploys `dist/` on every push to `main` (or manually from
+the Actions tab). One-time setup: repository **Settings → Pages → Source: GitHub
+Actions**. The game is then served at `https://<user>.github.io/<repo>/`.
+
+<details>
+<summary><b>Building from WSL with Windows Node</b></summary>
+
+Use `tools/npm.sh install`, `tools/npm.sh run build`, etc. It runs the Windows npm against
+the WSL folder and makes Vite poll for file changes, since native watching doesn't work
+across that share. Windows npm can't delete a `node_modules/` on the share, so remove
+that folder from WSL before `npm ci`.
+</details>
+
+## Development
+
+<details>
+<summary><b>Debug shortcuts</b></summary>
+
+Add these to the URL to jump straight into the game:
+
+| Parameter | Effect |
+|---|---|
+| `?map=<id>&x=&y=` | Start on a map at a tile |
+| `&party=ilse,bram&lv=20` | Party members and level |
+| `&flags=a,b` | Set story flags |
+| `&battle=<troop>&bg=<bg>` | Start a battle |
+| `&menu=crests\|world\|settings\|shop:<id>` | Open a menu |
+| `&debug` | FPS, draw calls and triangles overlay |
+</details>
+
+<details>
+<summary><b>Tests and tools</b> (headless Chrome)</summary>
+
+| Command | What it does |
+|---|---|
+| `tools/test.sh validate 40000` | Cross-reference checks for all content |
+| `SIM=240 tools/test.sh <test> 2400000` | One story smoke test from `tests/` |
+| `SIM=240 tools/test_all.sh [regex]` | The whole suite, one test at a time |
+| `tools/test.sh balance 1500000` | Simulate every enemy troop with an even-level party |
+| `tools/test.sh crest_balance 900000` | Check every Crest is viable |
+| `EXTRA='troop=<id>' tools/test.sh fightlog 100000` | One fight, turn by turn |
+| `tools/shot.sh "<url>" out.png 9000` | Screenshot (page + UI) |
+| `tools/frame.sh "map=…&battle=…" out.jpg` | The rendered 3D frame (use for battles) |
+
+The runners drive Windows Chrome from WSL. More in [`docs/PROGRESS.md`](docs/PROGRESS.md).
+</details>
+
+### Project layout
+
+| Path | Contents |
+|---|---|
+| `src/core` | Game loop, input |
+| `src/render` | Renderer, post-processing, moods, procedural sprites and props |
+| `src/world` | Field scene, maps, actors, followers, minimap, world map |
+| `src/battle` | Battle rules, enemy AI, auto-play, presentation |
+| `src/ui` | Menus and HUD |
+| `src/audio` | Synthesizer, songs and sound effects |
+| `src/state` | Characters, inventory, save data |
+| `src/data` | Game data and the chapter content packs |
+| `src/story` | Scripted scenes for every chapter |
+| `tools/`, `tests/` | Map painter, test runners, headless tests |
+| `docs/` | [Story bible](docs/STORY.md), [authoring guide](docs/AUTHORING.md), [progress](docs/PROGRESS.md) |
+
+## Credits
+
+- [three.js](https://threejs.org/) r170 (MIT), vendored in `vendor/three`.
+- Fonts: Alegreya and Alegreya Sans SC (The Alegreya Project Authors) and Cinzel
+  (The Cinzel Project Authors), under the SIL Open Font License 1.1 — see `fonts/`.
