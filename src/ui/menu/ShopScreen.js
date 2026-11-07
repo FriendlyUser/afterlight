@@ -1,6 +1,7 @@
 // Shops: buy / sell with quantity picker and "who can equip" preview.
 
 import { el, richText } from '../UI.js';
+import { keyCap } from '../../core/Input.js';
 import { Screen, ListView, header, KEYS } from './common.js';
 import { SHOPS } from '../../data/shops.js';
 import { ITEMS } from '../../data/items.js';
@@ -29,7 +30,7 @@ export class ShopScreen extends Screen {
   }
 
   build() {
-    this.el.innerHTML = header(this.shop.name, `${KEYS.nav} ${KEYS.ok} ${KEYS.back} <span class="key">Q</span><span class="key">E</span> Buy/Sell`);
+    this.el.innerHTML = header(this.shop.name, `${KEYS.nav} ${KEYS.ok} ${KEYS.back} ${keyCap('pageLeft')}${keyCap('pageRight')} Buy/Sell`);
     this.el.appendChild(el('div', 'tabs', `<span class="${this.tab === 0 ? 'on' : ''}">Buy</span><span class="${this.tab === 1 ? 'on' : ''}">Sell</span><span class="gold">${this.state.gold.toLocaleString()} G</span>`));
     const body = el('div', 'sh-body');
     const left = el('div', 'sh-left panel');

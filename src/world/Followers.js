@@ -69,6 +69,20 @@ export class Followers {
     return crumbs;
   }
 
+  /** Keep the party out of sight (the leader is walking in alone) until reveal(). */
+  hold() {
+    this.held = true;
+    for (const f of this.list) { f.actor.visible = false; f.actor.syncMesh(); }
+  }
+
+  /** Line the party up behind the leader again and fade them in. */
+  reveal(game) {
+    this.held = false;
+    this.regroup();
+    for (const f of this.list) f.actor.setFade(1);
+    return game.tween(0.3, (k) => { for (const f of this.list) f.actor.setFade(1 - k); });
+  }
+
   /** Is this character already standing on the map as some other actor? */
   onStage(ch) {
     for (const a of this.field.actors.values()) {
@@ -109,7 +123,7 @@ export class Followers {
       a.x = x; a.z = z;
       a.moving = stepping && p.moving;
       a.speed = p.speed;
-      a.visible = !crowded && !this.onStage(f.ch);
+      a.visible = !this.held && !crowded && !this.onStage(f.ch);
       a.update(dt, this.field.grid);
     });
   }

@@ -2,6 +2,7 @@
 // triggers, exits, chests, random encounters and event scripts.
 
 import * as THREE from 'three';
+import { keyCap } from '../core/Input.js';
 import { buildMap, windUniform, makeSpriteMaterial, glowMaskFor } from './MapBuilder.js';
 import { applyMood } from '../render/Moods.js';
 import { ParticleSystem } from '../render/Particles.js';
@@ -10,12 +11,13 @@ import { Actor } from './Actor.js';
 import { ScriptContext } from '../script/ScriptContext.js';
 import { getMap } from '../data/maps/index.js';
 import { LOOKS } from '../data/looks.js';
-import { damp, dirFromVector, DIRS, weightedPick } from '../core/util.js';
+import { damp, dirFromVector, DIRS, easeInOutSine, easeOutCubic, weightedPick } from '../core/util.js';
 import { el } from '../ui/UI.js';
 import { SaveStore, AUTO_SLOT } from '../state/GameState.js';
 import { FieldAtmosphere } from './FieldAtmosphere.js';
 import { Followers } from './Followers.js';
 import { Minimap } from './Minimap.js';
+import { QuestMarkers } from './QuestMarkers.js';
 
 const CAM = { fov: 30, dist: 20, pitch: 0.68, lookHeight: 0.7 };
 const WALK_SPEED = 3.9;
@@ -35,7 +37,7 @@ export class FieldScene {
   // Lifecycle
   // =====================================================================
 
-  async enter({ mapId, x, y, dir = 'down', skipEnterScript = false }) {
+  async enter({ mapId, x, y, dir = 'down', skipEnterScript = false, via = null }) {
     const game = this.game;
     const map = getMap(mapId);
     this.map = map;
@@ -62,6 +64,7 @@ export class FieldScene {
 
 
     // Player
+    ({ x, y } = this.arrivalTile(x, y));
     this.actors.clear();
     const look = this.state.leaderLook();
     this.player = new Actor(look, { x, y, dir, id: 'player' });
@@ -92,6 +95,7 @@ export class FieldScene {
     this.hintEl.style.display = 'none';
     this.hud.appendChild(this.hintEl);
     this.minimap = new Minimap(this);
+    this.quest = new QuestMarkers(this);
     this.resetEncounterCounter();
 
     this.state.setLocation(mapId, x, y, dir, map.name);
@@ -102,8 +106,31 @@ export class FieldScene {
     }
 
     this.pendingScript = !skipEnterScript && map.onEnter ? map.onEnter : null;
+    if (via) this.playEntrance(x, y, dir);
     this.time = 0;
     this.autosave();
+  }
+
+  /**
+   * Where the player appears: (x, y), unless that's off the map, in which case the
+   * nearest walkable tile that isn't an exit (a bad door target must never strand the
+   * player outside, or bounce them straight back out).
+   * tests/validate.test.js reports such targets so they get fixed in the data.
+   */
+  arrivalTile(x, y) {
+    const g = this.grid;
+    if (g.inside(x, y)) return { x, y };
+    console.warn(`${this.mapId}: arrival (${x},${y}) is off the ${g.w}x${g.h} map`);
+    const cx = Math.max(0, Math.min(g.w - 1, x)), cy = Math.max(0, Math.min(g.h - 1, y));
+    const onExit = (tx, ty) => (this.map.exits || []).some((e) => tx >= e.x && tx < e.x + (e.w || 1) && ty >= e.y && ty < e.y + (e.h || 1));
+    for (let r = 0; r < Math.max(g.w, g.h); r++) {
+      for (let dy = -r; dy <= r; dy++) {
+        for (let dx = -r; dx <= r; dx++) {
+          if (Math.max(Math.abs(dx), Math.abs(dy)) === r && g.walkable(cx + dx, cy + dy) && !onExit(cx + dx, cy + dy)) return { x: cx + dx, y: cy + dy };
+        }
+      }
+    }
+    return { x: cx, y: cy };
   }
 
   /** Autosave on arrival (skipped in test mode and before the story starts). */
@@ -127,6 +154,7 @@ export class FieldScene {
     this.game.renderer.setFocus(0.46, this.map.focusBand ?? 0.12);
     this.resumeMusic();
     this.hud.style.display = '';
+    this.quest.refresh(); // the objective or Settings may have changed
   }
 
   pause() { this.hud.style.display = 'none'; }
@@ -273,6 +301,7 @@ export class FieldScene {
     }
     this.player.update(dt, this.grid);
     this.followers.update(dt);
+    this.quest.update(dt);
     this.minimap.update();
 
     this.updateCamera(dt);
@@ -297,9 +326,11 @@ export class FieldScene {
       p.dir = dirFromVector(ax.x, ax.y, p.dir);
       p.moving = p.tryMove(ax.x * speed * dt, ax.y * speed * dt, this.grid, [...this.actors.values()]);
       if (!p.moving) p.setFrame(p.dir, 0);
+      if (this.tryDoor(ax)) return;
     } else {
       p.moving = false;
     }
+    if (!(ax.y < 0)) this.doorBumped = false;
 
     const tileKey = `${p.tileX},${p.tileY}`;
     if (tileKey !== this.lastTile) {
@@ -378,18 +409,20 @@ export class FieldScene {
   findTarget() {
     const p = this.player;
     const d = DIRS[p.dir];
-    let best = null, bestD = 1.6;
+    const f = this.frontTile();
+    // Facing a counter (a table), talk reaches the shopkeeper standing behind it.
+    const reach = this.grid.isCounter(f.x, f.y) ? 2.6 : 1.55;
+    let best = null, bestD = reach + 0.05;
     for (const a of this.actors.values()) {
       if (!a.visible || !a.def || (!a.def.talk && !a.def.run)) continue;
       const dx = a.x - p.x, dz = a.z - p.z;
       const dist = Math.hypot(dx, dz);
-      if (dist > 1.55) continue;
+      if (dist > reach) continue;
       const dot = (dx * d.x + dz * d.y) / (dist || 1);
       if (dot < 0.55) continue;
       if (dist < bestD) { bestD = dist; best = { kind: 'npc', actor: a }; }
     }
     if (best) return best;
-    const f = this.frontTile();
     const chest = this.chests.find((c) => c.def.x === f.x && c.def.y === f.y && !c.opened);
     if (chest) return { kind: 'chest', chest };
     const inter = this.built.interactables.find((i) => i.x === f.x && i.y === f.y);
@@ -445,14 +478,7 @@ export class FieldScene {
   onTileEnter(x, y) {
     // Doors (buildings / structures)
     const tag = this.grid.tags.get(`${x},${y}`);
-    if (tag?.door) {
-      const d = tag.door;
-      if (d.locked && !(d.unlockFlag && this.state.flags[d.unlockFlag])) {
-        this.runScript(async (s) => { await s.say(null, d.lockedText || 'The door is locked.', { style: 'system', portrait: false }); await s.step('player', 0, 1); });
-        return;
-      }
-      if (d.to) { this.goto(d.to, d.tx, d.ty, d.dir || 'up'); return; }
-    }
+    if (tag?.door) { this.enterDoor(tag.door, x, y); return; }
     // Exits
     for (const e of this.map.exits || []) {
       if (x >= e.x && x < e.x + (e.w || 1) && y >= e.y && y < e.y + (e.h || 1)) {
@@ -463,7 +489,8 @@ export class FieldScene {
         if (e.to === '@world') { this.openWorldMap(); return; }
         const tx = e.tx + (e.keepOffset === 'x' ? x - e.x : 0);
         const ty = e.ty + (e.keepOffset === 'y' ? y - e.y : 0);
-        this.goto(e.to, tx, ty, e.dir || this.player.dir);
+        this.walkOn(0.35);
+        this.goto(e.to, tx, ty, e.dir || this.player.dir, { via: 'exit' });
         return;
       }
     }
@@ -551,15 +578,125 @@ export class FieldScene {
       console.error('Script error:', err);
     } finally {
       this.busy = false;
-      if (this.game.scene === this) this.refreshNpcs();
+      if (this.game.scene === this) { this.refreshNpcs(); this.quest.refresh(); }
     }
   }
 
+  /**
+   * Change map with a fade. opts: { via: 'door' | 'exit' (the player walks in on
+   * arrival), faded (the screen is already black), sfx (false for none), color }.
+   */
   async goto(mapId, x, y, dir = 'down', opts = {}) {
     this.busy = true;
-    this.game.audio?.sfx(opts.sfx || 'step_exit');
+    if (opts.sfx !== false) this.game.audio?.sfx(opts.sfx || 'step_exit');
     const next = new FieldScene(this.game);
-    await this.game.transition(next, { mapId, x, y, dir, skipEnterScript: opts.skipEnterScript }, { color: opts.color || '#000' });
+    const params = { mapId, x, y, dir, skipEnterScript: opts.skipEnterScript, via: opts.via };
+    await this.game.transition(next, params, { color: opts.color || '#000', out: opts.faded ? 0 : 0.35 });
+  }
+
+  // =====================================================================
+  // Doors and arrivals
+  // =====================================================================
+
+  /** Walking up into a door tile from the front opens it (door tiles are solid). */
+  tryDoor(ax) {
+    const p = this.player;
+    if (!(ax.y < 0) || p.dir !== 'up' || this.doorBumped) return false;
+    const x = p.tileX, y = p.tileY - 1;
+    const door = this.grid.tags.get(`${x},${y}`)?.door;
+    if (!door || (!door.to && !door.locked)) return false; // a painted-on door: just a wall
+    if (p.z - (y + 1) > p.radius + 0.08) return false; // not up against it yet
+    this.doorBumped = true; // a locked door speaks once per push
+    this.enterDoor(door, x, y);
+    return true;
+  }
+
+  /**
+   * Go through the door at tile (x, y): it swings open, the player steps into the
+   * doorway and fades into its shadow as the screen fades, then the next map.
+   */
+  enterDoor(d, x, y) {
+    if (d.locked && !(d.unlockFlag && this.state.flags[d.unlockFlag])) {
+      this.runScript(async (s) => { s.sfx('cursor'); await s.say(null, d.lockedText || 'The door is locked.', { style: 'system', portrait: false }); });
+      return;
+    }
+    if (!d.to) return;
+    const p = this.player;
+    const door = this.built.doors.get(`${x},${y}`);
+    const game = this.game;
+    this.busy = true;
+    p.moving = false;
+    p.face('up');
+    (async () => {
+      game.audio?.sfx('door');
+      if (door) await game.tween(0.22, (k) => door.setOpen(k), easeOutCubic);
+      const from = { x: p.x, z: p.z }, to = { x: x + 0.5, z: y + 0.8 }; // just past the threshold
+      p.speed = WALK_SPEED;
+      p.moving = true;
+      p.setInDoorway(true);
+      const fade = game.fadeOut(0.4);
+      await game.tween(0.4, (k) => {
+        p.x = from.x + (to.x - from.x) * k;
+        p.z = from.z + (to.z - from.z) * k;
+        p.setFade(Math.min(1, k * 1.3));
+      });
+      await fade;
+      p.moving = false;
+      await this.goto(d.to, d.tx, d.ty, d.dir || 'up', { via: 'door', faded: true, sfx: false });
+    })();
+  }
+
+  /** Keep walking the way the player is facing for `seconds` (leaving by a map exit). */
+  walkOn(seconds) {
+    const p = this.player, d = DIRS[p.dir];
+    const dist = Math.min(0.9, (p.speed || WALK_SPEED) * seconds);
+    const x0 = p.x, z0 = p.z;
+    p.moving = true;
+    this.game.tween(seconds, (k) => { p.x = x0 + d.x * dist * k; p.z = z0 + d.y * dist * k; });
+  }
+
+  /**
+   * Arriving by a door or exit, the player walks in from where they came while the
+   * screen fades in: out of a building's door (which then swings shut behind them),
+   * or one step in from the exit tile behind them.
+   */
+  playEntrance(x, y, dir) {
+    const d = DIRS[dir];
+    const bx = x - d.x, by = y - d.y; // the tile the player came from
+    const fromDoor = this.grid.tags.get(`${bx},${by}`)?.door;
+    const fromExit = (this.map.exits || []).some((e) => bx >= e.x && bx < e.x + (e.w || 1) && by >= e.y && by < e.y + (e.h || 1));
+    if (!fromDoor && !(fromExit && this.grid.walkable(bx, by))) return;
+    const door = fromDoor && this.built.doors.get(`${bx},${by}`);
+    const p = this.player;
+    const from = fromDoor ? { x: bx + 0.5, z: by + 0.8 } : { x: bx + 0.5, z: by + 0.5 };
+    p.x = from.x;
+    p.z = from.z;
+    p.syncMesh();
+    if (fromDoor) { p.setFade(1); p.setInDoorway(true); }
+    door?.setOpen(1);
+    this.followers.hold();
+    this.camFocus.set(p.x, p.elev + this.camCfg.lookHeight, p.z);
+    this.updateCamera(1, true);
+    this.runScript(async () => {
+      const game = this.game;
+      p.speed = WALK_SPEED;
+      p.moving = true;
+      await game.tween(0.42, (k) => {
+        p.x = from.x + (x + 0.5 - from.x) * k;
+        p.z = from.z + (y + 0.5 - from.z) * k;
+        if (fromDoor) p.setFade(1 - Math.min(1, k * 1.4));
+      }, easeInOutSine);
+      p.moving = false;
+      p.setFade(0);
+      p.setInDoorway(false);
+      p.placeAt(x, y, this.grid);
+      p.face(dir);
+      this.followers.reveal(game);
+      if (door) {
+        game.audio?.sfx('door_close');
+        game.tween(0.3, (k) => door.setOpen(1 - k), easeInOutSine); // shuts behind them; control returns now
+      }
+    });
   }
 
   emote(id, symbol = '!', sec = 1) {
@@ -661,7 +798,7 @@ export class FieldScene {
     else { const d = t.data; label = t.kind === 'save' ? 'Rest & Save' : t.kind === 'sign' ? 'Read' : (d.hint || 'Examine'); pos = [d.x + 0.5, this.grid.surface(d.x, d.y) + 1.4, d.y + 0.5]; }
     const v = new THREE.Vector3(...pos).project(this.camera);
     this.hintEl.style.display = '';
-    this.hintEl.innerHTML = `<span class="key">Z</span> ${label}`;
+    this.hintEl.innerHTML = `${keyCap('confirm')} ${label}`;
     this.hintEl.style.left = `${(v.x * 0.5 + 0.5) * window.innerWidth}px`;
     this.hintEl.style.top = `${(-v.y * 0.5 + 0.5) * window.innerHeight}px`;
   }

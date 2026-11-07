@@ -146,7 +146,9 @@ export const PG = {
     s.face('orrin', 'down');
     s.quest('pg_abyss', 'The Gloam Abyss', 'Thirty stairs beneath the Nadir Light. At the bottom, something without edges is waiting.');
     s.quest('pg_tally', 'The Tally', 'Orrin rewards names (the Bestiary) and mastery (Crests at rank 10). Report to him now and then.');
-    s.objective(s.flag('gameClear') ? 'Descend the Gloam Abyss to the thirtieth stair.' : 'Explore the Gloam Abyss beneath the Nadir Light (the first ten stairs).');
+    // Before the ending the Abyss is a side trip: its Journal quest tracks it and the
+    // main objective (the Sun Shards) stays put.
+    if (s.flag('gameClear')) s.objective('Descend the Gloam Abyss to the thirtieth stair.');
     s.journal('We found an eighth Lantern at the edge of the rift. It shines down. The man who keeps it counts everything, including us.');
   },
 
@@ -343,7 +345,7 @@ export const PG = {
     await s.narrate('Past the stair, the dark is packed solid — so dense the lamplight bends away from it, like water off oil.');
     await s.say('Sable', 'It will not let us through. Not with the light we have.');
     await s.say('Wren', 'Then we come back with a better one.');
-    s.objective('The Abyss below B10 is sealed. A new kind of light is needed. (Continue the story.)');
+    s.quest('pg_abyss', null, 'Thirty stairs beneath the Nadir Light. Below B10 the dark is sealed: it will take a new kind of light. (Continue the story.)');
   },
 
   async liftUp(s, n) {

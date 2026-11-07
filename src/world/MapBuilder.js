@@ -144,6 +144,7 @@ export class TileGrid {
     this.legend = { ...GROUND, ...(map.legend || {}) };
     this.blocked = new Uint8Array(this.w * this.h);
     this.tags = new Map(); // "x,y" -> tag info (doors, etc.)
+    this.counters = new Set(); // "x,y" of tables: shopkeepers can be spoken to across them
   }
 
   inside(x, y) { return x >= 0 && y >= 0 && x < this.w && y < this.h; }
@@ -193,6 +194,9 @@ export class TileGrid {
     return dh <= 1 || this.isStairs(tx, ty) || this.isStairs(fx, fy);
   }
 
+  /** A table/counter tile: talking reaches across it. */
+  isCounter(x, y) { return this.counters.has(`${x},${y}`); }
+
   isStairs(x, y) { return this.tags.get(`${x},${y}`)?.stairs === true; }
 
   block(x, y, v = 1) { if (this.inside(x, y)) this.blocked[y * this.w + x] = v; }
@@ -228,6 +232,7 @@ export function buildMap(map, { windows = false } = {}) {
   const animated = [];
   const fadeables = [];
   const interactables = [];
+  const doors = new Map(); // "x,y" of a door tile -> its animated door (see makeDoor)
 
   // Stairs tags
   for (const s of map.stairs || []) grid.tags.set(`${s.x},${s.y}`, { stairs: true });
@@ -322,6 +327,7 @@ export function buildMap(map, { windows = false } = {}) {
       const obj = addProp(group, type, v, x + 0.5, elev, y + 0.5, lightSources, windows);
       if (obj.def.solid) for (let dx = -(obj.def.footprint || 0); dx <= (obj.def.footprint || 0); dx++) grid.block(x + dx, y);
       if (obj.def.h > 48) fadeables.push(obj.mesh);
+      if (type === 'table') grid.counters.add(`${x},${y}`);
       if (type === 'save') interactables.push({ kind: 'save', x, y });
       if (type === 'sign') interactables.push({ kind: 'sign', x, y, text: signs.get(`${x},${y}`)?.text || '...' });
     }
@@ -356,6 +362,7 @@ export function buildMap(map, { windows = false } = {}) {
     const res = buildBuilding(b, grid, atlas, windows);
     group.add(res.mesh);
     if (res.windowMesh) group.add(res.windowMesh);
+    if (res.door) { group.add(res.door.object); doors.set(`${res.door.x},${res.door.y}`, res.door); }
     fadeables.push(res.mesh);
     for (const l of res.lights) lightSources.push(l);
   }
@@ -369,7 +376,7 @@ export function buildMap(map, { windows = false } = {}) {
     for (const l of res.lights || []) lightSources.push(l);
   }
 
-  return { group, grid, lightSources, animated, fadeables, interactables };
+  return { group, grid, lightSources, animated, fadeables, interactables, doors };
 }
 
 // ---------------------------------------------------------------------------
@@ -473,20 +480,20 @@ function buildBuilding(b, grid, atlas, windowsLit) {
   mesh.castShadow = true;
   mesh.receiveShadow = true;
 
-  // Collision: whole footprint except door tile.
-  const doorX = b.door ? b.x + (b.door.dx ?? Math.floor(b.w / 2)) : null;
-  for (let ty = b.y; ty < b.y + b.d; ty++) for (let tx = b.x; tx < b.x + b.w; tx++) {
-    if (tx === doorX && ty === b.y + b.d - 1) continue;
-    grid.block(tx, ty);
-  }
+  // Collision: the whole footprint, door tile included. Walking into the door from
+  // the front opens it (FieldScene.tryDoor), so the player never steps into the wall.
+  for (let ty = b.y; ty < b.y + b.d; ty++) for (let tx = b.x; tx < b.x + b.w; tx++) grid.block(tx, ty);
 
   // Door & windows decals
   const dec = new GeometryBuilder();
   const lights = [];
+  let door = null;
   if (b.door) {
-    const dx = doorX;
-    dec.quad([dx + 0.12, base, z1 + 0.02], [dx + 0.88, base, z1 + 0.02], [dx + 0.88, base + 1.3, z1 + 0.02], [dx + 0.12, base + 1.3, z1 + 0.02], atlas.uv('door', 0), [0, 0, 1]);
-    grid.tags.set(`${dx},${b.y + b.d - 1}`, { door: b.door });
+    const dx = b.x + (b.door.dx ?? Math.floor(b.w / 2));
+    door = makeDoor(atlas, dx, base, z1, windowsLit);
+    door.x = dx;
+    door.y = b.y + b.d - 1;
+    grid.tags.set(`${door.x},${door.y}`, { door: b.door });
   }
   const winTex = windowsLit ? 'window' : 'window_dark';
   for (const wx of b.windows || []) {
@@ -501,7 +508,34 @@ function buildBuilding(b, grid, atlas, windowsLit) {
     windowMesh = new THREE.Mesh(dec.build(), dm);
     windowMesh.receiveShadow = true;
   }
-  return { mesh, windowMesh, lights };
+  return { mesh, windowMesh, lights, door };
+}
+
+/**
+ * A hinged door on a south wall at (x, z): a panel that swings out (setOpen(0..1))
+ * over a dark doorway — warm-lit when the windows are.
+ */
+function makeDoor(atlas, x, base, z, lit) {
+  const W = 0.76, H = 1.3;
+  const plane = () => new THREE.PlaneGeometry(W, H).translate(W / 2, H / 2, 0); // hinge on the left edge
+  const object = new THREE.Group();
+  object.position.set(x + 0.12, base, z);
+
+  const doorway = new THREE.Mesh(plane(), new THREE.MeshBasicMaterial({ color: lit ? '#4a2c14' : '#140e0a', polygonOffset: true, polygonOffsetFactor: -2 }));
+  doorway.position.z = 0.015;
+
+  const geo = plane();
+  const uv = atlas.uv('door', 0);
+  const at = geo.attributes.uv; // PlaneGeometry corners: top-left, top-right, bottom-left, bottom-right
+  at.setXY(0, uv.u0, uv.v1); at.setXY(1, uv.u1, uv.v1); at.setXY(2, uv.u0, uv.v0); at.setXY(3, uv.u1, uv.v0);
+  const mat = new THREE.MeshLambertMaterial({ map: atlas.texture, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -3 });
+  if (lit) { mat.emissive = new THREE.Color('#ffb060'); mat.emissiveIntensity = 0.25; }
+  const panel = new THREE.Mesh(geo, mat);
+  panel.position.z = 0.03;
+  panel.receiveShadow = true;
+
+  object.add(doorway, panel);
+  return { object, panel, setOpen(k) { panel.rotation.y = -1.45 * k; } };
 }
 
 // ---------------------------------------------------------------------------
@@ -565,7 +599,6 @@ function buildLantern(s, grid) {
   g.position.set(s.x + 0.5, base, s.y + 0.5);
   for (let ty = s.y - 1; ty <= s.y + 1; ty++) for (let tx = s.x - 1; tx <= s.x + 1; tx++) grid.block(tx, ty);
   if (s.doorTo) {
-    grid.block(s.x, s.y + 1, 0);
     grid.tags.set(`${s.x},${s.y + 1}`, { door: { to: s.doorTo, tx: s.tx, ty: s.ty, dir: s.dir, locked: !!s.unlockFlag, unlockFlag: s.unlockFlag, lockedText: s.lockedText } });
   }
   const lights = lit ? [{ x: s.x + 0.5, y: base + 8.4, z: s.y + 0.5, color: '#ffd890', intensity: 6, distance: 16, priority: 10 }] : [];

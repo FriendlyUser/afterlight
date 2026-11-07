@@ -1,6 +1,8 @@
 // Items, Status, Formation, Settings, Bestiary and Journal screens.
 
 import { el, richText } from '../UI.js';
+import { ControlsScreen } from './ControlsScreen.js';
+import { keyCap, keysFor } from '../../core/Input.js';
 import { Screen, ListView, header, KEYS, partyCard, statDiffHtml, portraitEl } from './common.js';
 import { MemberScreen } from './CrestScreen.js';
 import { ITEMS } from '../../data/items.js';
@@ -31,7 +33,7 @@ export class ItemsScreen extends Screen {
   }
 
   build() {
-    this.el.innerHTML = header('Items', `${KEYS.nav} <span class="key">Z</span> Use ${KEYS.back} <span class="key">Q</span><span class="key">E</span> Category`);
+    this.el.innerHTML = header('Items', `${KEYS.nav} ${keyCap('confirm')} Use ${KEYS.back} ${keyCap('pageLeft')}${keyCap('pageRight')} Category`);
     const tabs = el('div', 'tabs', TABS.map((t, i) => `<span class="${i === this.tab ? 'on' : ''}">${t.label}</span>`).join(''));
     this.el.appendChild(tabs);
     const body = el('div', 'it-body');
@@ -175,7 +177,7 @@ export class FormationScreen extends Screen {
   }
 
   build() {
-    this.el.innerHTML = header('Formation', `${KEYS.nav} <span class="key">Z</span> Pick / Swap ${KEYS.back} — the first ${ACTIVE_PARTY_SIZE} fight; the rest earn half EXP.`);
+    this.el.innerHTML = header('Formation', `${KEYS.nav} ${keyCap('confirm')} Pick / Swap ${KEYS.back} — the first ${ACTIVE_PARTY_SIZE} fight; the rest earn half EXP.`);
     const list = el('div', 'fm-list');
     this.state.allMembers().forEach((ch, i) => {
       const c = partyCard(ch, { active: i < ACTIVE_PARTY_SIZE, selected: i === this.index });
@@ -231,17 +233,19 @@ export class SettingsScreen extends Screen {
       { key: 'encounters', label: 'Encounter Rate', value: ['Normal', 'Half', 'Off (story only)'][s.encounters || 0], step: 1, min: 0, max: 2 },
       { key: 'difficulty', label: 'Difficulty', value: ['Story', 'Normal', 'Hard'][s.difficulty ?? 1], step: 1, min: 0, max: 2 },
       { key: 'battleSpeed', label: 'Battle Speed', value: ['Normal', 'Fast', 'Fastest'][s.battleSpeed || 0], step: 1, min: 0, max: 2 },
-      { key: 'fastMode', label: 'Fast Mode (T)', value: s.fastMode ? 'On' : 'Off', toggle: true },
+      { key: 'fastMode', label: `Fast Mode (${keysFor('fast')[0] ?? '—'})`, value: s.fastMode ? 'On' : 'Off', toggle: true },
       { key: 'fastSpeed', label: 'Fast Mode Speed', value: `${s.fastSpeed || 3}×`, step: 1, min: 2, max: 4 },
       { key: 'reduceEffects', label: 'Flashes & Shake', value: s.reduceEffects ? 'Reduced' : 'Full', toggle: true },
       { key: 'hideMinimap', label: 'Minimap', value: s.hideMinimap ? 'Off' : 'On', toggle: true },
+      { key: 'hideQuestGuide', label: 'Quest Guide', value: s.hideQuestGuide ? 'Off' : 'On', toggle: true },
+      { key: 'controls', label: 'Controls', value: 'Remap keys', open: () => new ControlsScreen(this.menus) },
     ];
   }
 
   build() {
-    this.el.innerHTML = header('Settings', '<span class="key">↑↓</span> Select <span class="key">←→</span> Change <span class="key">X</span> Back');
+    this.el.innerHTML = header('Settings', `${keyCap('up')}${keyCap('down')} Select ${keyCap('left')}${keyCap('right')} Change ${keyCap('cancel')} Back`);
     const box = el('div', 'set-list panel');
-    this.options().forEach((o, i) => box.appendChild(el('div', `set-row ${i === this.index ? 'sel' : ''}`, `<span>${o.label}</span><span class="set-v">◂ ${o.value} ▸</span>`)));
+    this.options().forEach((o, i) => box.appendChild(el('div', `set-row ${i === this.index ? 'sel' : ''}`, `<span>${o.label}</span><span class="set-v">${o.open ? `${o.value} ▸` : `◂ ${o.value} ▸`}</span>`)));
     this.el.appendChild(box);
   }
 
@@ -250,8 +254,14 @@ export class SettingsScreen extends Screen {
     if (input.repeat('up')) { this.index = (this.index + opts.length - 1) % opts.length; this.sfx('cursor'); this.build(); }
     if (input.repeat('down')) { this.index = (this.index + 1) % opts.length; this.sfx('cursor'); this.build(); }
     const d = input.repeat('right') ? 1 : input.repeat('left') ? -1 : 0;
-    if (d || input.pressed('confirm')) {
-      const o = opts[this.index];
+    const o = opts[this.index];
+    if (o.open && (d > 0 || input.pressed('confirm'))) {
+      input.consumeAll();
+      this.sfx('confirm');
+      o.open().open().then(() => this.build());
+      return;
+    }
+    if ((d || input.pressed('confirm')) && !o.open) {
       const s = this.state.settings;
       if (o.toggle) s[o.key] = !s[o.key];
       else s[o.key] = Math.max(o.min, Math.min(o.max, Math.round(((s[o.key] || 0) + (d || 1) * o.step) * 10) / 10));
@@ -349,7 +359,8 @@ export class JournalScreen extends Screen {
 // =====================================================================
 
 const GUIDE = [
-  ['Controls', 'Move with the arrow keys or WASD; hold *Shift* to run. *Z*/*Enter* confirms and talks, *X*/*Esc* cancels, *C* opens the menu. In battle, *Q*/*E* adjusts Surge and *F* toggles Auto-battle. *T* toggles *Fast Mode*, which runs walking, cutscenes and battles at 2–4× (set the speed in Settings). Gamepads work too.'],
+  ['Controls', 'Move with the arrow keys or WASD; hold *Shift* to run. *Z*/*Enter* confirms and talks, *X*/*Esc* cancels, *C* opens the menu. In battle, *Q*/*E* adjusts Surge and *F* toggles Auto-battle. *T* toggles *Fast Mode*, which runs walking, cutscenes and battles at 2–4× (set the speed in Settings). These are the default keys: remap any of them in *Settings → Controls* (Esc always cancels and opens the menu). Your keys are saved with your game, export included. Gamepads work too.'],
+  ['Quest Guide', 'The *Objective* in the top-left corner says what to do next, and a gold *◆* marks where: the person or place, or the exit or door that leads toward it. When it is off screen, an arrow at the edge points the way; the minimap and the world map mark it too. Turn it off in *Settings → Quest Guide*.'],
   ['Turn Order', 'Battles flow on a timeline (top-left). Fast characters act more often. Quick Arts let you act again sooner; heavy Arts push your next turn back. Haste and Slow bend the timeline.'],
   ['Poise & Breaks', 'Every foe carries a *Poise* shield (the number under it). Hitting a *weakness* chips one point. At zero the foe *Breaks*: it loses its next turn and takes 50% more damage until it recovers. Weaknesses start hidden — experiment, or use *Scan*.'],
   ['Afterglow', 'The party shares the *Afterglow* gauge (three segments). It fills when you hit weaknesses, Break foes, land criticals and take hits. Spend it on *Surge* (Q/E before acting: up to +150% power and extra Poise damage) or on *Link Arts* — combination techniques between specific friends.'],

@@ -1,8 +1,9 @@
 // CHAPTER 11 — the Character Rites (one per companion) and the Starseer's Orrery.
 
-import { returnToShip, stageParty, unstage } from './ch11.js';
+import { mainObjective, returnToShip, stageParty, unstage } from './ch11.js';
 
 const done = (s, who) => s.flag(`c11_rite_${who}_done`);
+// Each rite sets its own objectives; finishing it puts the main one (mainObjective) back.
 
 export const RITES = {
   // ================================================================== WREN — the Drowned Light
@@ -92,6 +93,7 @@ export const RITES = {
     await s.say('Wren', '...Hi, Dad.');
     s.setFlag('c11_rite_wren_done');
     s.quest('c11_rite_wren', null, null, 'done');
+    s.objective(mainObjective(s), true); // the rite is done: back to the Sun Shards
     s.journal('Nell reforged Dad\'s cutlass in Sun Shard fire. Edrin\'s Blade. It\'s light in my hand. I said hi to it. Nobody laughed.');
   },
 
@@ -215,6 +217,7 @@ export const RITES = {
     await s.say('Pip', 'Tilly.');
     s.setFlag('c11_rite_pip_done');
     s.quest('c11_rite_pip', null, null, 'done');
+    s.objective(mainObjective(s), true); // the rite is done: back to the Sun Shards
     s.journal('Nell turned Tilly\'s rusty knife into Pip\'s Lucky Shiv. She kept the ribbon on. Pip says it was stolen from the best. He means Tilly.');
   },
 
@@ -310,7 +313,7 @@ export const RITES = {
     s.remove('v_bram'); s.remove('v_corvin'); s.remove('v_ilse');
     s.setFlag('c11_rite_bram_done');
     s.quest('c11_rite_bram', null, null, 'done');
-    s.objective('Return to the Halcyon.');
+    s.objective(mainObjective(s), true); // the rite is done: back to the Sun Shards
     s.journal('Bram stood the vigil. He shook the whole night and didn\'t move. At dawn he took Sir Aldous\'s sword from the cairn and Corvin knighted him. Sir Bram Kestrel. He keeps saying it under his breath.');
     await returnToShip(s);
   },
@@ -384,6 +387,7 @@ export const RITES = {
     unstage(s);
     s.setFlag('c11_rite_ilse_done');
     s.quest('c11_rite_ilse', null, null, 'done');
+    s.objective(mainObjective(s), true); // the rite is done: back to the Sun Shards
     s.journal('Ilse took Osk\'s staff. Before she did, she told me everything she wants. It was a long list. I was on it. She says she forgave me a long time ago and just liked being angry. That\'s the most Ilse thing anyone has ever said.');
     s.music('swamp');
   },
@@ -492,6 +496,7 @@ export const RITES = {
     await s.say('Corvin', 'Right. That\'s enough feelings for one decade. Everybody back on the ship.');
     s.setFlag('c11_rite_corvin_done');
     s.quest('c11_rite_corvin', null, null, 'done');
+    s.objective(mainObjective(s), true); // the rite is done: back to the Sun Shards
     s.journal('Corvin flew into the Stormwall and didn\'t get in the lifeboat. Hal Merrow\'s last log said she sent him away so he\'d live to be brave about something else. He says it turns out to be us. He said it was raining on him specifically.');
     await returnToShip(s);
   },
@@ -564,6 +569,7 @@ export const RITES = {
     unstage(s);
     s.setFlag('c11_rite_sable_done');
     s.quest('c11_rite_sable', null, null, 'done');
+    s.objective(mainObjective(s), true); // the rite is done: back to the Sun Shards
     s.journal('Under Thornwood\'s roots we met Lysa — what\'s left of her. She gave Sable her ribbon and asked her to get old, properly old, for both of them. She gave her a message for Cassian. Sable says she\'ll deliver it.');
     await returnToShip(s);
   },

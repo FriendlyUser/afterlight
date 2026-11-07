@@ -121,6 +121,30 @@ done directly this session:
 - **Minimap** (`src/world/Minimap.js`): floor plan drawn once per map plus a facing
   arrow; hidden in cutscenes, single rooms (<300 tiles), maps with `noMinimap` (the hedge
   maze), or via Settings → Minimap.
+- **Key remapping** (Settings → Controls, `src/ui/menu/ControlsScreen.js`): up to three
+  keys per action; a key belongs to one action (binding it elsewhere moves it); movement
+  and Confirm can't be left keyless; Delete clears a slot; Esc is fixed to Cancel + Menu.
+  Bindings live in `settings.keys`, so they save, export and import with the game
+  (`normalizeBindings` repairs bad data). On-screen hints read the live bindings
+  (`keyCap` / `keysFor`). Tests: `controls`, `systems`.
+- **Doors** (`makeDoor` in MapBuilder, `tryDoor` / `enterDoor` / `playEntrance` in
+  FieldScene): door tiles are solid; walking into one swings it open, the player steps
+  into the doorway and fades into its shadow as the screen fades. Arriving, the player
+  walks in from the exit/door behind them while the screen fades in (a building door
+  then swings shut; followers fade in behind). Leaving by an exit keeps walking through
+  the fade. Locked doors speak once per push. Shopkeepers behind tables can be talked
+  to across the counter. validate checks every exit/door arrival (in bounds, not void,
+  not on an exit, not inside a building) and that no NPC stands inside a building.
+  Test: `shop_counter`.
+- **Quest Guide** (`src/world/QuestGuide.js`, `QuestMarkers.js`, targets in
+  `src/data/objectives/`): each objective text maps to target(s) — a map, a tile, an NPC
+  (`unless: flag` hides finished parts, `after: flag` reveals later steps). The guide
+  routes across open exits, doors and the world map (an @world exit or Menu → Travel) and
+  marks the next step: a gold gem over the spot / person / exit / door (drawn over
+  everything), an edge arrow while it's off screen, a diamond on the minimap, the
+  objective in the top-left, and a ◆ on the world-map stop. Keyed by text, so old saves
+  get markers. Settings → Quest Guide. Tests: `objectives` (every objective has an entry,
+  targets valid), `quest_markers`.
 - **Battle presentation:** a wider party diagonal (nobody hidden behind the next); the
   biggest enemies take the central slots and colossal ones (size 4) get a wider shot;
   new monster archetypes `bell`, `storm`, `orrery`, `angler` for bosses that were drawn

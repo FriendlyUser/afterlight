@@ -147,7 +147,7 @@ export default {
     "dx": 3,
     "to": "lf_nana_house",
     "tx": 4,
-    "ty": 7,
+    "ty": 6,
     "dir": "up"
    },
    "windows": [
@@ -186,7 +186,7 @@ export default {
     "dx": 2,
     "to": "lf_store",
     "tx": 4,
-    "ty": 7,
+    "ty": 5,
     "dir": "up"
    },
    "windows": [
@@ -205,7 +205,7 @@ export default {
     "dx": 1,
     "to": "lf_tobias",
     "tx": 3,
-    "ty": 6,
+    "ty": 4,
     "dir": "up"
    },
    "windows": [

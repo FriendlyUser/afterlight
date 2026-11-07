@@ -1,6 +1,7 @@
 // Equipment: pick a slot, pick an item, preview stat changes. 'F' optimizes.
 
 import { el } from '../UI.js';
+import { keyCap } from '../../core/Input.js';
 import { ListView, header, KEYS, statDiffHtml, portraitEl } from './common.js';
 import { MemberScreen } from './CrestScreen.js';
 import { EQUIPMENT, WEAPON_TYPES } from '../../data/equipment.js';
@@ -18,7 +19,7 @@ export class EquipScreen extends MemberScreen {
 
   build() {
     const ch = this.ch;
-    this.el.innerHTML = header(`Equipment — ${ch.name}`, `${KEYS.nav} ${KEYS.ok} ${KEYS.back} ${KEYS.swap} <span class="key">F</span> Optimize`);
+    this.el.innerHTML = header(`Equipment — ${ch.name}`, `${KEYS.nav} ${KEYS.ok} ${KEYS.back} ${KEYS.swap} ${keyCap('info')} Optimize`);
     const body = el('div', 'eq-body');
     const left = el('div', 'eq-left panel');
     const who = el('div', 'eq-who');

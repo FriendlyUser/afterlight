@@ -3,8 +3,10 @@
 // archipelago with seven burning sun-wounds after it.
 
 import { el } from '../ui/UI.js';
-import { WORLD_NODES } from '../data/worldmap.js';
+import { keyCap } from '../core/Input.js';
+import { WORLD_NODES, openNodes } from '../data/worldmap.js';
 import { fbm, RNG } from '../core/util.js';
+import { WORLD, activeTargets, route } from './QuestGuide.js';
 
 const W = 320, H = 180;           // pixel-art canvas
 const SCALE_X = W / 1000, SCALE_Y = H / 750;
@@ -18,7 +20,6 @@ const BIOMES = [
   { match: /aurenne|thistle/, color: [168, 160, 110] },
 ];
 
-/** unlock: undefined | 'flag' | (state) => bool */
 /** Where the info panel may sit, and which markers (map units 1000×750, label included) it would hide. */
 const PANEL_CORNERS = [
   { cls: 'bl', covers: (n) => n.x < 370 && n.y > 490 },
@@ -34,10 +35,6 @@ function nodeKind(n) {
   return 'story';
 }
 
-export function nodeUnlocked(n, st) {
-  if (!n.unlock) return true;
-  return typeof n.unlock === 'function' ? !!n.unlock(st) : !!st.flags[n.unlock];
-}
 
 export class WorldMapScene {
   constructor(game) {
@@ -51,7 +48,7 @@ export class WorldMapScene {
     const st = this.state;
     const act = st.flags.sundered ? 2 : 1;
     this.act = act;
-    this.nodes = WORLD_NODES.filter((n) => (n.act || 1) === act && nodeUnlocked(n, st));
+    this.nodes = openNodes(st);
     const cur = this.nodes.findIndex((n) => n.mapId === st.location.mapId);
     this.index = Math.max(0, cur);
 
@@ -66,7 +63,7 @@ export class WorldMapScene {
     this.info = el('div', 'wm-info panel');
     this.root.appendChild(this.info);
     this.root.appendChild(el('div', 'wm-title', act === 1 ? 'Solmere' : 'The Ruin of Solmere'));
-    this.root.appendChild(el('div', 'wm-hint', '<span class="key">←↑↓→</span> Choose · <span class="key">Z</span> Travel · <span class="key">X</span> Close'));
+    this.root.appendChild(el('div', 'wm-hint', `${keyCap('left')}${keyCap('up')}${keyCap('down')}${keyCap('right')} Choose · ${keyCap('confirm')} Travel · ${keyCap('cancel')} Close`));
     this.game.ui.layers.menus.appendChild(this.root);
     this.paintBase();
     this.buildMarkers();
@@ -181,9 +178,13 @@ export class WorldMapScene {
 
   buildMarkers() {
     this.markers.innerHTML = '';
-    const here = this.game.state.location.mapId;
+    const st = this.game.state;
+    const here = st.location.mapId;
+    // The stop on the way to the current objective (Settings → Quest Guide).
+    this.questNode = st.settings.hideQuestGuide ? null : route(WORLD, activeTargets(st), st)?.node ?? null;
     this.markerEls = this.nodes.map((n) => {
-      const m = el('div', `wm-node ${nodeKind(n)}${n.mapId === here ? ' here' : ''}`, `<i></i><span>${n.name}</span>`);
+      const quest = n === this.questNode ? ' quest' : '';
+      const m = el('div', `wm-node ${nodeKind(n)}${n.mapId === here ? ' here' : ''}${quest}`, `<i></i><span>${n.name}</span>`);
       m.style.left = `${(n.x / 1000) * 100}%`;
       m.style.top = `${(n.y / 750) * 100}%`;
       this.markers.appendChild(m);
@@ -194,7 +195,8 @@ export class WorldMapScene {
   refresh() {
     this.markerEls.forEach((m, i) => m.classList.toggle('sel', i === this.index));
     const n = this.nodes[this.index];
-    this.info.innerHTML = n ? `<div class="cd-name">${n.name}</div><div class="cd-tier">${n.region || ''}</div><div class="cd-desc">${n.desc || ''}</div>` : '<div class="dim">Nowhere to go yet.</div>';
+    const quest = n && n === this.questNode ? '<div class="wm-quest">◆ Your objective lies this way</div>' : '';
+    this.info.innerHTML = n ? `<div class="cd-name">${n.name}</div><div class="cd-tier">${n.region || ''}</div><div class="cd-desc">${n.desc || ''}</div>${quest}` : '<div class="dim">Nowhere to go yet.</div>';
     const corner = this.panelCorner();
     for (const c of PANEL_CORNERS) this.info.classList.toggle(c.cls, c === corner);
   }

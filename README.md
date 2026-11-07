@@ -56,8 +56,13 @@ or import one.
 | Auto-battle (battle) · Optimize (Equipment) · Export / Import (save slots) | <kbd>F</kbd> | <kbd>Back</kbd> |
 | Fast Mode on / off (2–4×, set in Settings) | <kbd>T</kbd> | Left-stick click |
 
-Settings include text size and speed, encounter rate, difficulty (Story / Normal /
-Hard), battle speed, Fast Mode speed, the minimap, and reduced flashes & screen shake.
+These are the default keys: remap any of them in **Settings → Controls** (up to three
+keys per action; <kbd>Esc</kbd> always cancels and opens the menu). Your bindings are
+saved with your game and travel with exported save files.
+
+Settings also include text size and speed, encounter rate, difficulty (Story / Normal /
+Hard), battle speed, Fast Mode speed, the minimap, the Quest Guide, and reduced flashes
+& screen shake.
 
 ## Features
 
@@ -72,8 +77,9 @@ or hand it to auto-battle — and turn on Fast Mode to fly through fights and cu
 **Class customization** — 24 Crests (8 callings, 10 braided, 6 legendary) × 10 ranks,
 a primary and a secondary Crest per character, Supports on a point budget, and 300+ Arts.
 
-**Exploration** — 145 hand-laid maps, a party that follows you, a minimap, a world map
-with fast travel, fishing, per-town side quests, the Hunters' Lodge bounty board
+**Exploration** — 145 hand-laid maps, a party that follows you, a Quest Guide that
+marks where to go next (in the field, on the minimap and on the world map), doors that
+swing open as you walk in, a minimap, a world map with fast travel, fishing, per-town side quests, the Hunters' Lodge bounty board
 (10 marks + 2 hidden hunts), four optional dungeons, and New Game+.
 
 **Presentation** — three.js 2D-HD rendering (bloom, tilt-shift depth of field, color

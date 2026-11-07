@@ -2,6 +2,7 @@
 // command menus (with Surge), target selection, popups and victory screen.
 
 import { el, richText } from '../ui/UI.js';
+import { keyCap } from '../core/Input.js';
 import { SKILLS } from '../data/skills.js';
 import { CRESTS } from '../data/crests.js';
 import { STATUSES } from '../data/statuses.js';
@@ -329,7 +330,7 @@ class CommandMenu {
     html += '</div>';
     const cur = t.entries[t.index];
     if (cur?.desc) html += `<div class="cmd-desc">${richText(cur.desc)}</div>`;
-    html += `<div class="cmd-surge ${surgeOk ? '' : 'off'}"><span class="key">Q</span><span class="key">E</span> Surge ${'◆'.repeat(this.surge)}${'◇'.repeat(Math.max(0, 3 - this.surge))}</div>`;
+    html += `<div class="cmd-surge ${surgeOk ? '' : 'off'}">${keyCap('pageLeft')}${keyCap('pageRight')} Surge ${'◆'.repeat(this.surge)}${'◇'.repeat(Math.max(0, 3 - this.surge))}</div>`;
     this.el.innerHTML = html;
   }
 

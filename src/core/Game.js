@@ -30,6 +30,7 @@ export class Game {
 
   /** Apply the player's settings to every subsystem (audio, text, comfort options). */
   applySettings(settings = this.state.settings) {
+    this.input.setBindings(settings.keys);
     this.audio?.setVolumes(settings.musicVolume, settings.sfxVolume);
     this.ui?.applySettings(settings);
     const reduced = !!settings.reduceEffects;

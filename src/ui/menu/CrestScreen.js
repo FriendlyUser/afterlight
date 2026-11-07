@@ -1,6 +1,7 @@
 // Crest (class) management and Support (passive) loadouts.
 
 import { el, richText } from '../UI.js';
+import { keyCap } from '../../core/Input.js';
 import { Screen, ListView, header, KEYS, portraitEl } from './common.js';
 import { CRESTS, CREST_ORDER, MAX_RANK } from '../../data/crests.js';
 import { SKILLS } from '../../data/skills.js';
@@ -174,7 +175,7 @@ export class SupportScreen extends MemberScreen {
     const ch = this.ch;
     const learned = ch.learnedPassives();
     const sourceOf = (pid) => Object.keys(ch.crests).find((c) => CRESTS[c].ranks.some((u) => u.passive === pid));
-    this.el.innerHTML = header(`Supports — ${ch.name}`, `${KEYS.nav} <span class="key">Z</span> Equip/Remove ${KEYS.back} ${KEYS.swap}`);
+    this.el.innerHTML = header(`Supports — ${ch.name}`, `${KEYS.nav} ${keyCap('confirm')} Equip/Remove ${KEYS.back} ${KEYS.swap}`);
     const body = el('div', 'sp-body');
     const left = el('div', 'sp-left panel');
     const used = ch.supportUsed(), budget = ch.supportBudget();

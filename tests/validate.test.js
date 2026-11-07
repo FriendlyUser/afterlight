@@ -19,6 +19,26 @@ import { SONGS } from '../src/audio/songs.js';
 import { GROUND, PROP_CHARS } from '../src/world/Legend.js';
 import { contentReady } from '../src/data/content/index.js';
 import { CHARACTERS } from '../src/data/characters.js';
+import { TileGrid } from '../src/world/MapBuilder.js';
+
+const grids = new Map();
+const inRect = (r, x, y) => x >= r.x && x < r.x + (r.w || 1) && y >= r.y && y < r.y + (r.h || 1);
+
+/** Why arriving at (x, y) on map `to` is broken, or '' if it's a fine place to stand. */
+function arrivalProblem(to, x, y) {
+  const m = MAPS[to];
+  if (!m) return 'goes to an unknown map';
+  if (!grids.has(to)) grids.set(to, new TileGrid(m));
+  const g = grids.get(to);
+  if (!g.inside(x, y)) return `lands outside the ${g.w}x${g.h} map`;
+  const d = g.def(x, y);
+  if (d.void || d.wall) return `lands on ${d.void ? 'void' : 'a wall'}`;
+  // Standing on an exit sends the player straight back out on their first step.
+  if ((m.exits || []).some((e) => inRect(e, x, y))) return 'lands on an exit';
+  // Buildings are solid, door tile included (walking into a door opens it).
+  if ((m.buildings || []).some((b) => inRect({ x: b.x, y: b.y, w: b.w, h: b.d }, x, y))) return 'lands inside a building';
+  return '';
+}
 
 export async function run(game, h) {
   await contentReady;
@@ -68,16 +88,19 @@ export async function run(game, h) {
     const music = typeof m.music === 'function' ? m.music(st) : m.music;
     if (music && !SONGS[music]) err(`map ${id}: unknown music ${music}`);
     if (m.battleBg && !BATTLE_BACKGROUNDS[m.battleBg]) err(`map ${id}: unknown battleBg ${m.battleBg}`);
-    for (const e of m.exits || []) {
-      if (e.to === '@world') continue;
-      if (!MAPS[e.to]) err(`map ${id}: exit to unknown map ${e.to}`);
-      else if (MAPS[e.to].ground && (e.ty >= MAPS[e.to].ground.length || e.tx >= MAPS[e.to].ground[0].length)) err(`map ${id}: exit to ${e.to} lands out of bounds (${e.tx},${e.ty})`);
+    const arrivals = [
+      ...(m.exits || []).filter((e) => e.to !== '@world').map((e) => ({ via: 'exit', to: e.to, tx: e.tx, ty: e.ty })),
+      ...(m.buildings || []).filter((b) => b.door?.to).map((b) => ({ via: 'door', to: b.door.to, tx: b.door.tx, ty: b.door.ty })),
+      ...(m.structures || []).filter((s) => s.doorTo).map((s) => ({ via: 'structure door', to: s.doorTo, tx: s.tx, ty: s.ty })),
+    ];
+    for (const a of arrivals) {
+      const problem = arrivalProblem(a.to, a.tx, a.ty);
+      if (problem) err(`map ${id}: ${a.via} to ${a.to} (${a.tx},${a.ty}) ${problem}`);
     }
-    for (const b of m.buildings || []) if (b.door?.to && !MAPS[b.door.to]) err(`map ${id}: door to unknown map ${b.door.to}`);
-    for (const s of m.structures || []) if (s.doorTo && !MAPS[s.doorTo]) err(`map ${id}: structure door to unknown map ${s.doorTo}`);
     for (const n of m.npcs || []) {
       if (typeof n.look === 'string' && !LOOKS[n.look]) err(`map ${id}: npc ${n.id} unknown look ${n.look}`);
       if (n.x >= w || n.y >= m.ground.length) err(`map ${id}: npc ${n.id} out of bounds`);
+      if ((m.buildings || []).some((b) => inRect({ x: b.x, y: b.y, w: b.w, h: b.d }, n.x, n.y))) err(`map ${id}: npc ${n.id} stands inside a building (${n.x},${n.y})`);
     }
     for (const c of m.chests || []) if (c.item && !item(c.item)) err(`map ${id}: chest unknown item ${c.item}`);
     for (const [t] of m.encounters?.troops || []) if (!TROOPS[t]) err(`map ${id}: encounter unknown troop ${t}`);

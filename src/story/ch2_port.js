@@ -276,7 +276,7 @@ export const PORT = {
     await s.say('Wren', 'That\'s purring. It means he likes you.');
     await s.say('Sable', '...I would like to purr.');
     await s.say('Ilse', 'Please don\'t.');
-    s.objective('Return the Admiral to Bettany at the fish market.', true);
+    s.quest('c2_cat', null, 'Found him behind the barrels. Return the Admiral to Bettany at the fish market.'); // a side quest: leave the main objective alone
   },
 
   async catReturn(s) {

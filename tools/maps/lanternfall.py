@@ -39,10 +39,10 @@ m.rect(17, 30, 12, 2, ground='=', height=1)
 
 # Buildings
 m.building(14, 9, 4, 3, wall='wall_timber', roof='roof_blue', door={'dx': 2, 'to': 'lf_wren_house', 'tx': 4, 'ty': 7, 'dir': 'up'}, windows=[0, 3])
-m.building(21, 9, 5, 3, wall='wall_plaster', roof='roof_red', door={'dx': 3, 'to': 'lf_nana_house', 'tx': 4, 'ty': 7, 'dir': 'up'}, windows=[1])
+m.building(21, 9, 5, 3, wall='wall_plaster', roof='roof_red', door={'dx': 3, 'to': 'lf_nana_house', 'tx': 4, 'ty': 6, 'dir': 'up'}, windows=[1])
 m.building(29, 11, 6, 4, wall='wall_stone', roof='roof_slate', h=3.0, door={'dx': 2, 'to': 'lf_inn', 'tx': 5, 'ty': 8, 'dir': 'up'}, windows=[0, 4, 5])
-m.building(8, 13, 5, 3, wall='wall_wood', roof='roof_thatch', door={'dx': 2, 'to': 'lf_store', 'tx': 4, 'ty': 7, 'dir': 'up'}, windows=[0, 4])
-m.building(36, 18, 4, 3, wall='wall_wood', roof='roof_thatch', door={'dx': 1, 'to': 'lf_tobias', 'tx': 3, 'ty': 6, 'dir': 'up'}, windows=[3])
+m.building(8, 13, 5, 3, wall='wall_wood', roof='roof_thatch', door={'dx': 2, 'to': 'lf_store', 'tx': 4, 'ty': 5, 'dir': 'up'}, windows=[0, 4])
+m.building(36, 18, 4, 3, wall='wall_wood', roof='roof_thatch', door={'dx': 1, 'to': 'lf_tobias', 'tx': 3, 'ty': 4, 'dir': 'up'}, windows=[3])
 
 # The Lantern
 m.structure('lantern', 8, 3, doorTo='lf_lantern', tx=7, ty=11, dir='up', unlockFlag='ch1_named', lockedText='The Lantern is sealed until the Kindling.')

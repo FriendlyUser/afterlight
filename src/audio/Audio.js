@@ -409,6 +409,7 @@ const SFX = {
   rumble: (a, t) => a.noise(t, 0.8, { freq: 120, type: 'lowpass', vol: 0.5 }),
   step_exit: (a, t) => a.noise(t, 0.15, { freq: 600, vol: 0.12 }),
   door: (a, t) => { a.noise(t, 0.2, { freq: 300, vol: 0.2 }); a.tone(t, 120, 0.15, { type: 'sine', vol: 0.15 }); },
+  door_close: (a, t) => { a.noise(t, 0.1, { freq: 240, vol: 0.14 }); a.tone(t + 0.04, 95, 0.12, { type: 'sine', vol: 0.16 }); },
   encounter: (a, t) => { a.noise(t, 0.5, { freq: 800, sweep: 6, vol: 0.2 }); [0, 3, 6, 9].forEach((s, i) => a.tone(t + i * 0.05, 440 * 2 ** (s / 12), 0.15, { type: 'sawtooth', vol: 0.05, filter: 3000 })); },
   slash: (a, t) => a.noise(t, 0.16, { freq: 3500, sweep: 0.3, vol: 0.3, q: 2 }),
   hit: (a, t) => { a.noise(t, 0.08, { freq: 1500, vol: 0.3 }); a.tone(t, 200, 0.08, { type: 'sine', vol: 0.2, slide: 0.5 }); },

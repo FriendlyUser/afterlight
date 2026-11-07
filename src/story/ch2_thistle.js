@@ -163,7 +163,7 @@ export const THISTLE = {
     s.vars.c2_scare = done + 1;
     s.setFlag(`c2_scare_${n}`);
     if (n === 3) await s.say('Sable', 'There was a voice in the straw. Very small. It said "shoo." Over and over. "Shoo."');
-    if (s.vars.c2_scare >= 3) s.objective('Tell Farmer Dunstan his fields are safe.', true);
+    if (s.vars.c2_scare >= 3) s.quest('c2_scarecrows', null, 'All three scarecrows are down. Tell Farmer Dunstan his fields are safe.'); // side quest, not the main objective
   },
 
   async farmerReward(s) {

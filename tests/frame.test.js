@@ -1,7 +1,8 @@
 // Frame grabber (not a story test): enter a map, optionally start a battle, wait,
 // then draw one frame and put it in the DOM for tools/frame.sh to save. Headless
 // screenshots can't see the WebGL canvas mid-battle; reading it right after a
-// render can. URL params: map, x, y, dir, party=a,b, lv, flags=a,b, battle, bg, wait.
+// render can. URL params: map, x, y, dir, party=a,b, lv, flags=a,b, battle, bg, wait,
+// door=x,y,open,playerZ,fade (pose a door and the player in its doorway).
 import { FieldScene } from '../src/world/FieldScene.js';
 
 export async function run(game, h) {
@@ -18,6 +19,16 @@ export async function run(game, h) {
   game.fadeIn(0.1);
   if (p.get('battle')) field.runScript((s) => s.battle(p.get('battle'), { bg: p.get('bg') || undefined }));
   await h.wait(+(p.get('wait') || 4));
+  if (p.get('door')) {
+    const [dx, dy, open, z, fade] = p.get('door').split(',').map(Number);
+    game.scene.built.doors.get(`${dx},${dy}`)?.setOpen(open);
+    const pl = game.scene.player;
+    pl.x = dx + 0.5;
+    pl.z = z;
+    pl.setFade(fade);
+    pl.setInDoorway(z < dy + 1.3);
+    pl.syncMesh();
+  }
   game.scene.render(game.time);
   const c = document.createElement('canvas');
   c.width = game.canvas.width;

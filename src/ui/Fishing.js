@@ -2,6 +2,7 @@
 // inside the catch zone three times before the line snaps (three misses).
 
 import { el } from './UI.js';
+import { keyCap } from '../core/Input.js';
 import { FISH, rollFish } from '../data/fish.js';
 
 export function playFishing(game, region) {
@@ -15,7 +16,7 @@ export function playFishing(game, region) {
     const box = el('div', 'panel fishing');
     box.innerHTML = `<div class="fs-title">Fishing</div><div class="fs-msg">Waiting for a bite...</div>
       <div class="fs-bar"><div class="fs-zone"></div><div class="fs-mark"></div></div>
-      <div class="fs-pips"></div><div class="fs-hint"><span class="key">Z</span> Reel · <span class="key">X</span> Give up</div>`;
+      <div class="fs-pips"></div><div class="fs-hint">${keyCap('confirm')} Reel · ${keyCap('cancel')} Give up</div>`;
     const msg = box.querySelector('.fs-msg');
     const zoneEl = box.querySelector('.fs-zone');
     const mark = box.querySelector('.fs-mark');

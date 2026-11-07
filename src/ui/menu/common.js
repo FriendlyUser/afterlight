@@ -2,6 +2,7 @@
 // small renderers (party cards, bars, stat diffs).
 
 import { el } from '../UI.js';
+import { keyCap } from '../../core/Input.js';
 import { getPortrait } from '../../render/SpriteFactory.js';
 import { CRESTS } from '../../data/crests.js';
 import { expToNext } from '../../state/Character.js';
@@ -124,9 +125,10 @@ export function header(title, hint = '') {
   return `<div class="ms-header"><div class="ms-title">${title}</div><div class="ms-hint">${hint}</div></div>`;
 }
 
+/** Key hints for menu headers, built from the player's current key bindings. */
 export const KEYS = {
-  nav: '<span class="key">↑↓</span> Select',
-  ok: '<span class="key">Z</span> Confirm',
-  back: '<span class="key">X</span> Back',
-  swap: '<span class="key">Q</span><span class="key">E</span> Character',
+  get nav() { return `${keyCap('up')}${keyCap('down')} Select`; },
+  get ok() { return `${keyCap('confirm')} Confirm`; },
+  get back() { return `${keyCap('cancel')} Back`; },
+  get swap() { return `${keyCap('pageLeft')}${keyCap('pageRight')} Character`; },
 };

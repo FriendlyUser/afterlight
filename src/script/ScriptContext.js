@@ -194,13 +194,15 @@ export class ScriptContext {
 
   /**
    * Track a side quest in the Journal: s.quest('c2_lost_net', 'The Lost Net', 'Find...')
-   * then s.quest('c2_lost_net', null, null, 'done') when finished.
+   * then s.quest('c2_lost_net', null, null, 'done') when finished. Calling it again
+   * while active updates the description ("Quest updated").
    */
   quest(id, title, desc, status = 'active') {
     const q = (this.state.vars.quests = this.state.vars.quests || {});
-    const prev = q[id] || {};
-    q[id] = { id, title: title || prev.title || id, desc: desc ?? prev.desc ?? '', status };
-    this.ui.toast(`<span class="hl">${status === 'done' ? 'Quest complete' : 'New quest'}</span> — ${q[id].title}`, 2800);
+    const prev = q[id];
+    q[id] = { id, title: title || prev?.title || id, desc: desc ?? prev?.desc ?? '', status };
+    const label = status === 'done' ? 'Quest complete' : prev ? 'Quest updated' : 'New quest';
+    this.ui.toast(`<span class="hl">${label}</span> — ${q[id].title}`, 2800);
   }
 
   /** Append a line to the story-so-far journal. */

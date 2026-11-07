@@ -35,7 +35,7 @@ export default {
       talk: (s) => s.say('Old Sailor', s.flag('p_cassian_arrived') ? ['That white ship\'s got sails like an angel\'s wings. Never seen the like.', 'Nor such a quiet crew.'] : ['Tide\'s out further than I\'ve ever seen. You can walk to the eel rocks.', 'The sea\'s waiting for something.']) },
     { id: 'lookout', name: 'Gull-Watcher', look: 'villager_31', x: 24, y: 31, dir: 'down', cond: (st) => day(st) && !st.flags.p_cassian_arrived,
       talk: ['Any minute now! The Hierophant\'s ship! I\'ve been here since dawn.', 'If you see white sails, scream. I will too. We\'ll scream together.'] },
-    { id: 'fisherwife', name: 'Maela', look: 'villager_36', x: 39, y: 19, wander: 2, cond: day,
+    { id: 'fisherwife', name: 'Maela', look: 'villager_36', x: 41, y: 19, wander: 2, cond: day,
       talk: ['Tobias says the net\'s with Brisa. Tobias says a lot of things.', 'Good luck tomorrow, love. Whatever the light says, you\'re still our Wren.'] },
     { id: 'ilse_dock', name: 'Ilse', look: 'ilse', x: 24, y: 27, dir: 'down', cond: (st) => st.flags.ch1_ready && !st.flags.ch1_departed && false, talk: ['...'] },
   ],

@@ -4,8 +4,7 @@ import { el } from '../UI.js';
 import { Screen, ListView, partyCard, header, KEYS } from './common.js';
 import { formatTime } from '../../core/util.js';
 import { ACTIVE_PARTY_SIZE } from '../../state/GameState.js';
-import { WORLD_NODES } from '../../data/worldmap.js';
-import { nodeUnlocked } from '../../world/WorldMapScene.js';
+import { openNodes } from '../../data/worldmap.js';
 
 const COMMANDS = [
   { id: 'items', label: 'Items', icon: '⚗' },
@@ -43,8 +42,7 @@ export class MainMenu extends Screen {
   /** Fast travel needs an unlocked destination and a map that allows it (not dungeons). */
   canTravel() {
     if (!this.field || this.field.map.noTravel || this.state.flags.noTravel) return false;
-    const act = this.state.flags.sundered ? 2 : 1;
-    return WORLD_NODES.some((n) => (n.act || 1) === act && nodeUnlocked(n, this.state));
+    return openNodes(this.state).length > 0;
   }
 
   build() {

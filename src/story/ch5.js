@@ -211,7 +211,8 @@ export const CH5 = {
     s.face('nana', 'down');
     removeParty(s);
     s.quest('c5_tea', 'Kindling Tea', 'Nana Brisa wants one sprig of sea lavender for her Kindling tea — the brew the Halloways drank before every hard thing. It grows in the tide-cave pools. Or in Ysolde\'s garden, if it ever flowered.');
-    s.objective('Find a way up to the Lantern. (Optional: bring Nana Brisa a sprig of sea lavender.)');
+    // Visiting Nana after the soldiers turned the party back mustn't rewind the objective.
+    if (!s.flag('c5_soldiers')) s.objective('Find a way up to the Lantern. (Optional: bring Nana Brisa a sprig of sea lavender.)');
   },
 
   async garden(s) {

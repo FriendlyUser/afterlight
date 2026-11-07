@@ -169,6 +169,28 @@ export class Actor {
     });
   }
 
+  /**
+   * Fade into shadow (k: 0 = normal, 1 = gone), e.g. stepping through a dark doorway.
+   * The sprite normally uses a hard alpha cutoff; while fading it blends instead.
+   */
+  setFade(k) {
+    const m = this.material;
+    m.color.setScalar(1 - 0.7 * k);
+    m.opacity = 1 - k;
+    m.transparent = k > 0;
+    m.alphaTest = k > 0 ? 0.02 : 0.5;
+    this.shadow.material.opacity = 1 - k;
+  }
+
+  /**
+   * Passing through a doorway: draw over the wall, whose plane would otherwise
+   * slice the (backward-leaning) sprite as it steps through.
+   */
+  setInDoorway(on) {
+    this.material.depthTest = !on;
+    this.mesh.renderOrder = on ? 5 : 0;
+  }
+
   /** Small hop (emotes, surprise). */
   hop(game, height = 0.35, duration = 0.28) {
     return game.tween(duration, (t) => { this.bobOffset = Math.sin(t * Math.PI) * height; this.syncMesh(); });

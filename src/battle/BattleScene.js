@@ -3,6 +3,7 @@
 // popups, breaks, KOs) before returning the outcome to the field.
 
 import * as THREE from 'three';
+import { keyCap } from '../core/Input.js';
 import { autoAction } from './AutoPlay.js';
 import { BattleSystem } from './BattleSystem.js';
 import { BattleUI, ELEM_ICONS } from './BattleUI.js';
@@ -87,7 +88,7 @@ export class BattleScene {
     this.autoToggle = false;
     this.autoEl = el('div', 'b-auto', 'AUTO');
     this.ui.root.appendChild(this.autoEl);
-    this.ui.root.appendChild(el('div', 'b-keys', '<span class="key">F</span> Auto'));
+    this.ui.root.appendChild(el('div', 'b-keys', `${keyCap('info')} Auto`));
     game.timeScale = [1, 1.5, 2][game.state.settings.battleSpeed || 0];
     this.run().catch((e) => { console.error(e); this.finish('win'); });
   }

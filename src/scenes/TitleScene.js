@@ -1,6 +1,7 @@
 // Title screen: Lanternfall at dusk behind the logo; New Game / Continue / Load.
 
 import * as THREE from 'three';
+import { keysFor } from '../core/Input.js';
 import { buildMap, windUniform } from '../world/MapBuilder.js';
 import { applyMood } from '../render/Moods.js';
 import { ParticleSystem } from '../render/Particles.js';
@@ -43,7 +44,7 @@ export class TitleScene {
     this.root.innerHTML = `
       <div class="ts-logo"><div class="ts-pre">A coming-of-age at the end of the world</div><div class="ts-name">AFTERLIGHT</div><div class="ts-rule"></div></div>
       <div class="ts-menu"></div>
-      <div class="ts-foot">Arrow keys / WASD to move · Z / Enter to confirm · X / Esc to cancel · C to open the menu</div>`;
+      <div class="ts-foot">${keysFor('up').join(' / ')} and the other arrows to move · ${keysFor('confirm').slice(0, 2).join(' / ')} to confirm · ${[...keysFor('cancel').slice(0, 1), 'Esc'].join(' / ')} to cancel · ${keysFor('menu')[0] ?? 'Esc'} for the menu · remap in Settings → Controls</div>`;
     game.ui.layers.hud.appendChild(this.root);
     this.menuEl = this.root.querySelector('.ts-menu');
     this.hasSave = SaveStore.latestSlot() !== -1;

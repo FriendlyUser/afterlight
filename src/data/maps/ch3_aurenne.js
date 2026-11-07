@@ -104,7 +104,7 @@ const npcs = [
         await s.say('Master Tobin', '...Is it Tuesday?');
       }
     } },
-  { id: 'aubert', name: 'Madame Aubert', look: 'villager_19', x: 44, y: 23, dir: 'down',
+  { id: 'aubert', name: 'Madame Aubert', look: 'villager_19', x: 44, y: 24, dir: 'down',
     talk: phased('Madame Aubert', {
       before: ['Did you hear? The Hierophant has taken a Page. Some girl from the islands. _Fishing_ people.', 'Can you imagine? Smelling of mackerel, in the Cathedral.'],
       after: ['I always said that Mercy woman smiled too much.', 'I never said it _out loud_, you understand. But I always said it.'],
@@ -176,7 +176,7 @@ export default {
       await s.narrate('A straw training dummy in a Dawnguard tabard. Someone has drawn a face on it. The face looks a great deal like Lord-Commander Garrick Thorne.');
       if (bramIn(s)) await s.say('Bram', '...That\'s been there since my year. I didn\'t draw it. I would like that on the record.');
     } },
-    { x: 26, y: 29, text: 'Scratched into the drain-house wall at child height: four crowns, and under them, GUTTER CORT. One crown is fresh.' },
+    { x: 26, y: 30, text: 'Scratched into the drain-house wall at child height: four crowns, and under them, GUTTER CORT. One crown is fresh.' },
     { x: 13, y: 39, text: 'The river Aure, low and brown. A gull stands on a sandbar in the middle of it, looking personally betrayed.' },
   ],
   blockers: [

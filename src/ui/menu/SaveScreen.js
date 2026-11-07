@@ -2,6 +2,7 @@
 // can be backed up or moved between browsers, computers and the hosted game.
 
 import { el } from '../UI.js';
+import { keyCap } from '../../core/Input.js';
 import { Screen, ListView, header, KEYS } from './common.js';
 import { SaveStore, SAVE_SLOTS, AUTO_SLOT } from '../../state/GameState.js';
 import { formatTime } from '../../core/util.js';
@@ -18,7 +19,7 @@ export class SaveScreen extends Screen {
   }
 
   build() {
-    this.el.innerHTML = header(this.mode === 'save' ? 'Save Game' : 'Load Game', `${KEYS.nav} ${KEYS.ok} <span class="key">F</span> Export / Import ${KEYS.back}`);
+    this.el.innerHTML = header(this.mode === 'save' ? 'Save Game' : 'Load Game', `${KEYS.nav} ${KEYS.ok} ${keyCap('info')} Export / Import ${KEYS.back}`);
     const items = SaveStore.summaries().map((s, i) => ({ slot: i, s, label: String(i + 1), disabled: this.mode === 'load' && !s }));
     if (this.mode === 'load') {
       const auto = SaveStore.read(AUTO_SLOT)?.summary || null;

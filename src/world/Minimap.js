@@ -1,6 +1,7 @@
 // Field minimap: the current map's floor plan, drawn once per scene into an
 // offscreen canvas (floor, water, raised ground, exits, Hearthstones, doors),
-// then blitted each frame with the party's position and facing. Hidden during
+// then blitted each frame with the party's position and facing, and the quest
+// markers (gold diamonds). Hidden during
 // scripted scenes, on single-room maps, and when the player turns it off in Settings.
 
 import { el } from '../ui/UI.js';
@@ -66,7 +67,8 @@ export class Minimap {
     this.el.style.display = show ? '' : 'none';
     if (!show) return;
     const p = f.player;
-    const key = `${p.x.toFixed(1)},${p.z.toFixed(1)},${p.dir}`;
+    const quest = f.quest?.group.visible ? f.quest.spots : [];
+    const key = `${p.x.toFixed(1)},${p.z.toFixed(1)},${p.dir}|${quest.map((q) => `${q.x.toFixed(1)},${q.z.toFixed(1)}`).join(';')}`;
     if (key === this.last) return; // redraw only when the party moved
     this.last = key;
     const k = this.scale, c = this.ctx;
@@ -74,6 +76,7 @@ export class Minimap {
     c.drawImage(this.base, 0, 0);
     const px = p.x * k, py = p.z * k, r = Math.max(4, k * 1.4);
     const [dx, dy] = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }[p.dir] || [0, 1];
+    for (const q of quest) this.drawQuest(q.x * k, q.z * k, Math.max(4, k * 1.5));
     c.fillStyle = 'rgba(255, 250, 235, 0.45)'; // halo so the marker reads on any floor
     c.beginPath();
     c.arc(px, py, r * 1.9, 0, Math.PI * 2);
@@ -85,6 +88,22 @@ export class Minimap {
     c.moveTo(px + dx * r * 1.6, py + dy * r * 1.6); // arrow tip in the facing direction
     c.lineTo(px - dy * r - dx * r * 0.6, py + dx * r - dy * r * 0.6);
     c.lineTo(px + dy * r - dx * r * 0.6, py - dx * r - dy * r * 0.6);
+    c.closePath();
+    c.fill();
+    c.stroke();
+  }
+
+  /** A quest marker: a gold diamond. */
+  drawQuest(x, y, r) {
+    const c = this.ctx;
+    c.fillStyle = '#ffd36a';
+    c.strokeStyle = '#3a2408';
+    c.lineWidth = 1.5;
+    c.beginPath();
+    c.moveTo(x, y - r * 1.3);
+    c.lineTo(x + r, y);
+    c.lineTo(x, y + r * 1.3);
+    c.lineTo(x - r, y);
     c.closePath();
     c.fill();
     c.stroke();

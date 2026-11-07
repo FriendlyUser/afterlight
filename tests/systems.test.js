@@ -48,6 +48,23 @@ export async function run(game, h) {
       && GameState.deserialize(SaveStore.read(4).data).gold === 4321, 'bad save files are refused and the slot is untouched');
     SaveStore.remove(3);
     h.expect(SaveStore.exportFile(3) === null, 'empty slots export nothing');
+    // Key bindings travel with the save: save → export → import → load
+    st.settings.keys = { ...game.input.bindings, confirm: ['KeyL', 'Enter'], fast: [] };
+    SaveStore.write(3, st);
+    SaveStore.remove(2);
+    SaveStore.importFile(2, SaveStore.exportFile(3));
+    const loaded = GameState.deserialize(SaveStore.read(2).data);
+    game.applySettings(loaded.settings);
+    h.expect(loaded.settings.keys.confirm[0] === 'KeyL' && game.input.bindings.confirm[0] === 'KeyL' && game.input.bindings.fast.length === 0,
+      'key bindings are saved, exported, imported and applied on load');
+    // A save with broken bindings is repaired, not trusted
+    game.applySettings({ ...loaded.settings, keys: { confirm: [], up: ['Escape', 42], cancel: 'nonsense' } });
+    h.expect(game.input.bindings.confirm.includes('KeyZ') && game.input.bindings.up.includes('ArrowUp') && game.input.bindings.cancel.includes('KeyX'),
+      'broken bindings fall back to defaults');
+    st.settings.keys = null;
+    game.applySettings(st.settings);
+    SaveStore.remove(2);
+    SaveStore.remove(3);
     SaveStore.remove(4);
   }
   SaveStore.remove(5);

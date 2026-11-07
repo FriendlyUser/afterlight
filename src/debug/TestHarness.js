@@ -4,6 +4,7 @@
 
 import { FieldScene } from '../world/FieldScene.js';
 import { startNewGame } from '../story/newGame.js';
+import { ScriptContext } from '../script/ScriptContext.js';
 
 export async function runTest(game, name) {
   game.autoBattle = true;
@@ -63,10 +64,24 @@ export async function runTest(game, name) {
   // ?testdiff=1 runs them on Normal instead.
   const diff = new URLSearchParams(location.search).get('testdiff');
   game.state.settings.difficulty = diff === null ? 0 : Number(diff);
+  // Objectives the story set during this run whose marker found no open way there
+  // (see QuestMarkers): reported, not fatal. Ones a test inherited by jumping ahead
+  // in the story are ignored.
+  const questMisses = new Set();
+  const setObjectives = new Set();
+  const objective = ScriptContext.prototype.objective;
+  ScriptContext.prototype.objective = function (text, ...rest) { setObjectives.add(text); return objective.call(this, text, ...rest); };
+  const warn = console.warn.bind(console);
+  console.warn = (...args) => {
+    const m = String(args[0]).match(/^Quest guide: .* for "(.*)"$/);
+    if (m && setObjectives.has(m[1])) questMisses.add(m[0]);
+    warn(...args);
+  };
   try {
     const mod = await import(`../../tests/${name}.test.js`);
     log(`start ${name}`);
     await mod.run(game, h);
+    if (questMisses.size) { log(`quest-guide misses ${questMisses.size}`); console.error([...questMisses].join('\n')); }
     log('PASS');
   } catch (e) {
     console.error(e);

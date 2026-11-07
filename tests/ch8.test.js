@@ -1,13 +1,26 @@
 // Smoke test: Chapter 8 "Children of the Wreck" main story, Kiteholm → the Vigil → the raid → the kite.
 import { FieldScene } from '../src/world/FieldScene.js';
 import { MAPS } from '../src/data/maps/index.js';
+import { kitCharacter } from './party_kit.js';
+
+// Act II tier-6 kit (as in c78_balance): Wren's blade and Ilse's staff are in the
+// Undercroft (ch7), Pip's fang in the Underhang chest on the way to the Vigil.
+// With starter gear and rank-1 Crests the party can't out-damage the Lullaby
+// Engine's wisps (~45 a hit against a ~500 Mend) and the fight never ends.
+const KIT = {
+  wren: { weapon: 'ashen_blade', body: 'ashen_armor', head: 'ashen_helm' },
+  ilse: { weapon: 'ashen_staff', body: 'ashen_robe', head: 'ashen_veil' },
+  pip: { weapon: 'ashen_fang', body: 'ashen_coat', head: 'ashen_hood' },
+  bram: { weapon: 'starsteel_sword', offhand: 'ashen_bulwark', body: 'ashen_armor', head: 'ashen_helm' },
+};
 
 export async function run(game, h) {
   const st = game.state;
   const lv = Number(new URLSearchParams(location.search).get('lv')) || 52;
-  // State at the end of Chapter 7: Wren and Ilse.
-  for (const id of ['wren', 'ilse']) st.joinParty(id).setLevel(lv);
-  for (const id of ['pip', 'bram']) st.addCharacter(id).setLevel(lv);
+  // State at the end of Chapter 7: Wren and Ilse, with a plausible build (tests/party_kit.js).
+  const fit = (ch) => { ch.setLevel(lv); kitCharacter(ch, lv); Object.assign(ch.equipment, KIT[ch.id]); ch.fullHeal(); };
+  for (const id of ['wren', 'ilse']) fit(st.joinParty(id));
+  for (const id of ['pip', 'bram']) fit(st.addCharacter(id));
   st.characters.wren.lookId = 'wren_ruin';
   st.characters.ilse.lookId = 'ilse_ruin';
   Object.assign(st.flags, { kindled: true, crestArtLearned: true, sundered: true, c7_done: true });

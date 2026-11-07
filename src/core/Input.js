@@ -1,18 +1,90 @@
 // Keyboard + gamepad input mapped to abstract actions.
 // pressed(a): edge this frame. down(a): held. repeat(a): edge + auto-repeat (menus).
+// Keyboard bindings are remappable (Settings → Controls) and stored in settings.keys,
+// so they travel with save files; the gamepad uses the standard layout below.
 
-const KEYS = {
-  ArrowUp: ['up'], KeyW: ['up'],
-  ArrowDown: ['down'], KeyS: ['down'],
-  ArrowLeft: ['left'], KeyA: ['left'],
-  ArrowRight: ['right'], KeyD: ['right'],
-  KeyZ: ['confirm'], Enter: ['confirm'], Space: ['confirm'], KeyJ: ['confirm'],
-  KeyX: ['cancel'], Backspace: ['cancel'], KeyK: ['cancel'],
-  Escape: ['cancel', 'menu'], KeyC: ['menu'], Tab: ['menu'],
-  ShiftLeft: ['run'], ShiftRight: ['run'],
-  KeyQ: ['pageLeft'], KeyE: ['pageRight'],
-  KeyF: ['info'], KeyM: ['map'], KeyT: ['fast'],
+/** Remappable actions, in the order the Controls screen lists them. */
+export const ACTIONS = [
+  { id: 'up', label: 'Move up' },
+  { id: 'down', label: 'Move down' },
+  { id: 'left', label: 'Move left' },
+  { id: 'right', label: 'Move right' },
+  { id: 'confirm', label: 'Confirm · talk' },
+  { id: 'cancel', label: 'Cancel · back' },
+  { id: 'menu', label: 'Open menu' },
+  { id: 'run', label: 'Run (hold)' },
+  { id: 'pageLeft', label: 'Previous · Surge down' },
+  { id: 'pageRight', label: 'Next · Surge up' },
+  { id: 'info', label: 'Auto-battle · optimize · export' },
+  { id: 'fast', label: 'Fast Mode' },
+];
+
+export const MAX_KEYS_PER_ACTION = 3;
+
+export const DEFAULT_BINDINGS = {
+  up: ['ArrowUp', 'KeyW'],
+  down: ['ArrowDown', 'KeyS'],
+  left: ['ArrowLeft', 'KeyA'],
+  right: ['ArrowRight', 'KeyD'],
+  confirm: ['KeyZ', 'Enter', 'Space'],
+  cancel: ['KeyX', 'Backspace'],
+  menu: ['KeyC', 'Tab'],
+  run: ['ShiftLeft', 'ShiftRight'],
+  pageLeft: ['KeyQ'],
+  pageRight: ['KeyE'],
+  info: ['KeyF'],
+  fast: ['KeyT'],
 };
+
+/** Escape always cancels and opens the menu, whatever else is bound, so no remap can lock a player out. */
+const FIXED_KEYS = { Escape: ['cancel', 'menu'] };
+
+/** Actions that must always keep at least one key. */
+export const ESSENTIAL = new Set(['up', 'down', 'left', 'right', 'confirm']);
+
+/** Keys browsers keep for themselves or that make poor game keys; never bound. */
+const RESERVED = new Set(['Escape', 'Delete', 'MetaLeft', 'MetaRight', 'ContextMenu', 'F5', 'F11', 'F12']);
+
+/** Key codes we accept in a binding: letters, digits, arrows, numpad, named keys. */
+export const bindableKey = (code) => typeof code === 'string' && /^[A-Za-z0-9]{1,24}$/.test(code) && !RESERVED.has(code);
+
+/**
+ * A complete, valid bindings object from anything (settings from an old or edited
+ * save): unknown actions dropped, bad codes removed, missing actions defaulted.
+ */
+export function normalizeBindings(raw) {
+  const out = {};
+  for (const { id } of ACTIONS) {
+    const keys = Array.isArray(raw?.[id]) ? [...new Set(raw[id].filter(bindableKey))].slice(0, MAX_KEYS_PER_ACTION) : null;
+    out[id] = keys && (keys.length || !ESSENTIAL.has(id)) ? keys : [...DEFAULT_BINDINGS[id]];
+  }
+  return out;
+}
+
+const KEY_NAMES = {
+  ArrowUp: '↑', ArrowDown: '↓', ArrowLeft: '←', ArrowRight: '→', Space: 'Space', Enter: 'Enter',
+  Backspace: 'Bksp', Tab: 'Tab', Escape: 'Esc', ShiftLeft: 'L-Shift', ShiftRight: 'R-Shift',
+  ControlLeft: 'L-Ctrl', ControlRight: 'R-Ctrl', AltLeft: 'L-Alt', AltRight: 'R-Alt', CapsLock: 'Caps',
+  Backquote: '`', Minus: '-', Equal: '=', BracketLeft: '[', BracketRight: ']', Backslash: '\\',
+  Semicolon: ';', Quote: "'", Comma: ',', Period: '.', Slash: '/', PageUp: 'PgUp', PageDown: 'PgDn',
+};
+
+/** Short display name for a key code: KeyZ → Z, Digit1 → 1, Numpad4 → Num 4, ArrowUp → ↑. */
+export function keyName(code) {
+  if (KEY_NAMES[code]) return KEY_NAMES[code];
+  if (/^Key[A-Z]$/.test(code)) return code.slice(3);
+  if (/^Digit\d$/.test(code)) return code.slice(5);
+  if (code.startsWith('Numpad')) return `Num ${code.slice(6)}`;
+  return code;
+}
+
+let active = normalizeBindings(DEFAULT_BINDINGS);
+
+/** The keys currently bound to an action (display names), for on-screen hints. */
+export function keysFor(action) { return active[action].map(keyName); }
+
+/** Hint markup for an action's first key, e.g. <span class="key">Z</span>. */
+export function keyCap(action) { return `<span class="key">${keysFor(action)[0] ?? '?'}</span>`; }
 
 const PAD_BUTTONS = { 0: 'confirm', 1: 'cancel', 2: 'run', 3: 'menu', 9: 'menu', 4: 'pageLeft', 5: 'pageRight', 12: 'up', 13: 'down', 14: 'left', 15: 'right', 8: 'info', 10: 'fast' };
 
@@ -29,8 +101,17 @@ export class Input {
     this.listeners = [];
     this.lastDevice = 'keyboard';
 
+    this.setBindings(DEFAULT_BINDINGS);
     window.addEventListener('keydown', (e) => {
-      const acts = KEYS[e.code];
+      if (this.capture && !e.repeat) {
+        // Controls screen is waiting for a key: hand it over instead of acting on it.
+        e.preventDefault();
+        const done = this.capture;
+        this.capture = null;
+        done(e.code);
+        return;
+      }
+      const acts = this.keymap[e.code];
       if (!acts) return;
       if (['Tab', 'Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Backspace'].includes(e.code)) e.preventDefault();
       if (e.repeat) return;
@@ -39,12 +120,27 @@ export class Input {
       this.listeners.forEach((fn) => fn());
     });
     window.addEventListener('keyup', (e) => {
-      const acts = KEYS[e.code];
+      const acts = this.keymap[e.code];
       if (!acts) return;
       for (const a of acts) this.held.delete(a);
     });
     window.addEventListener('blur', () => this.held.clear());
   }
+
+  /** Use these keyboard bindings ({ action: [codes] }; invalid parts are repaired). */
+  setBindings(bindings) {
+    active = normalizeBindings(bindings);
+    this.keymap = {};
+    for (const [action, codes] of Object.entries(active)) for (const code of codes) (this.keymap[code] ||= []).push(action);
+    for (const [code, actions] of Object.entries(FIXED_KEYS)) this.keymap[code] = [...new Set([...(this.keymap[code] || []), ...actions])];
+    this.held.clear();
+  }
+
+  /** The current bindings (a copy). */
+  get bindings() { return normalizeBindings(active); }
+
+  /** Deliver the next key press to `fn(code)` instead of the game (key remapping). */
+  captureKey(fn) { this.capture = fn; }
 
   /** Called once per frame before game logic. */
   update(dt) {

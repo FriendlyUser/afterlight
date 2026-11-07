@@ -851,7 +851,7 @@ export const CH7 = {
     const r = await s.battle('c7_boss_clapper', { bg: 'undercroft' });
     if (r !== 'win') return;
     s.setFlag('c7_clapper_dead');
-    s.objective('Old Clapper is slain. Tell Sorrel at the gate.', true);
+    s.quest('c7_q_bounty', 'Old Clapper', 'Old Clapper is slain. Tell Sorrel at the gate.'); // a side quest: leave the main objective alone
     await s.narrate('Old Clapper rolls over in the water with one last, muffled _bong_.');
   },
 };

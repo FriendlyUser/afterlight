@@ -252,7 +252,6 @@ export const C12 = {
     await s.say('Squire Venn', 'Only I\'ve lost my token. Mum gave it me. For luck. I had it by the fountain, and now...');
     await s.say('Bram', 'We\'ll find it. I— we\'ll find it. Squire.');
     s.quest('c12_q_aldous', 'The First Watch', 'Young Squire Aldous Venn lost his mother\'s tin sun token near the festival fountain (south plaza). Find it for him.');
-    s.objective('Optional: find Squire Venn\'s token by the fountain in the south plaza.', true);
   },
 
   async fountain(s) {
