@@ -447,6 +447,12 @@ const SFX = {
   ko: (a, t) => a.tone(t, 330, 0.5, { type: 'triangle', vol: 0.1, slide: 0.3 }),
   enemyDie: (a, t) => { a.noise(t, 0.5, { freq: 3000, sweep: 0.2, vol: 0.2 }); a.tone(t, 600, 0.4, { type: 'square', vol: 0.04, slide: 0.2, filter: 2000 }); },
   windup: (a, t) => { a.tone(t, 98, 0.9, { type: 'sawtooth', vol: 0.08, slide: 2.5, filter: 900 }); a.noise(t, 0.9, { freq: 180, sweep: 6, vol: 0.12 }); },
+  // A chapter begins: a low struck bell under a soft rising shimmer.
+  chapter: (a, t) => {
+    a.tone(t, 131, 3.2, { type: 'sine', vol: 0.09 });
+    a.tone(t, 262, 2.4, { type: 'sine', vol: 0.04 });
+    [0, 7, 12, 16].forEach((s, i) => a.tone(t + 0.35 + i * 0.11, 523 * 2 ** (s / 12), 1.6, { type: 'sine', vol: 0.025 }));
+  },
   // Kindle answers: a low, rising belling call over a warm chime (the Emberhart's ember-light).
   hart: (a, t) => {
     a.tone(t, 196, 0.5, { type: 'triangle', vol: 0.07, slide: 1.5 });

@@ -278,6 +278,14 @@ done directly this session:
   the party waits while it's open. After a victory, a **Level Up!** panel shows a card
   for each member who levelled: old → new level, every stat's gain, and new Support Points.
   Tests: `side_quests` (data), `side_markers` (in play), `levelup`.
+- **Chapter transitions.** Every title card now shows the place and time the chapter
+  opens on (`story/chapters.js`, e.g. "The Drift · One year later"), with a soft chime, and
+  fades the last scene's music so each chapter's theme starts fresh. The prologue now
+  closes on the beach (the storm blowing out, "Happy birthday" past midnight) and Chapter 1
+  opens outside Wren's door on Kindling morning with a pan to the Lantern and a short
+  narration (`CH1.morning`), before you walk into Nana's for Sable's naming. Port Gale's
+  arrival pans up the harbour first. Fixed: Chapter 11's card played twice (end of
+  Chapter 10 and again aboard the Halcyon); it now plays once, after the Halcyon's opening.
 - **Chapter 1 evening, reworked.** After the Kindling ("Everyone — home. Now.") Wren is
   sent home at dusk with "rest in your bed" (marker on the bed) instead of being dropped
   outside the Lantern with a hint to come back. Resting (`CH1.restEvening`): she can't

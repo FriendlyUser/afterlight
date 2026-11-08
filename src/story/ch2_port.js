@@ -29,6 +29,13 @@ export const PORT = {
     s.spawn('tobias_pg', 'tobias', 10, 24, 'up');
     s.place('player', 10, 20, 'up');
     await s.wait(0.6);
+    // The mainland: a look up the harbour into town before anyone speaks.
+    await s.pan(26, 12, 2.4);
+    await s.narrate([
+      'Port Gale. More people on one street than live on all of Lanternfall.',
+      'Masts stand in the harbour like a winter forest, gulls argue on every roof, and somewhere a bell is ringing for something nobody here has time to stop for.',
+    ]);
+    await s.follow(1.4);
     await s.say('Bram', 'Solid ground. Blessed, unmoving, non-serpent-infested ground.');
     await s.say('Ilse', 'You can let go of the rail now, Bram.');
     await s.say('Bram', 'I am *saluting* the rail. It served with honor.');

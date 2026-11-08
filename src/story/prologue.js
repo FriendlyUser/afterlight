@@ -327,6 +327,14 @@ export const PRO = {
     await s.say('Ilse', 'She\'s fainted. Nana\'s is closest. Bram — carry her.');
     await s.say('Bram', 'Carrying. Yes. Very knightly. I am good at carrying.');
     s.remove('girl');
+    // The night winds down before the chapter turns.
+    await s.narrate([
+      'They carry her up the beach between them. Behind them the storm is already blowing itself out, grumbling away east over the strait.',
+      'Out past the black rocks the sea goes flat and quiet, as if nothing had ever come out of it at all.',
+    ]);
+    await s.say('Ilse', 'It\'s past midnight, Wren. Happy birthday.');
+    await s.say('Wren', '...In twelve hours I stand in the Lantern\'s light.');
+    await s.say('Wren', 'I don\'t think I\'m going to sleep.');
     await s.fadeOut(1.5);
     s.setFlag('ch1_morning');
     s.setFlag('lfNight', false);
@@ -334,6 +342,6 @@ export const PRO = {
     await s.chapter(1, 'The Kindling');
     s.journal('We fought shadow-dogs on the black rocks, and something that came out of the sea. Bram helped (he says he saved us). The girl from the storm said: "Don\'t let him find me."');
     s.objective('Check on the girl at Nana Brisa\'s house.');
-    await s.teleport('lf_nana_house', 4, 6, 'up');
+    await s.teleport('lanternfall', 16, 12, 'down', { faded: true }); // out of her own front door, the morning of the Kindling
   },
 };

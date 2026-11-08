@@ -23,6 +23,8 @@ export async function run(game, h) {
   await h.stepOn(38, 24);
   h.expect(h.flags().p_storm_done, 'storm battle won');
   await h.idle();
+  h.expect(game.scene.mapId === 'lanternfall' && h.flags().ch1_sunrise && game.state.chapter === 1, 'Chapter 1 opens on Kindling morning in the village');
+  await h.goto('lf_nana_house', 4, 6, 'up');
   h.expect(h.flags().ch1_named, 'Sable named');
   await h.goto('lanternfall', 8, 6);
   await h.goto('lf_lantern', 7, 11, 'up');

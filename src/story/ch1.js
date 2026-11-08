@@ -3,6 +3,23 @@
 
 /** @type {import('../types/data').StoryScripts} */
 export const CH1 = {
+  /** Kindling morning: out of the front door, a look at the island dressed for the ceremony. */
+  async morning(s) {
+    if (!s.flag('ch1_morning') || s.flag('ch1_named') || s.flag('ch1_sunrise')) return;
+    s.setFlag('ch1_sunrise');
+    s.music('lanternfall');
+    await s.wait(0.4);
+    await s.pan(9, 6, 2.4);
+    await s.narrate([
+      'Morning. The storm has scrubbed the sky clean.',
+      'Lanternfall has been up since before dawn: bunting on every line, the Choir\'s white boats rocking in the harbour, the Lantern swept and shining.',
+      'At noon, every sixteen-year-old on the island will step into its light. Today, Wren Halloway is sixteen.',
+    ]);
+    await s.follow(1.4);
+    await s.say('Wren', 'Happy birthday to me.');
+    await s.say('Wren', 'The girl from the rocks — Nana has her. I should see if she\'s awake.');
+  },
+
   async namingSable(s) {
     if (!s.flag('ch1_morning') || s.flag('ch1_named')) return;
     s.setFlag('ch1_named');

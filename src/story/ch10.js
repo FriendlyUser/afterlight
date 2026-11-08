@@ -523,7 +523,7 @@ export const CH10 = {
     await s.say('Wren', 'All seven. Before he does.', { portrait: false });
     s.setFlag('act3');
     s.journal('We got Sable back. She chose her own name, and then she jumped. Cassian is going after the seven Shards. So are we.');
-    await s.chapter(11, 'Seven Wounds');
+    // Chapter 11's card plays aboard the Halcyon, after its opening narration (CH11.deckEnter).
     s.objective('Find the seven Sun Shards before Cassian does.');
     await s.teleport('halcyon_deck', 12, 8, 'down');
   },

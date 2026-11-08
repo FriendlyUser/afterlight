@@ -62,5 +62,6 @@ export default {
   ],
   onEnter: async (s) => {
     if (s.flag('p_brooch_got') && !s.flag('p_cassian_arrived') && s.state.location.x > 40) await PRO.cassianArrives(s);
+    await CH1.morning(s);
   },
 };

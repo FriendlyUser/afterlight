@@ -116,8 +116,8 @@ export class UI {
   }
 
   /** Full-screen centered card (chapter titles etc.). Resolves after hold. */
-  async card(title, subtitle = '', hold = 3) {
-    const c = el('div', 'chapter-card', `<div class="cc-sub">${subtitle}</div><div class="cc-title">${title}</div><div class="cc-rule"></div>`);
+  async card(title, subtitle = '', hold = 3, line = '') {
+    const c = el('div', 'chapter-card', `<div class="cc-sub">${subtitle}</div><div class="cc-title">${title}</div><div class="cc-rule"></div>${line ? `<div class="cc-line">${line}</div>` : ''}`);
     this.layers.top.appendChild(c);
     await this.game.wait(0.05);
     c.classList.add('show');

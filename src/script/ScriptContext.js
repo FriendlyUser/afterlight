@@ -3,6 +3,7 @@
 // content reads like a screenplay.
 
 import { routeAround } from '../world/CutscenePath.js';
+import { CHAPTERS } from '../story/chapters.js';
 import { LOOKS } from '../data/looks.js';
 import { playFishing } from '../ui/Fishing.js';
 
@@ -69,9 +70,15 @@ export class ScriptContext {
   music(id, opts) { this.game.audio?.playMusic(id, opts); }
   stopMusic(fade = 1) { this.game.audio?.stopMusic(fade); }
   sfx(id) { this.game.audio?.sfx(id); }
+  /**
+   * A chapter begins: the previous scene's music fades, a chime, and the title card with
+   * the place and time it opens on (story/chapters.js).
+   */
   async chapter(n, title) {
     this.state.chapter = n;
-    await this.ui.card(title, n === 0 ? 'Prologue' : `Chapter ${n}`, 3.2);
+    this.game.audio?.stopMusic(1.2);
+    this.sfx('chapter');
+    await this.ui.card(title, n === 0 ? 'Prologue' : `Chapter ${n}`, 3.4, CHAPTERS[n]?.line || '');
   }
 
   // ------------------------------------------------------------------ actors
