@@ -1,10 +1,12 @@
 // Save / Load slot picker. F on a slot exports it to a file or imports one, so saves
-// can be backed up or moved between browsers, computers and the hosted game.
+// can be backed up or moved between browsers, computers and the hosted game. The three
+// rotating autosaves (A1 newest – A3 oldest; world/Autosave.js) head the list in both
+// modes: loadable, exportable, but written only by the game.
 
 import { el } from '../UI.js';
 import { keyCap } from '../../core/Input.js';
 import { Screen, ListView, header, KEYS } from './common.js';
-import { SaveStore, SAVE_SLOTS, AUTO_SLOT } from '../../state/GameState.js';
+import { SaveStore, SAVE_SLOTS, AUTO_SLOTS } from '../../state/GameState.js';
 import { formatTime } from '../../core/util.js';
 import { LOOKS } from '../../data/looks.js';
 import { getPortrait } from '../../render/SpriteFactory.js';
@@ -20,23 +22,24 @@ export class SaveScreen extends Screen {
 
   build() {
     this.el.innerHTML = header(this.mode === 'save' ? 'Save Game' : 'Load Game', `${KEYS.nav} ${KEYS.ok} ${keyCap('info')} Export / Import ${KEYS.back}`);
-    /** @type {Array<{ slot: number | string, s: any, label: string, disabled: boolean }>} slot: 0–5 or AUTO_SLOT */
+    /** @type {Array<{ slot: number | string, s: any, label: string, disabled: boolean, auto?: boolean }>} slot: 0–5 or an autosave slot */
     const items = SaveStore.summaries().map((s, i) => ({ slot: i, s, label: String(i + 1), disabled: this.mode === 'load' && !s }));
-    if (this.mode === 'load') {
-      const auto = SaveStore.read(AUTO_SLOT)?.summary || null;
-      items.unshift({ slot: AUTO_SLOT, s: auto, label: 'A', disabled: !auto });
-    }
+    const autos = SaveStore.autos();
+    const autoRows = autos.length
+      ? autos.map((a, i) => ({ slot: a.slot, s: a.summary, label: `A${i + 1}`, auto: true, disabled: this.mode === 'save' }))
+      : [{ slot: AUTO_SLOTS[0], s: null, label: 'A', auto: true, disabled: true }];
+    items.unshift(...autoRows);
     const latest = SaveStore.latestSlot();
     const prev = this.list?.index ?? Math.max(0, items.findIndex((it) => it.slot === latest));
     this.list = new ListView({
       items,
-      pageSize: SAVE_SLOTS + 1,
+      pageSize: SAVE_SLOTS + AUTO_SLOTS.length,
       render: (it) => {
-        if (!it.s) return `<div class="sv-slot"><span class="sv-n">${it.label}</span><span class="dim">— ${it.slot === AUTO_SLOT ? 'No autosave' : 'Empty'} —</span></div>`;
+        if (!it.s) return `<div class="sv-slot"><span class="sv-n">${it.label}</span><span class="dim">— ${it.auto ? 'No autosave yet' : 'Empty'} —</span></div>`;
         const s = it.s;
         const date = new Date(s.savedAt).toLocaleString();
         return `<div class="sv-slot"><span class="sv-n">${it.label}</span><span class="sv-faces" data-party="${s.party.join(',')}"></span>
-          <span class="sv-info"><b>${it.slot === AUTO_SLOT ? 'Autosave · ' : ''}${s.location || '—'}</b><br><span class="dim">${s.chapter === 0 ? 'Prologue' : `Chapter ${s.chapter}`} · Lv ${s.level} · ${formatTime(s.playtime)}</span></span><span class="sv-date dim">${date}</span></div>`;
+          <span class="sv-info"><b>${it.auto ? 'Autosave · ' : ''}${s.location || '—'}</b><br><span class="dim">${s.chapter === 0 ? 'Prologue' : `Chapter ${s.chapter}`} · Lv ${s.level} · ${formatTime(s.playtime)}</span></span><span class="sv-date dim">${date}</span></div>`;
       },
     });
     this.list.index = prev;
@@ -76,6 +79,11 @@ export class SaveScreen extends Screen {
       this.close(it.slot);
       return;
     }
+    if (it.auto) {
+      this.sfx('buzzer');
+      this.game.ui.toast('Autosaves are written by the game as you play. Choose a numbered slot to save.');
+      return;
+    }
     this.busy = true;
     if (it.s) {
       const ok = await this.game.ui.choice(['Overwrite', 'Cancel'], { prompt: `Overwrite slot ${it.slot + 1}?`, cancel: 1 });
@@ -90,10 +98,10 @@ export class SaveScreen extends Screen {
 
   /** Export the slot to a file, or import a file into it (numbered slots only). */
   async fileMenu(it) {
-    const name = it.slot === AUTO_SLOT ? 'the autosave' : `slot ${it.slot + 1}`;
+    const name = it.auto ? `autosave ${it.label}` : `slot ${it.slot + 1}`;
     const options = [];
     if (it.s) options.push({ id: 'export', label: 'Export to file' });
-    if (it.slot !== AUTO_SLOT) options.push({ id: 'import', label: 'Import from file' });
+    if (!it.auto) options.push({ id: 'import', label: 'Import from file' });
     if (!options.length) { this.sfx('buzzer'); return; }
     const pick = await this.game.ui.choice([...options.map((o) => o.label), 'Cancel'], { prompt: `Save file for ${name}`, cancel: options.length });
     const action = options[pick]?.id;
@@ -104,10 +112,10 @@ export class SaveScreen extends Screen {
   exportSlot(it) {
     const s = it.s;
     const where = (s.location || 'save').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    const label = it.slot === AUTO_SLOT ? 'autosave' : `slot${it.slot + 1}`;
+    const label = it.auto ? 'autosave' : `slot${it.slot + 1}`;
     downloadText(`afterlight-${label}-${where}-${new Date(s.savedAt).toISOString().slice(0, 10)}.json`, SaveStore.exportFile(it.slot));
     this.sfx('confirm');
-    this.game.ui.toast(`Exported ${it.slot === AUTO_SLOT ? 'the autosave' : `slot ${it.slot + 1}`} to your downloads.`);
+    this.game.ui.toast(`Exported ${it.auto ? `autosave ${it.label}` : `slot ${it.slot + 1}`} to your downloads.`);
   }
 
   async importSlot(it) {

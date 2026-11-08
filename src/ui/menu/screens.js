@@ -249,6 +249,7 @@ export class SettingsScreen extends Screen {
       { key: 'hideMinimap', label: 'Minimap', value: s.hideMinimap ? 'Off' : 'On', toggle: true },
       { key: 'hideQuestGuide', label: 'Quest Guide', value: s.hideQuestGuide ? 'Off' : 'On', toggle: true },
       { key: 'hideSideQuests', label: 'Side Quest Markers', value: s.hideSideQuests ? 'Off' : 'On', toggle: true },
+      { key: 'autosave', label: 'Autosave', value: s.autosave === false ? 'Off' : 'On', toggle: true },
       { key: 'controls', label: 'Controls', value: 'Remap keys', open: () => new ControlsScreen(this.menus) },
     ];
   }
@@ -389,7 +390,7 @@ const GUIDE = [
   ['Arts', 'Open *Arts* in the menu to read every Art a character knows: what kind it is, whom it hits, its power, element and MP, and every effect (ailments, stat changes, cures, piercing, speed). Arts of the primary and secondary Crests can be used in battle; Mastery Arts still to come show when they unlock. The same details appear in the Crest screen and in battle as you pick an Art.'],
   ['Supports', 'Supports are passive abilities learned from any Crest rank. Once learned they belong to you, whatever Crest you wear. Equip them in *Supports* within your Support Point budget, which grows with level.'],
   ['Equipment', 'Weapons and armor depend on your primary Crest. In *Equipment*, press *F* to Optimize. Accessories fit anyone.'],
-  ['Saving', 'Golden *Hearthstones* restore the party and let you save; you can also save from the menu almost anywhere, and the game autosaves whenever you enter a new area. Saves live in this browser. Press *F* on a save slot to *export* it to a file or *import* one, to keep a backup or carry your game to another computer.'],
+  ['Saving', 'Golden *Hearthstones* restore the party and let you save; you can also save from the menu almost anywhere. The game also *autosaves* — when you enter an area, after story moments and won battles, at each new chapter and every few minutes — into three rotating autosave slots (*A1* newest to *A3*), so there is always an older one to go back to; a small ✦ *Autosaved* shows in the corner. Load them like any save; turn autosave off in *Settings*. Saves live in this browser. Press *F* on a save slot to *export* it to a file or *import* one, to keep a backup or carry your game to another computer.'],
   ['Encounters', 'The orb in the lower-left warms from green to red as a random battle approaches. Settings can halve or disable random encounters.'],
   ['Riding Kindle', 'Once *Kindle* the Emberhart is with you, press *R* (Ride) on open roads and in the wilds to ride, and again to get down. Kindle runs faster than you can, and nothing from the Gloam catches you while you ride — no random battles. Towns, buildings and dungeons are on foot; talking to someone or opening a chest gets you down. On the world map, Kindle carries you to where you are going.'],
 ];

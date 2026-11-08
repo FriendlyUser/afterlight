@@ -56,7 +56,7 @@ export class GameState {
     this.unlockedCrests = new Set();
     this.bestiary = {};
     this.stats = { battles: 0, steps: 0, escapes: 0 };
-    this.settings = { autoRun: false, musicVolume: 0.6, sfxVolume: 0.7, textSpeed: 1, battleSpeed: 0, difficulty: 1, encounters: 0, reduceEffects: false, hideMinimap: false, hideQuestGuide: false, hideSideQuests: false, fastMode: false, fastSpeed: 3, keys: null };
+    this.settings = { autoRun: false, musicVolume: 0.6, sfxVolume: 0.7, textSpeed: 1, battleSpeed: 0, difficulty: 1, encounters: 0, reduceEffects: false, hideMinimap: false, hideQuestGuide: false, hideSideQuests: false, autosave: true, fastMode: false, fastSpeed: 3, keys: null };
     this.musicOverride = null;
     this.lastBannerMap = null;
   }
@@ -178,6 +178,10 @@ export class GameState {
 const SLOT_KEY = (n) => `afterlight.save.${n}`;
 export const SAVE_SLOTS = 6;
 export const AUTO_SLOT = 'auto';
+/** Rotating autosaves, newest written by Autosaver (world/Autosave.js); 'auto' is the pre-rotation slot. */
+export const AUTO_SLOTS = ['auto', 'auto2', 'auto3'];
+/** Seconds of play an autosave is kept up to date in place before the next one rotates to a new slot. */
+export const AUTO_ROTATE = 600;
 const SAVE_FILE_FORMAT = 'afterlight-save'; // marks exported save files
 const MAX_SAVE_FILE = 5_000_000; // characters; real saves are a few dozen KB
 
@@ -207,14 +211,30 @@ export const SaveStore = {
   summaries() {
     return Array.from({ length: SAVE_SLOTS }, (_, i) => this.read(i)?.summary || null);
   },
+  /** The autosaves that exist, newest first: [{ slot, summary }]. */
+  autos() {
+    return AUTO_SLOTS.map((slot) => ({ slot, summary: this.read(slot)?.summary })).filter((a) => a.summary).sort((a, b) => b.summary.savedAt - a.summary.savedAt);
+  },
+  /**
+   * Write an autosave. The newest is kept up to date in place for AUTO_ROTATE seconds of
+   * play; after that (or after loading an older game) the next one goes to a free slot or
+   * over the oldest. Returns the slot written, or null.
+   */
+  writeAuto(state) {
+    const autos = this.autos();
+    const newest = autos[0];
+    const ahead = newest ? state.playtime - (newest.summary.playtime || 0) : -1;
+    const slot = newest && ahead >= 0 && ahead < AUTO_ROTATE ? newest.slot : AUTO_SLOTS.find((s) => !this.read(s)) ?? autos[autos.length - 1].slot;
+    return this.write(slot, state) ? slot : null;
+  },
   /** Most recent save including the autosave; -1 if none. */
   latestSlot() {
     /** @type {number | string} */
     let best = -1;
     let t = -1;
     this.summaries().forEach((s, i) => { if (s && s.savedAt > t) { t = s.savedAt; best = i; } });
-    const auto = this.read(AUTO_SLOT)?.summary;
-    if (auto && auto.savedAt > t) best = AUTO_SLOT;
+    const auto = this.autos()[0];
+    if (auto && auto.summary.savedAt > t) best = auto.slot;
     return best;
   },
   remove(slot) { try { localStorage.removeItem(SLOT_KEY(slot)); } catch { /* ignore */ } },

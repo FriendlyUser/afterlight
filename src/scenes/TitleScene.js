@@ -9,7 +9,7 @@ import { applyMood } from '../render/Moods.js';
 import { ParticleSystem } from '../render/Particles.js';
 import { getMap } from '../data/maps/index.js';
 import { el } from '../ui/UI.js';
-import { GameState, SaveStore, AUTO_SLOT } from '../state/GameState.js';
+import { GameState, SaveStore, AUTO_SLOTS } from '../state/GameState.js';
 import { FieldScene } from '../world/FieldScene.js';
 import { startNewGame, startNewGamePlus } from '../story/newGame.js';
 import { DIFFICULTIES, DEFAULT_DIFFICULTY, difficultyStats } from '../data/difficulty.js';
@@ -104,7 +104,7 @@ export class TitleScene {
   /** Slot of the most recent save that has finished the story, or null. */
   findClearedSave() {
     let best = null, t = -1;
-    for (const slot of [AUTO_SLOT, 0, 1, 2, 3, 4, 5]) {
+    for (const slot of [...AUTO_SLOTS, 0, 1, 2, 3, 4, 5]) {
       const rec = SaveStore.read(slot);
       if (rec?.data?.flags?.gameClear && rec.summary.savedAt > t) { best = slot; t = rec.summary.savedAt; }
     }

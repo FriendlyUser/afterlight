@@ -13,7 +13,7 @@ import { getMap } from '../data/maps/index.js';
 import { LOOKS } from '../data/looks.js';
 import { damp, dirFromVector, DIRS, easeInOutSine, easeOutCubic, weightedPick } from '../core/util.js';
 import { el } from '../ui/UI.js';
-import { SaveStore, AUTO_SLOT } from '../state/GameState.js';
+import { Autosaver, storySnapshot } from './Autosave.js';
 import { FieldAtmosphere } from './FieldAtmosphere.js';
 import { Followers } from './Followers.js';
 import { Minimap } from './Minimap.js';
@@ -112,7 +112,8 @@ export class FieldScene {
     this.pendingScript = !skipEnterScript && map.onEnter ? map.onEnter : null;
     if (via) this.playEntrance(x, y, dir);
     this.time = 0;
-    this.autosave();
+    game.autosaver ??= new Autosaver(game);
+    game.autosaver.request('arrival'); // written once any arrival scene has played
   }
 
   /**
@@ -135,12 +136,6 @@ export class FieldScene {
       }
     }
     return { x: cx, y: cy };
-  }
-
-  /** Autosave on arrival (skipped in test mode and before the story starts). */
-  autosave() {
-    if (this.game.autoConfirm || !this.state.flags.p_woke) return;
-    SaveStore.write(AUTO_SLOT, this.state);
   }
 
   exit() {
@@ -306,6 +301,7 @@ export class FieldScene {
     }
     this.player.update(dt, this.grid);
     this.followers.update(dt);
+    this.game.autosaver?.update(dt, this);
     this.quest.update(dt);
     this.minimap.update();
 
@@ -653,6 +649,7 @@ export class FieldScene {
     this.player.moving = false;
     this.hintEl.style.display = 'none';
     const ctx = new ScriptContext(this.game, this);
+    const before = storySnapshot(this.state);
     try {
       const run = fn(ctx);
       if (this.riding && !keepMount) this.dismountIfScene(run);
@@ -661,6 +658,7 @@ export class FieldScene {
       console.error('Script error:', err);
     } finally {
       this.busy = false;
+      this.game.autosaver?.noteScript(before, storySnapshot(this.state)); // saved once the player is free
       if (this.game.scene === this) { this.refreshNpcs(); this.quest.refresh(); }
     }
   }

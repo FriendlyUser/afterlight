@@ -404,6 +404,15 @@ Side quests: every `s.quest(id, title, desc)` step needs an entry in
 `after`/`unless` may list several flags) — the blue markers. `tools/test.sh side_quests`
 lists any step without one.
 
+Cutscene movement: `s.move`/`s.step` legs that would pass through someone (the player,
+followers, other actors) are re-routed around them (`world/CutscenePath.js`); a leg with
+nobody in the way is walked exactly as written, an NPC sent onto someone's tile stops
+beside it, and the player always ends exactly on its waypoint (doors, triggers).
+
+Autosave: `world/Autosave.js` writes the three rotating autosaves on arrival, chapter
+changes, story beats and a timer, once the player is in control; maps with
+`noSave: true` never autosave.
+
 Riding: Kindle (the party's mount) can be called only on maps listed in `RIDE_MAPS` in
 `src/data/mount.js` — open roads and wilds, never towns, interiors, dungeons or dreams.
 A rider gets down automatically on talking, chests, doors and any script that lasts

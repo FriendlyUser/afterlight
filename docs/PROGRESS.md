@@ -50,6 +50,8 @@ Estimated 40–60 hours with side content.
 | world map | Fast travel to towns and attuned Hearthstones | `fast_travel` |
 | crests | Mastery Legacies, Ascension stars, Mastery Arts, the Arts screen | `crest_ascension`, `crest_balance` |
 | lost crests | Four Lost Callings (Tier IV), their quests and guardians | `lost_crests` |
+| autosave | Rotating autosaves, triggers, the setting, the Save/Load rows | `autosave` |
+| cutscenes | Scripted walkers go around the party | `cutscene_paths` |
 | mount | Kindle the Emberhart: the Hollow meeting, riding, the Drift reunion | `mount` |
 | side quests | Blue side-quest markers (every step of all 80 quests), the area map; quest dead ends fixed | `side_quests`, `side_markers`, `story_fixes` |
 | level up | The level-up screen after a victory | `levelup` |
@@ -276,6 +278,19 @@ done directly this session:
   the party waits while it's open. After a victory, a **Level Up!** panel shows a card
   for each member who levelled: old → new level, every stat's gain, and new Support Points.
   Tests: `side_quests` (data), `side_markers` (in play), `levelup`.
+- **Autosave and cutscene walking.** Autosave (`world/Autosave.js`) now keeps three
+  rotating slots (`AUTO_SLOTS`: the old `auto` plus `auto2`, `auto3`): the newest is updated
+  in place for 10 minutes of play, then the next goes to a free slot or over the oldest (a
+  game loaded from earlier always rotates, so it never overwrites a later timeline). Saves
+  are requested on arrival, chapter change (both immediate), story beats (objective change,
+  quest finished, battle won — at least 45 s apart) and every 5 minutes of field play, and
+  written only once the player is in control with no menu open, never on `noSave` maps or
+  with Settings → Autosave off. A "✦ Autosaved" mark shows in the corner. The Save and Load
+  screens list them as A1–A3 (newest first; loadable and exportable, not saved over);
+  Continue picks the newest of any save. Cutscenes: `s.move`/`s.step` legs that would pass
+  through someone now route around them (`world/CutscenePath.js`: A* over walkable tiles,
+  straightened; untouched when nobody is in the way); an NPC sent onto someone's tile stops
+  beside it; the player keeps its exact waypoint. Tests: `autosave`, `cutscene_paths`.
 - **The Lost Callings** (Tier IV; `data/crests.js`, quests `story/lost.js`, guardians
   `content/lost.js` prefixed `lc_`, markers `objectives/side5.js`). Four Crests the Choir
   struck from its rolls, each remembered through an optional Act II quest: someone who

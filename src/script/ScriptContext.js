@@ -2,6 +2,7 @@
 // It wraps the game, the active field scene and the persistent state so story
 // content reads like a screenplay.
 
+import { routeAround } from '../world/CutscenePath.js';
 import { LOOKS } from '../data/looks.js';
 import { playFishing } from '../ui/Fishing.js';
 
@@ -93,11 +94,14 @@ export class ScriptContext {
   refreshNpcs() { this.field.refreshNpcs(); }
   show(id, v = true) { const a = this.actor(id); if (a) { a.visible = v; a.syncMesh(); } }
 
-  /** Walk along waypoints: move('ilse', [[5,6],[5,8]]). Resolves on arrival. */
+  /**
+   * Walk along waypoints: move('ilse', [[5,6],[5,8]]). Resolves on arrival. Legs that
+   * would pass through someone go around them instead (world/CutscenePath.js).
+   */
   move(id, points, speed) {
     const a = this.actor(id);
     if (!a) return Promise.resolve();
-    return a.walkPath(this.game, points, this.field.grid, speed);
+    return a.walkPath(this.game, routeAround(this.field, a, points), this.field.grid, speed);
   }
 
   /** Move relative in tiles: step('player', 0, -2) */

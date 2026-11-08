@@ -147,6 +147,10 @@ em { color: #e8dcff; }
 .quest-tracker .qt-note { margin-top: 3px; font-family: var(--font-body); font-size: 13px; color: var(--ink-dim); }
 .quest-arrow { position: absolute; width: 0; height: 0; border-top: 16px solid transparent; border-bottom: 16px solid transparent; border-left: 30px solid #ffc43a; filter: drop-shadow(0 0 6px rgba(255, 190, 80, 0.95)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.8)); pointer-events: none; animation: quest-arrow 1.1s ease-in-out infinite; }
 @keyframes quest-arrow { 50% { opacity: 0.6; } }
+.autosave-mark { position: absolute; right: 22px; bottom: 20px; padding: 4px 12px; font-family: var(--font-caps); font-size: 14px; letter-spacing: 0.08em; color: #ffe8a0; background: rgba(12, 10, 20, 0.6); border: 1px solid rgba(255, 228, 180, 0.3); border-radius: 12px; pointer-events: none; animation: fadeIn 0.3s; transition: opacity 0.7s; }
+.autosave-mark i { font-style: normal; display: inline-block; animation: spin 1.6s linear infinite; }
+.autosave-mark.out { opacity: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
 .danger { position: absolute; left: 22px; bottom: 22px; width: 18px; height: 18px; border-radius: 50%; background: #5ad07a; box-shadow: 0 0 10px #5ad07a; opacity: 0.85; transition: background 0.4s, box-shadow 0.4s; }
 .danger.mid { background: #e0c040; box-shadow: 0 0 10px #e0c040; }
 .danger.high { background: #e05040; box-shadow: 0 0 14px #e05040; }
