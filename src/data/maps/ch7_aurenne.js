@@ -3,6 +3,7 @@ import L from './layouts/ruined_aurenne.js';
 import WARD from './layouts/c7_ember_ward.js';
 import BELL from './layouts/c7_last_bell.js';
 import { CH7 } from '../../story/ch7.js';
+import { LOST_QUESTS } from '../../story/lost.js';
 
 const joined = (st) => st.party.includes('ilse');
 const say = (name, lines) => async (s) => s.say(name, lines);
@@ -19,6 +20,7 @@ export const ruinedAurenne = {
   camera: { dist: 21, pitch: 0.7 },
   signs: [{ x: 24, y: 17, text: 'ASH SQUARE NOTICES\n· Water: one bucket per family. Ask Sorrel.\n· Violet under the skin? The Ember Ward. NOW.\n· The Undercroft is SEALED. — S.\n· BOUNTY: the thing in the Reliquary. See Sorrel.' }],
   npcs: [
+    { id: 'lc_hask', name: 'Founder Hask', look: 'lc_hask', x: 24, y: 20, dir: 'down', hint: 'Lost Crest', cond: (st) => (st.chapter || 0) >= 8, run: (s) => LOST_QUESTS.giver(s, 'bellwright') },
     { id: 'sorrel', name: 'Sorrel', look: 'sorrel', x: 19, y: 33, dir: 'down', run: (s) => CH7.sorrel(s) },
     { id: 'hobb', name: 'Quartermaster Hobb', look: 'c7_hobb', x: 17, y: 22, dir: 'down', hint: 'Shop',
       run: async (s) => {

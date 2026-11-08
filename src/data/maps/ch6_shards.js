@@ -9,6 +9,7 @@ import KEEL_HALL from './layouts/c6_keel_hall.js';
 import SEA from './layouts/c6_shattered_sea.js';
 import { CH6 } from '../../story/ch6.js';
 import { KINDLE } from '../../story/mount.js';
+import { LOST_QUESTS } from '../../story/lost.js';
 
 const RUIN = { mood: 'ruin', music: 'ruin', particles: 'ash', battleBg: 'ruin', backdrop: { plane: '#140a1c', y: -18 } };
 const interior = { mood: 'interior', camera: { dist: 15, pitch: 0.75 }, noBanner: true, particles: 'dust', battleBg: 'ruin' };
@@ -111,6 +112,7 @@ export const c6Keelhaven = {
   signs: [{ x: 5, y: 15, text: 'A sheet of white Choir paper, the gold sunburst at its head:\nTHE LAST STONE WAS GIVEN FREELY, BY THE KEEPER\'S DAUGHTER OF LANTERNFALL.\n— by order of His Radiance the Hierophant.\nSomeone has drawn a noose underneath.' }],
   blockers: [{ id: 'c6_east_gate', x: 46, y: 16, w: 1, h: 2, prop: 'fence', cond: (st) => !st.flags.c6_gate_open }],
   npcs: [
+    { id: 'lc_wend', name: 'Grandmother Wend', look: 'lc_wend', x: 24, y: 19, dir: 'down', hint: 'Lost Crest', cond: (st) => (st.chapter || 0) >= 8, run: (s) => LOST_QUESTS.giver(s, 'tidecaller') },
     { id: 'mott', name: 'Sentry Mott', look: 'c6_sentry', x: 4, y: 18, dir: 'right', cond: f('c6_keelhaven'),
       talk: ['Don\'t steal, don\'t fight, don\'t fall off. That\'s the whole law.', 'Folk keep falling off. You\'d think it\'d be the easy one.'] },
     { id: 'rook', name: 'Sentry Rook', look: 'c6_sentry', x: 44, y: 18, dir: 'left',
@@ -198,6 +200,7 @@ export const c6ShatteredSea = {
   encounters: { rate: 1.0, cond: (st) => !st.flags.c6_done,
     troops: [['c6_sea_golem', 2], ['c6_sea_crawlers', 3], ['c6_sea_eel', 3], ['c6_sea_wisps', 2], ['c6_sea_eye', 2], ['c6_sea_sailors', 2], ['c6_sea_mimic', 1]] },
   blockers: [
+    { id: 'lc_tidecaller', x: 66, y: 24, w: 1, h: 1, prop: 'crystal' },
     { id: 'c6_chain_a', x: 34, y: 20, w: 1, h: 2, prop: 'fence' },
     { id: 'c6_chain_b', x: 37, y: 20, w: 1, h: 2, prop: 'fence' },
   ],
@@ -216,6 +219,7 @@ export const c6ShatteredSea = {
       talk: (s) => s.say('Old Quill', winchDone(s.state) ? ['Bridge is down. Gods help you.', 'If you see the Unmoored... don\'t look it in the eye. It looks back. It remembers things.'] : ['Salvager. Was. North spoke\'s the Chainyard — winch is on the old deck. South spoke\'s the Psalm — winch is in the deckhouse.', 'Turn both and the strait bridge comes down. I\'d do it myself, but I like being alive. It\'s a habit.']) },
   ],
   inspect: [
+    { x: 66, y: 24, hint: 'Crest-glass', run: (s) => LOST_QUESTS.shrine(s, 'tidecaller') },
     { x: 29, y: 4, hint: 'Winch', run: (s) => CH6.winch(s, 'a') },
     { x: 28, y: 36, hint: 'Winch', run: (s) => CH6.winch(s, 'b') },
     { x: 20, y: 38, hint: 'Hymnal', run: (s) => CH6.hymnal(s) },

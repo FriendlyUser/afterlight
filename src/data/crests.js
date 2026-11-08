@@ -5,7 +5,9 @@
 //  weapons:  equippable weapon types; armor: equippable armor weights; shield: may use shields
 //  ranks:    10 unlocks (index 0 = rank 1). { skill } actives or { passive } supports.
 //  requires: per-character crest ranks needed before an advanced crest can be equipped
-//  unlock:   'start' | 'story' | 'stone' (bought/found Crest Stone) | 'requirement'
+//  unlock:   'start' | 'story' | 'stone' (bought/found Crest Stone) | 'requirement' | 'lost'
+//            ('lost': a Lost Calling, Tier IV — struck from the Choir's rolls long ago and
+//            remembered through an optional quest after the Sundering; story/lost.js)
 //  legacy:   what mastering the Crest (rank 10) leaves in the character, whatever they wear
 //            (attached from LEGACIES below; a passive-like source: mods / resist)
 //  mastery:  its two Mastery Arts and the Ascension star that teaches each (MASTERY below)
@@ -231,6 +233,44 @@ export const CRESTS = {
     ranks: [{ skill: 'afterglow_strike' }, { passive: 'all_up' }, { skill: 'new_dawn' }, { passive: 'afterglow_up2' }, { skill: 'twilight_requiem' },
       { passive: 'break_limit' }, { skill: 'kindle' }, { passive: 'mp_half' }, { skill: 'eternal_moment' }, { skill: 'afterlight' }],
   }),
+
+  // ======================================================== TIER IV — lost callings (story/lost.js)
+  tidecaller: C({
+    name: 'Tidecaller', tier: 4, icon: '≋', color: '#5ab0e0', unlock: 'lost',
+    rumour: 'An old woman in Keelhaven remembers the sea-folk\'s calling.',
+    desc: 'The sea-folk\'s calling, struck when the fishing towns stopped tithing. The tide gives and takes.',
+    stats: { hp: 1.0, mp: 1.25, str: 0.8, mag: 1.2, def: 0.95, res: 1.15, spd: 1.0, lck: 1.05 },
+    weapons: ['staff', 'rod', 'spear'], armor: ['robe', 'light'], shield: false,
+    ranks: [{ skill: 'riptide' }, { skill: 'ebb_tide' }, { passive: 'sea_legs' }, { skill: 'undertow' }, { passive: 'mp_up' },
+      { skill: 'spring_tide' }, { skill: 'maelstrom' }, { passive: 'tidal_soul' }, { skill: 'drowning_deep' }, { skill: 'the_sea_returns' }],
+  }),
+  bellwright: C({
+    name: 'Bellwright', tier: 4, icon: 'Ω', color: '#d0a050', unlock: 'lost',
+    rumour: 'A bell-founder in the ruins of Aurenne remembers his guild\'s calling.',
+    desc: 'Aurenne\'s bell-founders. The Choir feared a bell could call more than the faithful.',
+    stats: { hp: 1.1, mp: 1.1, str: 1.05, mag: 1.05, def: 1.1, res: 1.05, spd: 0.95, lck: 1.0 },
+    weapons: ['axe', 'staff', 'instrument'], armor: ['heavy', 'light'], shield: true,
+    ranks: [{ skill: 'toll' }, { passive: 'ringing_ears' }, { skill: 'peal' }, { skill: 'discord' }, { passive: 'def_up' },
+      { skill: 'knell' }, { skill: 'carillon' }, { passive: 'resonance' }, { skill: 'great_bell' }, { skill: 'bell_of_ending' }],
+  }),
+  kitewright: C({
+    name: 'Kitewright', tier: 4, icon: '◈', color: '#e0b060', unlock: 'lost',
+    rumour: 'An old kite-flyer in Kiteholm remembers the first wing-builders.',
+    desc: 'The first wing-builders. "Only the sun belongs in the sky," said the Choir, and struck them out.',
+    stats: { hp: 0.95, mp: 1.0, str: 1.05, mag: 1.0, def: 0.95, res: 1.0, spd: 1.2, lck: 1.15 },
+    weapons: ['gun', 'bow', 'dagger', 'spear'], armor: ['light'], shield: false,
+    ranks: [{ skill: 'kite_strike' }, { passive: 'updraft' }, { skill: 'flash_powder' }, { skill: 'tether' }, { passive: 'quick_pockets' },
+      { skill: 'gale_bomb_toss' }, { skill: 'glider_drop' }, { passive: 'scrap_luck' }, { skill: 'chain_lightning' }, { skill: 'skyfleet' }],
+  }),
+  mnemonist: C({
+    name: 'Mnemonist', tier: 4, icon: '∞', color: '#b0a0e0', unlock: 'lost',
+    rumour: 'The sexton at the Garden That Remembers keeps the last Mnemonist\'s name.',
+    desc: 'Keepers of memory, struck when the Choir decided some things were better forgotten.',
+    stats: { hp: 0.95, mp: 1.3, str: 0.9, mag: 1.25, def: 0.9, res: 1.2, spd: 1.05, lck: 1.05 },
+    weapons: ['tome', 'rod', 'dagger'], armor: ['robe', 'light'], shield: false,
+    ranks: [{ skill: 'recall' }, { skill: 'forget' }, { passive: 'perfect_recall' }, { skill: 'echo_of_fire' }, { passive: 'mag_up' },
+      { skill: 'echo_of_frost' }, { skill: 'lost_hour' }, { passive: 'mnemonic_ward' }, { skill: 'echo_of_the_sun' }, { skill: 'total_recall' }],
+  }),
 };
 
 // Battle costumes per Crest (applied when a character wears a Crest other than
@@ -260,6 +300,10 @@ const COSTUMES = {
   gambler: { style: 'coat', main: '#1a1a1a', accent: '#a82a2a', trim: '#e0c060', acc: ['hat_wide'] },
   sunforged: { style: 'armor', main: '#c8a040', metal: '#e0b050', accent: '#ff8a30', trim: '#ffe0a0', acc: ['cape'], capeColor: '#ff8a30' },
   afterlight: { style: 'coat', main: '#f4f0e8', accent: '#ffd890', trim: '#ffd890', acc: ['cape'], capeColor: '#fff0d0' },
+  tidecaller: { style: 'coat', main: '#2a5a7a', accent: '#c8e8f0', trim: '#e0c060', acc: ['scarf'] },
+  bellwright: { style: 'armor', main: '#7a5a3a', metal: '#c8a050', accent: '#3a2a1a', trim: '#e0c060', acc: ['cape'], capeColor: '#8a3a2a' },
+  kitewright: { style: 'vest', main: '#a87a3a', accent: '#e8dcc0', trim: '#5a8ac8', acc: ['glasses', 'scarf'] },
+  mnemonist: { style: 'robe', main: '#4a4a6a', accent: '#d8d0f0', trim: '#a090c0', acc: ['circlet'] },
 };
 for (const [id, c] of Object.entries(COSTUMES)) CRESTS[id].costume = c;
 
@@ -291,6 +335,10 @@ const LEGACIES = {
   gambler: { desc: 'Gold +15%, Critical rate +3%', mods: { goldPct: 15, crit: 3 } },
   sunforged: { desc: 'STR, MAG, DEF and RES +3%', mods: { strPct: 3, magPct: 3, defPct: 3, resPct: 3 } },
   afterlight: { desc: 'All stats +5%', mods: { hpPct: 5, mpPct: 5, strPct: 5, magPct: 5, defPct: 5, resPct: 5, spdPct: 5, lckPct: 5 } },
+  tidecaller: { desc: 'MAG +4%, healing power +5%', mods: { magPct: 4, healPct: 5 } },
+  bellwright: { desc: 'DEF and RES +3%; immune to Silence', mods: { defPct: 3, resPct: 3 }, immune: ['silence'] },
+  kitewright: { desc: 'SPD +3%, LCK +6%', mods: { spdPct: 3, lckPct: 6 } },
+  mnemonist: { desc: 'MP costs −5%, MAG +3%', mods: { mpCost: -5, magPct: 3 } },
 };
 for (const [id, l] of Object.entries(LEGACIES)) CRESTS[id].legacy = l;
 
@@ -323,6 +371,10 @@ const MASTERY = {
   gambler: [{ skill: 'ace_in_the_hole', stars: 1 }, { skill: 'house_always_loses', stars: 3 }],
   sunforged: [{ skill: 'solar_wake', stars: 1 }, { skill: 'hearthsuns_wrath', stars: 3 }],
   afterlight: [{ skill: 'remembered_sun', stars: 1 }, { skill: 'unending_dawn', stars: 3 }],
+  tidecaller: [{ skill: 'rogue_wave', stars: 1 }, { skill: 'abyssal_tide', stars: 3 }],
+  bellwright: [{ skill: 'harmonize', stars: 1 }, { skill: 'unrung_bell', stars: 3 }],
+  kitewright: [{ skill: 'stormkite', stars: 1 }, { skill: 'first_wings', stars: 3 }],
+  mnemonist: [{ skill: 'palimpsest', stars: 1 }, { skill: 'the_long_remembering', stars: 3 }],
 };
 for (const [id, m] of Object.entries(MASTERY)) CRESTS[id].mastery = m;
 

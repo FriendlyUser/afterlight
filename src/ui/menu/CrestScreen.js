@@ -11,7 +11,7 @@ import { WEAPON_TYPES } from '../../data/equipment.js';
 import { getCharacterSheet, BATTLE_W, BATTLE_H } from '../../render/SpriteFactory.js';
 
 const STAT_NAMES = { hp: 'HP', mp: 'MP', str: 'STR', mag: 'MAG', def: 'DEF', res: 'RES', spd: 'SPD', lck: 'LCK' };
-const TIER_NAMES = { 1: 'Calling', 2: 'Braided Calling', 3: 'Legend' };
+const TIER_NAMES = { 1: 'Calling', 2: 'Braided Calling', 3: 'Legend', 4: 'Lost Calling' };
 
 /** Base class for screens that work on one party member with Q/E switching. */
 class MemberScreen extends Screen {
@@ -48,7 +48,8 @@ export class CrestScreen extends MemberScreen {
       const c = CRESTS[id];
       const known = avail.has(id);
       const showReq = c.tier === 2 && this.state.flags.crestArtLearned;
-      const visible = known || showReq || (c.tier === 1 && this.state.flags.crestArtLearned);
+      const rumoured = c.tier === 4 && (this.state.chapter || 0) >= 8; // Lost Callings: rumours once their quests open
+      const visible = known || showReq || rumoured || (c.tier === 1 && this.state.flags.crestArtLearned);
       return { id, c, known, visible, rank: ch.rankOf(id) };
     }).filter((e) => e.visible || e.rank > 0);
   }
@@ -68,7 +69,7 @@ export class CrestScreen extends MemberScreen {
         // Mastered crests show their Ascension stars in place of the rank pips.
         const pips = e.rank >= MAX_RANK ? `<span class="pips stars">${starText(ch.starsOf(e.id))}</span>`
           : e.rank ? `<span class="pips">${'◆'.repeat(e.rank)}${'◇'.repeat(MAX_RANK - e.rank)}</span>` : '';
-        return `<span class="ci" style="color:${e.c.color}">${e.c.icon}</span><span class="cn ${e.known ? '' : 'locked'}">${e.known ? e.c.name : e.c.tier === 1 ? '??? (Crest Stone)' : e.c.name}</span>${tag}${pips}`;
+        return `<span class="ci" style="color:${e.c.color}">${e.c.icon}</span><span class="cn ${e.known ? '' : 'locked'}">${e.known ? e.c.name : e.c.tier === 1 ? '??? (Crest Stone)' : e.c.tier === 4 ? '??? (Lost Crest)' : e.c.name}</span>${tag}${pips}`;
       },
     });
     if (prevId) this.list.index = Math.max(0, items.findIndex((e) => e.id === prevId));
@@ -108,6 +109,13 @@ export class CrestScreen extends MemberScreen {
     if (!e) { this.detail.innerHTML = ''; return; }
     const ch = this.ch;
     const c = e.c;
+    if (!e.known && c.tier === 4) {
+      // A Lost Calling not yet remembered: only the rumour of where to look.
+      this.detail.innerHTML = `<div class="cd-name" style="color:#8a8098">??? </div><div class="cd-tier">${TIER_NAMES[4]}</div>
+        <div class="cd-desc">A calling the Choir struck from its rolls long ago. Somewhere in the broken world, its crest-glass is still guarded.</div>
+        <div class="cd-legacy"><span class="k">Rumour</span> ${c.rumour || ''}</div>`;
+      return;
+    }
     if (e.known) this.renderPreview(e.id);
     const prog = e.rank ? ch.rankProgress(e.id) : null;
     let html = `<div class="cd-name" style="color:${c.color}">${c.icon} ${c.name}</div><div class="cd-tier">${TIER_NAMES[c.tier]}</div>`;

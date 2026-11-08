@@ -49,6 +49,7 @@ Estimated 40–60 hours with side content.
 | opening | The opening movie, New Game difficulty picker, title attract loop | `opening` |
 | world map | Fast travel to towns and attuned Hearthstones | `fast_travel` |
 | crests | Mastery Legacies, Ascension stars, Mastery Arts, the Arts screen | `crest_ascension`, `crest_balance` |
+| lost crests | Four Lost Callings (Tier IV), their quests and guardians | `lost_crests` |
 | mount | Kindle the Emberhart: the Hollow meeting, riding, the Drift reunion | `mount` |
 | side quests | Blue side-quest markers (every step of all 80 quests), the area map; quest dead ends fixed | `side_quests`, `side_markers`, `story_fixes` |
 | level up | The level-up screen after a victory | `levelup` |
@@ -275,6 +276,23 @@ done directly this session:
   the party waits while it's open. After a victory, a **Level Up!** panel shows a card
   for each member who levelled: old → new level, every stat's gain, and new Support Points.
   Tests: `side_quests` (data), `side_markers` (in play), `levelup`.
+- **The Lost Callings** (Tier IV; `data/crests.js`, quests `story/lost.js`, guardians
+  `content/lost.js` prefixed `lc_`, markers `objectives/side5.js`). Four Crests the Choir
+  struck from its rolls, each remembered through an optional Act II quest: someone who
+  remembers the calling points the way; at its slab of crest-glass (a map blocker + inspect)
+  a guardian waits; win and the Crest is the party's (`learnCrest`), quest done, journal.
+  A loss heals and the glass waits. Until found, each shows on the Crest screen as
+  "??? (Lost Crest)" with a rumour (from chapter 8).
+  | Crest | Giver (from ch.) | Crest-glass | Guardian (Lv) | Play |
+  |---|---|---|---|---|
+  | Tidecaller ≋ | Grandmother Wend, Keelhaven (8) | far east end of the Shattered Sea | the Drowned Cantor (46) | ice magic, tide heals, Slow |
+  | Bellwright Ω | Founder Hask, ruins of Aurenne (8) | NE of the drowned Undercroft | the Bronze Abbot (45) | bells: stun, silence, turn delay, party guard |
+  | Kitewright ◈ | Ada Kestrel, Kiteholm (9) | S end of the Underhang | the Scrap Colossus (50) | wind, item-power bombs, speed, jump |
+  | Mnemonist ∞ | Sexton Mabry, the Garden That Remembers (9) | heart of the Garden's maze | the Forgetting (56) | memory: cures, dispel, echoes of fire/ice/sun |
+  Each has 10 ranks (7 Arts + 3 Supports; 28 new Arts, 7 new Supports such as Sea Legs,
+  Ringing Ears, Updraft, Perfect Recall), a costume, a Legacy and two Mastery Arts.
+  Viability (crest_balance): 94–100%, mid-pack. Guardians tuned as optional trials: an auto
+  party at their level wins 75–100% and ends around half HP.
 - **Mastery Arts and the Arts screen.** Each of the 24 Crests now has two signature
   *Mastery Arts* (48 new Arts in `data/skills.js`, attached as `CRESTS[id].mastery` in
   `data/crests.js`), taught by its first and third Ascension stars — e.g. Vanguard: Banner of

@@ -76,11 +76,13 @@ Surge and duo/trio Link Arts. Bosses telegraph their big attacks: Guard against 
 or Break the boss while it winds up to interrupt them. Swap party members mid-fight,
 or hand it to auto-battle — and turn on Fast Mode to fly through fights and cutscenes.
 
-**Class customization** — 24 Crests (8 callings, 10 braided, 6 legendary) × 10 ranks,
+**Class customization** — 28 Crests (8 callings, 10 braided, 6 legendary, 4 lost) × 10 ranks,
 a primary and a secondary Crest per character, Supports on a point budget, and 300+ Arts.
 A mastered Crest leaves a *Legacy* — a small bonus you keep whatever you wear — and CP
 past mastery climbs five Ascension stars that strengthen its stats and Arts and teach its
 two signature *Mastery Arts*. Every Art's full details can be read in the Arts menu.
+Four *Lost Crests* — the Tidecaller, Bellwright, Kitewright and Mnemonist, callings the
+Choir struck from its rolls — are found through optional quests after the Sundering.
 
 **Exploration** — 145 hand-laid maps, a party that follows you, a Quest Guide that
 marks where to go next (gold for the story, blue for side quests; in the field, on the

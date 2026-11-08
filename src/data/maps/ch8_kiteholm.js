@@ -5,6 +5,7 @@ import NEST from './layouts/c8_kite_nest.js';
 import HALL from './layouts/c8_baron_hall.js';
 import ARENA from './layouts/c8_scrap_arena.js';
 import { CH8 } from '../../story/ch8.js';
+import { LOST_QUESTS } from '../../story/lost.js';
 
 const raiding = (st) => st.flags.c8_raid && !st.flags.c8_raid_done;
 const calm = (st) => !raiding(st);
@@ -22,6 +23,7 @@ export const kiteholm = {
   battleBg: 'ruin',
   camera: { dist: 21, pitch: 0.7 },
   npcs: [
+    { id: 'lc_ada', name: 'Ada Kestrel', look: 'lc_ada', x: 25, y: 20, dir: 'down', hint: 'Lost Crest', cond: (st) => (st.chapter || 0) >= 9, run: (s) => LOST_QUESTS.giver(s, 'kitewright') },
     { id: 'fenna', name: 'Fenna', look: 'fenna', x: 6, y: 20, dir: 'right', cond: calm,
       talk: say('Fenna', ['My barge goes back down when the ember-wind turns. Which is whenever it likes.', 'You\'ll hate it up here. Then you\'ll never leave. Then you\'ll leave anyway, because that\'s what people like you do.']) },
     { id: 'brindle', name: 'Old Brindle', look: 'c8_brindle', x: 19, y: 18, dir: 'down', hint: 'Shop', cond: calm,

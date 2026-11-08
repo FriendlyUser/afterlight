@@ -61,4 +61,12 @@ export const PASSIVES = {
   gloamborn: { name: 'Gloamborn', cost: 2, desc: 'Absorb dark damage.', resist: { dark: -1 } },
   break_limit: { name: 'Break Limit', cost: 2, desc: 'Damage can exceed 9,999.', flags: ['breakLimit'] },
   encounter_down: { name: 'Quiet Steps', cost: 1, desc: 'Fewer random encounters.', mods: { encounter: -50 } },
+  // Lost Callings
+  sea_legs: { name: 'Sea Legs', cost: 1, desc: 'Immune to Slow. Evasion +5%.', mods: { evade: 5 }, immune: ['slow'] },
+  tidal_soul: { name: 'Tidal Soul', cost: 2, desc: 'Healing power +15%. MAG +10%.', mods: { healPct: 15, magPct: 10 } },
+  ringing_ears: { name: 'Ringing Ears', cost: 1, desc: 'Immune to Sleep and Silence.', immune: ['sleep', 'silence'] },
+  updraft: { name: 'Updraft', cost: 1, desc: 'Act sooner at the start of battle. SPD +5%.', flags: ['firstStrike'], mods: { spdPct: 5 } },
+  scrap_luck: { name: 'Scrap Luck', cost: 1, desc: 'Better drops and steals. LCK +10%.', mods: { dropPct: 30, lckPct: 10 } },
+  perfect_recall: { name: 'Perfect Recall', cost: 2, desc: 'MP costs -15%. MAG +5%.', mods: { mpCost: -15, magPct: 5 } },
+  mnemonic_ward: { name: 'Mnemonic Ward', cost: 2, desc: 'Immune to Charm and Doom. RES +10%.', immune: ['charm', 'doom'], mods: { resPct: 10 } },
 };

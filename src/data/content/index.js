@@ -28,6 +28,7 @@ const LOADERS = {
   postgame: () => import('./postgame.js'),
   side: () => import('./side.js'),
   colosseum: () => import('./colosseum.js'),
+  lost: () => import('./lost.js'),
 };
 
 export const PACK_NAMES = Object.keys(LOADERS);

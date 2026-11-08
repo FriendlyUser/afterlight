@@ -23,6 +23,7 @@ import BELL_NAVE from '../maps/layouts/side_bell_nave.js';
 import BELL_BELFRY from '../maps/layouts/side_bell_belfry.js';
 import GARDEN_GATE from '../maps/layouts/side_garden_gate.js';
 import GARDEN_MAZE from '../maps/layouts/side_garden_maze.js';
+import { LOST_QUESTS } from '../../story/lost.js';
 import GARDEN_HEART from '../maps/layouts/side_garden_heart.js';
 import NADIR from '../maps/layouts/side_nadir.js';
 
@@ -399,6 +400,7 @@ const MAPS = [
   // ---------------- The Garden That Remembers (Act II)
   {
     ...GARDEN_GATE, id: 'side_garden_gate', name: 'The Garden That Remembers', region: 'A cemetery shard', mood: 'ruin', music: 'sad', battleBg: 'verdance', treeType: 'tree_cherry', ...dungeon,
+    npcs: [{ id: 'lc_gardener', name: 'Sexton Mabry', look: 'lc_gardener', x: 20, y: 15, dir: 'down', hint: 'Lost Crest', cond: (st) => (st.chapter || 0) >= 9, run: (s) => LOST_QUESTS.giver(s, 'mnemonist') }],
     encounters: { rate: 0.9, bg: 'verdance', troops: [['side_garden_maws', 2], ['side_garden_wraith', 2]] },
     inspect: [
       fish(29, 21, 'river'),
@@ -412,10 +414,12 @@ const MAPS = [
   },
   {
     ...GARDEN_MAZE, id: 'side_garden_maze', name: 'The Hedge of Last Words', region: 'The Garden That Remembers', mood: 'ruin', music: 'sad', battleBg: 'verdance', treeType: 'tree_cherry', ...dungeon,
+    blockers: [{ id: 'lc_mnemonist', x: 37, y: 10, w: 1, h: 1, prop: 'tombstone' }],
     noMinimap: true, // it's a hedge maze
     encounters: { rate: 1, bg: 'verdance', troops: [['side_garden_maws', 2], ['side_garden_wraith', 2], ['side_garden_oak', 2]] },
     npcs: [{ id: 'gardener', name: 'The White Gardener', look: 'white_gardener', x: 21, y: 16, dir: 'down', run: (s) => SIDE.gardener(s) }],
     inspect: [
+    { x: 37, y: 10, hint: 'Crest-glass', run: (s) => LOST_QUESTS.shrine(s, 'mnemonist') },
       { x: 6, y: 30, hint: 'Flower', run: (s) => flower('I should have called you back. Every day, I should have called you back.')(s) },
       { x: 38, y: 8, hint: 'Flower', run: (s) => flower('The boy\'s name is Tam. Look after him. He\'s scared of the dark.')(s) },
     ],

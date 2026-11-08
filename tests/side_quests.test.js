@@ -7,6 +7,7 @@ import { MAPS } from '../src/data/maps/index.js';
 import { contentReady } from '../src/data/content/index.js';
 import { SIDE_TARGETS, sideQuestEntry } from '../src/data/objectives/side.js';
 import { BOUNTIES } from '../src/story/side.js';
+import { LOST } from '../src/story/lost.js';
 import { TileGrid } from '../src/world/MapBuilder.js';
 
 const STR = String.raw`'((?:\\.|[^'\\])*)'`;
@@ -42,6 +43,13 @@ export async function run(game, h) {
       seen.add(id);
       if (!sideQuestEntry(id, desc)) errors.push(`${f}: ${id}: no marker entry for step "${desc.slice(0, 70)}"`);
     }
+  }
+  // The Lost Callings set lost_<crest> from story/lost.js's table.
+  for (const [crest, L] of Object.entries(LOST)) {
+    const id = `lost_${crest}`;
+    seen.add(id);
+    steps++;
+    if (!sideQuestEntry(id, L.quest)) errors.push(`lost.js: ${id}: no marker entry for step "${L.quest.slice(0, 70)}"`);
   }
   // Bounties set their quests from templates (story/side.js).
   for (const b of BOUNTIES) {

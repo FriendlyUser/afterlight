@@ -2,6 +2,7 @@
 import F1 from './layouts/ch7_drowned_undercroft.js';
 import F2 from './layouts/ch7_drowned_choir.js';
 import { CH7 } from '../../story/ch7.js';
+import { LOST_QUESTS } from '../../story/lost.js';
 
 const dungeon = { mood: 'cave', music: 'cave', battleBg: 'undercroft', particles: 'dust', camera: { dist: 19, pitch: 0.74 } };
 
@@ -26,10 +27,12 @@ export const drownedUndercroft = {
     { id: 'rel2', x: 34, y: 8, item: 'ashen_robe' },
   ],
   blockers: [
+    { id: 'lc_bellwright', x: 44, y: 4, w: 1, h: 1, prop: 'bell' },
     { id: 'c7_sluice', x: 22, y: 12, w: 4, h: 1, prop: 'fence' },
     { id: 'c7_cracked_wall', x: 6, y: 29, prop: 'pillar_broken' },
   ],
   inspect: [
+    { x: 44, y: 4, hint: 'Crest-glass', run: (s) => LOST_QUESTS.shrine(s, 'bellwright') },
     { x: 4, y: 16, hint: 'Sluice wheel', run: (s) => CH7.wheel(s, 'w') },
     { x: 43, y: 16, hint: 'Sluice wheel', run: (s) => CH7.wheel(s, 'e') },
     ...[22, 23, 24, 25].map((x) => ({ x, y: 12, hint: 'Sluice gate', cond: (st) => !st.flags.c7_gate_open, run: (s) => CH7.gateCheck(s) })),

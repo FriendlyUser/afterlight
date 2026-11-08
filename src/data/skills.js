@@ -221,6 +221,40 @@ export const SKILLS = {
   eternal_moment: { name: 'Eternal Moment', kind: 'special', target: 'enemies', mp: 60, special: 'delayAll', anim: 'dark', desc: 'All foes lose their next turn.' },
   afterlight: { name: 'Afterlight', kind: 'hybrid', target: 'enemy', power: 1500, mp: 90, elem: 'prism', special: 'allWeak', anim: 'light', desc: 'Everything you have become, at once.' },
 
+  // ------------------------------------------------------------ Lost Callings (struck from the Choir's rolls)
+  // Tidecaller — the sea-folk's calling: the tide gives and takes.
+  riptide: { name: 'Riptide', kind: 'mag', target: 'enemy', power: 130, mp: 6, elem: 'ice', status: [['slow', 0.25]], anim: 'ice', desc: 'A pulling current that may drag the foe to a Slow.' },
+  ebb_tide: { name: 'Ebb Tide', kind: 'heal', target: 'allies', power: 70, mp: 10, status: [['regen', 1]], anim: 'heal', desc: 'The tide goes out gently: a small heal and Regen for the party.' },
+  undertow: { name: 'Undertow', kind: 'mag', target: 'enemies', power: 120, mp: 14, elem: 'ice', debuffs: { spd: -1 }, anim: 'ice', desc: 'Drag every foe down into cold water: SPD down.' },
+  spring_tide: { name: 'Spring Tide', kind: 'heal', target: 'allies', power: 150, mp: 20, cure: ['poison', 'burn'], anim: 'heal', desc: 'High water washes the party clean: heal, and cure Poison and Burn.' },
+  maelstrom: { name: 'Maelstrom', kind: 'mag', target: 'enemies', power: 200, mp: 28, elem: 'ice', status: [['slow', 0.3]], anim: 'ice', desc: 'A whirlpool opens under every foe; may Slow.' },
+  drowning_deep: { name: 'Drowning Deep', kind: 'mag', target: 'enemy', power: 380, mp: 30, elem: 'ice', drain: 0.2, anim: 'ice', desc: 'Pull one foe to the bottom of a sea that is no longer there; drink 20% of the harm.' },
+  the_sea_returns: { name: 'The Sea Returns', kind: 'mag', target: 'enemies', power: 300, mp: 52, elem: 'ice', special: 'partyHeal15', anim: 'ice', desc: 'For one moment the sea comes home: ice on every foe, and the party is healed a little.' },
+  // Bellwright — Aurenne's bell-founders: sound that steadies friends and staggers foes.
+  toll: { name: 'Toll', kind: 'phys', target: 'enemy', power: 120, mp: 6, elem: 'blunt', status: [['stun', 0.2]], anim: 'blunt', desc: 'Ring the foe like a bell; may stun.' },
+  peal: { name: 'Peal', kind: 'support', target: 'allies', mp: 10, buffs: { def: 1, res: 1 }, anim: 'song', desc: 'A clear peal steadies the party: DEF and RES up.' },
+  discord: { name: 'Discord', kind: 'mag', target: 'enemies', power: 110, mp: 14, elem: 'none', status: [['silence', 0.3]], anim: 'song', desc: 'Two bells struck a semitone apart; may silence every foe.' },
+  knell: { name: 'Knell', kind: 'phys', target: 'enemy', power: 200, mp: 18, elem: 'blunt', special: 'delay', anim: 'blunt', desc: 'A death-knell blow that knocks the foe\'s turn back.' },
+  carillon: { name: 'Carillon', kind: 'phys', target: 'random', power: 60, hits: 5, mp: 24, elem: 'blunt', status: [['stun', 0.1]], anim: 'blunt', desc: 'Every bell in the tower at once, at random foes; each may stun.' },
+  great_bell: { name: 'Great Bell', kind: 'phys', target: 'enemy', power: 380, mp: 32, elem: 'blunt', ignoreDef: 0.3, status: [['stun', 0.3]], anim: 'quake', desc: 'Bring a bell\'s whole weight down: pierces 30% of DEF and may stun.' },
+  bell_of_ending: { name: 'Bell of Ending', kind: 'mag', target: 'enemies', power: 320, mp: 60, elem: 'none', special: 'delayAll', anim: 'song', desc: 'The great bell of Aurenne, rung once: unaligned on every foe, and all their turns are pushed back.' },
+  // Kitewright — the first wing-builders: wind, line and clever powder.
+  kite_strike: { name: 'Kite Strike', kind: 'phys', target: 'enemy', power: 120, mp: 4, elem: 'wind', delay: 0.8, anim: 'thrust', desc: 'Swing in on a kite-line; quick to recover.' },
+  flash_powder: { name: 'Flash Powder', kind: 'mag', stat: 'item', target: 'enemies', power: 90, mp: 8, elem: 'none', status: [['blind', 0.4]], anim: 'flask', desc: 'A pinch of flash-powder; may blind every foe (item power).' },
+  tether: { name: 'Tether', kind: 'support', target: 'enemy', mp: 10, debuffs: { spd: -1, eva: -2 }, status: [['marked', 1]], anim: 'debuff', desc: 'Hook a line on a foe: SPD and evasion down, and it is Marked.' },
+  gale_bomb_toss: { name: 'Gale Bomb', kind: 'mag', stat: 'item', target: 'enemies', power: 170, mp: 18, elem: 'wind', anim: 'wind', desc: 'A bottled gale on every foe (item power).' },
+  glider_drop: { name: 'Glider Drop', kind: 'phys', target: 'enemy', power: 300, mp: 20, elem: 'pierce', special: 'jump', anim: 'jump', desc: 'Glide up out of reach, then drop on one foe.' },
+  chain_lightning: { name: 'Chain Lightning', kind: 'mag', stat: 'item', target: 'random', power: 110, hits: 4, mp: 28, elem: 'bolt', anim: 'bolt', desc: 'A scrap capacitor, uncorked: four bolts at random foes (item power).' },
+  skyfleet: { name: 'Skyfleet', kind: 'phys', target: 'enemies', power: 360, mp: 46, elem: 'wind', anim: 'wind', desc: 'A hundred kites at once, every line a blade.' },
+  // Mnemonist — keepers of memory: remember the healthy, make the strong forget.
+  recall: { name: 'Recall', kind: 'heal', target: 'ally', power: 140, mp: 8, cure: 'bad', anim: 'heal', desc: 'Help an ally remember being well: heal and cure every ailment.' },
+  forget: { name: 'Forget', kind: 'mag', target: 'enemy', power: 100, mp: 8, elem: 'dark', special: 'dispel', anim: 'debuff', desc: 'Make a foe forget its blessings: strips its buffs.' },
+  echo_of_fire: { name: 'Echo of Fire', kind: 'mag', target: 'enemies', power: 160, mp: 16, elem: 'fire', anim: 'fire', desc: 'The memory of a burning street, on every foe.' },
+  echo_of_frost: { name: 'Echo of Frost', kind: 'mag', target: 'enemies', power: 180, mp: 20, elem: 'ice', status: [['slow', 0.25]], anim: 'ice', desc: 'The memory of a winter that would not end; may Slow.' },
+  lost_hour: { name: 'Lost Hour', kind: 'mag', target: 'enemy', power: 140, mp: 22, elem: 'dark', status: [['sleep', 0.3]], special: 'delay', anim: 'dark', desc: 'Steal an hour from a foe: its turn is pushed back, and it may fall asleep.' },
+  echo_of_the_sun: { name: 'Echo of the Sun', kind: 'mag', target: 'enemies', power: 300, mp: 40, elem: 'light', anim: 'light', desc: 'The memory of the Hearthsun at noon, on every foe.' },
+  total_recall: { name: 'Total Recall', kind: 'heal', target: 'allies', power: 200, mp: 56, revive: 0.5, cure: 'bad', anim: 'revive', desc: 'Everyone remembers who they were: revive at 50%, heal and cure the party.' },
+
   // ------------------------------------------------------------ Mastery Arts
   // Two per Crest, unlocked by its Ascension stars (★1 and ★3; data/crests.js MASTERY).
   // Each is that Crest's signature, a step past its rank-10 Art.
@@ -296,6 +330,18 @@ export const SKILLS = {
   // Afterlight
   remembered_sun: { name: 'Remembered Sun', kind: 'heal', target: 'allies', power: 260, mp: 70, revive: 0.5, buffs: { str: 1, mag: 1 }, anim: 'revive', desc: 'Everyone remembers the same morning: revive at 50%, heal the party, STR and MAG up.' },
   unending_dawn: { name: 'Unending Dawn', kind: 'hybrid', target: 'enemies', power: 900, mp: 99, elem: 'prism', special: 'allWeak', anim: 'light', desc: 'A dawn that does not stop: every element on every foe, each landing as a weakness.' },
+  // Tidecaller
+  rogue_wave: { name: 'Rogue Wave', kind: 'heal', target: 'allies', power: 220, mp: 46, revive: 0.25, status: [['regen', 1]], anim: 'revive', desc: 'A wave out of nowhere lifts everyone: revive at 25%, heal, Regen.' },
+  abyssal_tide: { name: 'Abyssal Tide', kind: 'mag', target: 'enemies', power: 380, mp: 70, elem: 'ice', status: [['slow', 0.5]], anim: 'ice', desc: 'The tide from the bottom of the abyss: ice on every foe; may Slow.' },
+  // Bellwright
+  harmonize: { name: 'Harmonize', kind: 'heal', target: 'allies', power: 160, mp: 36, buffs: { str: 1, mag: 1 }, anim: 'song', desc: 'Bring the party\'s hearts into tune: heal, STR and MAG up.' },
+  unrung_bell: { name: 'The Unrung Bell', kind: 'phys', target: 'enemies', power: 420, mp: 66, elem: 'blunt', status: [['stun', 0.4]], anim: 'quake', desc: 'The bell no founder dared ring: every foe staggered, and may be stunned.' },
+  // Kitewright
+  stormkite: { name: 'Stormkite', kind: 'mag', stat: 'item', target: 'enemies', power: 220, mp: 38, elem: 'bolt', status: [['stun', 0.25]], anim: 'bolt', desc: 'Fly a kite into the storm and let it down on every foe; may stun (item power).' },
+  first_wings: { name: 'First Wings', kind: 'phys', target: 'enemies', power: 520, mp: 62, elem: 'wind', ignoreDef: 0.2, delay: 0.6, anim: 'wind', desc: 'What the first Kitewrights flew: wind on every foe, pierces 20% of DEF, and you are moving again soon.' },
+  // Mnemonist
+  palimpsest: { name: 'Palimpsest', kind: 'mag', target: 'enemies', power: 260, mp: 44, elem: 'prism', anim: 'burst', desc: 'Every memory written over every other: an element on every foe, weaknesses first.' },
+  the_long_remembering: { name: 'The Long Remembering', kind: 'mag', target: 'enemy', power: 700, mp: 72, elem: 'dark', drain: 0.3, special: 'dispel', anim: 'dark', desc: 'Make one foe remember everything at once: strips its buffs, and you drink 30% of the harm.' },
 
   // ------------------------------------------------------------ Link Arts (cost Afterglow; see data/links.js)
   link_tidebound: { name: 'Tidebound Vow', kind: 'hybrid', target: 'enemies', power: 260, elem: 'light', anim: 'light', desc: 'Wren & Ilse.' },

@@ -272,7 +272,7 @@ export interface SkillDef {
   buffs?: Record<string, any>;
   debuffs?: Record<string, any>;
   selfBuffs?: Record<string, any>;
-  cure?: string;
+  cure?: string | string[];
   revive?: number;
   summon?: boolean;
   special?: string;
@@ -362,6 +362,8 @@ export interface CrestDef {
   unlock?: string;
   /** Mastery Legacy, attached from LEGACIES. */
   legacy?: CrestLegacy;
+  /** Lost Callings (Tier IV): where to start looking, shown until it's found. */
+  rumour?: string;
   /** Mastery Arts, attached from MASTERY: learned at these Ascension stars. */
   mastery?: Array<{ skill: string; stars: number }>;
 }
@@ -371,6 +373,7 @@ export interface CrestLegacy {
   desc: string;
   mods?: Record<string, number>;
   resist?: Record<string, number>;
+  immune?: string[];
 }
 
 export interface CharacterDef {
