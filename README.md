@@ -82,7 +82,8 @@ a primary and a secondary Crest per character, Supports on a point budget, and 3
 **Exploration** — 145 hand-laid maps, a party that follows you, a Quest Guide that
 marks where to go next (in the field, on the minimap and on the world map), doors that
 swing open as you walk in, a minimap, a world map with fast travel (to towns, and to any route or dungeon Hearthstone you've passed), fishing, per-town side quests, the Hunters' Lodge bounty board
-(10 marks + 2 hidden hunts), four optional dungeons, and New Game+.
+(10 marks + 2 hidden hunts), four optional dungeons, three arenas (the Bellring colosseum's
+four cups in Act I, the Scrap Arena in Act II, the post-game Echo Colosseum), and New Game+.
 
 **Presentation** — three.js 2D-HD rendering (bloom, tilt-shift depth of field, color
 grading) with procedural pixel art for characters, monsters, tiles and props, and a

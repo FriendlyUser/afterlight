@@ -447,6 +447,8 @@ const SFX = {
   ko: (a, t) => a.tone(t, 330, 0.5, { type: 'triangle', vol: 0.1, slide: 0.3 }),
   enemyDie: (a, t) => { a.noise(t, 0.5, { freq: 3000, sweep: 0.2, vol: 0.2 }); a.tone(t, 600, 0.4, { type: 'square', vol: 0.04, slide: 0.2, filter: 2000 }); },
   windup: (a, t) => { a.tone(t, 98, 0.9, { type: 'sawtooth', vol: 0.08, slide: 2.5, filter: 900 }); a.noise(t, 0.9, { freq: 180, sweep: 6, vol: 0.12 }); },
+  // A struck bronze bell: inharmonic partials, a long ring (the Bellring's round bell).
+  bell: (a, t) => [[1, 0.1, 2.6], [2.0, 0.05, 1.8], [2.76, 0.05, 1.4], [5.4, 0.025, 0.8]].forEach(([r, vol, dur]) => a.tone(t, 392 * r, dur, { type: 'sine', vol })),
   interrupt: (a, t) => { a.noise(t, 0.35, { freq: 6500, vol: 0.3, q: 0.6 }); [24, 19, 12, 7].forEach((s, i) => a.tone(t + i * 0.035, 660 * 2 ** (s / 12), 0.25, { type: 'triangle', vol: 0.06 })); },
   break: (a, t) => { a.noise(t, 0.4, { freq: 5000, vol: 0.35, q: 0.4 }); [12, 7, 0].forEach((s, i) => a.tone(t + i * 0.04, 880 * 2 ** (s / 12), 0.3, { type: 'square', vol: 0.05, filter: 5000 })); },
   flee: (a, t) => [0, 1, 2, 3].forEach((i) => a.noise(t + i * 0.07, 0.06, { freq: 900, vol: 0.12 })),

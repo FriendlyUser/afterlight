@@ -3,6 +3,7 @@ import L from './layouts/aurenne.js';
 import { CH3 } from '../../story/ch3.js';
 import { SIDE } from '../../story/ch3_side.js';
 import { startHourlyBells } from '../../story/ch3_fx.js';
+import { BELLRING } from '../../story/colosseum.js';
 
 // Story phases
 const theft = (st) => st.flags.c3_arrived && !st.flags.c3_pip_joined;
@@ -35,6 +36,8 @@ const npcs = [
       after: ['Mercy Vale. I gave her a nod every morning at this gate. She\'d bless my boots.', 'Can you imagine. I\'ve thrown the boots in the river.'],
       forks: ['Heading south? The Pilgrim Road runs straight to the Sunscar. Take water.', 'Take more water than that.'],
     }) },
+  { id: 'bc_crier', name: 'Bellring Crier', look: 'bc_crier', x: 17, y: 38, dir: 'right', hint: 'The Bellring',
+    cond: (st) => !!st.flags.c3_pip_joined, run: (s) => BELLRING.crier(s) },
   { id: 'crier', name: 'Crier Dunstan', look: 'c3_crier', x: 18, y: 25, dir: 'right',
     talk: phased('Crier Dunstan', {
       before: ['HEAR YE! His Holiness the Hierophant returns from the western isles! The Grand Lantern burns bright!', 'Also bread is up a copper!'],

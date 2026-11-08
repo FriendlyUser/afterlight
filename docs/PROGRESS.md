@@ -44,6 +44,7 @@ Estimated 40–60 hours with side content.
 | ch11 | Ch.12 Seven Wounds: Remnants and Rites by airship, the Starseer | `ch11`, `ch11b`, `ch11c`, `ch11d`, `ch11_reach` |
 | ch12 | Ch.13–14 Evernoon: the Hierophant, the Noon King, Vesper; the ending | `ch12`, `ch12_evernoon`, `ch12_finale` |
 | side | Hunters' Lodge + 10 bounties, Drowned Observatory, Fort Ashwatch, Hollow Bell, Garden That Remembers, 2 hidden hunts | `side`, `side_reach` |
+| colosseum | The Bellring, Aurenne's colosseum (Act I): four three-round cups, Bell Tokens, Valka the Undefeated | `colosseum` |
 | postgame | Gloam Abyss B1–30, Echo Colosseum (10 rounds), Lysa's Echo, the First Dark | `postgame`, `postgame_finale` |
 | opening | The opening movie, New Game difficulty picker, title attract loop | `opening` |
 | world map | Fast travel to towns and attuned Hearthstones | `fast_travel` |
@@ -215,6 +216,18 @@ done directly this session:
   act and unlock still apply, so Act I stones vanish with Act I. Left out: Lanternfall before
   the Sundering, the Last Sunset, the Noon Spire, Evernoon, Abyss floors. Saved in
   `state.vars.waystones` (older saves attune as they revisit). Test: `fast_travel`.
+- **The Bellring** (Act I colosseum; pack `content/colosseum.js`, map `maps/bc_bellring.js` +
+  `tools/maps/bc_bellring.py`, script `story/colosseum.js`): a world stop by Aurenne from
+  `c3_pip_joined`, a crier at Aurenne's gate. Ringmaster Ottavio Brass runs four cups —
+  Copper (Lv 14, Pip joined), Silver (21, Corvin joined), Gold (28, Mirefen), Sunsteel (34,
+  Elowen's farewell), each needing the one before. A cup is three rounds with HP/MP carried
+  over (medics restore 25% between); a loss heals and resets, never game over. First clear:
+  prize (Vigor Bangle, Hunter's Eye, Feather Cape, the new Bellring Laurel) + gold; every
+  clear: Bell Tokens (10/15/20/30, 3–8 on rematches) for the prize counter (tonics, stat
+  fruit, Crest Tomes, Lucky Coin). 12 troops / 14 fighters (`bc_`), four boss scripts with
+  telegraphs (Grizzlemaw, Iron Bull, Scythe Matron, Valka), a `colosseum` battle stage and a
+  `bell` SFX. Tuned so an auto party at the cup's level wins the whole gauntlet ~70–90%
+  (≥90% two levels up). Gone with the rest of Act I at the Sundering. Test: `colosseum`.
 
 ## Next
 Everything below is optional; the game is complete and the suite passes.

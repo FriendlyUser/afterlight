@@ -26,4 +26,5 @@ export const BATTLE_BACKGROUNDS = {
   gloam: { ground: 'u', back: 'U', patch: 'a', props: ['%', 'Z'], decor: ['%'], mood: 'gloam', density: 0.4 },
   evernoon: { ground: 'M', back: 'M', patch: ';', props: ['|', 'Q', 'K', 'S'], decor: ['f'], mood: 'evernoon', density: 0.35, treeType: 'tree_cherry' },
   lantern: { ground: '_', back: 'S', props: ['^', '|'], decor: [], mood: 'dusk', density: 0.3 },
+  colosseum: { ground: 's', back: 'M', patch: 'd', props: ['q', '|', '^', 'S'], decor: ['o', 'd'], mood: 'day', density: 0.4, backHeight: 3 },
 };
