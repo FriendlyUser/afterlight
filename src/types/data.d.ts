@@ -426,14 +426,23 @@ export interface ObjectiveTarget {
   x?: number;
   y?: number;
   npc?: string;
-  /** Hidden once this flag is set. */
-  unless?: string;
-  /** Shown only once this flag is set. */
-  after?: string;
+  /** Hidden once this flag (or every flag in the list) is set. */
+  unless?: string | string[];
+  /** Shown only once this flag (or every flag in the list) is set. */
+  after?: string | string[];
 }
 
 export interface ObjectiveEntry {
   /** Matches the start of the objective text. */
   text: string;
+  at: ObjectiveTarget | ObjectiveTarget[] | null;
+}
+
+/** Blue side-quest marker targets (src/data/objectives/side.js). */
+export interface SideQuestEntry {
+  /** The quest id passed to s.quest(). */
+  quest: string;
+  /** Matches the start of the quest's current description; omit for any step. */
+  step?: string;
   at: ObjectiveTarget | ObjectiveTarget[] | null;
 }

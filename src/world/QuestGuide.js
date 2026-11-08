@@ -6,6 +6,7 @@
 import { MAPS } from '../data/maps/index.js';
 import { openNodes } from '../data/worldmap.js';
 import { objectiveTargets } from '../data/objectives/index.js';
+import { sideQuestTargets } from '../data/objectives/side.js';
 
 /** The world map, as a stop on a route. */
 export const WORLD = '@world';
@@ -13,9 +14,26 @@ export const WORLD = '@world';
 /** Opening the world map from the menu, against 1 for each exit walked through. */
 const MENU_TRAVEL_COST = 4;
 
-/** The objective's targets that apply now: done parts (unless) dropped, later steps (after) not yet shown. */
+/** All of a flag or list of flags are set (a list: every part of a multi-part step done). */
+const allSet = (f, st) => [].concat(f).every((x) => st.flags[x]);
+
+/** Targets that apply now: done parts (unless) dropped, later steps (after) not yet shown. */
+const live = (targets, st) => targets.filter((t) => !(t.unless && allSet(t.unless, st)) && !(t.after && !allSet(t.after, st)));
+
+/** The objective's targets that apply now. */
 export function activeTargets(st) {
-  return objectiveTargets(st.vars.objective).filter((t) => !(t.unless && st.flags[t.unless]) && !(t.after && !st.flags[t.after]));
+  return live(objectiveTargets(st.vars.objective), st);
+}
+
+/**
+ * Active side quests (the Journal) with their targets that apply now (blue markers).
+ * @returns {Array<{ id: string, title: string, desc: string, targets: import('../types/data').ObjectiveTarget[] }>}
+ */
+export function activeSideQuests(st) {
+  return Object.values(st.vars.quests || {})
+    .filter((q) => q.status === 'active')
+    .map((q) => ({ id: q.id, title: q.title, desc: q.desc || '', targets: live(sideQuestTargets(q.id, q.desc || ''), st) }))
+    .filter((q) => q.targets.length);
 }
 
 /**

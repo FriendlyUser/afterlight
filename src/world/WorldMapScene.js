@@ -8,7 +8,7 @@ import { el } from '../ui/UI.js';
 import { keyCap } from '../core/Input.js';
 import { WORLD_NODES, openNodes } from '../data/worldmap.js';
 import { fbm, RNG } from '../core/util.js';
-import { WORLD, activeTargets, route } from './QuestGuide.js';
+import { WORLD, activeTargets, activeSideQuests, route } from './QuestGuide.js';
 import { waystonesAt, waystoneNode } from './Waystones.js';
 import { hasMount } from '../data/mount.js';
 import { getMountSheet, MOUNT_W, MOUNT_H } from '../render/MountFactory.js';
@@ -193,10 +193,20 @@ export class WorldMapScene {
     const st = this.game.state;
     // The stop on the way to the current objective (Settings → Quest Guide).
     this.questNode = st.settings.hideQuestGuide ? null : route(WORLD, activeTargets(st), st)?.node ?? null;
+    // Side quests (blue): the stop each active one leads to.
+    /** @type {Map<string, string[]>} */
+    this.sideAt = new Map();
+    if (!st.settings.hideSideQuests) {
+      for (const q of activeSideQuests(st)) {
+        const node = route(WORLD, q.targets, st)?.node;
+        if (node) this.sideAt.set(node.id, [...(this.sideAt.get(node.id) || []), q.title]);
+      }
+    }
     this.markerEls = this.nodes.map((n, i) => {
       const quest = n === this.questNode ? ' quest' : '';
       const stones = this.stones[i].length ? `<b class="wm-stones">◆${this.stones[i].length}</b>` : '';
-      const m = el('div', `wm-node ${nodeKind(n)}${this.isHere(n) ? ' here' : ''}${quest}`, `<i></i><span>${n.name}${stones}</span>`);
+      const side = this.sideAt.get(n.id)?.length ? ' sidequest' : '';
+      const m = el('div', `wm-node ${nodeKind(n)}${this.isHere(n) ? ' here' : ''}${quest}${side}`, `<i></i><span>${n.name}${stones}</span>`);
       m.style.left = `${(n.x / 1000) * 100}%`;
       m.style.top = `${(n.y / 750) * 100}%`;
       this.markers.appendChild(m);
@@ -208,9 +218,11 @@ export class WorldMapScene {
     this.markerEls.forEach((m, i) => m.classList.toggle('sel', i === this.index));
     const n = this.nodes[this.index];
     const quest = n && n === this.questNode ? '<div class="wm-quest">◆ Your objective lies this way</div>' : '';
+    const sides = n && this.sideAt.get(n.id);
+    const side = sides?.length ? `<div class="wm-side-list">◆ Side quests: ${sides.join(' · ')}</div>` : '';
     const stones = this.stones[this.index]?.length ? `<div class="wm-stone-list">Hearthstones: ${this.stones[this.index].map((s) => s.name).join(' · ')}</div>` : '';
     if (this.picker) this.info.innerHTML = this.pickerHtml();
-    else this.info.innerHTML = n ? `<div class="cd-name">${n.name}</div><div class="cd-tier">${n.region || ''}</div><div class="cd-desc">${n.desc || ''}</div>${stones}${quest}` : '<div class="dim">Nowhere to go yet.</div>';
+    else this.info.innerHTML = n ? `<div class="cd-name">${n.name}</div><div class="cd-tier">${n.region || ''}</div><div class="cd-desc">${n.desc || ''}</div>${stones}${quest}${side}` : '<div class="dim">Nowhere to go yet.</div>';
     const corner = this.panelCorner();
     for (const c of PANEL_CORNERS) this.info.classList.toggle(c.cls, c === corner);
   }

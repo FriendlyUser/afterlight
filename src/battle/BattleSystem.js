@@ -304,9 +304,10 @@ export class BattleSystem {
       const e = Math.round(exp * share * (1 + (m.expPct || 0) / 100));
       const c = Math.round(cp * share * (1 + (m.cpPct || 0) / 100));
       const before = ch.level;
+      const statsFrom = ch.stats(), supportFrom = ch.supportBudget();
       const levels = ch.gainExp(e);
       const ranks = [...ch.gainCp(ch.crest, c), ...(ch.secondary ? ch.gainCp(ch.secondary, Math.round(c / 2)) : [])];
-      results.push({ ch, exp: e, cp: c, levelFrom: before, levels, ranks, active });
+      results.push({ ch, exp: e, cp: c, levelFrom: before, levels, ranks, active, statsFrom, supportFrom });
     }
     this.state.stats.battles++;
     return { exp, gold, cp, items, results, stolen: this.goldStolen };

@@ -50,6 +50,8 @@ Estimated 40–60 hours with side content.
 | world map | Fast travel to towns and attuned Hearthstones | `fast_travel` |
 | crests | Mastery Legacies and Ascension stars | `crest_ascension`, `crest_balance` |
 | mount | Kindle the Emberhart: the Hollow meeting, riding, the Drift reunion | `mount` |
+| side quests | Blue side-quest markers (every step of all 80 quests), the area map | `side_quests`, `side_markers` |
+| level up | The level-up screen after a victory | `levelup` |
 
 ## Testing
 Headless Windows Chrome via WSL, against the local server.
@@ -260,6 +262,19 @@ done directly this session:
   the world map Kindle carries the leader from "here" to the chosen stop before the fade.
   Preview: `tools/test_mount.html`; frames: `tools/frame.sh "map=…&ride&hold=right"`.
   Help: "Riding Kindle". Test: `mount`.
+- **Side-quest markers, the area map, the level-up screen.** Every step of all 80
+  optional quests (101 steps, bounties included) now has blue marker targets in
+  `data/objectives/side1–4.js` (`{ quest, step?, at }`; `after`/`unless` may now list
+  several flags). Blue gems show over a quest's people and places on the current map, or
+  over the door of a building that holds one; the minimap and area map draw blue
+  diamonds; the world map floats a blue ◆ over each stop with a side quest and lists them;
+  the Journal names where each leads; Settings → Side Quest Markers turns them off. Gold
+  (the objective) wins when both mark the same spot, and the edge arrow is gold-only.
+  The **area map** (new Map action, M; gamepad LT; or the ⤢ button on the minimap) shows
+  the whole map at up to 18 px a tile with its name, where each exit leads and a legend;
+  the party waits while it's open. After a victory, a **Level Up!** panel shows a card
+  for each member who levelled: old → new level, every stat's gain, and new Support Points.
+  Tests: `side_quests` (data), `side_markers` (in play), `levelup`.
 
 ## Next
 Everything below is optional; the game is complete and the suite passes.

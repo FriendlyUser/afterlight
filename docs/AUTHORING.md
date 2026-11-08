@@ -399,6 +399,11 @@ Route and dungeon Hearthstones can be fast-travel points too: add `mapId: 'node_
 the map's Hearthstone attunes it; the world map then offers it as an arrival point under
 that node, following the node's act and unlock. Leave out one-way story maps.
 
+Side quests: every `s.quest(id, title, desc)` step needs an entry in
+`src/data/objectives/side1–4.js` (`{ quest, step?, at }`, targets as for objectives;
+`after`/`unless` may list several flags) — the blue markers. `tools/test.sh side_quests`
+lists any step without one.
+
 Riding: Kindle (the party's mount) can be called only on maps listed in `RIDE_MAPS` in
 `src/data/mount.js` — open roads and wilds, never towns, interiors, dungeons or dreams.
 A rider gets down automatically on talking, chests, doors and any script that lasts

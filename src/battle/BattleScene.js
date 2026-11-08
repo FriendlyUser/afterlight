@@ -598,6 +598,7 @@ export class BattleScene {
       const summary = this.sys.applyRewards();
       this.sys.commit('win');
       await this.ui.showVictory(summary);
+      await this.ui.showLevelUps(summary);
     } else if (outcome === 'flee') {
       this.sys.commit('flee');
       game.state.stats.escapes++;

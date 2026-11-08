@@ -14,6 +14,9 @@ import { getMonsterSprite } from '../../render/MonsterFactory.js';
 import { ELEM_ICONS } from '../../battle/BattleUI.js';
 import { ACTIVE_PARTY_SIZE } from '../../state/GameState.js';
 import { formatTime } from '../../core/util.js';
+import { MAPS } from '../../data/maps/index.js';
+import { WORLD, route } from '../../world/QuestGuide.js';
+import { sideQuestTargets } from '../../data/objectives/side.js';
 
 // =====================================================================
 // Items
@@ -245,6 +248,7 @@ export class SettingsScreen extends Screen {
       { key: 'reduceEffects', label: 'Flashes & Shake', value: s.reduceEffects ? 'Reduced' : 'Full', toggle: true },
       { key: 'hideMinimap', label: 'Minimap', value: s.hideMinimap ? 'Off' : 'On', toggle: true },
       { key: 'hideQuestGuide', label: 'Quest Guide', value: s.hideQuestGuide ? 'Off' : 'On', toggle: true },
+      { key: 'hideSideQuests', label: 'Side Quest Markers', value: s.hideSideQuests ? 'Off' : 'On', toggle: true },
       { key: 'controls', label: 'Controls', value: 'Remap keys', open: () => new ControlsScreen(this.menus) },
     ];
   }
@@ -346,8 +350,15 @@ export class JournalScreen extends Screen {
     const log = st.vars.journal || [];
     this.el.innerHTML = header('Journal', KEYS.back);
     const box = el('div', 'jn panel');
-    const quests = Object.values(st.vars.quests || {});
-    const qhtml = quests.length ? quests.map((q) => `<div class="jn-q ${q.status}"><span>${q.status === 'done' ? '✔' : '◆'}</span> <b>${q.title}</b>${q.status === 'done' ? '' : ` — ${richText(q.desc || '')}`}</div>`).join('') : '<div class="dim">No side quests yet.</div>';
+    const quests = Object.values(st.vars.quests || {}).sort((a, b) => Number(a.status === 'done') - Number(b.status === 'done'));
+    /** Where an active quest leads: its world-map stop, else its map's name (the blue ◆ on maps). */
+    const where = (q) => {
+      const targets = sideQuestTargets(q.id, q.desc || '');
+      if (!targets.length) return '';
+      const name = route(WORLD, targets, st)?.node?.name || MAPS[targets[0].map]?.name;
+      return name ? ` <span class="jn-where">◆ ${name}</span>` : '';
+    };
+    const qhtml = quests.length ? quests.map((q) => `<div class="jn-q ${q.status}"><span>${q.status === 'done' ? '✔' : '◆'}</span> <b>${q.title}</b>${q.status === 'done' ? '' : `${where(q)} — ${richText(q.desc || '')}`}</div>`).join('') : '<div class="dim">No side quests yet.</div>';
     box.innerHTML = `<div class="jn-obj"><div class="sd-title">Current Objective</div><div class="jn-objtext">${richText(st.vars.objective || 'Explore.')}</div></div>
       <div class="sd-title">Side Quests</div><div class="jn-quests">${qhtml}</div>
       <div class="sd-title">The Story So Far</div>
@@ -366,8 +377,9 @@ export class JournalScreen extends Screen {
 // =====================================================================
 
 const GUIDE = [
-  ['Controls', 'Move with the arrow keys or WASD; hold *Shift* to run. *Z*/*Enter* confirms and talks, *X*/*Esc* cancels, *C* opens the menu. In battle, *Q*/*E* adjusts Surge and *F* toggles Auto-battle. *T* toggles *Fast Mode*, which runs walking, cutscenes and battles at 2–4× (set the speed in Settings). These are the default keys: remap any of them in *Settings → Controls* (Esc always cancels and opens the menu). Your keys are saved with your game, export included. Gamepads work too.'],
-  ['Quest Guide', 'The *Objective* in the top-left corner says what to do next, and a gold *◆* marks where: the person or place, or the exit or door that leads toward it. When it is off screen, an arrow at the edge points the way; the minimap and the world map mark it too. Turn it off in *Settings → Quest Guide*.'],
+  ['Controls', 'Move with the arrow keys or WASD; hold *Shift* to run. *Z*/*Enter* confirms and talks, *X*/*Esc* cancels, *C* opens the menu. In battle, *Q*/*E* adjusts Surge and *F* toggles Auto-battle. *T* toggles *Fast Mode*, which runs walking, cutscenes and battles at 2–4× (set the speed in Settings). *M* opens the area map (or click ⤢ on the minimap), and *R* rides Kindle once you have met the Emberhart. These are the default keys: remap any of them in *Settings → Controls* (Esc always cancels and opens the menu). Your keys are saved with your game, export included. Gamepads work too.'],
+  ['Quest Guide', 'The *Objective* in the top-left corner says what to do next, and a gold *◆* marks where: the person or place, or the exit or door that leads toward it. When it is off screen, an arrow at the edge points the way; the minimap, the area map (*M*) and the world map mark it too. Turn it off in *Settings → Quest Guide*.'],
+  ['Side Quests', 'Optional quests in your *Journal* are marked in *blue*: a blue *◆* over the people and places they need on the map you are in (or over the door of the building they are in), on the minimap and area map, and floating over their stops on the world map. The Journal says where each one leads. Turn them off in *Settings → Side Quest Markers*.'],
   ['Turn Order', 'Battles flow on a timeline (top-left). Fast characters act more often. Quick Arts let you act again sooner; heavy Arts push your next turn back. Haste and Slow bend the timeline.'],
   ['Poise & Breaks', 'Every foe carries a *Poise* shield (the number under it). Hitting a *weakness* chips one point. At zero the foe *Breaks*: it loses its next turn and takes 50% more damage until it recovers. Weaknesses start hidden — experiment, or use *Scan*.'],
   ['Afterglow', 'The party shares the *Afterglow* gauge (three segments). It fills when you hit weaknesses, Break foes, land criticals and take hits. Spend it on *Surge* (Q/E before acting: up to +150% power and extra Poise damage) or on *Link Arts* — combination techniques between specific friends.'],

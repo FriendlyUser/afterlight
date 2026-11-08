@@ -324,6 +324,18 @@ export class FieldScene {
 
   handlePlayerInput(dt, input) {
     const p = this.player;
+    // The area map (world/Minimap.js): the party waits while it's open.
+    if (this.minimap.large) {
+      p.moving = false;
+      if (input.pressed('map') || input.pressed('cancel') || input.pressed('confirm') || input.pressed('menu')) { input.consumeAll(); this.minimap.toggleLarge(false); }
+      return;
+    }
+    if (input.pressed('map')) {
+      input.consume('map');
+      if (!this.minimap.toggleLarge(true)) { this.game.audio?.sfx('buzzer'); this.game.ui.toast('There\'s no map of this place.', 1800); }
+      p.moving = false;
+      return;
+    }
     const ax = input.axis();
     if (ax.x || ax.y) {
       const speed = this.riding ? MOUNT.speed : input.down('run') || this.state.settings.autoRun ? RUN_SPEED : WALK_SPEED;

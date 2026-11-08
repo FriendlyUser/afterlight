@@ -82,7 +82,8 @@ A mastered Crest leaves a *Legacy* — a small bonus you keep whatever you wear 
 past mastery climbs five Ascension stars that strengthen its stats and Arts.
 
 **Exploration** — 145 hand-laid maps, a party that follows you, a Quest Guide that
-marks where to go next (in the field, on the minimap and on the world map), doors that
+marks where to go next (gold for the story, blue for side quests; in the field, on the
+minimap, on an enlargeable area map and on the world map), doors that
 swing open as you walk in, a minimap, a world map with fast travel (to towns, and to any route or dungeon Hearthstone you've passed), a mount — Kindle, an Emberhart whose antlers burn with Lantern-light, ridden on open roads with no random battles — fishing, per-town side quests, the Hunters' Lodge bounty board
 (10 marks + 2 hidden hunts), four optional dungeons, three arenas (the Bellring colosseum's
 four cups in Act I, the Scrap Arena in Act II, the post-game Echo Colosseum), and New Game+.

@@ -2,28 +2,34 @@
 // map — the spot, the person, or the exit/door that heads toward it — an arrow at
 // the screen edge while it's out of view, the same spots on the minimap (which
 // reads `spots`), and the objective itself in the corner. Settings → Quest Guide
-// turns it all off (settings.hideQuestGuide). Refreshed on arrival and after
-// every script: objectives, and the flags that open new ways, change there.
+// turns it all off (settings.hideQuestGuide). Optional quests (the Journal) get blue
+// gems over their people and places on this map, and over the door of a building
+// that holds one (data/objectives/side.js; Settings → Side Quest Markers).
+// Refreshed on arrival and after every script: objectives, quests and the flags that
+// open new ways change there.
 
 import * as THREE from 'three';
 import { el, richText } from '../ui/UI.js';
-import { activeTargets, hopTile, route } from './QuestGuide.js';
+import { activeTargets, activeSideQuests, hopTile, route } from './QuestGuide.js';
 
-let glowTex = null;
+const glowTex = {};
 
-function glowTexture() {
-  if (glowTex) return glowTex;
+/** Soft halo behind a gem: warm gold for the objective, blue for side quests. */
+function glowTexture(side = false) {
+  const key = side ? 'side' : 'main';
+  if (glowTex[key]) return glowTex[key];
   const cv = document.createElement('canvas');
   cv.width = cv.height = 64;
   const g = cv.getContext('2d');
   const grad = g.createRadialGradient(32, 32, 2, 32, 32, 31);
-  grad.addColorStop(0, 'rgba(255, 236, 170, 0.95)');
-  grad.addColorStop(0.35, 'rgba(255, 200, 100, 0.4)');
-  grad.addColorStop(1, 'rgba(255, 190, 90, 0)');
+  const [a, b, c] = side ? ['170, 220, 255', '90, 160, 255', '70, 140, 255'] : ['255, 236, 170', '255, 200, 100', '255, 190, 90'];
+  grad.addColorStop(0, `rgba(${a}, 0.95)`);
+  grad.addColorStop(0.35, `rgba(${b}, 0.4)`);
+  grad.addColorStop(1, `rgba(${c}, 0)`);
   g.fillStyle = grad;
   g.fillRect(0, 0, 64, 64);
-  glowTex = new THREE.CanvasTexture(cv);
-  return glowTex;
+  glowTex[key] = new THREE.CanvasTexture(cv);
+  return glowTex[key];
 }
 
 export class QuestMarkers {
@@ -31,7 +37,7 @@ export class QuestMarkers {
     this.field = field;
     this.group = new THREE.Group();
     field.scene.add(this.group);
-    this.spots = []; // { x, z, y, actor?, mesh } in world units (tile centre = +0.5)
+    this.spots = []; // { x, z, y, actor?, mesh, side? } in world units (tile centre = +0.5)
     this.tracker = el('div', 'quest-tracker');
     this.arrow = el('div', 'quest-arrow');
     field.hud.append(this.tracker, this.arrow);
@@ -39,11 +45,15 @@ export class QuestMarkers {
     this.gemGeo = new THREE.OctahedronGeometry(0.24, 0).scale(1, 1.6, 1);
     this.gemMat = new THREE.MeshLambertMaterial({ color: '#ffbf2e', emissive: '#a05e00', flatShading: true, transparent: true, depthTest: false, depthWrite: false });
     this.glowMat = new THREE.SpriteMaterial({ map: glowTexture(), blending: THREE.AdditiveBlending, opacity: 0.6, depthTest: false, depthWrite: false });
+    this.sideGemMat = new THREE.MeshLambertMaterial({ color: '#4aa8ff', emissive: '#0b4a9a', flatShading: true, transparent: true, depthTest: false, depthWrite: false });
+    this.sideGlowMat = new THREE.SpriteMaterial({ map: glowTexture(true), blending: THREE.AdditiveBlending, opacity: 0.55, depthTest: false, depthWrite: false });
     this.time = 0;
     this.refresh();
   }
 
   get on() { return !this.field.state.settings.hideQuestGuide; }
+
+  get sideOn() { return !this.field.state.settings.hideSideQuests; }
 
   /** Work out the markers again from the current objective and open ways. */
   refresh() {
@@ -64,31 +74,42 @@ export class QuestMarkers {
         if (r.node && r.hop.kind === 'world') note = `Out to the world map, then on to <b>${r.node.name}</b>.`;
       }
     }
+    // Optional quests: blue, only for what's on this map (or behind a door here).
+    if (this.sideOn) {
+      for (const q of activeSideQuests(st)) {
+        const r = route(f.mapId, q.targets, st);
+        if (r?.goals) for (const t of r.goals) this.addGoal(t, true);
+        else if (r?.hop?.kind === 'door') this.addHop(r.hop, true);
+      }
+    }
     this.tracker.innerHTML = this.on && text ? `<div class="qt-head">Objective</div><div class="qt-text">${richText(text)}</div>${note ? `<div class="qt-note">${note}</div>` : ''}` : '';
     this.update(0);
   }
 
   /** A target on this map: a person (followed) or a tile. A bare map target needs no marker. */
-  addGoal(t) {
+  addGoal(t, side = false) {
     const actor = t.npc ? this.field.actors.get(t.npc) : null;
-    if (actor?.visible) this.addSpot({ actor, x: actor.x, z: actor.z, lift: 2.15 });
-    else if (t.x !== undefined) this.addSpot({ x: t.x + 0.5, z: t.y + 0.5, lift: 1.45, tile: t });
+    if (actor?.visible) this.addSpot({ actor, x: actor.x, z: actor.z, lift: 2.15, side });
+    else if (t.x !== undefined) this.addSpot({ x: t.x + 0.5, z: t.y + 0.5, lift: 1.45, tile: t, side });
   }
 
   /** The exit or door that leads on toward the target. */
-  addHop(hop) {
+  addHop(hop, side = false) {
     const { x, y } = hopTile(hop);
-    if (hop.kind === 'door') this.addSpot({ x: x + 0.5, z: y + 1.15, lift: 1.75, tile: { x, y } }); // over the door, in front of the wall
-    else this.addSpot({ x: x + 0.5, z: y + 0.5, lift: 1.25, tile: { x, y } });
+    if (hop.kind === 'door') this.addSpot({ x: x + 0.5, z: y + 1.15, lift: 1.75, tile: { x, y }, side }); // over the door, in front of the wall
+    else this.addSpot({ x: x + 0.5, z: y + 0.5, lift: 1.25, tile: { x, y }, side });
   }
 
   addSpot(s) {
+    // One gem per person or tile; the objective's gold wins over a side quest's blue.
+    const same = this.spots.find((o) => (s.actor ? o.actor === s.actor : !o.actor && Math.abs(o.x - s.x) < 0.6 && Math.abs(o.z - s.z) < 0.6));
+    if (same) return;
     const g = this.field.grid;
     const tx = s.tile?.x ?? Math.floor(s.x), ty = s.tile?.y ?? Math.floor(s.z);
     s.base = g.inside(tx, ty) ? g.surface(tx, ty) : 0;
     s.mesh = new THREE.Group();
-    const gem = new THREE.Mesh(this.gemGeo, this.gemMat);
-    const glow = new THREE.Sprite(this.glowMat);
+    const gem = new THREE.Mesh(this.gemGeo, s.side ? this.sideGemMat : this.gemMat);
+    const glow = new THREE.Sprite(s.side ? this.sideGlowMat : this.glowMat);
     glow.scale.setScalar(1.15);
     glow.renderOrder = 20;
     gem.renderOrder = 21;
@@ -102,23 +123,26 @@ export class QuestMarkers {
     this.time += dt;
     const f = this.field;
     if (this.miss && dt > 0 && !f.busy && !f.pendingScript) { console.warn(this.miss); this.miss = null; } // a real frame with the player in control
-    const show = this.on && !f.busy && this.spots.length > 0;
+    const show = !f.busy && this.spots.length > 0;
+    const mapOpen = !!f.minimap?.large; // the area map shows them all
     this.group.visible = show;
-    this.tracker.style.display = this.on && !f.busy && this.tracker.innerHTML ? '' : 'none';
-    if (!show) { this.arrow.style.display = 'none'; return; }
+    this.tracker.style.display = this.on && !f.busy && !mapOpen && this.tracker.innerHTML ? '' : 'none';
+    if (!show || mapOpen) { this.arrow.style.display = 'none'; if (!show) return; }
     const bob = Math.sin(this.time * 2.6) * 0.1;
     for (const s of this.spots) {
       if (s.actor) { s.x = s.actor.x; s.z = s.actor.z; s.base = s.actor.elev; }
       s.mesh.position.set(s.x, s.base + s.lift + bob, s.z);
       s.gem.rotation.y = this.time * 1.8;
     }
-    this.pointArrow();
+    if (!mapOpen) this.pointArrow();
   }
 
-  /** While the nearest marker is off screen, an arrow at the edge points to it. */
+  /** While the nearest objective marker is off screen, an arrow at the edge points to it (not for side quests). */
   pointArrow() {
     const f = this.field, p = f.player;
-    const near = this.spots.reduce((a, b) => (Math.hypot(b.x - p.x, b.z - p.z) < Math.hypot(a.x - p.x, a.z - p.z) ? b : a));
+    const main = this.spots.filter((s) => !s.side);
+    if (!main.length) { this.arrow.style.display = 'none'; return; }
+    const near = main.reduce((a, b) => (Math.hypot(b.x - p.x, b.z - p.z) < Math.hypot(a.x - p.x, a.z - p.z) ? b : a));
     const v = near.mesh.position.clone().project(f.camera);
     const behind = v.z > 1;
     if (!behind && Math.abs(v.x) < 0.92 && Math.abs(v.y) < 0.86) { this.arrow.style.display = 'none'; return; }
@@ -136,5 +160,7 @@ export class QuestMarkers {
     this.gemGeo.dispose();
     this.gemMat.dispose();
     this.glowMat.dispose();
+    this.sideGemMat.dispose();
+    this.sideGlowMat.dispose();
   }
 }

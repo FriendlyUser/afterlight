@@ -64,6 +64,7 @@ export const KINDLE = {
   async drift(s) {
     const met = hasMount(s.state);
     s.setFlag('kindle_drift');
+    if (s.state.vars.quests?.[QUEST]?.status === 'active') s.quest(QUEST, null, null, 'done'); // took Hesk's tip, never went
     await s.narrate('Something glows in the ash ahead. Low and gold and steady — the only warm color left in the world.');
     s.spawn('kindle', HART_LOOK, 57, 15, 'left');
     await s.pan(54, 15, 1.2);

@@ -20,6 +20,9 @@ export const ELEM_ICONS = {
 const ELEM_ORDER = ['slash', 'pierce', 'blunt', 'fire', 'ice', 'bolt', 'wind', 'light', 'dark'];
 const STAGE_NAMES = { str: 'STR', mag: 'MAG', def: 'DEF', res: 'RES', spd: 'SPD', eva: 'EVA' };
 
+/** Stats shown on the level-up screen. */
+const LEVEL_STATS = [['hp', 'HP'], ['mp', 'MP'], ['str', 'STR'], ['mag', 'MAG'], ['def', 'DEF'], ['res', 'RES'], ['spd', 'SPD'], ['lck', 'LCK']];
+
 export class BattleUI {
   constructor(scene) {
     this.scene = scene;
@@ -247,6 +250,53 @@ export class BattleUI {
       }
       html += '</div><div class="v-hint">▼</div>';
       box.innerHTML = html;
+      const w = {
+        el: box,
+        handleInput: (input) => {
+          if (input.pressed('confirm') || input.pressed('cancel')) {
+            input.consumeAll();
+            this.ui.remove(w);
+            resolve();
+          }
+        },
+      };
+      this.ui.push(w, 'menus');
+    });
+  }
+
+  // ------------------------------------------------------------------ level up
+
+  /**
+   * The level-up screen: old → new level, every stat's gain, and new Support Points.
+   * Resolves at once when nobody levelled.
+   */
+  showLevelUps(summary) {
+    const ups = summary.results.filter((r) => r.levels > 0);
+    if (!ups.length) return Promise.resolve();
+    return new Promise((resolve) => {
+      const box = el('div', 'panel levelup');
+      box.appendChild(el('div', 'lu-title', 'Level Up!'));
+      const row = el('div', 'lu-cards');
+      for (const r of ups) {
+        const ch = r.ch, now = ch.stats();
+        const card = el('div', 'lu-card');
+        const head = el('div', 'lu-head');
+        head.appendChild(getPortrait(ch.look, 3));
+        head.appendChild(el('div', 'lu-who', `<div class="lu-name">${ch.name}</div><div class="lu-lv">Lv <b>${r.levelFrom}</b> → <b class="up">${ch.level}</b>${r.levels > 1 ? ` <span class="lu-n">+${r.levels}</span>` : ''}</div>`));
+        card.appendChild(head);
+        let rows = '';
+        for (const [k, label] of LEVEL_STATS) {
+          const a = r.statsFrom?.[k] ?? now[k], b = now[k], d = b - a;
+          rows += `<div class="lu-stat"><span class="k">${label}</span><span class="a">${a}</span><span class="arrow">→</span><span class="b ${d > 0 ? 'up' : ''}">${b}</span><span class="d">${d > 0 ? `+${d}` : ''}</span></div>`;
+        }
+        card.appendChild(el('div', 'lu-stats', rows));
+        const sp = ch.supportBudget();
+        if (r.supportFrom !== undefined && sp > r.supportFrom) card.appendChild(el('div', 'lu-extra', `Support Points ${r.supportFrom} → <b>${sp}</b>`));
+        row.appendChild(card);
+      }
+      box.appendChild(row);
+      box.appendChild(el('div', 'v-hint', '▼'));
+      this.game.audio?.sfx('levelup');
       const w = {
         el: box,
         handleInput: (input) => {
