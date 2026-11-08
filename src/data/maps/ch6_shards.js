@@ -8,6 +8,7 @@ import KEEL_INN from './layouts/c6_keel_inn.js';
 import KEEL_HALL from './layouts/c6_keel_hall.js';
 import SEA from './layouts/c6_shattered_sea.js';
 import { CH6 } from '../../story/ch6.js';
+import { KINDLE } from '../../story/mount.js';
 
 const RUIN = { mood: 'ruin', music: 'ruin', particles: 'ash', battleBg: 'ruin', backdrop: { plane: '#140a1c', y: -18 } };
 const interior = { mood: 'interior', camera: { dist: 15, pitch: 0.75 }, noBanner: true, particles: 'dust', battleBg: 'ruin' };
@@ -91,6 +92,8 @@ export const c6Drift = {
   ],
   triggers: [
     { id: 'c6_house', x: 16, y: 1, w: 9, h: 5, run: (s) => CH6.house(s) },
+    // Off the wreck's bridge onto the east isle: Kindle finds Wren (story/mount.js).
+    { id: 'kindle', x: 46, y: 12, w: 3, h: 6, cond: (st) => !!st.flags.c6_drift_in && !st.flags.kindle_drift, run: (s) => KINDLE.drift(s) },
   ],
   exits: [
     { x: 0, y: 13, h: 2, to: 'c6_hermit_shard', tx: 36, ty: 12, dir: 'left' },

@@ -123,7 +123,7 @@ export class Followers {
       a.x = x; a.z = z;
       a.moving = stepping && p.moving;
       a.speed = p.speed;
-      a.visible = !this.held && !crowded && !this.onStage(f.ch);
+      a.visible = !this.held && !this.field.riding && !crowded && !this.onStage(f.ch); // riding Kindle: the party rides along
       a.update(dt, this.field.grid);
     });
   }

@@ -398,6 +398,11 @@ Route and dungeon Hearthstones can be fast-travel points too: add `mapId: 'node_
 `WAYSTONES` in `src/data/waystones.js` (the node it hangs off). Walking within 2 tiles of
 the map's Hearthstone attunes it; the world map then offers it as an arrival point under
 that node, following the node's act and unlock. Leave out one-way story maps.
+
+Riding: Kindle (the party's mount) can be called only on maps listed in `RIDE_MAPS` in
+`src/data/mount.js` — open roads and wilds, never towns, interiors, dungeons or dreams.
+A rider gets down automatically on talking, chests, doors and any script that lasts
+past its first frame (`runScript(fn, { keepMount: true })` opts out).
 Act I geography (x,y): Lanternfall (90,520) far west; Port Gale (240,500); Whisperwold
 (330,440); Thistledown (420,470); Aurenne (520,420) center; Sunscar/Saltglass (600,640)
 south; Greyspine/Frosthollow (560,180) north; Mirefen (760,560) southeast;

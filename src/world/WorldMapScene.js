@@ -1,7 +1,8 @@
 // World map: fast travel between unlocked destinations. Painted procedurally
 // as pixel art — a parchment continent before the Sundering, a shattered sky
 // archipelago with seven burning sun-wounds after it. A destination with attuned
-// Hearthstones nearby (world/Waystones.js) asks where to arrive.
+// Hearthstones nearby (world/Waystones.js) asks where to arrive. With Kindle the
+// Emberhart (data/mount.js), the leader rides there across the map before arriving.
 
 import { el } from '../ui/UI.js';
 import { keyCap } from '../core/Input.js';
@@ -9,6 +10,9 @@ import { WORLD_NODES, openNodes } from '../data/worldmap.js';
 import { fbm, RNG } from '../core/util.js';
 import { WORLD, activeTargets, route } from './QuestGuide.js';
 import { waystonesAt, waystoneNode } from './Waystones.js';
+import { hasMount } from '../data/mount.js';
+import { getMountSheet, MOUNT_W, MOUNT_H } from '../render/MountFactory.js';
+import { easeInOutSine } from '../core/util.js';
 
 const W = 320, H = 180;           // pixel-art canvas
 const SCALE_X = W / 1000, SCALE_Y = H / 750;
@@ -273,9 +277,38 @@ export class WorldMapScene {
   async leave(dest) {
     if (this.leaving) return;
     this.leaving = true;
+    if (dest && hasMount(this.state)) await this.ride(this.nodes.find((n) => this.isHere(n)), this.nodes[this.index]);
     await this.game.fadeOut(0.4);
     this.game.popScene(dest);
     if (!dest) await this.game.fadeIn(0.4);
+  }
+
+  /** Kindle carries the leader from here to the chosen stop (skipped when there's no "here"). */
+  async ride(from, to) {
+    if (!from || !to || from === to) return;
+    const sheet = getMountSheet(this.state.leaderLook());
+    const cv = document.createElement('canvas');
+    cv.width = MOUNT_W;
+    cv.height = MOUNT_H;
+    cv.className = 'wm-rider';
+    this.markers.appendChild(cv);
+    this.rider = cv;
+    const ctx = cv.getContext('2d');
+    const row = to.x >= from.x ? 2 : 1; // sheet rows: down, left, right, up
+    const dist = Math.hypot(to.x - from.x, to.y - from.y);
+    const dur = Math.min(1.8, 0.6 + dist / 600);
+    let last = -1;
+    this.game.audio?.sfx('hart');
+    await this.game.tween(dur, (k) => {
+      cv.style.left = `${((from.x + (to.x - from.x) * k) / 1000) * 100}%`;
+      cv.style.top = `${((from.y + (to.y - from.y) * k) / 750) * 100}%`;
+      const f = 1 + (Math.floor(k * dur * 10) % 4);
+      if (f === last) return;
+      last = f;
+      if (f % 2) this.game.audio?.sfx('hoof');
+      ctx.clearRect(0, 0, MOUNT_W, MOUNT_H);
+      ctx.drawImage(sheet.canvas, f * MOUNT_W, row * MOUNT_H, MOUNT_W, MOUNT_H, 0, 0, MOUNT_W, MOUNT_H);
+    }, easeInOutSine);
   }
 
   update(dt) {

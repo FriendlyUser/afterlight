@@ -2,6 +2,8 @@
 import OUTER from './layouts/c2_wold_outer.js';
 import HEART from './layouts/c2_wold_heart.js';
 import { WOLD, MERRY_SPOTS, merryDef } from '../../story/ch2_wold.js';
+import { KINDLE } from '../../story/mount.js';
+import { HART_LOOK, hasMount } from '../mount.js';
 
 /** @type {Partial<import('../../types/data').MapDef>} shared by the maps below */
 const forest = {
@@ -71,6 +73,11 @@ export const woldHeart = {
     { id: 'wh_north', x: 31, y: 2, item: 'power_fruit' },
     { id: 'wh_south', x: 25, y: 35, item: 'oak_staff' },
     { id: 'wh_hearth', x: 24, y: 6, item: 'ether', count: 2 },
+  ],
+  // Kindle the Emberhart waits by the Mother's tree once the dark has gone out of it.
+  npcs: [
+    { id: 'kindle', name: 'Emberhart', look: HART_LOOK, x: 33, y: 9, dir: 'left', hint: 'The hart', noTurn: true,
+      cond: (st) => !!st.flags.c2_mother_done && !hasMount(st) && !st.flags.sundered, run: (s) => KINDLE.hollow(s) },
   ],
   blockers: [
     { id: 'roots', x: 21, y: 13, w: 3, h: 1, prop: 'tree_dead' },

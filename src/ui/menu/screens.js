@@ -378,6 +378,7 @@ const GUIDE = [
   ['Equipment', 'Weapons and armor depend on your primary Crest. In *Equipment*, press *F* to Optimize. Accessories fit anyone.'],
   ['Saving', 'Golden *Hearthstones* restore the party and let you save; you can also save from the menu almost anywhere, and the game autosaves whenever you enter a new area. Saves live in this browser. Press *F* on a save slot to *export* it to a file or *import* one, to keep a backup or carry your game to another computer.'],
   ['Encounters', 'The orb in the lower-left warms from green to red as a random battle approaches. Settings can halve or disable random encounters.'],
+  ['Riding Kindle', 'Once *Kindle* the Emberhart is with you, press *R* (Ride) on open roads and in the wilds to ride, and again to get down. Kindle runs faster than you can, and nothing from the Gloam catches you while you ride — no random battles. Towns, buildings and dungeons are on foot; talking to someone or opening a chest gets you down. On the world map, Kindle carries you to where you are going.'],
 ];
 
 export class GuideScreen extends Screen {

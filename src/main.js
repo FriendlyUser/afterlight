@@ -87,6 +87,7 @@ async function boot() {
     const field = new FieldScene(game);
     await game.start(field, { mapId: params.get('map'), x: +(params.get('x') || 16), y: +(params.get('y') || 13), dir: 'down' });
     game.fadeIn(0.6);
+    if (params.has('ride')) { state.flags.mount_kindle = true; field.setRiding(true, { quick: true }); } // Debug: on Kindle
     if (params.has('battle')) field.runScript((s) => s.battle(params.get('battle'), { bg: params.get('bg') || undefined }));
     if (params.has('say')) field.runScript((s) => s.say(params.get('say'), params.get('text') || 'A test line of dialogue, with *gold* and _italic_ markup.'));
     if (params.has('menu')) {

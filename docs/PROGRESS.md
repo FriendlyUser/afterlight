@@ -49,6 +49,7 @@ Estimated 40–60 hours with side content.
 | opening | The opening movie, New Game difficulty picker, title attract loop | `opening` |
 | world map | Fast travel to towns and attuned Hearthstones | `fast_travel` |
 | crests | Mastery Legacies and Ascension stars | `crest_ascension`, `crest_balance` |
+| mount | Kindle the Emberhart: the Hollow meeting, riding, the Drift reunion | `mount` |
 
 ## Testing
 Headless Windows Chrome via WSL, against the local server.
@@ -242,6 +243,23 @@ done directly this session:
   masters its primary, so it never sees stars; in A/B runs a 5★ primary is worth about what
   six extra mastered Crests already were (e.g. Echo Colosseum round 10 at Lv 99: 75% → 100%),
   and the First Dark stays out of reach without real preparation. Test: `crest_ascension`.
+- **Kindle the Emberhart** (mount; `data/mount.js`, `story/mount.js`, sprite
+  `render/MountFactory.js`): a great hart whose antlers burn with Lantern-light. Act I,
+  optional: Hesk the forester in Thistledown (from `c2_mother_done`) has seen it in the
+  Whisperwold's Hollow; by the Mother's old tree it is beset by shades (`c2_shade_pair`),
+  then bonds with Wren, who names it Kindle (flag `mount_kindle`, key item `kindle_ember`,
+  quest `mount_kindle`). Act II: crossing onto the Drift's east isle, Kindle finds Wren in
+  the ash of Lanternfall — a reunion, or a first meeting if she never went (`kindle_drift`).
+  Riding: the new **Ride** action (R; gamepad RT; remappable) on the 25 `RIDE_MAPS` (routes and
+  wilds in all three acts) — 9.5 tiles/s (running 6.4), no random encounters, the party
+  rides along (followers hidden), embers and hoof-falls. Talking, chests, doors and any
+  scene longer than a frame put you on foot; riding carries across route exits and stops
+  in towns (`state.vars.riding`). The mounted player is an ordinary `Actor` whose look is
+  `{ kind: 'mount', rider }` — a 44×46 sheet (4 directions × stand + 4 gallop frames) with
+  the leader's head and torso composited on, cached per rider, with an ember glow mask. On
+  the world map Kindle carries the leader from "here" to the chosen stop before the fade.
+  Preview: `tools/test_mount.html`; frames: `tools/frame.sh "map=…&ride&hold=right"`.
+  Help: "Riding Kindle". Test: `mount`.
 
 ## Next
 Everything below is optional; the game is complete and the suite passes.

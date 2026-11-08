@@ -447,6 +447,14 @@ const SFX = {
   ko: (a, t) => a.tone(t, 330, 0.5, { type: 'triangle', vol: 0.1, slide: 0.3 }),
   enemyDie: (a, t) => { a.noise(t, 0.5, { freq: 3000, sweep: 0.2, vol: 0.2 }); a.tone(t, 600, 0.4, { type: 'square', vol: 0.04, slide: 0.2, filter: 2000 }); },
   windup: (a, t) => { a.tone(t, 98, 0.9, { type: 'sawtooth', vol: 0.08, slide: 2.5, filter: 900 }); a.noise(t, 0.9, { freq: 180, sweep: 6, vol: 0.12 }); },
+  // Kindle answers: a low, rising belling call over a warm chime (the Emberhart's ember-light).
+  hart: (a, t) => {
+    a.tone(t, 196, 0.5, { type: 'triangle', vol: 0.07, slide: 1.5 });
+    a.tone(t + 0.12, 392, 0.45, { type: 'sine', vol: 0.05, slide: 1.33 });
+    [0, 4, 7, 12].forEach((s, i) => a.tone(t + 0.3 + i * 0.06, 784 * 2 ** (s / 12), 0.5, { type: 'sine', vol: 0.035 }));
+  },
+  // A soft hoof-fall on open ground (riding Kindle).
+  hoof: (a, t) => { a.noise(t, 0.05, { freq: 260, type: 'lowpass', vol: 0.09 }); a.tone(t, 90, 0.06, { type: 'sine', vol: 0.06 }); },
   // A struck bronze bell: inharmonic partials, a long ring (the Bellring's round bell).
   bell: (a, t) => [[1, 0.1, 2.6], [2.0, 0.05, 1.8], [2.76, 0.05, 1.4], [5.4, 0.025, 0.8]].forEach(([r, vol, dur]) => a.tone(t, 392 * r, dur, { type: 'sine', vol })),
   interrupt: (a, t) => { a.noise(t, 0.35, { freq: 6500, vol: 0.3, q: 0.6 }); [24, 19, 12, 7].forEach((s, i) => a.tone(t + i * 0.035, 660 * 2 ** (s / 12), 0.25, { type: 'triangle', vol: 0.06 })); },

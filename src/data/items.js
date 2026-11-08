@@ -67,6 +67,7 @@ export const ITEMS = {
   scrap_gear: { name: 'Scrap Gear', kind: 'material', sell: 40, desc: 'Airship-grade cog.', icon: '◇' },
 
   // ---------------------------------------------------------------- key items
+  kindle_ember: { name: 'Kindle\'s Ember', kind: 'key', desc: 'A coal from an Emberhart\'s antler, warm as a hand. On open roads and in the wilds, press Ride to call Kindle.', icon: '✪' },
   edrins_compass: { name: 'Edrin\'s Compass', kind: 'key', desc: 'Your father\'s compass. The needle points west, always west.', icon: '✪' },
   nana_brooch: { name: 'Nana Brisa\'s Brooch', kind: 'key', desc: 'A silver gull with a chipped wing.', icon: '✪' },
   fishing_net: { name: 'Mended Net', kind: 'key', desc: 'Fisher Tobias\'s net, freshly mended.', icon: '✪' },

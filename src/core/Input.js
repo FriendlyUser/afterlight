@@ -17,6 +17,7 @@ export const ACTIONS = [
   { id: 'pageRight', label: 'Next · Surge up' },
   { id: 'info', label: 'Auto-battle · optimize · export' },
   { id: 'fast', label: 'Fast Mode' },
+  { id: 'ride', label: 'Ride Kindle' },
 ];
 
 export const MAX_KEYS_PER_ACTION = 3;
@@ -34,6 +35,7 @@ export const DEFAULT_BINDINGS = {
   pageRight: ['KeyE'],
   info: ['KeyF'],
   fast: ['KeyT'],
+  ride: ['KeyR'],
 };
 
 /** Escape always cancels and opens the menu, whatever else is bound, so no remap can lock a player out. */
@@ -86,7 +88,7 @@ export function keysFor(action) { return active[action].map(keyName); }
 /** Hint markup for an action's first key, e.g. <span class="key">Z</span>. */
 export function keyCap(action) { return `<span class="key">${keysFor(action)[0] ?? '?'}</span>`; }
 
-const PAD_BUTTONS = { 0: 'confirm', 1: 'cancel', 2: 'run', 3: 'menu', 9: 'menu', 4: 'pageLeft', 5: 'pageRight', 12: 'up', 13: 'down', 14: 'left', 15: 'right', 8: 'info', 10: 'fast' };
+const PAD_BUTTONS = { 0: 'confirm', 1: 'cancel', 2: 'run', 3: 'menu', 9: 'menu', 4: 'pageLeft', 5: 'pageRight', 12: 'up', 13: 'down', 14: 'left', 15: 'right', 8: 'info', 10: 'fast', 7: 'ride' };
 
 const REPEAT_DELAY = 0.32;
 const REPEAT_RATE = 0.075;

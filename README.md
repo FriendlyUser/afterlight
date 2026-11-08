@@ -83,7 +83,7 @@ past mastery climbs five Ascension stars that strengthen its stats and Arts.
 
 **Exploration** — 145 hand-laid maps, a party that follows you, a Quest Guide that
 marks where to go next (in the field, on the minimap and on the world map), doors that
-swing open as you walk in, a minimap, a world map with fast travel (to towns, and to any route or dungeon Hearthstone you've passed), fishing, per-town side quests, the Hunters' Lodge bounty board
+swing open as you walk in, a minimap, a world map with fast travel (to towns, and to any route or dungeon Hearthstone you've passed), a mount — Kindle, an Emberhart whose antlers burn with Lantern-light, ridden on open roads with no random battles — fishing, per-town side quests, the Hunters' Lodge bounty board
 (10 marks + 2 hidden hunts), four optional dungeons, three arenas (the Bellring colosseum's
 four cups in Act I, the Scrap Arena in Act II, the post-game Echo Colosseum), and New Game+.
 
@@ -139,6 +139,7 @@ Add these to the URL to jump straight into the game:
 | `&party=ilse,bram&lv=20` | Party members and level |
 | `&flags=a,b` | Set story flags |
 | `&cp=vanguard:1500,mender:800` | Crest CP for every member (800 = mastered, more = Ascension) |
+| `&ride` | Start riding Kindle (any map, for previews) |
 | `&battle=<troop>&bg=<bg>` | Start a battle |
 | `&menu=crests\|world\|settings\|shop:<id>` | Open a menu |
 | `&debug` | FPS, draw calls and triangles overlay |

@@ -19,6 +19,7 @@ import { Followers } from './Followers.js';
 import { Minimap } from './Minimap.js';
 import { QuestMarkers } from './QuestMarkers.js';
 import { attuneNear } from './Waystones.js';
+import { MOUNT, hasMount, rideable, mountLook } from '../data/mount.js';
 
 const CAM = { fov: 30, dist: 20, pitch: 0.68, lookHeight: 0.7 };
 const WALK_SPEED = 3.9;
@@ -64,11 +65,12 @@ export class FieldScene {
     this.particles.setAmbient(particles === undefined ? this.env.mood.particles : particles);
 
 
-    // Player
+    // Player (still riding Kindle if they rode in and may ride here; data/mount.js)
     ({ x, y } = this.arrivalTile(x, y));
     this.actors.clear();
-    const look = this.state.leaderLook();
-    this.player = new Actor(look, { x, y, dir, id: 'player' });
+    this.riding = !!this.state.vars.riding && hasMount(this.state) && rideable(map);
+    this.state.vars.riding = this.riding;
+    this.player = new Actor(this.playerLook(), { x, y, dir, id: 'player' });
     this.player.placeAt(x, y, this.grid);
     this.player.face(dir);
     this.scene.add(this.player.root);
@@ -92,6 +94,7 @@ export class FieldScene {
     game.ui.layers.hud.appendChild(this.hud);
     this.dangerEl = el('div', 'danger');
     if (map.encounters) this.hud.appendChild(this.dangerEl);
+    if (this.riding) this.dangerEl.style.display = 'none';
     this.hintEl = el('div', 'interact-hint');
     this.hintEl.style.display = 'none';
     this.hud.appendChild(this.hintEl);
@@ -323,7 +326,7 @@ export class FieldScene {
     const p = this.player;
     const ax = input.axis();
     if (ax.x || ax.y) {
-      const speed = input.down('run') || this.state.settings.autoRun ? RUN_SPEED : WALK_SPEED;
+      const speed = this.riding ? MOUNT.speed : input.down('run') || this.state.settings.autoRun ? RUN_SPEED : WALK_SPEED;
       p.speed = speed;
       p.dir = dirFromVector(ax.x, ax.y, p.dir);
       p.moving = p.tryMove(ax.x * speed * dt, ax.y * speed * dt, this.grid, [...this.actors.values()]);
@@ -344,10 +347,17 @@ export class FieldScene {
     if (p.moving && p.speed > 5) {
       this.dustT = (this.dustT || 0) - dt;
       if (this.dustT <= 0) {
-        this.dustT = 0.12;
+        this.dustT = this.riding ? 0.07 : 0.12;
         this.particles.burst({ x: p.x, y: p.elev + 0.05, z: p.z + 0.1, count: 2, colors: ['#d8ccb8', '#b8ac98'], speed: 0.6, up: 0.6, gravity: 1.5, life: 0.45, size: 0.35, additive: false, alpha: 0.6 });
+        // Kindle sheds embers at a gallop.
+        if (this.riding && Math.random() < 0.5) this.particles.burst({ x: p.x, y: p.elev + 1.1, z: p.z, count: 1, colors: ['#ffb24a', '#ffd77a'], speed: 0.4, up: 0.8, gravity: -0.3, life: 0.7, size: 0.22 });
       }
     }
+    if (this.riding && p.moving) {
+      const beat = Math.floor(p.animT);
+      if (beat !== this.hoofBeat) { this.hoofBeat = beat; if (beat % 2 === 0) this.game.audio?.sfx('hoof'); }
+    }
+    if (input.pressed('ride')) { input.consume('ride'); this.toggleRide(); return; }
     if (input.pressed('pageRight') || input.pressed('pageLeft')) this.cycleLeader(input.pressed('pageRight') ? 1 : -1);
     if (input.pressed('confirm')) { input.consume('confirm'); this.interact(); }
     else if (input.pressed('menu')) {
@@ -361,8 +371,21 @@ export class FieldScene {
     const party = this.state.party;
     if (party.length < 2) return;
     if (dir > 0) party.push(party.shift()); else party.unshift(party.pop());
+    const p = this.replacePlayer();
+    this.game.audio?.sfx('cursor');
+    this.particles.burst({ x: p.x, y: p.elev + 0.8, z: p.z + 0.2, colors: ['#ffffff', '#ffe8a0'], count: 10, speed: 1.2, gravity: 0, life: 0.4 });
+  }
+
+  /** The leader's field look: on foot, or riding Kindle. */
+  playerLook() {
+    const look = this.state.leaderLook();
+    return this.riding ? mountLook(look) : look;
+  }
+
+  /** Rebuild the player actor in place (leader changed, mounted, dismounted). */
+  replacePlayer() {
     const old = this.player;
-    const p = new Actor(this.state.leaderLook(), { x: old.tileX, y: old.tileY, dir: old.dir, id: 'player' });
+    const p = new Actor(this.playerLook(), { x: old.tileX, y: old.tileY, dir: old.dir, id: 'player' });
     p.x = old.x; p.z = old.z; p.elev = old.elev;
     p.face(old.dir);
     this.scene.remove(old.root);
@@ -370,8 +393,38 @@ export class FieldScene {
     this.scene.add(p.root);
     this.player = p;
     p.syncMesh();
-    this.game.audio?.sfx('cursor');
-    this.particles.burst({ x: p.x, y: p.elev + 0.8, z: p.z + 0.2, colors: ['#ffffff', '#ffe8a0'], count: 10, speed: 1.2, gravity: 0, life: 0.4 });
+    return p;
+  }
+
+  // =====================================================================
+  // Riding Kindle (data/mount.js)
+  // =====================================================================
+
+  /** The Ride key: call Kindle, or get down. */
+  toggleRide() {
+    if (this.riding) { this.setRiding(false); return; }
+    if (!hasMount(this.state)) return;
+    if (!rideable(this.map)) {
+      this.game.audio?.sfx('buzzer');
+      this.game.ui.toast(`${MOUNT.name} won't come here — only on open roads and in the wilds.`, 2600);
+      return;
+    }
+    this.setRiding(true);
+  }
+
+  /** Mount or dismount. `quick`: no call, just get down (a scene is starting). */
+  setRiding(on, { quick = false } = {}) {
+    if (on === this.riding) return;
+    this.riding = on;
+    this.state.vars.riding = on;
+    const p = this.replacePlayer();
+    this.dangerEl.style.display = on ? 'none' : '';
+    if (on) this.resetEncounterCounter();
+    else this.followers.regroup();
+    if (quick) return;
+    this.game.audio?.sfx(on ? 'hart' : 'cursor');
+    this.particles.burst({ x: p.x, y: p.elev + 0.9, z: p.z + 0.2, colors: on ? ['#ffb24a', '#ffd77a', '#fff2c0'] : ['#ffffff', '#ffe8a0'], count: on ? 22 : 10, speed: 1.6, up: 1, gravity: 0, life: 0.6 });
+    p.hop(this.game, on ? 0.3 : 0.2, 0.26);
   }
 
   updateWander(a, dt) {
@@ -437,6 +490,7 @@ export class FieldScene {
   interact() {
     const t = this.findTarget();
     if (!t) return;
+    if (this.riding) this.setRiding(false, { quick: true });
     switch (t.kind) {
       case 'npc': return this.talkTo(t.actor);
       case 'chest': return this.openChest(t.chest);
@@ -542,7 +596,7 @@ export class FieldScene {
 
   stepEncounter() {
     const enc = this.map.encounters;
-    if (!enc || this.state.flags.noEncounters) return;
+    if (!enc || this.state.flags.noEncounters || this.riding) return; // the Gloam's things scatter from Kindle's light
     if (enc.cond && !enc.cond(this.state)) return;
     const chars = enc.onTiles;
     if (chars && !chars.includes(this.grid.char(this.player.tileX, this.player.tileY))) return;
@@ -580,20 +634,33 @@ export class FieldScene {
   // Scripts
   // =====================================================================
 
-  async runScript(fn) {
+  /** Run a story step. A scene that lasts past its first frame puts a rider back on foot (keepMount: no). */
+  async runScript(fn, { keepMount = false } = {}) {
     if (!fn) return;
     this.busy = true;
     this.player.moving = false;
     this.hintEl.style.display = 'none';
     const ctx = new ScriptContext(this.game, this);
     try {
-      await fn(ctx);
+      const run = fn(ctx);
+      if (this.riding && !keepMount) this.dismountIfScene(run);
+      await run;
     } catch (err) {
       console.error('Script error:', err);
     } finally {
       this.busy = false;
       if (this.game.scene === this) { this.refreshNpcs(); this.quest.refresh(); }
     }
+  }
+
+  /** Get down if `run` is still going next frame (an onEnter that only checks a flag is not a scene). */
+  dismountIfScene(run) {
+    let done = false;
+    Promise.resolve(run).then(() => { done = true; }, () => { done = true; });
+    this.game.tasks.add(() => {
+      if (!done && this.riding && this.game.scene === this) this.setRiding(false, { quick: true });
+      return true;
+    });
   }
 
   /**
@@ -693,7 +760,7 @@ export class FieldScene {
     this.updateCamera(1, true);
     this.runScript(async () => {
       const game = this.game;
-      p.speed = WALK_SPEED;
+      p.speed = this.riding ? MOUNT.speed * 0.6 : WALK_SPEED;
       p.moving = true;
       await game.tween(0.42, (k) => {
         p.x = from.x + (x + 0.5 - from.x) * k;
@@ -710,7 +777,7 @@ export class FieldScene {
         game.audio?.sfx('door_close');
         game.tween(0.3, (k) => door.setOpen(1 - k), easeInOutSine); // shuts behind them; control returns now
       }
-    });
+    }, { keepMount: true });
   }
 
   emote(id, symbol = '!', sec = 1) {

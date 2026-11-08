@@ -3,11 +3,13 @@
 
 import * as THREE from 'three';
 import { getCharacterSheet, FIELD_W, FIELD_H } from '../render/SpriteFactory.js';
+import { getMountSheet } from '../render/MountFactory.js';
 import { PX_PER_UNIT } from '../render/PropFactory.js';
 import { makeSpriteMaterial, makeDepthMaterial } from './MapBuilder.js';
 import { damp, dirFromVector } from '../core/util.js';
 
 const WALK_SEQ = [1, 0, 2, 0];
+const WALK_STRIDE = 3.6 / 7.5; // tiles per walk frame
 let shadowTex = null;
 
 function blobShadowTexture() {
@@ -33,7 +35,11 @@ export class Actor {
     this.id = opts.id || look.id || 'actor';
     this.name = opts.name || '';
     this.look = look;
-    this.sheet = getCharacterSheet(look);
+    // A look of kind 'mount' is Kindle the Emberhart (carrying look.rider, if any).
+    /** @type {any} */
+    this.sheet = look.kind === 'mount' ? getMountSheet(look.rider) : getCharacterSheet(look);
+    this.walkSeq = this.sheet.walkSeq || WALK_SEQ;
+    this.stride = this.sheet.stride || WALK_STRIDE;
     this.x = (opts.x ?? 0) + 0.5;
     this.z = (opts.y ?? 0) + 0.5;
     this.elev = 0;
@@ -53,18 +59,19 @@ export class Actor {
     this.home = null;
     this.wanderT = 0;
 
-    const w = FIELD_W / PX_PER_UNIT, h = FIELD_H / PX_PER_UNIT;
+    const w = (this.sheet.w || FIELD_W) / PX_PER_UNIT, h = (this.sheet.h || FIELD_H) / PX_PER_UNIT;
     this.geometry = new THREE.PlaneGeometry(w, h);
     this.geometry.translate(0, h / 2 - 1.5 / PX_PER_UNIT, 0);
-    this.material = makeSpriteMaterial(this.sheet.texture);
+    this.material = makeSpriteMaterial(this.sheet.texture, this.sheet.glow ? { glowMap: this.sheet.glow, glow: 0.9 } : {});
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.castShadow = true;
     this.mesh.customDepthMaterial = makeDepthMaterial(this.sheet.texture);
     this.mesh.rotation.x = -0.22;
     this.mesh.userData.actor = this;
 
+    const big = look.kind === 'mount';
     const sh = new THREE.Mesh(
-      new THREE.PlaneGeometry(0.9, 0.5),
+      new THREE.PlaneGeometry(big ? 1.7 : 0.9, big ? 0.8 : 0.5),
       new THREE.MeshBasicMaterial({ map: blobShadowTexture(), transparent: true, depthWrite: false }),
     );
     sh.rotation.x = -Math.PI / 2;
@@ -134,8 +141,8 @@ export class Actor {
 
   update(dt, grid) {
     if (this.moving) {
-      this.animT += dt * (this.speed / 3.6) * 7.5;
-      this.setFrame(this.dir, WALK_SEQ[Math.floor(this.animT) % 4]);
+      this.animT += (dt * this.speed) / this.stride;
+      this.setFrame(this.dir, this.walkSeq[Math.floor(this.animT) % this.walkSeq.length]);
     } else if (this.animT !== 0) {
       this.animT = 0;
       this.setFrame(this.dir, 0);
@@ -167,8 +174,8 @@ export class Actor {
         if (dist <= step) { this.x = gx; this.z = gz; i++; } else { this.x += (dx / dist) * step; this.z += (dz / dist) * step; }
         this.update(0, null);
         if (grid) this.elev = damp(this.elev, grid.surface(this.tileX, this.tileY), 14, dt);
-        this.animT += dt * (speed / 3.6) * 7.5;
-        this.setFrame(this.dir, WALK_SEQ[Math.floor(this.animT) % 4]);
+        this.animT += (dt * speed) / this.stride;
+        this.setFrame(this.dir, this.walkSeq[Math.floor(this.animT) % this.walkSeq.length]);
         this.syncMesh();
         return false;
       });

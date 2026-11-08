@@ -6,6 +6,7 @@ import SAGE from './layouts/c2_sage_house.js';
 import FIELDS from './layouts/c2_td_fields.js';
 import { THISTLE } from '../../story/ch2_thistle.js';
 import { coachRide } from '../../story/ch2_common.js';
+import { KINDLE } from '../../story/mount.js';
 
 const interior = { mood: 'interior', camera: { dist: 15, pitch: 0.75 }, noBanner: true, particles: 'dust', battleBg: 'town' };
 const toVillage = (x, y, tx, ty, w = 2) => ({ x, y, w, to: 'thistledown', tx, ty, dir: 'down' });
@@ -22,6 +23,8 @@ export const thistledown = {
   backdrop: { plane: '#5a7a34', y: -0.3 },
   signs: [{ x: 20, y: 17, text: 'THISTLEDOWN — Est. by people who were tired of walking.\nInn · Trading Post · The Sage (up the hill, knock loudly, duck).' }],
   npcs: [
+    { id: 'hesk', name: 'Hesk', look: 'villager_33', x: 5, y: 20, dir: 'up', hint: 'Forester',
+      cond: (st) => !!st.flags.c2_mother_done, run: (s) => KINDLE.hesk(s) },
     { id: 'reeve', name: 'Reeve Alder', look: 'c2_reeve', x: 22, y: 11, dir: 'down',
       talk: (s) => s.say('Reeve Alder', by(s.state, [
         ['Old Bethan\'s up the hill, past Tobble\'s beehives. Knock loudly. Then duck.', 'And if anyone can talk sense into Red Tam, it\'s her. He\'s terrified of her. So am I.'],
