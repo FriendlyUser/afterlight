@@ -349,9 +349,10 @@ export const CH6 = {
   },
 
   async hale(s) {
-    if (s.flag('c6_brinefang')) return s.say('Warden Hale', ['You killed the Unmoored. Alone. I\'ve had the salvagers out on the strait all morning just to look at the bones.', 'Keelhaven owes you, Lark. Whoever you are.']);
+    // Bounties first: proof brought back after the Unmoored (or after the chapter) still pays.
     const paid = await CH6.bountyPay(s);
     if (paid) return;
+    if (s.flag('c6_brinefang')) return s.say('Warden Hale', ['You killed the Unmoored. Alone. I\'ve had the salvagers out on the strait all morning just to look at the bones.', 'Keelhaven owes you, Lark. Whoever you are.']);
     if (s.flag('c6_hale')) {
       return s.say('Warden Hale', ['Both winches, Lark. North spoke and south spoke. Then the strait bridge comes down.', 'And the bounties stand, if you\'re out there anyway. Bring me proof.']);
     }

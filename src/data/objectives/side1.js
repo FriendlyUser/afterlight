@@ -32,8 +32,12 @@ export default [
     { map: 'c2_wold_outer', x: 39, y: 27, unless: 'blocker:c2_wold_outer:thorns' },
     { map: 'c2_wold_outer', x: 48, y: 30, after: 'blocker:c2_wold_outer:thorns' },
   ] },
-  // She says goodbye after the Hollow Mother falls (the 'mother' trigger).
-  { quest: 'c2_merry', step: 'Merry\'s secret place is her own grave', at: { map: 'c2_wold_heart', x: 34, y: 8, unless: 'c2_mother_done' } },
+  // She says goodbye after the Hollow Mother falls (the 'mother' trigger) — or, if the
+  // Mother fell first, at her grave.
+  { quest: 'c2_merry', step: 'Merry\'s secret place is her own grave', at: [
+    { map: 'c2_wold_heart', x: 34, y: 8, unless: 'c2_mother_done' },
+    { map: 'c2_wold_outer', x: 48, y: 30, after: 'c2_mother_done' },
+  ] },
 
   // ------------------------------------------------------------------ Chapter 2 — Thistledown
   // Old Strawman won't fight until two are down; the second (sc2) is usually the last of those.

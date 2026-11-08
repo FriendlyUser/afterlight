@@ -165,6 +165,8 @@ export const WOLD = {
   async merry(s) {
     const k = s.vars.c2_merry || 0;
     s.face('merry', 'player');
+    // The Mother is already at rest: the next time Merry is found, she says goodbye here.
+    if (k > 0 && s.flag('c2_mother_done')) return WOLD.merryLate(s);
     if (k === 0) {
       s.setFlag('c2_merry_met');
       await s.say('Merry', 'You\'re loud. Are you new? You don\'t look new. You look _alive_.');
@@ -208,6 +210,17 @@ export const WOLD = {
     s.toast('<span class="hl">Quest updated</span> — Hide and Seek');
   },
 
+  /** Found after the Hollow Mother has fallen: the acorn, then goodbye where she hid. */
+  async merryLate(s) {
+    s.setFlag('c2_merry_found');
+    s.vars.c2_merry = 3;
+    await s.say('Merry', 'Found me! ...Did you hear it? It\'s so quiet now. Mother\'s gone quiet.');
+    await s.say('Merry', 'You found me, so you\'re my friends. That\'s the rule. Friends get the acorn — it opens my secret place, past the thorns by the stones.');
+    await s.give('c2_merry_acorn');
+    await s.say('Merry', 'I don\'t think I need it anymore.');
+    await WOLD.merryFarewell(s, 'merry');
+  },
+
   async thorns(s) {
     if (!s.has('c2_merry_acorn')) return s.narrate('A wall of black thorns, thick as a man\'s wrist. Woven, almost. As if someone made it to keep something in — or keep you out.');
     await s.narrate('You hold up Merry\'s acorn. The thorns shiver, then curl away from it like fingers opening.');
@@ -216,6 +229,16 @@ export const WOLD = {
 
   async merryGrave(s) {
     await s.narrate(['A small stone, green with moss, half-hidden in flowers that should not be blooming in autumn.', '*MERIBEL ASH. SEVEN SUMMERS.*', '*SHE WENT TO PLAY IN THE WOLD.*']);
+    // Found three times only after the Mother fell (saves from before Merry said goodbye
+    // where she hid): she comes to her own stone to say it.
+    if (s.flag('c2_mother_done') && s.flag('c2_merry_found') && !s.flag('c2_merry_done')) {
+      const p = s.actor('player');
+      const [x, y] = [[48, 29], [47, 30], [47, 29], [49, 29]].find(([tx, ty]) => (tx !== p.tileX || ty !== p.tileY) && s.field.grid.walkable(tx, ty)) || [47, 30];
+      s.spawn('merry', 'merry', x, y, 'down');
+      s.sfx('blip');
+      await s.say('Merry', 'You found my secret place. Nobody ever finds it. ...It\'s so quiet now. Mother\'s gone quiet.');
+      return WOLD.merryFarewell(s, 'merry');
+    }
     if (s.flag('c2_grave_seen')) return;
     s.setFlag('c2_grave_seen');
     await s.wait(0.8);
@@ -327,12 +350,16 @@ export const WOLD = {
     s.journal('We fought the Hollow Mother, the tree that kept every voice in the wold. When she fell, the voices went up like sparks. She asked if it was morning. Sable told her yes.');
   },
 
-  async merryFarewell(s) {
+  /** Merry goes home: after the Mother's fall (spawned by the tree), or where she hid (`id`). */
+  async merryFarewell(s, id = null) {
     s.setFlag('c2_merry_done');
-    s.spawn('merry_end', 'merry', 34, 10, 'up');
-    await s.wait(0.6);
-    await s.say('Merry', 'It\'s so quiet. Mother\'s gone quiet.');
-    s.face('merry_end', 'player');
+    const who = id || 'merry_end';
+    if (!id) {
+      s.spawn('merry_end', 'merry', 34, 10, 'up');
+      await s.wait(0.6);
+      await s.say('Merry', 'It\'s so quiet. Mother\'s gone quiet.');
+    }
+    s.face(who, 'player');
     await s.say('Merry', 'I think... I think I can go home now. Is it still summer, out there?');
     await s.wait(0.8);
     await s.say('Wren', '...It\'s autumn, Merry.');
@@ -341,10 +368,10 @@ export const WOLD = {
     await s.say('Merry', 'Here. My bracelet. Mother made it out of moss. It keeps you warm when you\'re hurt. I won\'t need it where I\'m going.');
     await s.give('regen_bangle');
     await s.say('Merry', 'Bye, Big Shiny Man. Bye, Grumpy— I mean, bye, Ilse. Bye, Wren.');
-    s.face('merry_end', pc('sable'));
+    if (!id) s.face('merry_end', pc('sable')); // the party is on stage only after the Mother
     await s.say('Merry', 'Bye, Sable. Don\'t let anybody keep you.');
     s.flash('#ffffff', 0.6);
-    s.remove('merry_end');
+    s.remove(who);
     await s.narrate('She goes the way the lights went: up, and out, and gone.');
     await s.say('Bram', 'I\'m not crying. It\'s the— wind-leaves.');
     await s.say('Ilse', 'There\'s no wind, Bram.');

@@ -10,7 +10,9 @@ const forest = {
   mood: 'forest', music: 'forest', battleBg: 'wold', treeType: 'tree_autumn', particles: 'fireflies', region: 'The Whisperwold',
   backdrop: { plane: '#122016', y: -0.3 },
 };
-const merryAt = (k) => (st) => (st.vars.c2_merry || 0) === k && !st.flags.c2_merry_found;
+// Merry hides at spot k until found three times; if the Mother falls before anyone met
+// her, she went up with the other voices and isn't there to meet.
+const merryAt = (k) => (st) => (st.vars.c2_merry || 0) === k && !st.flags.c2_merry_found && !(st.flags.c2_mother_done && !st.flags.c2_merry_met);
 const voice = (id, x, y, w, h, key) => ({ id, x, y, w, h, run: (s) => WOLD.passing(s, key) });
 
 /** @type {import('../../types/data').MapDef} */

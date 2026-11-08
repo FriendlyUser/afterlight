@@ -50,7 +50,7 @@ Estimated 40–60 hours with side content.
 | world map | Fast travel to towns and attuned Hearthstones | `fast_travel` |
 | crests | Mastery Legacies and Ascension stars | `crest_ascension`, `crest_balance` |
 | mount | Kindle the Emberhart: the Hollow meeting, riding, the Drift reunion | `mount` |
-| side quests | Blue side-quest markers (every step of all 80 quests), the area map | `side_quests`, `side_markers` |
+| side quests | Blue side-quest markers (every step of all 80 quests), the area map; quest dead ends fixed | `side_quests`, `side_markers`, `story_fixes` |
 | level up | The level-up screen after a victory | `levelup` |
 
 ## Testing
@@ -275,6 +275,13 @@ done directly this session:
   the party waits while it's open. After a victory, a **Level Up!** panel shows a card
   for each member who levelled: old → new level, every stat's gain, and new Support Points.
   Tests: `side_quests` (data), `side_markers` (in play), `levelup`.
+- **Two side-quest dead ends fixed** (found while mapping the markers). *Hide and Seek*:
+  if the Hollow Mother fell before Merry was found three times, her goodbye (which only
+  played in the Mother's aftermath) never came and the quest stayed open. Now, once the
+  Mother is at rest, finding Merry again gives the acorn and her goodbye on the spot; a
+  save already stuck gets it at her grave; and if nobody met her before the Mother fell,
+  she isn't there. *Glassback / the Lidless*: Warden Hale stopped paying bounties once
+  the Unmoored was dead (he checked that first); he now pays first. Test: `story_fixes`.
 
 ## Next
 Everything below is optional; the game is complete and the suite passes.
