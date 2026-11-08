@@ -9,6 +9,7 @@ import { openNodes } from '../../data/worldmap.js';
 const COMMANDS = [
   { id: 'items', label: 'Items', icon: '⚗' },
   { id: 'crests', label: 'Crests', icon: '✦', pick: true },
+  { id: 'arts', label: 'Arts', icon: '✧', pick: true },
   { id: 'supports', label: 'Supports', icon: '❖', pick: true },
   { id: 'equip', label: 'Equipment', icon: '⚔', pick: true },
   { id: 'status', label: 'Status', icon: '☰', pick: true },
@@ -102,6 +103,7 @@ export class MainMenu extends Screen {
     switch (id) {
       case 'items': await m.screen('items').open(); break;
       case 'crests': await m.screen('crests', memberIndex).open(); break;
+      case 'arts': await m.screen('arts', memberIndex).open(); break;
       case 'supports': await m.screen('supports', memberIndex).open(); break;
       case 'equip': await m.screen('equip', memberIndex).open(); break;
       case 'status': await m.screen('status', memberIndex).open(); break;

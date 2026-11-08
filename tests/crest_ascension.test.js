@@ -12,6 +12,7 @@ import { RNG } from '../src/core/util.js';
 import { contentReady } from '../src/data/content/index.js';
 import { CrestScreen } from '../src/ui/menu/CrestScreen.js';
 import { StatusScreen } from '../src/ui/menu/screens.js';
+import { ArtsScreen } from '../src/ui/menu/ArtsScreen.js';
 
 const MASTERED = 800;
 
@@ -104,6 +105,36 @@ export async function run(game, h) {
     h.expect(back.crests.vanguard === w.crests.vanguard && back.starsOf('vanguard') === 1, 'overflow CP and stars survive a save');
   }
 
+  // 6b. Mastery Arts: ★1 and ★3 teach the Crest's two signature Arts, usable from either slot.
+  {
+    const m = new Character('wren');
+    m.setLevel(50);
+    m.crests.vanguard = MASTERED;
+    h.expect(!m.skillLists()[0].skills.includes('banner_of_dawn'), 'no Mastery Art at mastery alone');
+    const got = m.gainCp('vanguard', ASCEND_CP[0] - MASTERED);
+    h.expect(got.some((x) => x.star === 1 && x.unlock?.skill === 'banner_of_dawn'), '★1 reports Banner of Dawn');
+    h.expect(m.skillLists()[0].skills.includes('banner_of_dawn') && !m.skillLists()[0].skills.includes('vanguards_oath'), '★1: Banner of Dawn usable; the ★3 Art not yet');
+    m.crests.vanguard = ASCEND_CP[2];
+    h.expect(m.skillLists()[0].skills.includes('vanguards_oath'), '★3: Vanguard\'s Oath usable');
+    h.expect(m.artPower().vanguards_oath === 1 + (STAR_ARTS * 3) / 100, 'Mastery Arts get the star power bonus too');
+    m.learnCrest('mender');
+    m.setCrest('mender');
+    m.setSecondary('vanguard');
+    h.expect(m.skillLists()[1].skills.includes('vanguards_oath'), 'and from the secondary slot');
+    // In battle, Vanguard's Oath hits every foe and cracks their armor.
+    const st = new GameState();
+    const w = st.joinParty('wren');
+    w.setLevel(50);
+    w.crests.vanguard = ASCEND_CP[2];
+    const rng = new RNG(5);
+    const sys = new BattleSystem({ state: st, troopId: 'gw_wolves', rnd: () => rng.next() });
+    sys.start();
+    sys.party[0].mp = 999;
+    const ev = sys.act(sys.party[0], { kind: 'skill', id: 'vanguards_oath', targets: sys.enemies });
+    const hit = new Set(ev.filter((x) => x.t === 'damage').map((x) => x.target));
+    h.expect(hit.size === sys.enemies.length && sys.enemies.every((x) => !x.alive || (x.stages.def?.v || 0) < 0), `Vanguard's Oath hits all ${sys.enemies.length} foes and cuts DEF`);
+  }
+
   // 7. The Crest and Status screens show stars and Legacies.
   const st = game.state;
   const wren = st.joinParty('wren');
@@ -116,6 +147,18 @@ export async function run(game, h) {
   const row = cs.list.el.innerHTML;
   h.expect(row.includes('★★☆☆☆'), 'the Crest list shows two stars on Vanguard');
   h.expect(cs.detail.innerHTML.includes('Legacy') && cs.detail.innerHTML.includes('STR +5%') && cs.detail.innerHTML.includes('CP to ★3'), 'the detail shows the Legacy and progress to ★3');
+  h.expect(cs.detail.innerHTML.includes('Mastery Arts') && cs.detail.innerHTML.includes('Banner of Dawn') && cs.detail.innerHTML.includes('Vanguard\'s Oath'), 'the Crest screen lists both Mastery Arts');
+  const cleave = Math.round(70 * (1 + (STAR_ARTS * 2) / 100)); // two stars on Vanguard
+  h.expect(cs.detail.innerHTML.includes(`Physical · All foes · Power ${cleave} · Weapon element · 6 MP`), `rank Arts show their details (Cleave, power ${cleave} with two stars)`);
+  const as = new ArtsScreen(game.menus, 0);
+  const names = as.list.items.map((x) => x.id);
+  h.expect(names.includes('banner_of_dawn') && names.includes('vanguards_oath'), 'the Arts screen lists Mastery Arts');
+  as.list.index = names.indexOf('vanguards_oath');
+  as.renderDetail();
+  h.expect(as.detail.innerHTML.includes('Unlocks at Vanguard ★3') && as.detail.innerHTML.includes('Pierces 30% of DEF'), 'a locked Mastery Art shows when it unlocks and what it does');
+  as.list.index = names.indexOf('banner_of_dawn');
+  as.renderDetail();
+  h.expect(as.detail.innerHTML.includes('Usable in battle') && as.detail.innerHTML.includes('Party STR ▲1, DEF ▲1'), 'a learned one is usable, with its effects');
   const ss = new StatusScreen(game.menus, 0);
   h.expect(ss.el.innerHTML.includes('Legacies') && ss.el.innerHTML.includes('★★☆☆☆'), 'the Status screen lists stars and Legacies');
 }

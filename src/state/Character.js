@@ -127,10 +127,20 @@ export class Character {
     this.secondary = crestId === this.crest ? null : crestId;
   }
 
-  /** Unlocks (skills/passives) learned from a crest. */
+  /** Unlocks (skills/passives) learned from a crest: its ranks, then Mastery Arts its stars have reached. */
   unlocksOf(crestId) {
     const rank = this.rankOf(crestId);
-    return CRESTS[crestId].ranks.slice(0, rank);
+    const stars = this.starsOf(crestId);
+    /** @type {Array<{ skill?: string, passive?: string }>} */
+    const out = CRESTS[crestId].ranks.slice(0, rank);
+    for (const m of CRESTS[crestId].mastery || []) if (stars >= m.stars) out.push({ skill: m.skill });
+    return out;
+  }
+
+  /** A crest's Mastery Arts and whether each is learned: [{ skill, stars, learned }]. */
+  masteryArts(crestId) {
+    const stars = this.starsOf(crestId);
+    return (CRESTS[crestId].mastery || []).map((m) => ({ ...m, learned: stars >= m.stars }));
   }
 
   /** Active skills usable in battle: primary crest + secondary crest. */
@@ -171,7 +181,7 @@ export class Character {
   /**
    * Gain CP. Past rank 10 it fills Ascension stars, up to CP_CAP. Returns the milestones
    * reached: { crest, rank, unlock } for new ranks (rank 10 also carries `legacy`) and
-   * { crest, star } for new stars.
+   * { crest, star, unlock? } for new stars (★1 and ★3 teach a Mastery Art).
    */
   gainCp(crestId, amount) {
     if (!crestId) return [];
@@ -183,7 +193,10 @@ export class Character {
     for (let r = before + 1; r <= after; r++) {
       out.push({ crest: crestId, rank: r, unlock: CRESTS[crestId].ranks[r - 1], ...(r === MAX_RANK ? { legacy: CRESTS[crestId].legacy } : {}) });
     }
-    for (let n = starsBefore + 1; n <= starsAfter; n++) out.push({ crest: crestId, star: n });
+    for (let n = starsBefore + 1; n <= starsAfter; n++) {
+      const art = CRESTS[crestId].mastery?.find((m) => m.stars === n);
+      out.push({ crest: crestId, star: n, ...(art ? { unlock: { skill: art.skill } } : {}) });
+    }
     return out;
   }
 
@@ -202,7 +215,7 @@ export class Character {
       const stars = this.starsOf(c);
       if (!stars) continue;
       const mult = 1 + (STAR_ARTS * stars) / 100;
-      for (const u of CRESTS[c].ranks) if (u.skill) out[u.skill] = Math.max(out[u.skill] || 1, mult);
+      for (const u of [...CRESTS[c].ranks, ...(CRESTS[c].mastery || [])]) if (u.skill) out[u.skill] = Math.max(out[u.skill] || 1, mult);
     }
     return out;
   }

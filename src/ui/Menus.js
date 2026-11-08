@@ -2,6 +2,7 @@
 
 import { MainMenu } from './menu/MainMenu.js';
 import { CrestScreen, SupportScreen } from './menu/CrestScreen.js';
+import { ArtsScreen } from './menu/ArtsScreen.js';
 import { EquipScreen } from './menu/EquipScreen.js';
 import { ItemsScreen, StatusScreen, FormationScreen, SettingsScreen, BestiaryScreen, JournalScreen, GuideScreen } from './menu/screens.js';
 import { SaveScreen } from './menu/SaveScreen.js';
@@ -10,6 +11,7 @@ import { ShopScreen } from './menu/ShopScreen.js';
 const SCREENS = {
   items: ItemsScreen,
   crests: CrestScreen,
+  arts: ArtsScreen,
   supports: SupportScreen,
   equip: EquipScreen,
   status: StatusScreen,

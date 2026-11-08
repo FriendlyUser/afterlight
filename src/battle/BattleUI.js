@@ -5,6 +5,7 @@ import { el, richText } from '../ui/UI.js';
 import { keyCap } from '../core/Input.js';
 import { SKILLS } from '../data/skills.js';
 import { CRESTS, MAX_RANK, starText } from '../data/crests.js';
+import { artSummaryHtml } from '../data/artInfo.js';
 import { STATUSES } from '../data/statuses.js';
 import { LINKS } from '../data/links.js';
 import { PASSIVES } from '../data/passives.js';
@@ -240,7 +241,10 @@ export class BattleUI {
           <div class="v-crest">${CRESTS[ch.crest].name} ${standing} <span class="v-cpbar"><i style="width:${(asc || prog).frac * 100}%"></i></span></div>`;
         for (const k of r.ranks) {
           const name = CRESTS[k.crest].name;
-          if (k.star) { html += `<div class="v-learn">${name} ascends: <b>★${k.star}</b></div>`; continue; }
+          if (k.star) {
+            html += `<div class="v-learn">${name} ascends: <b>★${k.star}</b>${k.unlock ? ` — Mastery Art <b>${SKILLS[k.unlock.skill].name}</b>` : ''}</div>`;
+            continue;
+          }
           const u = k.unlock;
           const nm = u.skill ? SKILLS[u.skill].name : PASSIVES[u.passive].name;
           html += `<div class="v-learn">${name} rank ${k.rank}: learned <b>${nm}</b></div>`;
@@ -373,7 +377,7 @@ class CommandMenu {
     const cost = this.sys.resolver.mpCost(this.actor, s);
     const silenced = this.actor.hasStatus('silence') && (s.kind === 'mag' || s.kind === 'heal' || s.kind === 'hybrid');
     const disabled = cost > this.actor.mp || silenced;
-    return { label: s.name, kind: 'skill', id, cost, disabled, desc: s.desc };
+    return { label: s.name, kind: 'skill', id, cost, disabled, desc: s.desc, detail: artSummaryHtml(s, { mp: cost, powerMult: this.actor.artPower?.[id] || 1 }) };
   }
 
   render() {
@@ -386,7 +390,7 @@ class CommandMenu {
     });
     html += '</div>';
     const cur = t.entries[t.index];
-    if (cur?.desc) html += `<div class="cmd-desc">${richText(cur.desc)}</div>`;
+    if (cur?.desc) html += `<div class="cmd-desc">${richText(cur.desc)}${cur.detail || ''}</div>`;
     html += `<div class="cmd-surge ${surgeOk ? '' : 'off'}">${keyCap('pageLeft')}${keyCap('pageRight')} Surge ${'◆'.repeat(this.surge)}${'◇'.repeat(Math.max(0, 3 - this.surge))}</div>`;
     this.el.innerHTML = html;
   }

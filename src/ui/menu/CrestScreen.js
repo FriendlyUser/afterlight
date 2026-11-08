@@ -4,6 +4,7 @@ import { el, richText } from '../UI.js';
 import { keyCap } from '../../core/Input.js';
 import { Screen, ListView, header, KEYS, portraitEl } from './common.js';
 import { CRESTS, CREST_ORDER, MAX_RANK, MAX_STARS, STAR_STATS, STAR_ARTS, starText } from '../../data/crests.js';
+import { artDetails } from '../../data/artInfo.js';
 import { SKILLS } from '../../data/skills.js';
 import { PASSIVES } from '../../data/passives.js';
 import { WEAPON_TYPES } from '../../data/equipment.js';
@@ -54,7 +55,7 @@ export class CrestScreen extends MemberScreen {
 
   build() {
     const ch = this.ch;
-    this.el.innerHTML = header(`Crests — ${ch.name}`, `${KEYS.nav} ${KEYS.ok} ${KEYS.back} ${KEYS.swap}`);
+    this.el.innerHTML = header(`Crests — ${ch.name}`, `${KEYS.nav} ${keyCap('left')}${keyCap('right')} Scroll ${KEYS.ok} ${KEYS.back} ${KEYS.swap}`);
     const body = el('div', 'cs-body');
     const left = el('div', 'cs-left panel');
     const items = this.entries();
@@ -138,14 +139,21 @@ export class CrestScreen extends MemberScreen {
       }
     }
     html += '<div class="cd-ranks">';
-    c.ranks.forEach((u, i) => {
-      const learned = e.rank > i;
-      const name = u.skill ? SKILLS[u.skill].name : PASSIVES[u.passive].name;
-      const kind = u.skill ? 'Art' : 'Support';
-      const desc = u.skill ? SKILLS[u.skill].desc : PASSIVES[u.passive].desc;
-      const mp = u.skill && SKILLS[u.skill].mp ? `${SKILLS[u.skill].mp} MP` : '';
-      html += `<div class="cd-rank ${learned ? 'learned' : ''}"><span class="r">R${i + 1}</span><span class="k">${kind}</span><span class="n">${learned || e.known ? name : '???'}</span><span class="mp">${mp}</span><div class="d">${learned || e.known ? richText(desc || '') : ''}</div></div>`;
-    });
+    /** One row: rank or star, kind, name, MP, then the description and (for Arts) its details. */
+    const row = (label, kind, learned, id, isSkill, extra = '') => {
+      const art = isSkill ? SKILLS[id] : null;
+      const def = art || PASSIVES[id];
+      const shown = learned || e.known;
+      const mp = art?.mp ? `${art.mp} MP` : '';
+      const details = art && shown ? (() => { const d = artDetails(art, { powerMult: ch.artPower()[id] || 1 }); return `<div class="art-line">${d.line}</div>${d.effects.length ? `<div class="art-fx">${d.effects.join(' · ')}</div>` : ''}`; })() : '';
+      return `<div class="cd-rank ${learned ? 'learned' : ''} ${extra}"><span class="r">${label}</span><span class="k">${kind}</span><span class="n">${shown ? def.name : '???'}</span><span class="mp">${mp}</span><div class="d">${shown ? richText(def.desc || '') : ''}${details}</div></div>`;
+    };
+    c.ranks.forEach((u, i) => { html += row(`R${i + 1}`, u.skill ? 'Art' : 'Support', e.rank > i, u.skill || u.passive, !!u.skill); });
+    // Mastery Arts: taught by the Crest's Ascension stars.
+    if (c.mastery?.length) {
+      html += '<div class="cd-mastery-head">Mastery Arts <span class="dim">— learned at Ascension stars, once mastered</span></div>';
+      for (const m of ch.masteryArts(e.id)) html += row(`★${m.stars}`, 'Mastery', m.learned, m.skill, true, 'mastery');
+    }
     html += '</div>';
     this.detail.innerHTML = html;
   }
@@ -153,8 +161,10 @@ export class CrestScreen extends MemberScreen {
   async handleInput(input) {
     if (this.busy) return;
     if (this.switchMember(input)) return;
+    // Left/right scroll the detail (ranks, Mastery Arts and their details run long).
+    if (input.repeat('left') || input.repeat('right')) { this.detail.scrollBy({ top: input.repeat('right') ? 140 : -140 }); return; }
     const r = this.list.handle(input, (s) => this.sfx(s));
-    if (r === 'move') this.renderDetail();
+    if (r === 'move') { this.renderDetail(); this.detail.scrollTop = 0; }
     if (r === 'cancel') { this.sfx('cancel'); this.close(); return; }
     if (r !== 'confirm') return;
     const e = this.list.current;

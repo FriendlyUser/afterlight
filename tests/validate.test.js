@@ -55,6 +55,16 @@ export async function run(game, h) {
       if (r.skill && !SKILLS[r.skill]) err(`crest ${id}: unknown skill ${r.skill}`);
       if (r.passive && !PASSIVES[r.passive]) err(`crest ${id}: unknown passive ${r.passive}`);
     }
+    // Two Mastery Arts, at stars 1 and 3, each a real Art with a description, used by no other Crest.
+    const mastery = c.mastery || [];
+    if (mastery.map((m) => m.stars).join() !== '1,3') err(`crest ${id}: Mastery Arts should unlock at ★1 and ★3`);
+    for (const m of mastery) {
+      if (!SKILLS[m.skill]) err(`crest ${id}: unknown Mastery Art ${m.skill}`);
+      else if (!SKILLS[m.skill].desc) err(`crest ${id}: Mastery Art ${m.skill} has no description`);
+      for (const [other, o] of Object.entries(CRESTS)) {
+        if (other !== id && [...o.ranks, ...(o.mastery || [])].some((u) => u.skill === m.skill)) err(`crest ${id}: Mastery Art ${m.skill} is also taught by ${other}`);
+      }
+    }
   }
   for (const [id, e] of Object.entries(ENEMIES)) {
     for (const [s] of e.skills || []) if (!SKILLS[s]) err(`enemy ${id}: unknown skill ${s}`);

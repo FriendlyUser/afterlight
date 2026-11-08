@@ -362,6 +362,8 @@ export interface CrestDef {
   unlock?: string;
   /** Mastery Legacy, attached from LEGACIES. */
   legacy?: CrestLegacy;
+  /** Mastery Arts, attached from MASTERY: learned at these Ascension stars. */
+  mastery?: Array<{ skill: string; stars: number }>;
 }
 
 /** What a mastered Crest leaves in the character: a permanent passive-like bonus. */

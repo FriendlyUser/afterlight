@@ -8,6 +8,7 @@
 //  unlock:   'start' | 'story' | 'stone' (bought/found Crest Stone) | 'requirement'
 //  legacy:   what mastering the Crest (rank 10) leaves in the character, whatever they wear
 //            (attached from LEGACIES below; a passive-like source: mods / resist)
+//  mastery:  its two Mastery Arts and the Ascension star that teaches each (MASTERY below)
 //
 // Past rank 10, CP keeps flowing into Ascension: five stars (ASCEND_CP). Each star makes
 // the Crest a little stronger as Primary (+STAR_STATS% to every stat) and its Arts a
@@ -292,6 +293,38 @@ const LEGACIES = {
   afterlight: { desc: 'All stats +5%', mods: { hpPct: 5, mpPct: 5, strPct: 5, magPct: 5, defPct: 5, resPct: 5, spdPct: 5, lckPct: 5 } },
 };
 for (const [id, l] of Object.entries(LEGACIES)) CRESTS[id].legacy = l;
+
+// Mastery Arts: each Crest's two signature Arts, learned at its first and third
+// Ascension stars (data/skills.js, "Mastery Arts"). Usable like its rank Arts — while the
+// Crest is primary or secondary — and strengthened by its stars like them.
+/** @type {Record<string, Array<{ skill: string, stars: number }>>} */
+const MASTERY = {
+  vanguard: [{ skill: 'banner_of_dawn', stars: 1 }, { skill: 'vanguards_oath', stars: 3 }],
+  warden: [{ skill: 'shieldbreaker', stars: 1 }, { skill: 'bastion', stars: 3 }],
+  ranger: [{ skill: 'hawkeye_volley', stars: 1 }, { skill: 'heartseeker', stars: 3 }],
+  rogue: [{ skill: 'cutpurse_flurry', stars: 1 }, { skill: 'vanishing_act', stars: 3 }],
+  mender: [{ skill: 'choirs_grace', stars: 1 }, { skill: 'dawn_chorus', stars: 3 }],
+  arcanist: [{ skill: 'prism_storm', stars: 1 }, { skill: 'cataclysm', stars: 3 }],
+  pugilist: [{ skill: 'iron_body', stars: 1 }, { skill: 'heaven_palm', stars: 3 }],
+  cantor: [{ skill: 'lantern_hymn', stars: 1 }, { skill: 'encore', stars: 3 }],
+  dawnknight: [{ skill: 'oathlight', stars: 1 }, { skill: 'noon_vow', stars: 3 }],
+  runeblade: [{ skill: 'rune_cascade', stars: 1 }, { skill: 'truename_edge', stars: 3 }],
+  nightblade: [{ skill: 'shadow_bind', stars: 1 }, { skill: 'moonless', stars: 3 }],
+  sage: [{ skill: 'equilibrium', stars: 1 }, { skill: 'grand_arcanum', stars: 3 }],
+  beastcaller: [{ skill: 'call_emberhart', stars: 1 }, { skill: 'call_leviathan', stars: 3 }],
+  alchemist: [{ skill: 'volatile_mix', stars: 1 }, { skill: 'elixir_rain', stars: 3 }],
+  skylancer: [{ skill: 'dragon_dive', stars: 1 }, { skill: 'starfall_lance', stars: 3 }],
+  timewright: [{ skill: 'rewind', stars: 1 }, { skill: 'time_stop', stars: 3 }],
+  duskdancer: [{ skill: 'evening_waltz', stars: 1 }, { skill: 'last_dance', stars: 3 }],
+  berserker: [{ skill: 'bloodrage', stars: 1 }, { skill: 'world_breaker', stars: 3 }],
+  lanternkeeper: [{ skill: 'lanterns_embrace', stars: 1 }, { skill: 'true_dawnsong', stars: 3 }],
+  gloamweaver: [{ skill: 'veil_of_night', stars: 1 }, { skill: 'the_unwritten', stars: 3 }],
+  starseer: [{ skill: 'fortune_read', stars: 1 }, { skill: 'starfall_requiem', stars: 3 }],
+  gambler: [{ skill: 'ace_in_the_hole', stars: 1 }, { skill: 'house_always_loses', stars: 3 }],
+  sunforged: [{ skill: 'solar_wake', stars: 1 }, { skill: 'hearthsuns_wrath', stars: 3 }],
+  afterlight: [{ skill: 'remembered_sun', stars: 1 }, { skill: 'unending_dawn', stars: 3 }],
+};
+for (const [id, m] of Object.entries(MASTERY)) CRESTS[id].mastery = m;
 
 export const CREST_ORDER = Object.keys(CRESTS);
 

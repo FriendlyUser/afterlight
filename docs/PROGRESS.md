@@ -48,7 +48,7 @@ Estimated 40–60 hours with side content.
 | postgame | Gloam Abyss B1–30, Echo Colosseum (10 rounds), Lysa's Echo, the First Dark | `postgame`, `postgame_finale` |
 | opening | The opening movie, New Game difficulty picker, title attract loop | `opening` |
 | world map | Fast travel to towns and attuned Hearthstones | `fast_travel` |
-| crests | Mastery Legacies and Ascension stars | `crest_ascension`, `crest_balance` |
+| crests | Mastery Legacies, Ascension stars, Mastery Arts, the Arts screen | `crest_ascension`, `crest_balance` |
 | mount | Kindle the Emberhart: the Hollow meeting, riding, the Drift reunion | `mount` |
 | side quests | Blue side-quest markers (every step of all 80 quests), the area map; quest dead ends fixed | `side_quests`, `side_markers`, `story_fixes` |
 | level up | The level-up screen after a victory | `levelup` |
@@ -275,6 +275,22 @@ done directly this session:
   the party waits while it's open. After a victory, a **Level Up!** panel shows a card
   for each member who levelled: old → new level, every stat's gain, and new Support Points.
   Tests: `side_quests` (data), `side_markers` (in play), `levelup`.
+- **Mastery Arts and the Arts screen.** Each of the 24 Crests now has two signature
+  *Mastery Arts* (48 new Arts in `data/skills.js`, attached as `CRESTS[id].mastery` in
+  `data/crests.js`), taught by its first and third Ascension stars — e.g. Vanguard: Banner of
+  Dawn (party STR/DEF up, taunt) and Vanguard's Oath (all foes, pierces 30% DEF, DEF down);
+  Beastcaller: Call: Emberhart and Call: Leviathan; Afterlight: Remembered Sun and Unending
+  Dawn. They're built from existing mechanics, join the Crest's Arts in `unlocksOf` (usable
+  as primary or secondary), get the star power bonus, and are announced on the victory
+  screen ("ascends: ★1 — Mastery Art …"). `data/artInfo.js` turns any Art's data into a
+  detail line (kind · target · power × hits · element · MP) and an effects list (ailments
+  with chances, stat stages, cures, revive, drain, piercing, crit, speed, specials, HP cost,
+  Ascension bonus) — shown in the Crest screen (now scrollable with ◀ ▶), in battle under
+  the highlighted Art, and in the new **Arts** screen (party menu): every Art a member knows
+  by Crest, usable ones first, locked Mastery Arts with the CP to go, other Crests' Arts
+  marked "equip to use". validate checks each Crest has two Mastery Arts at ★1/★3, unique.
+  The balance sim never earns stars; in A/B runs fully Ascended parties gain a little
+  over stars alone (Mother of the Deep ~13 → ~8.5 rounds; the First Dark still ~0–8%).
 - **Two side-quest dead ends fixed** (found while mapping the markers). *Hide and Seek*:
   if the Hollow Mother fell before Merry was found three times, her goodbye (which only
   played in the Mother's aftermath) never came and the quest stayed open. Now, once the

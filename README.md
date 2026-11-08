@@ -79,7 +79,8 @@ or hand it to auto-battle — and turn on Fast Mode to fly through fights and cu
 **Class customization** — 24 Crests (8 callings, 10 braided, 6 legendary) × 10 ranks,
 a primary and a secondary Crest per character, Supports on a point budget, and 300+ Arts.
 A mastered Crest leaves a *Legacy* — a small bonus you keep whatever you wear — and CP
-past mastery climbs five Ascension stars that strengthen its stats and Arts.
+past mastery climbs five Ascension stars that strengthen its stats and Arts and teach its
+two signature *Mastery Arts*. Every Art's full details can be read in the Arts menu.
 
 **Exploration** — 145 hand-laid maps, a party that follows you, a Quest Guide that
 marks where to go next (gold for the story, blue for side quests; in the field, on the

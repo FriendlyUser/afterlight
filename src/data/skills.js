@@ -221,6 +221,82 @@ export const SKILLS = {
   eternal_moment: { name: 'Eternal Moment', kind: 'special', target: 'enemies', mp: 60, special: 'delayAll', anim: 'dark', desc: 'All foes lose their next turn.' },
   afterlight: { name: 'Afterlight', kind: 'hybrid', target: 'enemy', power: 1500, mp: 90, elem: 'prism', special: 'allWeak', anim: 'light', desc: 'Everything you have become, at once.' },
 
+  // ------------------------------------------------------------ Mastery Arts
+  // Two per Crest, unlocked by its Ascension stars (★1 and ★3; data/crests.js MASTERY).
+  // Each is that Crest's signature, a step past its rank-10 Art.
+  // Vanguard
+  banner_of_dawn: { name: 'Banner of Dawn', kind: 'support', target: 'allies', mp: 20, buffs: { str: 1, def: 1 }, selfStatus: ['taunt'], anim: 'buff', desc: 'Raise the banner: party STR and DEF up, and every foe looks at you.' },
+  vanguards_oath: { name: 'Vanguard\'s Oath', kind: 'phys', target: 'enemies', power: 260, mp: 42, elem: 'weapon', ignoreDef: 0.3, debuffs: { def: -1 }, anim: 'slash', desc: 'Cut through the whole line: pierces 30% of DEF and cracks every foe\'s armor.' },
+  // Warden
+  shieldbreaker: { name: 'Shieldbreaker', kind: 'phys', target: 'enemy', power: 260, mp: 18, elem: 'blunt', status: [['stun', 0.35]], debuffs: { def: -1 }, anim: 'blunt', desc: 'A shield-rim blow that dents armor and may stun.' },
+  bastion: { name: 'Bastion', kind: 'support', target: 'allies', mp: 40, status: [['protect', 1], ['shell', 1], ['regen', 1]], anim: 'buff', desc: 'Become the wall: Protect, Shell and Regen for the whole party.' },
+  // Ranger
+  hawkeye_volley: { name: 'Hawkeye Volley', kind: 'phys', target: 'random', power: 75, hits: 5, mp: 20, elem: 'pierce', crit: 0.15, anim: 'arrow', desc: 'Five arrows loosed at random foes, each with a keen eye for the gaps.' },
+  heartseeker: { name: 'Heartseeker', kind: 'phys', target: 'enemy', power: 460, mp: 38, elem: 'pierce', crit: 1, status: [['marked', 1]], anim: 'arrow', desc: 'The shot a hunter waits a lifetime for: never misses, always critical, and marks the prey.' },
+  // Rogue
+  cutpurse_flurry: { name: 'Cutpurse Flurry', kind: 'phys', target: 'enemy', power: 70, hits: 3, mp: 14, elem: 'weapon', delay: 0.7, special: 'steal', anim: 'steal', desc: 'Three quick cuts and a lifted purse — then you\'re already moving again.' },
+  vanishing_act: { name: 'Vanishing Act', kind: 'phys', target: 'enemy', power: 340, mp: 30, elem: 'pierce', delay: 0.4, selfStatus: ['veil'], anim: 'thrust', desc: 'Strike and vanish: Veil turns aside the next blows, and you act again almost at once.' },
+  // Mender
+  choirs_grace: { name: 'Choir\'s Grace', kind: 'heal', target: 'allies', power: 200, mp: 34, cure: 'bad', anim: 'heal', desc: 'The old Choir\'s blessing: heal the party and lift every ailment.' },
+  dawn_chorus: { name: 'Dawn Chorus', kind: 'heal', target: 'allies', power: 220, mp: 60, revive: 0.5, status: [['regen', 1]], anim: 'revive', desc: 'Raise the fallen at half strength, heal everyone, and leave Regen behind.' },
+  // Arcanist
+  prism_storm: { name: 'Prism Storm', kind: 'mag', target: 'enemies', power: 170, mp: 30, elem: 'prism', anim: 'burst', desc: 'Every element at once: each foe is struck by one of them, and weaknesses are found first.' },
+  cataclysm: { name: 'Cataclysm', kind: 'mag', target: 'enemies', power: 320, mp: 64, elem: 'none', anim: 'meteor', desc: 'Raw, unaligned ruin on every foe. Nothing resists it.' },
+  // Pugilist
+  iron_body: { name: 'Iron Body', kind: 'support', target: 'self', mp: 12, selfBuffs: { def: 2, str: 1 }, selfStatus: ['regen'], delay: 0.5, anim: 'buff', desc: 'Breathe, harden, endure: DEF up sharply, STR up, Regen — and act again soon.' },
+  heaven_palm: { name: 'Heaven-Splitting Palm', kind: 'phys', target: 'enemy', power: 520, mp: 40, elem: 'blunt', ignoreDef: 0.3, status: [['stun', 0.3]], anim: 'quake', desc: 'One open palm with the whole body behind it: pierces 30% of DEF and may stun.' },
+  // Cantor
+  lantern_hymn: { name: 'Lantern Hymn', kind: 'support', target: 'allies', mp: 26, status: [['regen', 1]], buffs: { mag: 1, res: 1 }, anim: 'song', desc: 'The hymn the Keepers sang at dusk: Regen, MAG and RES up for the party.' },
+  encore: { name: 'Encore', kind: 'support', target: 'allies', mp: 44, status: [['haste', 1]], buffs: { str: 1, spd: 1 }, anim: 'song', desc: 'Once more, faster: Haste, STR and SPD up for the whole party.' },
+  // Dawnknight
+  oathlight: { name: 'Oathlight', kind: 'hybrid', target: 'enemy', power: 280, mp: 24, elem: 'light', drain: 0.4, anim: 'light', desc: 'A light-forged strike that mends you for 40% of the harm it does.' },
+  noon_vow: { name: 'Noon Vow', kind: 'hybrid', target: 'enemies', power: 340, mp: 58, elem: 'light', status: [['blind', 0.3]], special: 'partyHeal15', anim: 'light', desc: 'Light on every foe (may blind), and the party is healed a little.' },
+  // Runeblade
+  rune_cascade: { name: 'Rune Cascade', kind: 'hybrid', target: 'enemies', power: 160, mp: 28, elem: 'prism', anim: 'burst', desc: 'Runes flare down the blade and out: every foe struck by an element, weaknesses first.' },
+  truename_edge: { name: 'Truename Edge', kind: 'hybrid', target: 'enemy', power: 480, mp: 50, elem: 'prism', special: 'allWeak', anim: 'slash', desc: 'Carve the foe\'s true name: always lands as a weakness, breaking its Poise.' },
+  // Nightblade
+  shadow_bind: { name: 'Shadow Bind', kind: 'phys', target: 'enemy', power: 200, mp: 18, elem: 'dark', status: [['slow', 0.6], ['blind', 0.3]], delay: 0.6, anim: 'dark', desc: 'Pin the foe\'s shadow: may Slow and blind; you act again soon.' },
+  moonless: { name: 'Moonless', kind: 'phys', target: 'enemies', power: 260, mp: 46, elem: 'dark', crit: 0.25, status: [['doom', 0.15]], anim: 'dark', desc: 'A night with no moon in it: dark cuts on every foe, keen to crit, and a chance of Doom.' },
+  // Sage
+  equilibrium: { name: 'Equilibrium', kind: 'heal', target: 'allies', power: 150, mp: 30, buffs: { mag: 1, res: 1 }, anim: 'heal', desc: 'Both halves of the art in balance: heal the party, MAG and RES up.' },
+  grand_arcanum: { name: 'Grand Arcanum', kind: 'mag', target: 'enemies', power: 340, mp: 66, elem: 'none', ignoreDef: 0.25, anim: 'burst', desc: 'Everything a lifetime of study can say at once: unaligned, pierces 25% of RES.' },
+  // Beastcaller
+  call_emberhart: { name: 'Call: Emberhart', kind: 'heal', target: 'allies', power: 150, mp: 34, cure: 'bad', status: [['regen', 1]], summon: true, anim: 'summon', desc: 'A hart of Lantern-light steps out of the air: heals, cures and leaves Regen.' },
+  call_leviathan: { name: 'Call: Leviathan', kind: 'mag', target: 'enemies', power: 340, mp: 62, elem: 'ice', status: [['slow', 0.35]], summon: true, anim: 'summon', desc: 'The old sea remembers its king: a crushing tide on every foe; may Slow.' },
+  // Alchemist
+  volatile_mix: { name: 'Volatile Mix', kind: 'mag', stat: 'item', target: 'enemies', power: 190, mp: 24, elem: 'fire', status: [['burn', 0.4]], anim: 'flask', desc: 'Shake well. Throw. Run. Fire on every foe that may Burn (scales with item power).' },
+  elixir_rain: { name: 'Elixir Rain', kind: 'heal', target: 'allies', power: 250, mp: 50, revive: 0.3, cure: 'bad', anim: 'revive', desc: 'The good stuff, all of it, from above: revive at 30%, heal and cure everyone.' },
+  // Skylancer
+  dragon_dive: { name: 'Dragon Dive', kind: 'phys', target: 'enemy', power: 380, mp: 22, elem: 'pierce', special: 'jump', debuffs: { def: -1 }, anim: 'jump', desc: 'Jump out of reach, then dive like a dragon on one foe: DEF down.' },
+  starfall_lance: { name: 'Starfall Lance', kind: 'phys', target: 'enemies', power: 640, mp: 54, elem: 'pierce', ignoreDef: 0.25, special: 'jump', anim: 'jump', desc: 'Leap past the clouds and come down on every foe like a falling star; pierces 25% of DEF.' },
+  // Timewright
+  rewind: { name: 'Rewind', kind: 'heal', target: 'ally', power: 260, mp: 30, cure: 'bad', special: 'quicken', anim: 'heal', desc: 'Turn back an ally\'s last moments: heal, cure, and they act at once.' },
+  time_stop: { name: 'Time Stop', kind: 'mag', target: 'enemies', power: 200, mp: 64, elem: 'dark', special: 'delayAll', anim: 'dark', desc: 'Hold the moment still: dark on every foe, and all their turns are pushed back.' },
+  // Duskdancer
+  evening_waltz: { name: 'Evening Waltz', kind: 'heal', target: 'allies', power: 140, mp: 28, buffs: { eva: 1, spd: 1 }, anim: 'heal', desc: 'A slow turn in the dusk: heal the party, evasion and SPD up.' },
+  last_dance: { name: 'Last Dance', kind: 'phys', target: 'random', power: 85, hits: 6, mp: 44, elem: 'weapon', status: [['charm', 0.15]], anim: 'slash', desc: 'Six cuts woven into one dance across the field; each may charm.' },
+  // Berserker
+  bloodrage: { name: 'Bloodrage', kind: 'support', target: 'self', mp: 6, hpCost: 0.15, selfBuffs: { str: 2, spd: 1 }, selfStatus: ['haste'], delay: 0.5, anim: 'buff', desc: 'Pay 15% HP: STR up sharply, SPD up, Haste — and go again soon.' },
+  world_breaker: { name: 'World Breaker', kind: 'phys', target: 'enemies', power: 460, mp: 36, hpCost: 0.25, elem: 'weapon', ignoreDef: 0.25, delay: 1.3, anim: 'quake', desc: 'Pay 25% HP and bring the sky down on every foe; pierces 25% of DEF. Slow to recover.' },
+  // Lanternkeeper
+  lanterns_embrace: { name: 'Lantern\'s Embrace', kind: 'heal', target: 'allies', power: 200, mp: 44, status: [['regen', 1], ['shell', 1]], anim: 'heal', desc: 'The light that kept the ships home: heal the party, Regen and Shell.' },
+  true_dawnsong: { name: 'The True Dawnsong', kind: 'mag', target: 'enemies', power: 480, mp: 80, elem: 'light', special: 'partyHeal15', anim: 'song', desc: 'The song that brought the sun back every morning: light on every foe, and the party is healed a little.' },
+  // Gloamweaver
+  veil_of_night: { name: 'Veil of Night', kind: 'mag', target: 'enemies', power: 200, mp: 34, elem: 'dark', status: [['blind', 0.4]], drain: 0.25, anim: 'dark', desc: 'Draw the dark over every foe: may blind, and you drink 25% of the harm.' },
+  the_unwritten: { name: 'The Unwritten', kind: 'mag', target: 'enemy', power: 620, mp: 66, elem: 'dark', status: [['doom', 0.25]], special: 'dispel', anim: 'dark', desc: 'Unwrite a foe: strips its protections, may Doom it, and cuts very deep.' },
+  // Starseer
+  fortune_read: { name: 'Fortune Read', kind: 'support', target: 'allies', mp: 40, status: [['veil', 1]], buffs: { eva: 1 }, anim: 'buff', desc: 'Read the stars for everyone: each ally gets a Veil against the next blows, and evasion up.' },
+  starfall_requiem: { name: 'Starfall Requiem', kind: 'mag', target: 'random', power: 85, hits: 8, mp: 64, elem: 'light', anim: 'meteor', desc: 'Eight drowned stars fall back up and then down again, on random foes.' },
+  // Gambler
+  ace_in_the_hole: { name: 'Ace in the Hole', kind: 'phys', target: 'enemy', power: 260, mp: 16, elem: 'pierce', crit: 0.5, delay: 0.6, anim: 'shot', desc: 'The card up the sleeve: +50% crit, and you act again soon.' },
+  house_always_loses: { name: 'The House Always Loses', kind: 'phys', target: 'random', power: 120, hits: 6, mp: 54, elem: 'pierce', crit: 0.4, anim: 'shot', desc: 'Corvin\'s creed in six shots at random foes, each +40% crit.' },
+  // Sunforged
+  solar_wake: { name: 'Solar Wake', kind: 'hybrid', target: 'enemies', power: 300, mp: 40, elem: 'fire', status: [['burn', 0.3]], anim: 'fire', desc: 'Walk through them like noon through a frost: fire on every foe; may Burn.' },
+  hearthsuns_wrath: { name: 'Hearthsun\'s Wrath', kind: 'hybrid', target: 'enemies', power: 620, mp: 72, elem: 'fire', ignoreDef: 0.25, anim: 'meteor', desc: 'A shard of the broken sun, unbroken for a moment: fire on every foe; pierces 25% of defenses.' },
+  // Afterlight
+  remembered_sun: { name: 'Remembered Sun', kind: 'heal', target: 'allies', power: 260, mp: 70, revive: 0.5, buffs: { str: 1, mag: 1 }, anim: 'revive', desc: 'Everyone remembers the same morning: revive at 50%, heal the party, STR and MAG up.' },
+  unending_dawn: { name: 'Unending Dawn', kind: 'hybrid', target: 'enemies', power: 900, mp: 99, elem: 'prism', special: 'allWeak', anim: 'light', desc: 'A dawn that does not stop: every element on every foe, each landing as a weakness.' },
+
   // ------------------------------------------------------------ Link Arts (cost Afterglow; see data/links.js)
   link_tidebound: { name: 'Tidebound Vow', kind: 'hybrid', target: 'enemies', power: 260, elem: 'light', anim: 'light', desc: 'Wren & Ilse.' },
   link_shieldwall: { name: 'Shieldwall Charge', kind: 'phys', target: 'enemy', power: 420, elem: 'blunt', status: [['stun', 0.6]], anim: 'blunt', desc: 'Wren & Bram.' },
