@@ -1,7 +1,8 @@
 // Quest-marker targets (see ./index.js).
 // Act II: ch4b (Mirefen, Verdance, the Stormcrown), ch5 (the Last Sunset),
 // ch6 (Afterlight), ch7 (the Mender of Ash), ch8 (Children of the Wreck).
-export default [
+/** @type {import('../../types/data').ObjectiveEntry[]} */
+const ENTRIES = [
   // ------------------------------------------------------------------ ch4b: Mirefen
   { text: 'Follow the causeway east to Mirefen and find its Keeper, Mother Osk.', at: { map: 'c4b_mirefen' } },
   { text: 'Go to Mother Osk in the Mirefen Lantern, north-east of the village.', at: { map: 'c4b_osk_lantern' } },
@@ -137,3 +138,5 @@ export default [
   // Set just before the teleport; the Roost's onEnter replaces it.
   { text: 'Find Corvin Ashe at Corvin\'s Roost.', at: { map: 'corvins_roost' } },
 ];
+
+export default ENTRIES;

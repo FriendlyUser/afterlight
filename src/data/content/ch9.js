@@ -67,7 +67,17 @@ const looks = {
 };
 
 // ------------------------------------------------------------------ enemies
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, ...opts });
+/** @type {import('../../types/data').EnemyDef[]} */
 const enemies = [
   // --- the Roost's collectors
   E('c9_bailiff', 'Ledger Bailiff', 45, { type: 'humanoid', look: 'c9_bailiff' }, {
@@ -201,8 +211,14 @@ const enemies = [
 ];
 
 // ------------------------------------------------------------------ troops
+/**
+ * @param {string[]} list
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (list, opts = {}) => ({ enemies: list, ...opts });
 const BOSS = { boss: true, music: 'boss', canFlee: false };
+/** @type {Record<string, import('../../types/data').TroopDef>} */
 const troops = {
   c9_bailiffs: T(['c9_bailiff', 'c9_debt_hound', 'c9_bailiff'], { canFlee: false }),
   c9_by_rats: T(['c9_rustback', 'c9_rustback', 'c9_rustback']),
@@ -286,6 +302,7 @@ const bossAI = {
 };
 
 // ------------------------------------------------------------------ shops & world
+/** @type {Record<string, import('../../types/data').ShopDef>} */
 const shops = {
   c9_exchange: {
     name: 'The Ledger Exchange',
@@ -295,6 +312,7 @@ const shops = {
   },
 };
 
+/** @type {import('../../types/data').WorldNode[]} */
 const worldNodes = [
   { id: 'c9_roost', name: 'Corvin\'s Roost', region: 'The Sunscar Rift', act: 2, x: 640, y: 600, mapId: 'corvins_roost', tx: 14, ty: 34, dir: 'up', unlock: 'c9_arrived', desc: 'A smugglers\' canyon in a fallen mountain. The Halcyon\'s grave — or her cradle.' },
   { id: 'c9_boneyard', name: 'The Boneyard', region: 'The Sunscar Rift', act: 2, x: 612, y: 640, mapId: 'c9_boneyard', tx: 4, ty: 31, dir: 'up', unlock: 'c9_boneyard_open', desc: 'Where the airships fell when the sky broke.' },
@@ -302,6 +320,7 @@ const worldNodes = [
   { id: 'c9_cinderdeep', name: 'The Cinderdeep', region: 'The Fallen Shard', act: 2, x: 690, y: 690, mapId: 'c9_cinderdeep', tx: 3, ty: 37, dir: 'up', unlock: 'c9_cinderdeep_open', desc: 'Odessa\'s sun-ember mine. The only warm place left in the world.' },
 ];
 
+/** @type {import('../../types/data').ContentPack} */
 export default {
   maps: [roost, lastCall, ledgerHouse, boneyard, benediction, benedictionCabin, cinderdeep, halcyonFlight],
   enemies, troops, looks, bossAI, shops, worldNodes,

@@ -1,12 +1,14 @@
 // World map: fast travel between unlocked destinations. Painted procedurally
 // as pixel art — a parchment continent before the Sundering, a shattered sky
-// archipelago with seven burning sun-wounds after it.
+// archipelago with seven burning sun-wounds after it. A destination with attuned
+// Hearthstones nearby (world/Waystones.js) asks where to arrive.
 
 import { el } from '../ui/UI.js';
 import { keyCap } from '../core/Input.js';
 import { WORLD_NODES, openNodes } from '../data/worldmap.js';
 import { fbm, RNG } from '../core/util.js';
 import { WORLD, activeTargets, route } from './QuestGuide.js';
+import { waystonesAt, waystoneNode } from './Waystones.js';
 
 const W = 320, H = 180;           // pixel-art canvas
 const SCALE_X = W / 1000, SCALE_Y = H / 750;
@@ -49,8 +51,8 @@ export class WorldMapScene {
     const act = st.flags.sundered ? 2 : 1;
     this.act = act;
     this.nodes = openNodes(st);
-    const cur = this.nodes.findIndex((n) => n.mapId === st.location.mapId);
-    this.index = Math.max(0, cur);
+    this.stones = this.nodes.map((n) => waystonesAt(n, st));
+    this.index = Math.max(0, this.nodes.findIndex((n) => this.isHere(n)));
 
     this.root = el('div', 'worldmap');
     this.canvas = document.createElement('canvas');
@@ -76,6 +78,12 @@ export class WorldMapScene {
   exit() {
     this.game.ui.remove(this.widget);
     this.root.remove();
+  }
+
+  /** The party is at this destination, or in a dungeon or route that hangs off it. */
+  isHere(n) {
+    const map = this.state.location.mapId;
+    return n.mapId === map || n.id === waystoneNode(map);
   }
 
   // ------------------------------------------------------------------ painting
@@ -179,12 +187,12 @@ export class WorldMapScene {
   buildMarkers() {
     this.markers.innerHTML = '';
     const st = this.game.state;
-    const here = st.location.mapId;
     // The stop on the way to the current objective (Settings → Quest Guide).
     this.questNode = st.settings.hideQuestGuide ? null : route(WORLD, activeTargets(st), st)?.node ?? null;
-    this.markerEls = this.nodes.map((n) => {
+    this.markerEls = this.nodes.map((n, i) => {
       const quest = n === this.questNode ? ' quest' : '';
-      const m = el('div', `wm-node ${nodeKind(n)}${n.mapId === here ? ' here' : ''}${quest}`, `<i></i><span>${n.name}</span>`);
+      const stones = this.stones[i].length ? `<b class="wm-stones">◆${this.stones[i].length}</b>` : '';
+      const m = el('div', `wm-node ${nodeKind(n)}${this.isHere(n) ? ' here' : ''}${quest}`, `<i></i><span>${n.name}${stones}</span>`);
       m.style.left = `${(n.x / 1000) * 100}%`;
       m.style.top = `${(n.y / 750) * 100}%`;
       this.markers.appendChild(m);
@@ -196,7 +204,9 @@ export class WorldMapScene {
     this.markerEls.forEach((m, i) => m.classList.toggle('sel', i === this.index));
     const n = this.nodes[this.index];
     const quest = n && n === this.questNode ? '<div class="wm-quest">◆ Your objective lies this way</div>' : '';
-    this.info.innerHTML = n ? `<div class="cd-name">${n.name}</div><div class="cd-tier">${n.region || ''}</div><div class="cd-desc">${n.desc || ''}</div>${quest}` : '<div class="dim">Nowhere to go yet.</div>';
+    const stones = this.stones[this.index]?.length ? `<div class="wm-stone-list">Hearthstones: ${this.stones[this.index].map((s) => s.name).join(' · ')}</div>` : '';
+    if (this.picker) this.info.innerHTML = this.pickerHtml();
+    else this.info.innerHTML = n ? `<div class="cd-name">${n.name}</div><div class="cd-tier">${n.region || ''}</div><div class="cd-desc">${n.desc || ''}</div>${stones}${quest}` : '<div class="dim">Nowhere to go yet.</div>';
     const corner = this.panelCorner();
     for (const c of PANEL_CORNERS) this.info.classList.toggle(c.cls, c === corner);
   }
@@ -207,9 +217,32 @@ export class WorldMapScene {
     return PANEL_CORNERS.find((c) => !hidden(c)) || [...PANEL_CORNERS].sort((a, b) => hidden(a) - hidden(b))[0];
   }
 
+  // ------------------------------------------------------------------ arrival choice
+
+  /** Choose where to arrive: the destination itself or one of its attuned Hearthstones. */
+  openPicker(node) {
+    const dests = [{ name: node.name, sub: 'Arrive', dest: node }, ...this.stones[this.index].map((s) => ({ name: s.name, sub: 'Hearthstone', dest: s }))];
+    this.picker = { dests, index: 0 };
+    this.refresh();
+  }
+
+  pickerHtml() {
+    const rows = this.picker.dests.map((d, i) => `<div class="wm-dest${i === this.picker.index ? ' sel' : ''}"><span>${d.name}</span><em>${d.sub}</em></div>`).join('');
+    return `<div class="cd-name">Travel to…</div>${rows}`;
+  }
+
+  handlePicker(input) {
+    const p = this.picker;
+    const step = (input.repeat('down') || input.repeat('right') ? 1 : 0) - (input.repeat('up') || input.repeat('left') ? 1 : 0);
+    if (step) { p.index = (p.index + step + p.dests.length) % p.dests.length; this.game.audio?.sfx('cursor'); this.refresh(); }
+    if (input.pressed('cancel')) { input.consumeAll(); this.game.audio?.sfx('cancel'); this.picker = null; this.refresh(); }
+    else if (input.pressed('confirm')) { input.consumeAll(); this.game.audio?.sfx('confirm'); this.leave(p.dests[p.index].dest); }
+  }
+
   // ------------------------------------------------------------------ input
 
   handleInput(input) {
+    if (this.picker) { this.handlePicker(input); return; }
     const dirs = { left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1] };
     for (const [k, [dx, dy]] of Object.entries(dirs)) {
       if (!input.repeat(k)) continue;
@@ -232,7 +265,8 @@ export class WorldMapScene {
       const n = this.nodes[this.index];
       if (!n) return;
       this.game.audio?.sfx('confirm');
-      this.leave(n);
+      if (this.stones[this.index].length) this.openPicker(n);
+      else this.leave(n);
     }
   }
 

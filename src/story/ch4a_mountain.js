@@ -13,6 +13,7 @@ function spawnKids(s, spots, dir = 'down') {
 }
 const removeKids = (s) => KIDS.forEach((k) => s.remove(`kid_${k}`));
 
+/** @type {import('../types/data').StoryScripts} */
 export const C4M = {
   // =================================================================== Greyspine Pass
   async passArrival(s) {

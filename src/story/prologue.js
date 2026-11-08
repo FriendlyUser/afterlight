@@ -3,6 +3,7 @@
 
 import { keyCap } from '../core/Input.js';
 
+/** @type {import('../types/data').StoryScripts} */
 export const PRO = {
   /** New game: narration, title card, waking up, Ysolde. */
   async opening(s) {

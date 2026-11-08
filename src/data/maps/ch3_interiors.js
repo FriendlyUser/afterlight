@@ -16,6 +16,7 @@ const after = (st) => !!st.flags.c3_mercy_down;
 const pipIn = (s) => s.state.party.includes('pip');
 
 // ------------------------------------------------------------------ The Ringing Bell
+/** @type {import('../../types/data').MapDef} */
 export const c3Inn = {
   ...INN, ...interior,
   id: 'c3_inn', name: 'The Ringing Bell', music: 'inn',
@@ -68,6 +69,7 @@ export const c3Inn = {
 };
 
 // ------------------------------------------------------------------ Bellwright Arms & Sundries
+/** @type {import('../../types/data').MapDef} */
 export const c3Shop = {
   ...SHOP, ...interior,
   id: 'c3_shop', name: 'Bellwright Arms & Sundries',
@@ -88,6 +90,7 @@ export const c3Shop = {
 };
 
 // ------------------------------------------------------------------ The Cathedral of Dawn
+/** @type {import('../../types/data').MapDef} */
 export const c3Cathedral = {
   ...CATHEDRAL, ...interior,
   id: 'c3_cathedral', name: 'The Cathedral of Dawn', mood: 'temple', music: 'kindling', particles: 'motes_gold',
@@ -125,6 +128,7 @@ export const c3Cathedral = {
 };
 
 // ------------------------------------------------------------------ Cassian's study
+/** @type {import('../../types/data').MapDef} */
 export const c3Study = {
   ...STUDY, ...interior,
   id: 'c3_study', name: 'The Hierophant\'s Study', music: 'cassian',
@@ -151,6 +155,7 @@ export const c3Study = {
 
 // ------------------------------------------------------------------ The Choir archives
 const page = (flag, lines) => ({ cond: (st) => !st.flags[flag], hint: 'Search', run: (s) => SIDE.page(s, flag, lines) });
+/** @type {import('../../types/data').MapDef} */
 export const c3Archives = {
   ...ARCHIVES, ...interior,
   id: 'c3_archives', name: 'The Choir Archives', music: 'cassian',
@@ -181,6 +186,7 @@ export const c3Archives = {
 };
 
 // ------------------------------------------------------------------ Tolliver's bell tower
+/** @type {import('../../types/data').MapDef} */
 export const c3Tolliver = {
   ...TOLLIVER, ...interior,
   id: 'c3_tolliver', name: 'St. Aurel\'s Bell Tower',
@@ -197,6 +203,7 @@ export const c3Tolliver = {
 };
 
 // ------------------------------------------------------------------ The Venn house
+/** @type {import('../../types/data').MapDef} */
 export const c3Venn = {
   ...VENN, ...interior,
   id: 'c3_venn', name: 'Venn House',
@@ -209,6 +216,7 @@ export const c3Venn = {
 };
 
 // ------------------------------------------------------------------ The almshouse
+/** @type {import('../../types/data').MapDef} */
 export const c3Almshouse = {
   ...ALMS, ...interior,
   id: 'c3_almshouse', name: 'House of Small Mercies', music: (st) => (st.flags.c3_mercy_down ? 'sad' : 'aurenne'),

@@ -4,6 +4,7 @@ import { THISTLE } from '../../story/ch2_thistle.js';
 
 const tamHere = (st) => !st.flags.c2_tam_done;
 
+/** @type {import('../../types/data').MapDef} */
 export const quarry = {
   ...L,
   id: 'c2_quarry', name: 'The Old Quarry', region: 'Red Tam\'s Hideout',

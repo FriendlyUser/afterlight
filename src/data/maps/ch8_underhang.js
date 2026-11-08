@@ -3,6 +3,7 @@ import UH from './layouts/c8_underhang.js';
 import VW from './layouts/c8_vigil_wreck.js';
 import { CH8 } from '../../story/ch8.js';
 
+/** @type {import('../../types/data').MapDef} */
 export const underhang = {
   ...UH,
   id: 'c8_underhang', name: 'The Underhang', region: 'Beneath Kiteholm',
@@ -40,6 +41,7 @@ export const underhang = {
   ],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const vigilWreck = {
   ...VW,
   id: 'c8_vigil_wreck', name: 'Wreck of the Vigil', region: 'Beneath Kiteholm',

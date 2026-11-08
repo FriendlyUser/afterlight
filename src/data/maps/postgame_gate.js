@@ -8,6 +8,7 @@ import { PG, HIDING_SPOTS } from '../../story/postgame.js';
 
 const cleared = (st) => !!st.flags.gameClear;
 
+/** @type {import('../../types/data').MapDef} */
 export const abyssGate = {
   ...GATE,
   id: 'abyss_gate', name: 'The Abyss Gate', region: 'The Nadir Light',
@@ -40,6 +41,7 @@ export const abyssGate = {
   onEnter: (s) => PG.gateEnter(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const echoArena = {
   ...ARENA_L,
   id: 'pg_arena', name: 'The Echo Colosseum', region: 'Beneath the Abyss Gate',
@@ -55,6 +57,7 @@ export const echoArena = {
   exits: [{ x: 13, y: 25, w: 4, to: 'abyss_gate', tx: GATE.spots.arena_door[0], ty: GATE.spots.arena_door[1], dir: 'down' }],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const hidingPlace = {
   ...HIDE,
   id: 'pg_hiding_place', name: 'The Hiding Place', region: 'Aurenne, the night of the festival',

@@ -11,6 +11,7 @@
 // special: name of a custom handler in battle/Specials.js.
 // anim:    visual effect id (see battle/Effects.js).
 
+/** @type {Record<string, import('../types/data').SkillDef>} */
 export const SKILLS = {
   // ------------------------------------------------------------ basics
   attack: { name: 'Attack', kind: 'phys', target: 'enemy', power: 100, elem: 'weapon', anim: 'weapon', desc: 'A basic strike with your weapon.' },

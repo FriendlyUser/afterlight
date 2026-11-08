@@ -9,6 +9,7 @@ const OPEN_X = 38;
 const caveGround = CAVES.ground.map((row, y) => (y >= 28 ? row.slice(0, OPEN_X) + 'c' + row.slice(OPEN_X + 1) : row));
 const caveProps = CAVES.props.map((row, y) => (y === 28 ? row.slice(0, OPEN_X) + ' ' + row.slice(OPEN_X + 1) : row));
 
+/** @type {import('../../types/data').MapDef} */
 export const c5TideCaves = {
   ...CAVES,
   ground: caveGround,
@@ -43,6 +44,7 @@ const KEEPERS = {
   ide: 'IDE HALLOWAY. "SHE SANG FLAT AND NEVER ONCE MISSED A DAWN." Your grandmother. You remember her hands, and her terrible singing.',
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const c5KeepersStair = {
   ...STAIR,
   id: 'c5_keepers_stair', name: 'The Keeper\'s Stair', region: 'Lanternfall', mood: 'cave', music: 'cave',
@@ -78,6 +80,7 @@ export const c5KeepersStair = {
   ],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const ch5Lantern = {
   ...LANTERN,
   id: 'ch5_lantern', name: 'The Lantern of Lanternfall', mood: 'temple', music: null,

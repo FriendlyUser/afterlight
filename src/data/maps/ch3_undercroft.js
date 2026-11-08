@@ -18,6 +18,7 @@ const freed = (st) => !!st.flags.c3_mercy_down;
 const pipIn = (s) => s.state.party.includes('pip');
 
 // ================================================================ B1 — the sewers
+/** @type {import('../../types/data').MapDef} */
 export const c3Sewers = {
   ...SEWERS, ...dungeon,
   id: 'c3_uc_sewers', name: 'The Undercroft: Sewers', mood: 'cave', music: 'cave', battleBg: 'undercroft', particles: 'dust',
@@ -73,6 +74,7 @@ export const c3Sewers = {
 };
 
 // ================================================================ B2 — the ossuary
+/** @type {import('../../types/data').MapDef} */
 export const c3Ossuary = {
   ...OSSUARY, ...dungeon,
   id: 'c3_uc_ossuary', name: 'The Undercroft: Ossuary', mood: 'cave', music: 'cave', battleBg: 'undercroft', particles: 'dust',
@@ -113,6 +115,7 @@ export const c3Ossuary = {
 
 // ================================================================ B3 — Mercy's laboratory
 const cell = (x0, run) => [0, 1, 2, 3].map((i) => ({ x: x0 + i, y: 4, hint: 'Bars', ...run }));
+/** @type {import('../../types/data').MapDef} */
 export const c3Lab = {
   ...LAB, ...dungeon,
   id: 'c3_uc_lab', name: 'The Undercroft: Laboratory', mood: 'gloam', music: (st) => (freed(st) ? 'sad' : 'gloam'), battleBg: 'gloam',

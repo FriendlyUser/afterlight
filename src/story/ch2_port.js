@@ -18,6 +18,7 @@ const CAUGHT_LINES = [
   ['You there! Lanternfall accent. Show me your hands. All of you.', 'Wren', 'We\'re fishmongers! Very... tall fishmongers.'],
 ];
 
+/** @type {import('../types/data').StoryScripts} */
 export const PORT = {
   // ------------------------------------------------------------------ Arrival
   async arrival(s) {

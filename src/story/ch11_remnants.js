@@ -14,6 +14,7 @@ export async function takeStar(s, id) {
   else await s.say('Pip', 'Another one for the star lady. She\'d better have biscuits.');
 }
 
+/** @type {import('../types/data').StoryScripts} */
 export const REM = {
   // ================================================================== SALTGLASS — the Blind Choir
   async sgArrive(s) {

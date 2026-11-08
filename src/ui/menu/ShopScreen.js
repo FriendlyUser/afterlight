@@ -8,6 +8,7 @@ import { ITEMS } from '../../data/items.js';
 import { EQUIPMENT } from '../../data/equipment.js';
 import { getPortrait } from '../../render/SpriteFactory.js';
 
+/** @returns {any} the item or equipment definition (fields differ by kind) */
 const def = (id) => ITEMS[id] || EQUIPMENT[id];
 const sellPrice = (d) => d.sell ?? Math.floor((d.price || 0) / 2);
 

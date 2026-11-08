@@ -37,6 +37,17 @@ export class GeometryBuilder {
    * uvFor(i, j) returns the atlas rect for cell (i, j).
    * shadeFor(v0, v1) -> [bottomShade, topShade] (fractions along v).
    */
+  /**
+   * @param {number[]} origin
+   * @param {number[]} uDir
+   * @param {number[]} vDir
+   * @param {number} uLen
+   * @param {number} vLen
+   * @param {number[]} normal
+   * @param {(u: number, v: number) => any} uvFor
+   * @param {(v0: number, v1: number) => number[]} [shadeFor] bottom/top shade along v
+   * @param {number[]} [tint]
+   */
   tiledQuad(origin, uDir, vDir, uLen, vLen, normal, uvFor, shadeFor = () => [1, 1], tint) {
     const nu = Math.max(1, Math.ceil(uLen - 1e-6));
     const nv = Math.max(1, Math.ceil(vLen - 1e-6));

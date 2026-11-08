@@ -5,6 +5,7 @@ import { CH10 } from '../../story/ch10.js';
 
 const f = (name) => (st) => !!st.flags[name];
 
+/** @type {import('../../types/data').MapDef} */
 export const noonSpire = {
   ...SPIRE,
   id: 'noon_spire', name: 'The Noon Spire', region: 'The Greatest Shard',
@@ -57,6 +58,7 @@ export const noonSpire = {
   onEnter: (s) => CH10.landing(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const spireHalls = {
   ...HALLS,
   id: 'c10_spire_halls', name: 'The Spire Halls', region: 'The Noon Spire',

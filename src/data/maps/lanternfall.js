@@ -6,6 +6,7 @@ import { CH1 } from '../../story/ch1.js';
 const day = (st) => !st.flags.lfNight;
 const beforeKindling = (st) => day(st) && !st.flags.kindled;
 
+/** @type {import('../../types/data').MapDef} */
 export default {
   ...L,
   id: 'lanternfall',

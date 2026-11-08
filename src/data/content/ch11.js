@@ -69,7 +69,17 @@ const looks = Object.fromEntries([
 ]);
 
 // ------------------------------------------------------------------ enemies
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, ...opts });
+/** @type {import('../../types/data').EnemyDef[]} */
 const enemies = [
   // ============================================ Saltglass — the Glass Steps (Lv 56–59)
   E('c11_glasswyrm', 'Glasswyrm', 57, { type: 'serpent', color: '#d8c890', accent: '#a0e0ff', eye: '#ff8040', seed: 21 }, {
@@ -411,8 +421,14 @@ const enemies = [
 ];
 
 // ------------------------------------------------------------------ troops
+/**
+ * @param {string[]} enemies
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (enemies, opts = {}) => ({ enemies, ...opts });
 const boss = (enemies, bg, opts = {}) => T(enemies, { boss: true, music: 'boss', canFlee: false, bg, ...opts });
+/** @type {Record<string, import('../../types/data').TroopDef>} */
 const troops = {
   c11_sg_wyrms: T(['c11_glasswyrm', 'c11_glasswyrm']),
   c11_sg_choir: T(['c11_choir_husk', 'c11_mirage', 'c11_choir_husk']),
@@ -625,8 +641,14 @@ const SHOPS = {
   },
 };
 
+/**
+ * An Act III world-map stop.
+ * @param {import('../../types/data').Dir} [dir]
+ * @returns {import('../../types/data').WorldNode}
+ */
 const node = (id, name, region, x, y, mapId, tx, ty, desc, unlock = 'act3', dir = 'up') =>
   ({ id, name, region, act: 2, x, y, mapId, tx, ty, dir, unlock, desc });
+/** @type {import('../../types/data').WorldNode[]} */
 const worldNodes = [
   node('c11_halcyon', 'The Halcyon', 'Wherever Corvin parked her', 430, 300, 'halcyon_deck', 12, 8, 'Home, for now. It leaks.', 'act3', 'down'),
   node('c11_saltglass', 'Saltglass', 'The Sunscar Shards', 600, 650, 'c11_saltglass', 19, 40, 'The Glass Steps. A choir sings in the dead Lantern. (Danger: Lv 58)'),
@@ -642,6 +664,7 @@ const worldNodes = [
   node('c11_vigil', 'The Vigil Hall', 'The Greyspine', 470, 120, 'c11_vigil', 12, 31, 'Where Dawnguard squires stood their last night before knighthood. (Danger: Lv 63)', 'c11_vigil_open'),
 ];
 
+/** @type {import('../../types/data').ContentPack} */
 export default {
   maps: [...HALCYON_MAPS, ...REMNANT_MAPS, ...RITE_MAPS],
   enemies, troops, looks, bossAI, shops: SHOPS, worldNodes,

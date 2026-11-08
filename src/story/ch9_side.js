@@ -5,6 +5,7 @@ const CARD_NAMES = ['', 'Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', '
 const draw = () => 1 + Math.floor(Math.random() * 13);
 const inParty = (s, id) => s.state.party.includes(id);
 
+/** @type {import('../types/data').StoryScripts} */
 export const CH9_SIDE = {
   // ------------------------------------------------------------------ High-Low
   async ferro(s) {

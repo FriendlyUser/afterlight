@@ -10,6 +10,10 @@
 export const CREST_RANK_CP = [0, 15, 40, 80, 140, 220, 320, 440, 600, 800];
 export const MAX_RANK = 10;
 
+/**
+ * @param {import('../types/data').CrestDef} def
+ * @returns {import('../types/data').CrestDef}
+ */
 const C = (def) => def;
 
 export const CRESTS = {

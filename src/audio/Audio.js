@@ -354,7 +354,9 @@ export class AudioEngine {
     if (fn) fn(this, this.ctx.currentTime);
   }
 
-  tone(t, freq, dur, { type = 'square', vol = 0.2, slide = 0, attack = 0.005, filter = 0 } = {}) {
+  /** @param {{ type?: OscillatorType, vol?: number, slide?: number, attack?: number, filter?: number }} [opts] */
+  tone(t, freq, dur, opts = {}) {
+    const { type = 'square', vol = 0.2, slide = 0, attack = 0.005, filter = 0 } = opts;
     const ctx = this.ctx;
     const o = ctx.createOscillator();
     o.type = type;
@@ -364,6 +366,7 @@ export class AudioEngine {
     g.gain.setValueAtTime(0.0001, t);
     g.gain.linearRampToValueAtTime(vol, t + attack);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    /** @type {AudioNode} */
     let node = o;
     if (filter) {
       const f = ctx.createBiquadFilter();
@@ -378,7 +381,9 @@ export class AudioEngine {
     o.stop(t + dur + 0.05);
   }
 
-  noise(t, dur, { vol = 0.25, freq = 2000, type = 'bandpass', q = 1, sweep = 0 } = {}) {
+  /** @param {{ vol?: number, freq?: number, type?: BiquadFilterType, q?: number, sweep?: number }} [opts] */
+  noise(t, dur, opts = {}) {
+    const { vol = 0.25, freq = 2000, type = 'bandpass', q = 1, sweep = 0 } = opts;
     const ctx = this.ctx;
     const n = ctx.createBufferSource();
     n.buffer = this.noiseBuf;

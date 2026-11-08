@@ -5,6 +5,7 @@
 
 export const SUPPORT_POINTS = 6; // budget per character; grows with level (see Character.supportBudget)
 
+/** @type {Record<string, import('../types/data').PassiveDef>} */
 export const PASSIVES = {
   hp_up: { name: 'Vigor', cost: 1, desc: 'Max HP +10%.', mods: { hpPct: 10 } },
   hp_up2: { name: 'Vigor II', cost: 2, desc: 'Max HP +20%.', mods: { hpPct: 20 } },

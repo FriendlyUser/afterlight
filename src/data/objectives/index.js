@@ -17,9 +17,14 @@ import act1 from './act1.js';
 import act2 from './act2.js';
 import act3 from './act3.js';
 
+/** @type {import('../../types/data').ObjectiveEntry[]} */
 export const OBJECTIVE_TARGETS = [...act1, ...act2, ...act3];
 
-/** The targets for an objective text ([] when it has none), longest matching entry wins. */
+/**
+ * The targets for an objective text ([] when it has none), longest matching entry wins.
+ * @param {string} text
+ * @returns {import('../../types/data').ObjectiveTarget[]}
+ */
 export function objectiveTargets(text) {
   if (!text) return [];
   let best = null;

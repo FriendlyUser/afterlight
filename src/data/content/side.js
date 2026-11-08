@@ -4,7 +4,7 @@
 
 import { ITEMS } from '../items.js';
 import { EQUIPMENT } from '../equipment.js';
-import { SIDE, bountyLair } from '../../story/side.js';
+import { SIDE, bountyLair, chime, flower } from '../../story/side.js';
 
 import LODGE from '../maps/layouts/side_lodge.js';
 import LODGE_HALL from '../maps/layouts/side_lodge_hall.js';
@@ -41,6 +41,15 @@ acc('black_star_shard', { name: 'Black Star Shard', mag: 30, str: 30, mods: { af
 // Enemies
 // ---------------------------------------------------------------------------
 
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, poise: 3, skills: [['attack', 1]], drops: [], ...opts });
 const boss = (o) => ({ boss: true, ...o, stats: { hp: 12, exp: 8, gold: 8, cp: 4, ...(o.stats || {}) } });
 
@@ -102,9 +111,15 @@ const ENEMIES = [
 // Troops
 // ---------------------------------------------------------------------------
 
+/**
+ * @param {string[]} enemies
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (enemies, opts = {}) => ({ enemies, ...opts });
 const TB = (enemies) => T(enemies, { boss: true, music: 'boss', canFlee: false });
 
+/** @type {Record<string, import('../../types/data').TroopDef>} */
 const TROOPS = {
   side_moor_hounds: T(['side_heath_hound', 'side_heath_hound', 'side_heath_hound']),
   side_moor_crows: T(['side_moor_crow', 'side_moor_crow', 'side_bog_wisp']),
@@ -235,6 +250,7 @@ const LOOKS = {
   white_gardener: { id: 'white_gardener', skin: '#e0d8c8', hair: { style: 'long', color: '#f4f4f0' }, outfit: { style: 'robe', main: '#f0ece0', accent: '#a0c090', trim: '#c0b080' }, acc: ['hat_wide'] },
 };
 
+/** @type {Record<string, import('../../types/data').ShopDef>} */
 const SHOPS = {
   side_lodge: { name: 'Lodge Stores', items: ['tonic', 'hi_tonic', 'ether', 'ember_feather', 'antidote', 'eye_drops', 'smoke_ball', 'fire_bomb', 'frost_bomb', 'bolt_bomb', 'gale_bomb', 'bedroll', 'quiet_bell', 'lure_bell', 'stone_ranger', 'stone_rogue', 'longbow', 'hunters_bow', 'scout_hood', 'brigandine'] },
   side_ruin_lodge: { name: 'What\'s Left of the Stores', items: ['mega_tonic', 'hi_ether', 'dawn_plume', 'panacea', 'tonic_mist', 'bedroll', 'fire_bomb', 'frost_bomb', 'holy_water', 'feather_cape', 'hunters_eye', 'ashwood_bow', 'ashen_coat', 'ashen_hood'] },
@@ -252,6 +268,7 @@ const dungeon = { noTravel: true };
 /** A layout's prop rows with extra props stamped in: [[x, y, legendChar], ...]. */
 const withProps = (layout, extra) => layout.props.map((row, y) => [...row].map((c, x) => extra.find(([px, py]) => px === x && py === y)?.[2] ?? c).join(''));
 
+/** @type {import('../../types/data').MapDef[]} */
 const MAPS = [
   // ---------------- Hunters' Lodge (Act I)
   {
@@ -364,9 +381,9 @@ const MAPS = [
     npcs: [{ id: 'sexton', name: 'Sexton Orrin', look: 'sexton', x: 30, y: 16, dir: 'left', run: (s) => SIDE.sexton(s) }],
     blockers: [{ id: 'nave_seal_a', x: 19, y: 42, prop: 'pillar' }, { id: 'nave_seal_b', x: 20, y: 42, prop: 'pillar' }, { id: 'nave_seal_c', x: 21, y: 42, prop: 'pillar' }],
     inspect: [
-      { x: 37, y: 5, hint: 'Chime', run: (s) => SIDE.chime('a')(s) },
-      { x: 2, y: 16, hint: 'Chime', run: (s) => SIDE.chime('b')(s) },
-      { x: 37, y: 27, hint: 'Chime', run: (s) => SIDE.chime('c')(s) },
+      { x: 37, y: 5, hint: 'Chime', run: (s) => chime('a')(s) },
+      { x: 2, y: 16, hint: 'Chime', run: (s) => chime('b')(s) },
+      { x: 37, y: 27, hint: 'Chime', run: (s) => chime('c')(s) },
     ],
     chests: [{ id: 'n1', x: 4, y: 4, item: 'hi_ether', count: 2 }, { id: 'n2', x: 35, y: 38, item: 'wisdom_seed' }],
     triggers: [lair('choirmother', 10, 27)],
@@ -385,9 +402,9 @@ const MAPS = [
     encounters: { rate: 0.9, bg: 'verdance', troops: [['side_garden_maws', 2], ['side_garden_wraith', 2]] },
     inspect: [
       fish(29, 21, 'river'),
-      { x: 14, y: 20, hint: 'Flower', run: (s) => SIDE.flower('Tell Mara the bread is in the oven. Tell her it\'s her turn to burn it.')(s) },
-      { x: 26, y: 24, hint: 'Flower', run: (s) => SIDE.flower('It doesn\'t hurt. I promise. Go on, go — I\'ll catch up.')(s) },
-      { x: 8, y: 12, hint: 'Flower', run: (s) => SIDE.flower('Did the sun come up? Somebody tell me the sun came up.')(s) },
+      { x: 14, y: 20, hint: 'Flower', run: (s) => flower('Tell Mara the bread is in the oven. Tell her it\'s her turn to burn it.')(s) },
+      { x: 26, y: 24, hint: 'Flower', run: (s) => flower('It doesn\'t hurt. I promise. Go on, go — I\'ll catch up.')(s) },
+      { x: 8, y: 12, hint: 'Flower', run: (s) => flower('Did the sun come up? Somebody tell me the sun came up.')(s) },
     ],
     triggers: [lair('thornmaiden', 31, 9)],
     exits: [toWorld(20, 29), go(20, 0, 'side_garden_maze', 21, 33, 'up')],
@@ -399,8 +416,8 @@ const MAPS = [
     encounters: { rate: 1, bg: 'verdance', troops: [['side_garden_maws', 2], ['side_garden_wraith', 2], ['side_garden_oak', 2]] },
     npcs: [{ id: 'gardener', name: 'The White Gardener', look: 'white_gardener', x: 21, y: 16, dir: 'down', run: (s) => SIDE.gardener(s) }],
     inspect: [
-      { x: 6, y: 30, hint: 'Flower', run: (s) => SIDE.flower('I should have called you back. Every day, I should have called you back.')(s) },
-      { x: 38, y: 8, hint: 'Flower', run: (s) => SIDE.flower('The boy\'s name is Tam. Look after him. He\'s scared of the dark.')(s) },
+      { x: 6, y: 30, hint: 'Flower', run: (s) => flower('I should have called you back. Every day, I should have called you back.')(s) },
+      { x: 38, y: 8, hint: 'Flower', run: (s) => flower('The boy\'s name is Tam. Look after him. He\'s scared of the dark.')(s) },
     ],
     chests: [{ id: 'z1', x: 3, y: 3, item: 'x_tonic', count: 2 }, { id: 'z2', x: 40, y: 32, item: 'vigor_seed' }, { id: 'z3', x: 30, y: 20, item: 'sunshard_robe' }],
     exits: [go(21, 35, 'side_garden_gate', 20, 2, 'down'), go(20, 0, 'side_garden_heart', 15, 23, 'up', 3, 1)],
@@ -423,6 +440,7 @@ const MAPS = [
 // ---------------------------------------------------------------------------
 
 const ch = (n) => (st) => (st.chapter || 0) >= n;
+/** @type {import('../../types/data').WorldNode[]} */
 const WORLD_NODES = [
   { id: 'side_lodge', name: 'Hunters\' Lodge', region: 'Brackenmoor', act: 1, x: 365, y: 560, mapId: 'side_lodge', tx: 17, ty: 26, dir: 'up', unlock: ch(2), desc: 'Bounties for monsters too much for a village.' },
   { id: 'side_observatory', name: 'Drowned Observatory', region: 'Gale Coast', act: 1, x: 290, y: 615, mapId: 'side_obs_shore', tx: 20, ty: 30, dir: 'up', unlock: ch(3), desc: 'At low tide, a causeway rises to a dome older than the Lanterns.' },
@@ -434,4 +452,5 @@ const WORLD_NODES = [
   { id: 'side_nadir', name: 'The Black Star', region: 'Above the Seven Wounds', act: 2, x: 500, y: 90, mapId: 'side_nadir', tx: 15, ty: 24, dir: 'up', unlock: 'side_nadir_open', desc: 'It does not shine. It takes.' },
 ];
 
+/** @type {import('../../types/data').ContentPack} */
 export default { maps: MAPS, enemies: ENEMIES, troops: TROOPS, looks: LOOKS, bossAI: BOSS_AI, shops: SHOPS, worldNodes: WORLD_NODES };

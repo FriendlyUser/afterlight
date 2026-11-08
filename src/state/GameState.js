@@ -27,7 +27,10 @@ export class Inventory {
   itemDef(id) { return ITEMS[id] || EQUIPMENT[id]; }
   itemName(id) { return this.itemDef(id)?.name || id; }
 
-  /** Entries filtered by predicate on the def: [[id, count, def], ...] */
+  /**
+   * Entries filtered by predicate on the def: [[id, count, def], ...]
+   * @param {(def: any) => boolean} [pred]
+   */
   list(pred = () => true) {
     return [...this.items.entries()]
       .map(([id, n]) => [id, n, this.itemDef(id)])
@@ -43,7 +46,9 @@ export class GameState {
     this.party = [];
     this.inventory = new Inventory();
     this.gold = 0;
+    /** @type {Record<string, any>} story flags: flag name -> value (usually true) */
     this.flags = {};
+    /** @type {Record<string, any>} story variables (objective, quests, journal, counters…) */
     this.vars = {};
     this.chapter = 0;
     this.playtime = 0;
@@ -204,7 +209,9 @@ export const SaveStore = {
   },
   /** Most recent save including the autosave; -1 if none. */
   latestSlot() {
-    let best = -1, t = -1;
+    /** @type {number | string} */
+    let best = -1;
+    let t = -1;
     this.summaries().forEach((s, i) => { if (s && s.savedAt > t) { t = s.savedAt; best = i; } });
     const auto = this.read(AUTO_SLOT)?.summary;
     if (auto && auto.savedAt > t) best = AUTO_SLOT;

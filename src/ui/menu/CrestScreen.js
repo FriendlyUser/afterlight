@@ -21,6 +21,9 @@ class MemberScreen extends Screen {
 
   get ch() { return this.state.allMembers()[this.memberIndex]; }
 
+  /** Draw the screen (each subclass draws its own). */
+  build() {}
+
   switchMember(input) {
     const n = this.state.party.length;
     if (input.pressed('pageRight')) { this.memberIndex = (this.memberIndex + 1) % n; this.sfx('cursor'); this.onMemberChange(); return true; }

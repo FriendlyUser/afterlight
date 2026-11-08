@@ -50,6 +50,15 @@ Object.assign(SKILLS, {
 // Enemies
 // ---------------------------------------------------------------------------
 
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, poise: 3, ...opts });
 const BOSS = { boss: true, immune: ['doom', 'charm'] };
 
@@ -376,9 +385,15 @@ export const ENEMY_LIST = [
 // Troops
 // ---------------------------------------------------------------------------
 
+/**
+ * @param {string[]} enemies
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (enemies, opts = {}) => ({ enemies, ...opts });
 const BOSS_T = { boss: true, music: 'boss', canFlee: false };
 
+/** @type {Record<string, import('../../types/data').TroopDef>} */
 export const TROOPS = {
   pg_ab1_hounds: T(['pg_umbral_hound', 'pg_umbral_hound']),
   pg_ab1_ooze: T(['pg_murk_ooze', 'pg_forgotten']),

@@ -19,6 +19,7 @@ const SIGHTLINES = [
   { guard: 'pg_g4', x: 32, y: 9, w: 5, h: 3 },
 ];
 
+/** @type {import('../../types/data').MapDef} */
 export const portGale = {
   ...PG,
   id: 'port_gale', name: 'Port Gale', region: 'The Gale Coast',
@@ -100,6 +101,7 @@ export const portGale = {
   },
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const pgInn = {
   ...INN, ...interior,
   id: 'c2_pg_inn', name: 'The Salt & Lantern',
@@ -129,6 +131,7 @@ export const pgInn = {
   onEnter: (s) => PORT.hidden(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const pgShop = {
   ...SHOP, ...interior,
   id: 'c2_pg_shop', name: 'Harborside Outfitters',
@@ -144,6 +147,7 @@ export const pgShop = {
   exits: [toTown(4, 6, 4, 14)],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const pgOdile = {
   ...ODILE, ...interior,
   id: 'c2_pg_odile', name: 'Odile\'s Cottage',

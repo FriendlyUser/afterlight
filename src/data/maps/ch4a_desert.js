@@ -7,6 +7,7 @@ import { C4A } from '../../story/ch4a.js';
 const desert = { mood: 'desert', music: 'desert', battleBg: 'desert', particles: 'dust_sand' };
 const sarnAlive = (st) => !st.flags.c4a_sarn_dead;
 
+/** @type {import('../../types/data').MapDef} */
 export const sunscarRoad = {
   ...ROAD, ...desert,
   id: 'sunscar_road', name: 'The Pilgrim Road', region: 'Edge of the Sunscar',
@@ -40,6 +41,7 @@ export const sunscarRoad = {
   onEnter: (s) => C4A.roadOpening(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const dunes = {
   ...DUNES, ...desert,
   id: 'c4a_dunes', name: 'The Sunscar', region: 'Sunscar Desert',
@@ -86,6 +88,7 @@ export const dunes = {
   ],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const halcyon = {
   ...HALCYON, ...desert,
   id: 'c4a_halcyon', name: 'Wreck of the Halcyon', region: 'Sunscar Desert',

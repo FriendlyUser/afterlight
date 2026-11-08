@@ -17,7 +17,7 @@ Debug: `?map=<id>&x=&y=&party=ilse,bram&lv=20` jumps into a map; add `&battle=<t
   Swap, auto-battle, retry on loss, difficulty and battle speed.
 - Menus: main, items, Crests (primary/secondary), Supports, equipment (optimize),
   status, formation, bestiary, journal + quest log, Guide, settings, save/load
-  (6 slots + autosave), shops, world map with fast travel, fishing.
+  (6 slots + autosave), shops, world map with fast travel (towns + attuned Hearthstones), fishing.
 - Audio: WebAudio synth + sequencer, 30 songs, 46 SFX.
 - Title, New Game (difficulty picker → opening movie), New Game+, credits; two endings
   (Evernoon and true).
@@ -46,6 +46,7 @@ Estimated 40–60 hours with side content.
 | side | Hunters' Lodge + 10 bounties, Drowned Observatory, Fort Ashwatch, Hollow Bell, Garden That Remembers, 2 hidden hunts | `side`, `side_reach` |
 | postgame | Gloam Abyss B1–30, Echo Colosseum (10 rounds), Lysa's Echo, the First Dark | `postgame`, `postgame_finale` |
 | opening | The opening movie, New Game difficulty picker, title attract loop | `opening` |
+| world map | Fast travel to towns and attuned Hearthstones | `fast_travel` |
 
 ## Testing
 Headless Windows Chrome via WSL, against the local server.
@@ -81,8 +82,24 @@ keeps relative paths. Content packs load through literal `import()` calls in
 (`import.meta.env.PROD`), so tests stay out of `dist/`. Fonts are self-hosted in `fonts/`
 (`css/fonts.css`, Latin + Latin Extended subsets, three preloaded); the build hashes them
 into `dist/assets/` and copies the OFL licenses to `dist/fonts/`. No external requests.
-`.github/workflows/pages.yml` runs `npm ci` + `npm run build` on pushes to `main` and
-deploys `dist/` to GitHub Pages (Settings → Pages → Source: GitHub Actions).
+`.github/workflows/pages.yml` runs `npm ci` + `npm run typecheck` + `npm run build` on
+pushes to `main` and deploys `dist/` to GitHub Pages (Settings → Pages → Source: GitHub
+Actions); a type error stops the deploy.
+
+**Type-checking** (`npm run typecheck`, ~12 s): TypeScript 5.6 checks the plain JS in
+place (`tsconfig.json`: `allowJs` + `checkJs`, `noEmit`, not `strict`) — no build step,
+the dev server and tests are unchanged. `@types/three@0.170` matches the vendored r170.
+`src/types/data.d.ts` describes the data (MapDef and its npcs/exits/triggers/…,
+EnemyDef, TroopDef, SkillDef, ItemDef, EquipDef, CrestDef, PassiveDef, ShopDef,
+WorldNode, ContentPack, ObjectiveEntry, and `StoryScripts`, which types every story
+step's `s` as the ScriptContext); `src/types/globals.d.ts` covers window extras. Every
+map object, content pack, enemy/troop helper, data table, objectives table and story
+object carries a JSDoc `@type`, so misspelled fields ("Did you mean 'battleBg'?") and
+unknown script calls (`s.sya`) fail the check. Fields set at runtime are declared in
+constructors (Game hooks, Actor.def/home/wanderT, Battler.acting, Renderer.onResize).
+Script factories live outside the story objects (`chime`, `flower` in story/side.js,
+`merryDef` in ch2_wold.js). Next step if wanted: `strictNullChecks`, folder by folder
+(~480 warnings across the engine today).
 
 ## Status 2026-11-07 08:30 MST
 All packs load; validator PASS (185 maps incl. generated Abyss floors, 395 enemies, 447
@@ -189,6 +206,15 @@ done directly this session:
   sequencer now schedules 0.3 s ahead and drops notes a stall made late instead of
   bunching them. Test: `opening` (all shots in order, timing, skip, New Game → Cancel →
   Hard → opening → prologue, attract). Frames: `tools/frame.sh "opening=<shot>&wait=1"`.
+- **Hearthstone fast travel.** Towns were already on the world map (unlocked by arrival
+  flags); now 21 route and dungeon Hearthstones (`data/waystones.js`, each under the world
+  node it hangs off) are attuned by walking within 2 tiles or resting at them
+  (`world/Waystones.js`, a toast says so). The world map marks a destination with its count
+  (◆2), lists them in the info panel, and on confirm asks where to arrive: the destination
+  or an attuned Hearthstone; "you are here" also lights up from inside a dungeon. The node's
+  act and unlock still apply, so Act I stones vanish with Act I. Left out: Lanternfall before
+  the Sundering, the Last Sunset, the Noon Spire, Evernoon, Abyss floors. Saved in
+  `state.vars.waystones` (older saves attune as they revisit). Test: `fast_travel`.
 
 ## Next
 Everything below is optional; the game is complete and the suite passes.

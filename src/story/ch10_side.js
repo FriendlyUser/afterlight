@@ -1,6 +1,7 @@
 // CHAPTER 10 — side stories in Evernoon: the lemonade that never arrives, and
 // the question that was never asked. Letting a memory finish sets it free.
 
+/** @type {import('../types/data').StoryScripts} */
 export const CH10_SIDE = {
   // ------------------------------------------------------------------ the lemonade
   async oldWoman(s) {

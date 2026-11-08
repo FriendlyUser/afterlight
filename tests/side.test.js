@@ -60,8 +60,8 @@ export async function run(game, h) {
   for (const c of st.allMembers()) c.setLevel(55);
   kitUp(st, 6);
   await h.goto('side_bell_nave', 20, 2, 'down');
-  const { SIDE } = await import('../src/story/side.js');
-  for (const id of ['a', 'b', 'c']) await game.scene.runScript((s) => SIDE.chime(id)(s));
+  const { chime } = await import('../src/story/side.js');
+  for (const id of ['a', 'b', 'c']) await game.scene.runScript((s) => chime(id)(s));
   h.expect(h.flags().side_bell_open, 'chimes in the wedding order open the nave');
   await h.goto('side_bell_belfry', 14, 2, 'down');
   await h.stepOn(14, 10);

@@ -13,6 +13,7 @@ const FOREST_BACKDROP = { plane: '#1e3020', y: -0.2 };
 // =====================================================================
 // Rootholm
 // =====================================================================
+/** @type {import('../../types/data').MapDef} */
 const rootholm = {
   ...ROOT, backdrop: FOREST_BACKDROP,
   id: 'c4b_verdance', name: 'Rootholm', region: 'Verdance',
@@ -67,6 +68,7 @@ const rootholm = {
 // The Thornwood — the Tangle
 // =====================================================================
 const T = TANGLE.spots;
+/** @type {import('../../types/data').MapDef} */
 const thornwood = {
   ...TANGLE, backdrop: FOREST_BACKDROP,
   id: 'c4b_thornwood', name: 'The Thornwood', region: 'Verdance',
@@ -114,6 +116,7 @@ const thornwood = {
 // =====================================================================
 // The Heartwood — Elowen's grove
 // =====================================================================
+/** @type {import('../../types/data').MapDef} */
 const heartwood = {
   ...HEART, backdrop: FOREST_BACKDROP,
   id: 'c4b_heartwood', name: 'The Heartwood', region: 'Verdance',

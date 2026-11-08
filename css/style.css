@@ -511,6 +511,12 @@ em { color: #e8dcff; }
 .wm-node.side.here i::after { border-radius: 3px; }
 .wm-node.quest::before { content: '◆'; position: absolute; left: 50%; top: -21px; transform: translateX(-50%); font-size: 16px; color: #ffd36a; text-shadow: 0 0 6px rgba(255, 200, 100, 0.9), 0 1px 1px #000; animation: wm-quest 1.4s ease-in-out infinite; }
 @keyframes wm-quest { 50% { top: -25px; } }
+.wm-stones { margin-left: 5px; font-family: var(--font-caps); font-size: 13px; font-weight: normal; color: #9fe8ff; text-shadow: 0 0 4px rgba(120, 210, 255, 0.8), 0 1px 1px #000; }
+.wm-stone-list { margin-top: 6px; font-family: var(--font-caps); font-size: 13px; letter-spacing: 0.04em; color: #9fe8ff; }
+.wm-dest { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 4px 8px; margin-top: 4px; border-radius: 3px; color: var(--ink-dim); }
+.wm-dest em { font-style: normal; font-family: var(--font-caps); font-size: 12px; letter-spacing: 0.08em; color: var(--ink-faint); }
+.wm-dest.sel { background: rgba(227, 194, 122, 0.16); color: #fff6e4; box-shadow: inset 2px 0 0 var(--gold); }
+.wm-dest.sel em { color: #9fe8ff; }
 .wm-quest { margin-top: 6px; font-family: var(--font-caps); font-size: 13px; letter-spacing: 0.08em; color: #ffd36a; }
 .wm-info { position: absolute; left: 24px; bottom: 24px; width: 360px; padding: 14px 18px; }
 .wm-info.tl { bottom: auto; top: 74px; }

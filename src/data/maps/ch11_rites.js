@@ -16,6 +16,7 @@ const sky = { backdrop: { plane: '#3a2440', y: -12 } };
 const notDone = (who) => (st) => !st.flags[`c11_rite_${who}_done`];
 
 // ====================================================================== Wren — the Drowned Reef
+/** @type {import('../../types/data').MapDef} */
 const reef = {
   ...REEF, ...sky,
   id: 'c11_reef', name: 'The Drowned Reef', region: 'The Old Western Sea',
@@ -40,6 +41,7 @@ const reef = {
 };
 
 // ====================================================================== Ilse — the Drowned Infirmary
+/** @type {import('../../types/data').MapDef} */
 const infirmary = {
   ...INF,
   id: 'c11_infirmary', name: 'The Drowned Infirmary', region: 'Mirefen',
@@ -60,6 +62,7 @@ const infirmary = {
 };
 
 // ====================================================================== Bram — the Vigil Hall
+/** @type {import('../../types/data').MapDef} */
 const vigil = {
   ...VIG, ...sky,
   id: 'c11_vigil', name: 'The Vigil Hall', region: 'The Greyspine',
@@ -82,6 +85,7 @@ const vigil = {
 };
 
 // ====================================================================== Pip — Scrapfall
+/** @type {import('../../types/data').MapDef} */
 const scrapfall = {
   ...SCRAP, ...sky,
   id: 'c11_scrapfall', name: 'Scrapfall', region: 'Below Kiteholm',
@@ -106,6 +110,7 @@ const scrapfall = {
 };
 
 // ====================================================================== Corvin — the Kingfisher in the Stormwall
+/** @type {import('../../types/data').MapDef} */
 const stormwall = {
   ...STORM, ...sky,
   id: 'c11_stormwall', name: 'The Eye of the Stormwall', region: 'Stormcrown',
@@ -123,6 +128,7 @@ const stormwall = {
 
 // ====================================================================== Sable — the Gloam Rift
 const ECHOES = [[8, 20], [8, 13], [21, 14], [22, 20]];
+/** @type {import('../../types/data').MapDef} */
 const rift = {
   ...RIFT,
   id: 'c11_rift', name: 'The Gloam Rift', region: 'Under Thornwood',
@@ -146,6 +152,7 @@ const rift = {
 };
 
 // ====================================================================== the Orrery (Starseer)
+/** @type {import('../../types/data').MapDef} */
 const orrery = {
   ...ORR, ...sky,
   id: 'c11_orrery', name: 'The Orrery', region: 'Adrift',

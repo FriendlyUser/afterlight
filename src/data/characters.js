@@ -1,6 +1,7 @@
 // Playable characters: base stats, growth flavor, starting crest and gear.
 // Stat curve (before multipliers) is defined in state/Character.js.
 
+/** @type {Record<string, import('../types/data').CharacterDef>} */
 export const CHARACTERS = {
   wren: {
     name: 'Wren', title: 'The Restless Heart', age: 16, look: 'wren',

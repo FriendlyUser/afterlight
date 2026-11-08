@@ -12,6 +12,7 @@ import { C12F } from '../../story/ch12_finale.js';
 const scripted = { noMenu: true, noSave: true };
 const dreamDoor = (b) => (b.door ? { ...b, door: { ...b.door, locked: true, lockedText: 'The door is painted shut. Everything here is.' } } : b);
 
+/** @type {import('../../types/data').MapDef} */
 const dreamHouse = {
   ...WREN_HOUSE, ...scripted,
   id: 'c12_dream_house', name: 'Halloway House', noBanner: true,
@@ -24,6 +25,7 @@ const dreamHouse = {
   onEnter: (s) => C12F.dream(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 const dreamVillage = {
   ...LANTERNFALL, ...scripted,
   id: 'c12_dream_village', name: 'Lanternfall', region: 'The Day Before, Forever',
@@ -34,6 +36,7 @@ const dreamVillage = {
   onEnter: (s) => C12F.evernoonEnding(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 const square = {
   ...SQUARE, ...scripted,
   id: 'c12_epi_square', name: 'Aurenne', region: 'Two Summers After',
@@ -41,6 +44,7 @@ const square = {
   onEnter: (s) => C12F.epiSquare(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 const ward = {
   ...WARD, ...scripted,
   id: 'c12_epi_ward', name: 'The Ember Hospital', noBanner: true,
@@ -48,6 +52,7 @@ const ward = {
   onEnter: (s) => C12F.epiWard(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 const shore = {
   ...SHORE, ...scripted,
   id: 'c12_epi_shore', name: 'Lanternfall', region: 'The Westmost Isle',

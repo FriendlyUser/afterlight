@@ -5,6 +5,7 @@ import { stage, unstage, moveAll } from './ch4b_common.js';
 const CHILDREN = ['c4b_wick', 'c4b_bryony', 'c4b_tamsel'];
 const childrenFound = (s) => CHILDREN.filter((k) => s.flag(k)).length;
 
+/** @type {import('../types/data').StoryScripts} */
 export const C4V = {
   // ================================================================ Rootholm
   async arrival(s) {

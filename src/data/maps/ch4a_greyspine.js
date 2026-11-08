@@ -14,6 +14,7 @@ const after = (st) => st.flags.c4a_done;
 const gateHeld = (st) => night(st) && st.flags.c4a_gate_done;
 const toTown = (layout, x, w, tx, ty) => ({ x, y: layout.h - 1, w, to: 'c4a_frosthollow', tx, ty, dir: 'down' });
 
+/** @type {import('../../types/data').MapDef} */
 export const greyspinePass = {
   ...PASS,
   id: 'c4a_greyspine_pass', name: 'Greyspine Pass', region: 'Greyspine Mountains',
@@ -59,6 +60,7 @@ export const greyspinePass = {
   onEnter: (s) => C4M.passArrival(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const frosthollow = {
   ...TOWN,
   id: 'c4a_frosthollow', name: 'Frosthollow', region: 'Greyspine Mountains',
@@ -104,6 +106,7 @@ export const frosthollow = {
   onEnter: (s) => C4M.frosthollowEnter(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const fhHall = {
   ...HALL, ...interior,
   id: 'c4a_fh_hall', name: 'The Hall of Echoes', mood: 'temple', particles: 'motes_gold', camera: { dist: 17, pitch: 0.72 },
@@ -118,6 +121,7 @@ export const fhHall = {
   onEnter: (s) => C4M.halvard(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const fhGuest = {
   ...GUEST, ...interior,
   id: 'c4a_fh_guest', name: 'Frosthollow Guesthouse', music: (st) => (night(st) ? null : 'snow'),
@@ -131,6 +135,7 @@ export const fhGuest = {
   exits: [toTown(GUEST, 4, 3, 32, 11)],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const frostCaves = {
   ...CAVES,
   id: 'c4a_frost_caves', name: 'The Bell Stair', region: 'Greyspine Mountains', mood: 'cave', music: 'tension', battleBg: 'cave',
@@ -160,6 +165,7 @@ export const frostCaves = {
   ],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const bellLedge = {
   ...LEDGE,
   id: 'c4a_bell_ledge', name: 'Below the Bell Tower', region: 'Greyspine Mountains', mood: 'night', music: null, battleBg: 'snow', treeType: 'pine_snow', particles: 'snow',

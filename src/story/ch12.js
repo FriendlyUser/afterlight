@@ -23,6 +23,7 @@ function ensureArrivalState(s) {
 
 const dialsDone = (st) => ['c12_dial_market', 'c12_dial_garden', 'c12_dial_bell'].filter((f) => st.flags[f]).length;
 
+/** @type {import('../types/data').StoryScripts} */
 export const C12 = {
   // =================================================================== THE GATE
   async arrive(s) {
@@ -829,6 +830,7 @@ const STATUES = {
   },
 };
 
+/** @type {Array<[string, number, number, string]>} id, x, y, facing */
 const CAMP_SPOTS = [['ilse', 20, 9, 'right'], ['bram', 24, 9, 'left'], ['sable', 20, 11, 'right'], ['pip', 23, 8, 'down'], ['corvin', 25, 11, 'left']];
 
 const CAMP = {

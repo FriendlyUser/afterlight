@@ -58,7 +58,17 @@ const looks = {
 };
 
 // ------------------------------------------------------------------ enemies
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, ...opts });
+/** @type {import('../../types/data').EnemyDef[]} */
 const enemies = [
   // Rooftops
   E('c3_belfry_rook', 'Belfry Rook', 12, { type: 'bird', color: '#34343e', accent: '#7a7a90', eye: '#ffd040', seed: 31 }, {
@@ -140,7 +150,13 @@ const enemies = [
   }),
 ];
 
+/**
+ * @param {string[]} list
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (list, opts = {}) => ({ enemies: list, ...opts });
+/** @type {Record<string, import('../../types/data').TroopDef>} */
 const troops = {
   c3_rooks: T(['c3_belfry_rook', 'c3_belfry_rook', 'c3_belfry_rook']),
   c3_rook_gargoyle: T(['c3_belfry_rook', 'c3_gargoyle', 'c3_belfry_rook']),
@@ -163,6 +179,7 @@ const troops = {
   c3_boss_mercy: T(['c3_failed_vessel', 'c3_mercy'], { boss: true, music: 'boss', canFlee: false, bg: 'gloam' }),
 };
 
+/** @type {import('../../types/data').ContentPack} */
 export default {
   maps: [aurenne, c3Inn, c3Shop, c3Cathedral, c3Study, c3Archives, c3Tolliver, c3Venn, c3Almshouse,
     c3Rooftops, c3Dream, c3Sewers, c3Ossuary, c3Lab],

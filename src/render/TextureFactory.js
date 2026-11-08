@@ -381,6 +381,7 @@ export class TileAtlas {
   constructor() {
     this.index = new Map(); // name -> [slot,...]
     const names = Object.keys(PAINTERS);
+    /** @type {Array<[string, number]>} */
     const slots = [];
     for (const name of names) {
       const n = VARIANTS[name] || 1;

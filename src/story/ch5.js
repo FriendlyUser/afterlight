@@ -19,6 +19,7 @@ function spawnNpc(s, id) {
   if (def && !s.field.actors.has(id)) s.field.spawnActor(def);
 }
 
+/** @type {import('../types/data').StoryScripts} */
 export const CH5 = {
   // ================================================================== homecoming
   async arrival(s) {

@@ -3,6 +3,7 @@
 // and Ilse, for once, leading the way.
 import { stage, unstage, moveAll } from './ch4b_common.js';
 
+/** @type {import('../types/data').StoryScripts} */
 export const C4M = {
   // ================================================================ the causeway
   async opening(s) {

@@ -7,6 +7,16 @@ The game is plain ES modules + three.js, no build step. Serve the folder
 (`python3 -m http.server 8765` from the project root; a server is usually already
 running on 8765) and open `http://localhost:8765/`.
 
+**Types:** data and scripts are type-checked (`tools/npm.sh run typecheck`; CI runs it
+before every deploy). Give new content its type with JSDoc, as the existing files do:
+`/** @type {import('../../types/data').MapDef} */` on a map object,
+`/** @type {import('../types/data').StoryScripts} */` on a story object (its methods
+then get `s` typed as the script context), `ContentPack` on a pack's default export.
+The shapes, with every optional field the engine reads, are in `src/types/data.d.ts`;
+add a field there when the engine learns to read a new one. Keep only scripts
+(`async (s, ...args)`) in story objects; helpers that build scripts or definitions go
+next to them as plain exported functions.
+
 ---
 
 ## 1. Chapter layout & contracts
@@ -384,6 +394,10 @@ accessory or stat fruit. Shops: `shops: { saltglass_market: { name, items: [...]
 World nodes (fast travel; the world map opens from exits with `to: '@world'`):
 `{ id, name, region, act: 1 (before Sundering) | 2 (after), x, y (0–1000 map coords), mapId, tx, ty, dir, unlock: 'flag' | (state) => bool, desc }`
 (e.g. `unlock: (st) => st.chapter >= 3`).
+Route and dungeon Hearthstones can be fast-travel points too: add `mapId: 'node_id'` to
+`WAYSTONES` in `src/data/waystones.js` (the node it hangs off). Walking within 2 tiles of
+the map's Hearthstone attunes it; the world map then offers it as an arrival point under
+that node, following the node's act and unlock. Leave out one-way story maps.
 Act I geography (x,y): Lanternfall (90,520) far west; Port Gale (240,500); Whisperwold
 (330,440); Thistledown (420,470); Aurenne (520,420) center; Sunscar/Saltglass (600,640)
 south; Greyspine/Frosthollow (560,180) north; Mirefen (760,560) southeast;

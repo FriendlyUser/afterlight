@@ -5,6 +5,7 @@ import { rejoin, dress } from './ch7.js';
 
 const IN = (s, id) => s.state.party.includes(id);
 
+/** @type {import('../types/data').StoryScripts} */
 export const CH8 = {
   // =========================================================================
   // Arrival

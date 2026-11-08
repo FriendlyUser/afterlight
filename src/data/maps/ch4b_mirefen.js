@@ -20,6 +20,7 @@ const ill = nf('c4b_osk_saved');
 // =====================================================================
 // The road into the fens
 // =====================================================================
+/** @type {import('../../types/data').MapDef} */
 const mirefenRoad = {
   ...ROAD, legend: SWAMP_LEGEND, backdrop: FEN_BACKDROP,
   id: 'mirefen_road', name: 'The Fenward Causeway', region: 'The Fens of Mirefen',
@@ -68,6 +69,7 @@ const mirefenRoad = {
 // =====================================================================
 // Mirefen — the stilt village
 // =====================================================================
+/** @type {import('../../types/data').MapDef} */
 const village = {
   ...VILLAGE, legend: SWAMP_LEGEND, backdrop: FEN_BACKDROP,
   id: 'c4b_mirefen', name: 'Mirefen', region: 'The Fens',
@@ -134,6 +136,7 @@ const village = {
 // =====================================================================
 const indoor = { mood: 'interior', camera: { dist: 15, pitch: 0.75 }, noBanner: true, particles: 'dust', battleBg: 'swamp' };
 
+/** @type {import('../../types/data').MapDef} */
 const inn = {
   ...INN, ...indoor,
   id: 'c4b_mirefen_inn', name: 'The Leaning Heron', music: 'town',
@@ -152,6 +155,7 @@ const inn = {
   exits: [{ x: 5, y: 9, w: 3, to: 'c4b_mirefen', tx: 19, ty: 12, dir: 'down' }],
 };
 
+/** @type {import('../../types/data').MapDef} */
 const oskLantern = {
   ...LANTERN, ...indoor,
   id: 'c4b_osk_lantern', name: 'The Mirefen Lantern', mood: 'interior', music: (st) => (st.flags.c4b_osk_saved ? 'swamp' : 'sad'),
@@ -174,6 +178,7 @@ const oskLantern = {
 // The Drownmere
 // =====================================================================
 const S = MERE.spots;
+/** @type {import('../../types/data').MapDef} */
 const drownmere = {
   ...MERE, legend: SWAMP_LEGEND, backdrop: FEN_BACKDROP,
   id: 'c4b_drownmere', name: 'The Drownmere', region: 'The Fens', mood: 'swamp', music: 'cave', battleBg: 'swamp',

@@ -40,6 +40,7 @@ export function puppet(name, line, reactions = [], glitch = null) {
   };
 }
 
+/** @type {import('../types/data').StoryScripts} */
 export const CH10 = {
   // ------------------------------------------------------------------ landing on the shard
   async landing(s) {

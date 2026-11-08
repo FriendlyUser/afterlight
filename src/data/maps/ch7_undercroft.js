@@ -5,6 +5,7 @@ import { CH7 } from '../../story/ch7.js';
 
 const dungeon = { mood: 'cave', music: 'cave', battleBg: 'undercroft', particles: 'dust', camera: { dist: 19, pitch: 0.74 } };
 
+/** @type {import('../../types/data').MapDef} */
 export const drownedUndercroft = {
   ...F1, ...dungeon,
   id: 'ch7_drowned_undercroft', name: 'The Drowned Undercroft', region: 'Beneath Aurenne',
@@ -57,6 +58,7 @@ export const drownedUndercroft = {
   ],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const drownedChoir = {
   ...F2, ...dungeon,
   id: 'ch7_drowned_choir', name: 'The Cistern of Bells', region: 'Beneath Aurenne',

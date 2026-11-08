@@ -1,6 +1,7 @@
 // Shared fishing content: the angler who trades rewards for species caught.
 import { FISH } from '../data/fish.js';
 
+/** @type {Array<[number, string, number, string]>} species needed, item, count, line */
 const REWARDS = [
   [3, 'hi_tonic', 3, 'Not bad! Here — a few tonics for your trouble.'],
   [6, 'lucky_coin', 1, 'Six kinds! Take my lucky coin. It never once brought me luck, but it might like you better.'],

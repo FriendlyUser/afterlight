@@ -3,6 +3,7 @@ import DECK from './layouts/halcyon_deck.js';
 import HOLD from './layouts/c11_halcyon_hold.js';
 import { CH11, HOLD_CREW, spawnCrew } from '../../story/ch11.js';
 
+/** @type {import('../../types/data').MapDef} */
 const deck = {
   ...DECK,
   id: 'halcyon_deck', name: 'The Halcyon', region: 'Above the Ruin',
@@ -26,6 +27,7 @@ const deck = {
   onEnter: (s) => CH11.deckEnter(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 const hold = {
   ...HOLD,
   id: 'c11_halcyon_hold', name: 'Below Decks', mood: 'interior', music: 'inn',

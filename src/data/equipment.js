@@ -53,8 +53,13 @@ const ARMOR_NAMES = {
   offhand: ['Buckler', 'Iron Shield', 'Steel Kite', 'Silversteel Shield', 'Starsteel Aegis', 'Ashen Bulwark', 'Sunshard Shield', 'Wall of Dawn'],
 };
 
+/** @type {Record<string, import('../types/data').EquipDef>} */
 export const EQUIPMENT = {};
 
+/**
+ * @param {string} id
+ * @param {import('../types/data').EquipDef} def
+ */
 function add(id, def) { EQUIPMENT[id] = { id, ...def }; }
 const slug = (s) => s.toLowerCase().replace(/'/g, '').replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
 
@@ -160,7 +165,11 @@ const UNIQUE = {
 };
 for (const [id, u] of Object.entries(UNIQUE)) add(id, { tier: 9, price: 0, ...u });
 
-/** All tiered equipment of a slot at a given tier (for shops/drops). */
+/**
+ * All tiered equipment of a slot at a given tier (for shops/drops).
+ * @param {number} tier
+ * @param {(def: any) => boolean} [filter]
+ */
 export function gearOfTier(tier, filter = () => true) {
   return Object.values(EQUIPMENT).filter((e) => e.tier === tier && filter(e)).map((e) => e.id);
 }

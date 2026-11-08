@@ -279,6 +279,7 @@ class CommandMenu {
 
   rootEntries() {
     const a = this.actor;
+    /** @type {Array<{ label: string, kind: string, [field: string]: any }>} */
     const entries = [{ label: 'Attack', kind: 'skill', id: 'attack' }];
     for (const { crest, skills } of a.ch.skillLists()) {
       entries.push({ label: `${CRESTS[crest].name}`, kind: 'list', crest, skills, icon: CRESTS[crest].icon });

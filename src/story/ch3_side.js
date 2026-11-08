@@ -8,6 +8,7 @@ import { ringBells } from './ch3_fx.js';
 
 const inParty = (s, id) => s.state.party.includes(id);
 
+/** @type {import('../types/data').StoryScripts} */
 export const SIDE = {
   // ================================================================ THE BELL-RINGER'S HAMMER
   async tolliver(s) {

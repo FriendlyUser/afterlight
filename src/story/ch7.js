@@ -39,6 +39,7 @@ export function dress(s, id, look) {
 
 const ILSE_IN = (s) => s.state.party.includes('ilse');
 
+/** @type {import('../types/data').StoryScripts} */
 export const CH7 = {
   // =========================================================================
   // Arrival

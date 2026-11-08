@@ -5,6 +5,7 @@ import SEA from './layouts/sea_crossing.js';
 import { PRO } from '../../story/prologue.js';
 import { CH1 } from '../../story/ch1.js';
 
+/** @type {import('../../types/data').MapDef} */
 export const lfLantern = {
   ...LANTERN,
   id: 'lf_lantern', name: 'The Lantern of Lanternfall', mood: 'temple', music: 'kindling',
@@ -19,6 +20,7 @@ export const lfLantern = {
   },
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const lfTideCaves = {
   ...CAVES,
   id: 'lf_tidecaves', name: 'The Tide Caves', region: 'Lanternfall', mood: 'cave', music: 'cave', noTravel: true,
@@ -45,6 +47,7 @@ export const lfTideCaves = {
   exits: [{ x: 0, y: 15, h: 3, to: 'lanternfall', tx: 43, ty: 16, dir: 'left' }],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const seaCrossing = {
   ...SEA,
   id: 'sea_crossing', name: 'The Strait', region: 'Westmost Sea', mood: 'day', music: 'sea', backdrop: 'ocean', noTravel: true,

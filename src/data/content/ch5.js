@@ -22,8 +22,18 @@ Object.assign(ITEMS, {
 });
 
 // ------------------------------------------------------------------ enemies
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, ...opts });
 
+/** @type {import('../../types/data').EnemyDef[]} */
 const enemies = [
   E('c5_dusk_jelly', 'Duskwater Jelly', 33, { type: 'slime', color: '#7a4aa0', eye: '#ffb070', seed: 51 }, {
     stats: { hp: 0.9, def: 0.8, res: 1.2 }, weak: ['fire', 'light'], resist: { ice: 0.5, dark: 0.5 }, poise: 3,
@@ -86,7 +96,13 @@ const enemies = [
 ];
 
 // ------------------------------------------------------------------ troops
+/**
+ * @param {string[]} list
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (list, opts = {}) => ({ enemies: list, ...opts });
+/** @type {Record<string, import('../../types/data').TroopDef>} */
 const troops = {
   c5_shore_jellies: T(['c5_dusk_jelly', 'c5_dusk_jelly', 'c5_gloam_crab']),
   c5_shore_crabs: T(['c5_gloam_crab', 'c5_gloam_crab']),
@@ -136,6 +152,7 @@ const looks = {
   },
 };
 
+/** @type {Record<string, import('../../types/data').ShopDef>} */
 const shops = {
   c5_marlow: {
     name: 'Marlow\'s Goods',
@@ -144,6 +161,7 @@ const shops = {
   },
 };
 
+/** @type {import('../../types/data').ContentPack} */
 export default {
   maps: [lfSunset, c5WrenHouse, c5NanaHouse, c5Inn, c5Store, c5Tobias, c5TideCaves, c5KeepersStair, ch5Lantern],
   enemies, troops, looks, bossAI, shops, worldNodes: [],

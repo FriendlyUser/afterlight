@@ -14,6 +14,7 @@ const clear = (st) => !!st.flags.gameClear;
 // =====================================================================
 // The Gate of Evernoon (entry map)
 // =====================================================================
+/** @type {import('../../types/data').MapDef} */
 const gate = {
   ...GATE,
   id: 'evernoon_gate', name: 'The Gate of Evernoon', region: 'The Noon Spire',
@@ -76,6 +77,7 @@ const dancer = (n, look, x, y) => ({ id: `dancer${n}`, name: 'Dancer', look, x, 
 const dancerAside = (n, look, x, y, dir) => ({ id: `dancer${n}_aside`, name: 'Dancer', look, x, y, dir, cond: f('c12_procession_moved'),
   talk: ['The dancer smiles at you. Somewhere, very faintly, a clock is ticking.'] });
 
+/** @type {import('../../types/data').MapDef} */
 const streets = {
   ...STREETS,
   id: 'c12_streets', name: 'Evernoon', region: 'Aurenne, Forty Summers Ago',
@@ -170,6 +172,7 @@ const streets = {
 // The night of the spill (Cassian's memory)
 // =====================================================================
 const before = (st) => st.flags.c12_mem_enter && !st.flags.c12_mem_lost;
+/** @type {import('../../types/data').MapDef} */
 const memory = {
   ...MEMORY,
   id: 'c12_memory', name: 'The Night of the Spill', region: 'Cassian\'s Memory',
@@ -218,6 +221,7 @@ const memory = {
 // =====================================================================
 // The Noon Stair (Hearthstone + last camp)
 // =====================================================================
+/** @type {import('../../types/data').MapDef} */
 const stair = {
   ...STAIR,
   id: 'c12_stair', name: 'The Noon Stair', region: 'Evernoon',
@@ -267,6 +271,7 @@ const stair = {
 // =====================================================================
 // The Noon Throne
 // =====================================================================
+/** @type {import('../../types/data').MapDef} */
 const throne = {
   ...THRONE,
   id: 'c12_throne', name: 'The Noon Throne', region: 'Evernoon',

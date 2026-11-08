@@ -25,6 +25,22 @@ export function stageKey(spec) {
   return 'void';
 }
 
+/**
+ * What OpeningScene drives, whichever set a shot builds.
+ * @typedef {object} Stage
+ * @property {string} key
+ * @property {THREE.Scene} scene
+ * @property {(...args: any[]) => THREE.Vector3} point
+ * @property {(renderer: any) => void} apply
+ * @property {(...args: any[]) => void} cast
+ * @property {() => void} clearCast
+ * @property {(...args: any[]) => void} update
+ * @property {() => void} dispose
+ * @property {(beat: any) => void} [beat]
+ * @property {any} [atmos]
+ */
+
+/** @returns {Stage} */
 export function makeStage(game, camera, spec) {
   if (spec.battle) return new BattleSet(game, camera, spec);
   if (spec.map) return new MapSet(game, camera, spec);
@@ -85,7 +101,7 @@ class MapSet {
     this.actors = new Map();
     // Stand-in for the party leader: the light pool and the party light follow the camera's focus.
     this.player = { x: 0, z: 0, elev: 0, material: { userData: { glowSet: true } } };
-    this.atmos = new FieldAtmosphere(this);
+    this.atmos = new FieldAtmosphere(/** @type {any} */ (this)); // this set stands in for a FieldScene
     this.atmos.build(map);
   }
 
@@ -106,6 +122,7 @@ class MapSet {
   cast(actors = []) {
     for (const spec of actors) {
       const looks = (spec.costumes || [spec.look]).map(resolveLook);
+      /** @type {Actor & { spec?: any, from?: { x: number, z: number }, sheets?: any[] }} a cast member with its shot direction */
       const a = new Actor(looks[0], { id: spec.id, x: spec.x, y: spec.y, dir: spec.dir || 'down', speed: spec.speed || 2.2 });
       a.placeAt(spec.x, spec.y, this.grid);
       a.face(spec.dir || 'down');

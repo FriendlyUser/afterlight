@@ -104,7 +104,17 @@ Object.assign(looks, {
 });
 
 // ---------------------------------------------------------------- enemies
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, ...opts });
+/** @type {import('../../types/data').EnemyDef[]} */
 const enemies = [
   // ---------- The Gate (Lv 70–71)
   E('c12_dusk_hound', 'Dusk Hound', 70, { type: 'hound', color: '#4a3a6a', accent: '#ffd070', eye: '#ffd070', seed: 12 }, {
@@ -250,8 +260,14 @@ const enemies = [
 ];
 
 // ---------------------------------------------------------------- troops
+/**
+ * @param {string[]} list
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (list, opts = {}) => ({ enemies: list, ...opts });
 const FINAL = { boss: true, music: 'finalboss', canFlee: false };
+/** @type {Record<string, import('../../types/data').TroopDef>} */
 const troops = {
   c12g_hounds: T(['c12_dusk_hound', 'c12_dusk_hound']),
   c12g_revel: T(['c12_hollow_reveler', 'c12_lament_wisp', 'c12_hollow_reveler']),
@@ -415,17 +431,20 @@ const bossAI = {
 };
 
 // ---------------------------------------------------------------- shops & world node
+/** @type {Record<string, import('../../types/data').ShopDef>} */
 const shops = {
   c12_mott: { name: 'Mott\'s Last Pack', items: ['mega_tonic', 'x_tonic', 'tonic_mist', 'hi_ether', 'x_ether', 'ember_feather', 'dawn_plume', 'panacea', 'gale_bomb', 'holy_water', 'smoke_ball'] },
   c12_bettany: { name: 'Bettany\'s Stall', items: ['dawnforged_blade', 'worldcleaver', 'skypiercer', 'last_whisper', 'horizon', 'keepers_crook', 'rod_of_dusk', 'last_word',
     'dawnguard_regalia', 'wanderers_mantle', 'keepers_raiment', 'crown_of_dawn', 'wanderers_hat', 'keepers_crown', 'wall_of_dawn'] },
 };
 
+/** @type {import('../../types/data').WorldNode[]} */
 const worldNodes = [
   { id: 'c12_evernoon', name: 'Evernoon', region: 'The Noon Spire', act: 2, x: 520, y: 380, mapId: 'evernoon_gate', tx: 20, ty: 40, dir: 'up', unlock: 'gameClear',
     desc: 'Where Cassian\'s frozen afternoon stood. Only a quiet morning now, and two names on a stone.' },
 ];
 
+/** @type {import('../../types/data').ContentPack} */
 export default {
   maps: [...C12_DUNGEON_MAPS, ...C12_EPILOGUE_MAPS],
   enemies, troops, looks, bossAI, shops, worldNodes,

@@ -53,7 +53,17 @@ const looks = {
 };
 
 // ------------------------------------------------------------------ enemies
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, ...opts });
+/** @type {import('../../types/data').EnemyDef[]} */
 const enemies = [
   // --- the shard
   E('c10_shardling', 'Shardling', 51, { type: 'elemental', color: '#ffe8a0', accent: '#fff8e0', eye: '#ff9a30', seed: 101 }, {
@@ -170,8 +180,14 @@ const enemies = [
 ];
 
 // ------------------------------------------------------------------ troops
+/**
+ * @param {string[]} list
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (list, opts = {}) => ({ enemies: list, ...opts });
 const BOSS = { boss: true, music: 'boss', canFlee: false };
+/** @type {Record<string, import('../../types/data').TroopDef>} */
 const troops = {
   c10_ns_shards: T(['c10_shardling', 'c10_noonhound', 'c10_shardling']),
   c10_ns_hounds: T(['c10_noonhound', 'c10_noonhound', 'c10_noonhound']),
@@ -254,6 +270,7 @@ const bossAI = {
   },
 };
 
+/** @type {import('../../types/data').ContentPack} */
 export default {
   maps: [noonSpire, spireHalls, evernoon, lorneHouse],
   enemies, troops, looks, bossAI, shops: {}, worldNodes: [],

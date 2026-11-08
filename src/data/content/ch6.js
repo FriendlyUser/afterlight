@@ -29,8 +29,18 @@ EQUIPMENT.c6_fennicks_coat = {
 };
 
 // ------------------------------------------------------------------ enemies (solo-tuned)
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, ...opts });
 
+/** @type {import('../../types/data').EnemyDef[]} */
 const enemies = [
   E('c6_ash_wraith', 'Ash Wraith', 35, { type: 'ghost', color: '#9a9098', eye: '#ff9a5a', seed: 61 }, {
     stats: { hp: 0.45, str: 0.5, mag: 0.72, def: 1.8, res: 0.8, evade: 6, exp: 1.2 }, weak: ['light', 'wind'],
@@ -121,7 +131,13 @@ const enemies = [
 ];
 
 // ------------------------------------------------------------------ troops
+/**
+ * @param {string[]} list
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (list, opts = {}) => ({ enemies: list, ...opts });
+/** @type {Record<string, import('../../types/data').TroopDef>} */
 const troops = {
   c6_shard_wraith: T(['c6_ash_wraith']),
   c6_shard_moths: T(['c6_cinder_moth', 'c6_cinder_moth']),
@@ -229,6 +245,7 @@ const looks = {
   },
 };
 
+/** @type {Record<string, import('../../types/data').ShopDef>} */
 const shops = {
   c6_salvage: {
     name: 'Gus\'s Salvage & Sundries',
@@ -238,6 +255,7 @@ const shops = {
   },
 };
 
+/** @type {import('../../types/data').WorldNode[]} */
 const worldNodes = [
   { id: 'c6_shard', name: 'Fennick\'s Shard', region: 'The Drift', act: 2, x: 110, y: 505, mapId: 'c6_hermit_shard', tx: 14, ty: 10, dir: 'down',
     unlock: 'c6_left_shard', desc: 'A broken piece of Lanternfall\'s north cliffs. An old man, a burnt soup, two cairns.' },
@@ -247,4 +265,5 @@ const worldNodes = [
     unlock: 'c6_brinefang', desc: 'The old strait between Lanternfall and the mainland. No water in it now — only wreckage and the long drop.' },
 ];
 
+/** @type {import('../../types/data').ContentPack} */
 export default { maps: CH6_MAPS, enemies, troops, looks, bossAI, shops, worldNodes };

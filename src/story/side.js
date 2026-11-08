@@ -119,6 +119,34 @@ export function bountyLair(id) {
 // The Hunters' Lodge
 // ---------------------------------------------------------------------------
 
+// Script factories for the side-quest maps (each returns a script).
+
+/** A bell-nave chime's script. Chimes:  a (low), b (high), c (middle). Correct order a → b → c. */
+export function chime(id) {
+  return async (s) => {
+    const tone = { a: 'low', b: 'high', c: 'middle' }[id];
+    s.sfx('song');
+    const seq = (s.vars.side_chimes = (s.vars.side_chimes || '') + id);
+    await s.narrate(`The ${tone} chime rings out through the inverted nave.`);
+    if (s.flag('side_bell_open')) return;
+    if (!'abc'.startsWith(seq)) {
+      s.vars.side_chimes = '';
+      await s.narrate('The chord sours. The tones fade. Something below sighs.');
+      return;
+    }
+    if (seq === 'abc') {
+      s.setFlag('side_bell_open');
+      s.flash('#fff4d0', 0.5);
+      for (const id2 of ['nave_seal_a', 'nave_seal_b', 'nave_seal_c']) s.clearBlocker(id2);
+      await s.narrate('The three tones become one. Far below, the great bell answers — and the way down opens.');
+    }
+  };
+}
+
+/** A white flower's last words (the Garden of Last Words). */
+export function flower(text) { return async (s) => s.narrate(['The white flower turns toward you and, in a voice that is not a voice:', `_"${text}"_`]); }
+
+/** @type {import('../types/data').StoryScripts} */
 export const SIDE = {
   async lodgeArrive(s) {
     if (s.flag('side_lodge_seen')) return;
@@ -281,27 +309,6 @@ export const SIDE = {
     s.setFlag('side_bell_riddle');
   },
 
-  /** Chimes: a (low), b (high), c (middle). Correct order a → b → c. */
-  chime(id) {
-    return async (s) => {
-      const tone = { a: 'low', b: 'high', c: 'middle' }[id];
-      s.sfx('song');
-      const seq = (s.vars.side_chimes = (s.vars.side_chimes || '') + id);
-      await s.narrate(`The ${tone} chime rings out through the inverted nave.`);
-      if (s.flag('side_bell_open')) return;
-      if (!'abc'.startsWith(seq)) {
-        s.vars.side_chimes = '';
-        await s.narrate('The chord sours. The tones fade. Something below sighs.');
-        return;
-      }
-      if (seq === 'abc') {
-        s.setFlag('side_bell_open');
-        s.flash('#fff4d0', 0.5);
-        for (const id2 of ['nave_seal_a', 'nave_seal_b', 'nave_seal_c']) s.clearBlocker(id2);
-        await s.narrate('The three tones become one. Far below, the great bell answers — and the way down opens.');
-      }
-    };
-  },
 
   async agathe(s) {
     if (s.flag('side_bell_done')) return s.say('Agathe', 'It\'s quiet. I didn\'t know it could be quiet. Thank you.');
@@ -336,7 +343,6 @@ export const SIDE = {
     await s.narrate(['After the Sundering, white flowers began to grow on a cemetery shard. When the wind moves them, they speak.', 'They say the last thing someone said before they died.']);
   },
 
-  flower(text) { return async (s) => s.narrate(['The white flower turns toward you and, in a voice that is not a voice:', `_"${text}"_`]); },
 
   async gardener(s) {
     if (s.flag('side_garden_done')) return s.say('The White Gardener', 'The heart is quiet. Let them grow. Let them say what they need to.');

@@ -1,6 +1,7 @@
 // Consumables, materials and key items. Equipment lives in equipment.js.
 // use: { target, heal, healPct, mp, mpPct, revive, cure, damage, elem, status, boost }
 
+/** @type {Record<string, import('../types/data').ItemDef>} */
 export const ITEMS = {
   // ---------------------------------------------------------------- recovery
   tonic: { name: 'Tonic', kind: 'consumable', price: 30, desc: 'Restores 150 HP.', use: { target: 'ally', heal: 150 }, battle: true, field: true, icon: '⚗' },

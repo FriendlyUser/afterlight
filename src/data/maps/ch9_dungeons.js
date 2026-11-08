@@ -10,6 +10,7 @@ import { CH9_SIDE } from '../../story/ch9_side.js';
 
 const toRoost = { to: 'corvins_roost', tx: 5, ty: 19, dir: 'right' };
 
+/** @type {import('../../types/data').MapDef} */
 export const boneyard = {
   ...BONEYARD,
   id: 'c9_boneyard', name: 'The Boneyard', region: 'Beneath Corvin\'s Roost',
@@ -56,6 +57,7 @@ export const boneyard = {
   exits: [{ x: 2, y: 33, w: 2, to: 'corvins_roost', tx: 40, ty: 21, dir: 'left' }],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const benediction = {
   ...BENEDICTION,
   id: 'c9_benediction', name: 'Wreck of the Benediction', region: 'The Squall',
@@ -99,6 +101,7 @@ export const benediction = {
   onEnter: (s) => CH9.benedictionArrive(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const benedictionCabin = {
   ...CABIN,
   id: 'c9_benediction_cabin', name: 'Captain\'s Cabin', mood: 'interior', music: 'sad',
@@ -112,6 +115,7 @@ export const benedictionCabin = {
   exits: [{ x: 3, y: 7, w: 3, to: 'c9_benediction', tx: 23, ty: 27, dir: 'down' }],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const cinderdeep = {
   ...CINDER,
   id: 'c9_cinderdeep', name: 'The Cinderdeep', region: 'The Fallen Shard',
@@ -155,6 +159,7 @@ export const cinderdeep = {
   exits: [{ x: 1, y: 39, w: 3, ...toRoost }],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const halcyonFlight = {
   ...FLIGHT,
   id: 'c9_halcyon_flight', name: 'The Halcyon', region: 'Over the Ruin',

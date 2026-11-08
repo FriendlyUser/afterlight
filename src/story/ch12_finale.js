@@ -43,6 +43,7 @@ async function onBlack(s, fn) {
 
 const THRONE_SPOTS = [['ilse', 13, 15, 'up'], ['bram', 17, 15, 'up'], ['sable', 14, 16, 'up'], ['pip', 16, 16, 'up'], ['corvin', 18, 16, 'up']];
 
+/** @type {import('../types/data').StoryScripts} */
 export const C12F = {
   // =================================================================== THE NOON THRONE
   async throneEnter(s) {
@@ -629,6 +630,7 @@ async function rollCredits(s) {
 
 // ===================================================================== casts
 
+/** @type {Array<[string, string, number, number, string]>} id, look, x, y, facing */
 const DREAM_CAST = [
   ['d_ysolde', 'ysolde', 25, 16, 'left'], ['d_ilse', 'ilse', 21, 17, 'right'], ['d_bram', 'bram', 22, 19, 'up'],
   ['d_sable', 'sable', 24, 19, 'up'], ['d_pip', 'pip', 20, 18, 'right'], ['d_corvin', 'corvin', 26, 18, 'left'],
@@ -637,6 +639,7 @@ const DREAM_CAST = [
   ['d_folk1', 'villager_3', 20, 14, 'down'], ['d_folk2', 'villager_9', 26, 14, 'down'], ['d_folk3', 'villager_22', 18, 18, 'right'],
 ];
 
+/** @type {Array<[string, string, number, number, string]>} id, look, x, y, facing */
 const SQUARE_CAST = [
   ['sage', 'sage', 18, 8, 'down'], ['kid_a', 'c12_kid_a', 16, 11, 'up'], ['kid_x', 'villager_14', 20, 11, 'up'],
   ['builder1', 'villager_12', 4, 11, 'up'], ['builder2', 'villager_28', 31, 11, 'up'], ['builder3', 'villager_17', 9, 9, 'right'],
@@ -644,6 +647,7 @@ const SQUARE_CAST = [
   ['pip_e', 'c12_pip_after', 6, 19, 'right'], ['kid_b', 'c12_kid_b', 8, 19, 'left'], ['kid_y', 'villager_45', 5, 21, 'up'],
 ];
 
+/** @type {Array<[string, string, number, number, string]>} id, look, x, y, facing */
 const DOCK_CAST = [
   ['ilse_e', 'c12_ilse_after', 19, 23, 'down'], ['bram_e', 'c12_bram_after', 21, 23, 'down'], ['sable_e', 'c12_sable_after', 20, 22, 'down'],
   ['pip_e', 'c12_pip_after', 19, 21, 'down'], ['corvin_e', 'c12_corvin_after', 21, 21, 'down'],

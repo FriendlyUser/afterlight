@@ -5,6 +5,7 @@ import { gearOfTier } from './equipment.js';
 const weapons = (tier) => gearOfTier(tier, (e) => e.slot === 'weapon');
 const armor = (tier) => gearOfTier(tier, (e) => e.slot !== 'weapon' && e.slot !== 'accessory');
 
+/** @type {Record<string, import('../types/data').ShopDef>} */
 export const SHOPS = {
   lf_store: {
     name: 'Marlow\'s Goods',

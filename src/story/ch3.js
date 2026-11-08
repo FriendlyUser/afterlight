@@ -31,6 +31,7 @@ function wake(s) {
   if (id && s.state.characters[id]?.lookId === 'lysa') s.setLook(id, look || id);
 }
 
+/** @type {import('../types/data').StoryScripts} */
 export const CH3 = {
   // ================================================================ ARRIVAL
   async arrival(s) {

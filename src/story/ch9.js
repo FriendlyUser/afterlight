@@ -26,6 +26,7 @@ function crowd(s, spots) {
 }
 function uncrowd(s) { for (const id of ['ilse', 'bram', 'pip', 'corvin']) s.remove(`${id}_c9`); }
 
+/** @type {import('../types/data').StoryScripts} */
 export const CH9 = {
   // ------------------------------------------------------------------ arrival
   async arrival(s) {
@@ -336,6 +337,7 @@ export const CH9 = {
     if (!s.flag('c9_met_corvin')) {
       return s.say('Ruddock', ['Toll Barge. Odessa\'s barge, Odessa\'s toll.', 'Goes where she says. Today she says nowhere.']);
     }
+    /** @type {Array<[string, string, number, number, string]>} label, map, x, y, facing */
     const dests = [];
     if (s.flag('c9_cinderdeep_open') && !s.flag('c9_part_heart')) dests.push(['The Cinderdeep', 'c9_cinderdeep', 3, 37, 'up']);
     if (s.flag('c9_benediction_open')) dests.push(['Wreck of the Benediction', 'c9_benediction', 22, 39, 'up']);

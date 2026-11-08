@@ -18,8 +18,27 @@ export function activeTargets(st) {
   return objectiveTargets(st.vars.objective).filter((t) => !(t.unless && st.flags[t.unless]) && !(t.after && !st.flags[t.after]));
 }
 
-/** Ways out of a map that are open right now: [{ to, kind: 'exit'|'door'|'world', x, y, w, h }]. */
+/**
+ * A step on a route: a way out of a map (exit, door, @world exit), opening the world
+ * map from the menu ('travel'), or a world-map stop ('node').
+ * @typedef {object} Way
+ * @property {string} to  a map id, or WORLD
+ * @property {'exit' | 'door' | 'world' | 'travel' | 'node'} kind
+ * @property {number} [x]
+ * @property {number} [y]
+ * @property {number} [w]
+ * @property {number} [h]
+ * @property {number} [cost]  route cost (default 1)
+ * @property {import('../types/data').WorldNode} [node]
+ */
+
+/**
+ * Ways out of a map that are open right now.
+ * @param {import('../types/data').MapDef} map
+ * @returns {Way[]}
+ */
 function waysOut(map, st) {
+  /** @type {Way[]} */
   const out = [];
   for (const e of map.exits || []) {
     if (e.cond && !e.cond(st)) continue;
@@ -59,6 +78,7 @@ export function route(from, targets, st) {
     const [d, id] = queue.shift();
     if (d > dist.get(id)) continue;
     if (goals.has(id)) return { ...via.get(id), to: id };
+    /** @type {Way[]} */
     let edges;
     if (id === WORLD) edges = nodes.map((n) => ({ to: n.mapId, kind: 'node', node: n }));
     else {

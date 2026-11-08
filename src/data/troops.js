@@ -1,8 +1,14 @@
 // Enemy formations. `enemies` lists enemy ids (left to right, back to front).
 // Options: boss, music, canFlee, bg, intro (text shown at start), mood.
 
+/**
+ * @param {string[]} enemies
+ * @param {Partial<import('../types/data').TroopDef>} [opts]
+ * @returns {import('../types/data').TroopDef}
+ */
 const T = (enemies, opts = {}) => ({ enemies, ...opts });
 
+/** @type {Record<string, import('../types/data').TroopDef>} */
 export const TROOPS = {
   // ------------------------------------------------ Lanternfall shore & tide caves
   lf_jelly2: T(['brine_jelly', 'brine_jelly']),

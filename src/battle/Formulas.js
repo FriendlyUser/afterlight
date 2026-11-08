@@ -33,8 +33,10 @@ export function isMagical(skill) { return skill.kind === 'mag' || skill.kind ===
 /**
  * Compute one hit of damage. Returns
  * { amount, miss, crit, elem, weak, resisted, absorbed, immune }
+ * @param {{ power?: number, surge?: number, rnd?: () => number, forceWeak?: boolean }} [opts]
  */
-export function computeDamage(user, target, skill, { power, surge = 0, rnd = Math.random, forceWeak = false } = {}) {
+export function computeDamage(user, target, skill, opts = {}) {
+  const { power, surge = 0, rnd = Math.random, forceWeak = false } = opts;
   const elem = resolveElement(skill, user, target, rnd);
   const out = { amount: 0, miss: false, crit: false, elem, weak: false, resisted: false, absorbed: false, immune: false };
 

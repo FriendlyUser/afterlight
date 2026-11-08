@@ -11,6 +11,7 @@ const calm = (st) => !raiding(st);
 const say = (name, lines) => async (s) => s.say(name, lines);
 const hider = (key, name, lines) => (s) => CH8.hider(s, key, name, lines);
 
+/** @type {import('../../types/data').MapDef} */
 export const kiteholm = {
   ...L,
   id: 'kiteholm', name: 'Kiteholm', region: 'The Windward Shards',
@@ -90,6 +91,7 @@ export const kiteholm = {
 
 const interior = { mood: 'interior', camera: { dist: 15, pitch: 0.75 }, noBanner: true, particles: 'dust', battleBg: 'ruin' };
 
+/** @type {import('../../types/data').MapDef} */
 export const rustyAnchor = {
   ...ANCHOR, ...interior,
   id: 'c8_rusty_anchor', name: 'The Rusty Anchor', music: 'inn',
@@ -115,6 +117,7 @@ export const rustyAnchor = {
   onEnter: async (s) => { await CH8.anchorMeet(s); },
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const kiteNest = {
   ...NEST, ...interior,
   id: 'c8_kite_nest', name: 'The Kite Nest', music: (st) => (st.flags.c8_raid_done ? 'sad' : 'town'),
@@ -143,6 +146,7 @@ export const kiteNest = {
   },
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const baronHall = {
   ...HALL, ...interior,
   id: 'c8_baron_hall', name: 'The Baron\'s Hall', music: 'town',
@@ -160,6 +164,7 @@ export const baronHall = {
   onEnter: async (s) => { await CH8.baronWarn(s); },
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const scrapArena = {
   ...ARENA,
   id: 'c8_scrap_arena', name: 'The Scrap Arena', region: 'Kiteholm',

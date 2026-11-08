@@ -32,8 +32,18 @@ export function enemyStats(def) {
   };
 }
 
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../types/data').EnemyDef>} [opts]
+ * @returns {import('../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, poise: 2, skills: [['attack', 1]], drops: [], ...opts });
 
+/** @type {import('../types/data').EnemyDef[]} */
 const LIST = [
   // ================================================================ ACT I — Lanternfall
   E('brine_jelly', 'Brine Jelly', 1, { type: 'slime', color: '#4ab0c0', eye: '#203040' }, {

@@ -70,6 +70,7 @@ export function spawnCrew(s, crew) {
   }
 }
 
+/** @type {import('../types/data').StoryScripts} */
 export const CH11 = {
   // ================================================================== opening
   async opening(s) {

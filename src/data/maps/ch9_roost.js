@@ -9,6 +9,7 @@ const f = (name) => (st) => !!st.flags[name];
 const notYet = (name) => (st) => !st.flags[name];
 const shipHere = (st) => !st.flags.c9_done;
 
+/** @type {import('../../types/data').MapDef} */
 export const roost = {
   ...ROOST,
   id: 'corvins_roost', name: 'Corvin\'s Roost', region: 'The Sunscar Rift',
@@ -109,6 +110,7 @@ export const roost = {
 
 const interior = { mood: 'interior', camera: { dist: 15, pitch: 0.75 }, noBanner: true, particles: 'dust', battleBg: 'town' };
 
+/** @type {import('../../types/data').MapDef} */
 export const lastCall = {
   ...LAST_CALL, ...interior,
   id: 'c9_last_call', name: 'The Last Call', music: 'town',
@@ -138,6 +140,7 @@ export const lastCall = {
   onEnter: (s) => CH9.lastCall(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const ledgerHouse = {
   ...LEDGER, ...interior,
   id: 'c9_ledger_house', name: 'The Ledger House', music: 'town',

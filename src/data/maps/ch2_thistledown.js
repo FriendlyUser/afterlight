@@ -13,6 +13,7 @@ const sageDone = (st) => !!st.flags.c2_sage_done;
 const tamDone = (st) => !!st.flags.c2_tam_done;
 const by = (st, lines) => (st.flags.c2_tam_done ? lines[2] : st.flags.c2_sage_done ? lines[1] : lines[0]);
 
+/** @type {import('../../types/data').MapDef} */
 export const thistledown = {
   ...VILLAGE,
   id: 'thistledown', name: 'Thistledown', region: 'The Heartland',
@@ -79,6 +80,7 @@ export const thistledown = {
   },
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const tdInn = {
   ...INN, ...interior,
   id: 'c2_td_inn', name: 'The Sleepy Thistle', music: 'town',
@@ -98,6 +100,7 @@ export const tdInn = {
   exits: [toVillage(6, 9, 15, 13, 1)],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const tdShop = {
   ...SHOP, ...interior,
   id: 'c2_td_shop', name: 'Thistledown Trading Post', music: 'town',
@@ -113,6 +116,7 @@ export const tdShop = {
   exits: [toVillage(4, 6, 30, 13)],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const sageHouse = {
   ...SAGE, ...interior,
   id: 'c2_sage_house', name: 'The Sage\'s Cottage', music: (st) => (st.flags.c2_sage_done ? 'town' : 'lanternfall'),
@@ -125,6 +129,7 @@ export const sageHouse = {
   exits: [{ x: 4, y: 8, w: 2, to: 'thistledown', tx: 41, ty: 6, dir: 'down' }],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const tdFields = {
   ...FIELDS,
   id: 'c2_td_fields', name: 'The East Fields', region: 'Thistledown',

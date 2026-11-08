@@ -45,8 +45,18 @@ const looks = {
 };
 
 // ---------------------------------------------------------------- enemies
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, ...opts });
 
+/** @type {import('../../types/data').EnemyDef[]} */
 const enemies = [
   // ---- The Underhang (Lv 42–44)
   E('c8_gale_shrike', 'Gale Shrike', 42, { type: 'bird', color: '#8a7a9a', accent: '#e0d0f0', eye: '#ffd060', seed: 81 }, {
@@ -138,8 +148,14 @@ for (const e of enemies) {
   for (const [k, f] of Object.entries(TUNE)) e.stats[k] = Math.round((e.stats[k] ?? 1) * f * 100) / 100;
 }
 
+/**
+ * @param {string[]} list
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (list, opts = {}) => ({ enemies: list, ...opts });
 const BOSS = { boss: true, music: 'boss', canFlee: false };
+/** @type {Record<string, import('../../types/data').TroopDef>} */
 const troops = {
   c8_shrikes: T(['c8_gale_shrike', 'c8_gale_shrike', 'c8_gale_shrike']),
   c8_crawlers: T(['c8_shard_crawler', 'c8_shard_crawler']),
@@ -194,6 +210,7 @@ const bossAI = {
   },
 };
 
+/** @type {import('../../types/data').ContentPack} */
 export default {
   maps: [kiteholm, rustyAnchor, kiteNest, baronHall, scrapArena, underhang, vigilWreck],
   enemies,

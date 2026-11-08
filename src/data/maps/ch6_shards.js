@@ -14,6 +14,7 @@ const interior = { mood: 'interior', camera: { dist: 15, pitch: 0.75 }, noBanner
 const f = (name) => (st) => !!st.flags[name];
 
 // ------------------------------------------------------------------ Fennick's hut
+/** @type {import('../../types/data').MapDef} */
 export const shardHermitage = {
   ...HUT, ...interior,
   id: 'shard_hermitage', name: 'Fennick\'s Hut', music: (st) => (st.flags.c6_outside ? 'ruin' : 'sad'),
@@ -34,6 +35,7 @@ export const shardHermitage = {
 };
 
 // ------------------------------------------------------------------ the shard
+/** @type {import('../../types/data').MapDef} */
 export const c6HermitShard = {
   ...SHARD, ...RUIN,
   id: 'c6_hermit_shard', name: 'Fennick\'s Shard', region: 'The Drift',
@@ -63,6 +65,7 @@ export const c6HermitShard = {
 };
 
 // ------------------------------------------------------------------ the Drift
+/** @type {import('../../types/data').MapDef} */
 export const c6Drift = {
   ...DRIFT, ...RUIN,
   id: 'c6_drift', name: 'The Drift', region: 'What Was Lanternfall',
@@ -97,6 +100,7 @@ export const c6Drift = {
 };
 
 // ------------------------------------------------------------------ Keelhaven
+/** @type {import('../../types/data').MapDef} */
 export const c6Keelhaven = {
   ...KEEL, ...RUIN,
   id: 'c6_keelhaven', name: 'Keelhaven', region: 'The Shattered Sea',
@@ -149,6 +153,7 @@ export const c6Keelhaven = {
   onEnter: (s) => CH6.keelGate(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const c6KeelInn = {
   ...KEEL_INN, ...interior,
   id: 'c6_keel_inn', name: 'The Upturned Keel', music: 'town',
@@ -164,6 +169,7 @@ export const c6KeelInn = {
   exits: [{ x: 6, y: 9, to: 'c6_keelhaven', tx: 11, ty: 9, dir: 'down' }],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const c6KeelHall = {
   ...KEEL_HALL, ...interior,
   id: 'c6_keel_hall', name: 'Warden\'s Hall', music: 'ruin',
@@ -181,6 +187,7 @@ export const c6KeelHall = {
 // ------------------------------------------------------------------ the Shattered Sea
 const winchDone = (st) => st.flags.c6_winch_a && st.flags.c6_winch_b;
 
+/** @type {import('../../types/data').MapDef} */
 export const c6ShatteredSea = {
   ...SEA, ...RUIN,
   id: 'c6_shattered_sea', name: 'The Shattered Sea', region: 'The Strait That Was',

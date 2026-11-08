@@ -16,6 +16,16 @@ export class Game {
     this.scene = null;
     this.tasks = new Set(); // per-frame updaters: fn(dt) -> true when done
     this.timeScale = 1;
+    // Wired up by main.js (and the test harness):
+    this.autoConfirm = false; // headless tests: dialogue advances itself
+    /** @type {import('../ui/Menus.js').MenuSystem | null} */
+    this.menus = null;
+    /** @type {(() => Promise<void>) | null} */
+    this.returnToTitle = null;
+    /** @type {(() => void | Promise<void>) | null} */
+    this.onGameOver = null;
+    /** @type {((msg: string) => void) | null} battle tracing for ?debug runs */
+    this.debugTrace = null;
     const params = new URLSearchParams(location.search);
     this.debug = params.has('debug');
     this.maxDt = Number(params.get('dtmax')) || 0.05; // raised only for headless testing

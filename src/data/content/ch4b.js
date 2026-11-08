@@ -38,6 +38,15 @@ Object.assign(SKILLS, {
 });
 
 // ------------------------------------------------------------------ enemies
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, ...opts });
 
 const ENEMIES = [
@@ -189,6 +198,11 @@ const ENEMIES = [
 ];
 
 // ------------------------------------------------------------------ troops
+/**
+ * @param {string[]} enemies
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (enemies, opts = {}) => ({ enemies, ...opts });
 const BOSS = { boss: true, music: 'boss', canFlee: false };
 
@@ -391,6 +405,7 @@ const WORLD = [
     desc: 'A floating isle of airship folk, riding the storm. Ardent Vasha keeps its Lantern.' },
 ];
 
+/** @type {import('../../types/data').ContentPack} */
 export default {
   maps: [...MIREFEN_MAPS, ...VERDANCE_MAPS, ...STORMCROWN_MAPS],
   enemies: ENEMIES,

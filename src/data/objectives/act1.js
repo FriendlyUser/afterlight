@@ -1,5 +1,6 @@
 // Quest-marker targets (see ./index.js).
-export default [
+/** @type {import('../../types/data').ObjectiveEntry[]} */
+const ENTRIES = [
   // ------------------------------------------------------------------ New game & Prologue (Lanternfall)
   // Set by startNewGame; the house's onEnter plays the opening, which replaces it at once.
   { text: 'Get up. Tomorrow is the Kindling — today there are chores.', at: { map: 'lf_wren_house' } },
@@ -115,3 +116,5 @@ export default [
   // Set just before the teleport; the causeway's onEnter (Chapter 4b) replaces it.
   { text: 'Warn the remaining Keepers. Take the eastern road down to Mirefen and find Mother Osk.', at: { map: 'mirefen_road' } },
 ];
+
+export default ENTRIES;

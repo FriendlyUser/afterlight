@@ -153,8 +153,9 @@ export class BattleScene {
     this.highlightEls?.forEach((e) => e.remove());
     this.particles.dispose(this.scene);
     this.scene.traverse((o) => {
-      if (o.geometry) o.geometry.dispose();
-      if (o.material) (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => m.dispose());
+      const m = /** @type {THREE.Mesh} */ (o);
+      if (m.geometry) m.geometry.dispose();
+      if (m.material) (Array.isArray(m.material) ? m.material : [m.material]).forEach((mat) => mat.dispose());
     });
   }
 

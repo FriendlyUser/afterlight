@@ -22,7 +22,8 @@ const hidingPlaces = [[7, 9], [27, 9], [9, 19], [24, 18], [4, 13], [29, 15], [13
 // The chalk door at the Abyss Gate: the only way into the Hiding Place.
 const chalkWall = { map: 'abyss_gate', x: 5, y: 21 };
 
-export default [
+/** @type {import('../../types/data').ObjectiveEntry[]} */
+const ENTRIES = [
   // ================================================================ Chapter 9 — the Halcyon
   { text: 'Find Corvin. Someone in the Roost will know where he drinks.', at: { map: 'c9_last_call' } },
   { text: 'Talk to Mags, the Halcyon\'s engineer, aboard the grounded ship at the head of the canyon.', at: { map: 'corvins_roost', npc: 'mags' } },
@@ -210,7 +211,7 @@ export default [
     text: 'Talk with everyone around the fire. When you\'re ready, rest by it.',
     at: [
       { map: 'c12_stair', x: 22, y: 10 },
-      ...[['ilse', 20, 9], ['bram', 24, 9], ['sable', 20, 11], ['pip', 23, 8], ['corvin', 25, 11]]
+      .../** @type {Array<[string, number, number]>} */ ([['ilse', 20, 9], ['bram', 24, 9], ['sable', 20, 11], ['pip', 23, 8], ['corvin', 25, 11]])
         .map(([id, x, y]) => ({ map: 'c12_stair', npc: `camp_${id}`, x, y, unless: `c12_camp_${id}` })),
     ],
   },
@@ -236,3 +237,5 @@ export default [
   { text: 'Search the festival square for Lysa. (Check the hiding places.)', at: [...hidingPlaces, { ...chalkWall, unless: 'pg_lysa_found' }] },
   { text: 'Lysa went home. Return through the chalk door.', at: { map: 'abyss_gate' } },
 ];
+
+export default ENTRIES;

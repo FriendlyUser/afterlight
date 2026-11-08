@@ -7,6 +7,7 @@ import { streetLeaps } from '../../story/ch3_fx.js';
 
 const chasing = (st) => st.flags.c3_chase && !st.flags.c3_pip_joined;
 
+/** @type {import('../../types/data').MapDef} */
 export const c3Rooftops = {
   ...ROOFS,
   id: 'c3_rooftops', name: 'The Rooftops', region: 'Above the Bell Market',
@@ -64,6 +65,7 @@ export const c3Rooftops = {
 const festival = (id, look, x, y, line) => ({ id, name: 'Festival-goer', look, x, y, dir: 'down', cond: (st) => !st.flags.c3_dream_done,
   talk: (s) => s.say('???', line, { portrait: false }) });
 
+/** @type {import('../../types/data').MapDef} */
 export const c3Dream = {
   ...DREAM,
   id: 'c3_dream', name: 'Aurenne', region: 'Forty Summers Ago',

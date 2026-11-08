@@ -146,6 +146,7 @@ const npcs = [
     }) },
 ];
 
+/** @type {import('../../types/data').MapDef} */
 export default {
   ...L,
   id: 'aurenne', name: 'Aurenne', region: 'The City of Bells',

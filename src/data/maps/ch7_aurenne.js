@@ -7,6 +7,7 @@ import { CH7 } from '../../story/ch7.js';
 const joined = (st) => st.party.includes('ilse');
 const say = (name, lines) => async (s) => s.say(name, lines);
 
+/** @type {import('../../types/data').MapDef} */
 export const ruinedAurenne = {
   ...L,
   id: 'ruined_aurenne', name: 'Ruins of Aurenne', region: 'The City of Bells',
@@ -105,6 +106,7 @@ export const ruinedAurenne = {
 
 const interior = { mood: 'interior', camera: { dist: 15, pitch: 0.75 }, noBanner: true, particles: 'dust', battleBg: 'ruin' };
 
+/** @type {import('../../types/data').MapDef} */
 export const emberWard = {
   ...WARD, ...interior,
   id: 'c7_ember_ward', name: 'The Ember Ward',
@@ -140,6 +142,7 @@ export const emberWard = {
   },
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const lastBell = {
   ...BELL, ...interior,
   id: 'c7_last_bell', name: 'The Last Bell',

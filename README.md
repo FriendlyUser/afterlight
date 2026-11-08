@@ -81,7 +81,7 @@ a primary and a secondary Crest per character, Supports on a point budget, and 3
 
 **Exploration** — 145 hand-laid maps, a party that follows you, a Quest Guide that
 marks where to go next (in the field, on the minimap and on the world map), doors that
-swing open as you walk in, a minimap, a world map with fast travel, fishing, per-town side quests, the Hunters' Lodge bounty board
+swing open as you walk in, a minimap, a world map with fast travel (to towns, and to any route or dungeon Hearthstone you've passed), fishing, per-town side quests, the Hunters' Lodge bounty board
 (10 marks + 2 hidden hunts), four optional dungeons, and New Game+.
 
 **Presentation** — three.js 2D-HD rendering (bloom, tilt-shift depth of field, color
@@ -96,16 +96,23 @@ chapter) — about 3 MB, under 1 MB gzipped. All paths are relative, so `dist/` 
 any static host (GitHub Pages, itch.io, Netlify…).
 
 ```bash
-npm install       # once — Vite is the only dependency
+npm install       # once — dev tools only (Vite, TypeScript)
+npm run typecheck # type-check the JavaScript (nothing is emitted)
 npm run build     # bundle into dist/
 npm run preview   # serve dist/ on http://localhost:8767/
 npm run dev       # optional: Vite dev server on http://localhost:8766/
 ```
 
 **GitHub Pages:** [`.github/workflows/pages.yml`](.github/workflows/pages.yml) runs
-`npm ci` → `npm run build` → deploys `dist/` on every push to `main` (or manually from
+`npm ci` → `npm run typecheck` → `npm run build` → deploys `dist/` on every push to `main` (or manually from
 the Actions tab). One-time setup: repository **Settings → Pages → Source: GitHub
 Actions**. The game is then served at `https://<user>.github.io/<repo>/`.
+
+**Type-checking:** the game stays plain JavaScript (no build step to play or test), and
+TypeScript checks it in place: `tsconfig.json` turns on `checkJs`, and the shapes of the
+game data — maps, enemies, troops, skills, items, gear, Crests, story scripts, quest
+targets — live in [`src/types/data.d.ts`](src/types/data.d.ts). Data modules opt in with
+a JSDoc `@type`, so a misspelled field or script call is an error in the editor and in CI.
 
 <details>
 <summary><b>Building from WSL with Windows Node</b></summary>
@@ -139,6 +146,7 @@ Add these to the URL to jump straight into the game:
 
 | Command | What it does |
 |---|---|
+| `tools/npm.sh run typecheck` | Type-check all source (about 12 s) |
 | `tools/test.sh validate 40000` | Cross-reference checks for all content |
 | `SIM=240 tools/test.sh <test> 2400000` | One story smoke test from `tests/` |
 | `SIM=240 tools/test_all.sh [regex]` | The whole suite, one test at a time |

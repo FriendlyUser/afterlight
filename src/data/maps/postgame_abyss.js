@@ -27,6 +27,7 @@ const SUBTITLES = [
 ];
 
 // Encounter bands: [last floor, troops]. Each floor also mixes in the band above it.
+/** @type {Array<[number, string[]]>} floor band's last stair, its troops */
 const BANDS = [
   [4, ['pg_ab1_hounds', 'pg_ab1_ooze', 'pg_ab1_moths', 'pg_ab1_mix', 'pg_ab1_pack']],
   [7, ['pg_ab2_dread', 'pg_ab2_weave', 'pg_ab2_golem', 'pg_ab2_mix', 'pg_ab2_eyes']],
@@ -38,10 +39,13 @@ const BANDS = [
   [29, ['pg_ab8_hounds', 'pg_ab8_knight', 'pg_ab8_tree', 'pg_ab8_eyes', 'pg_ab8_mix']],
 ];
 
+/** @returns {Array<[string, number]>} [troopId, weight] */
 function troopsFor(n) {
   const b = BANDS.findIndex(([last]) => n <= last);
-  const list = BANDS[b][1].map((t) => [t, 2]);
-  if (b > 0 && n - BANDS[b - 1][0] <= 1) list.push(...BANDS[b - 1][1].map((t) => [t, 0.6]));
+  /** @type {(t: string, w: number) => [string, number]} */
+  const entry = (t, w) => [t, w];
+  const list = BANDS[b][1].map((t) => entry(t, 2));
+  if (b > 0 && n - BANDS[b - 1][0] <= 1) list.push(...BANDS[b - 1][1].map((t) => entry(t, 0.6)));
   if (n >= 3) list.push(['pg_ab_mote', 0.35]);
   if (n >= 14) list.push(['pg_ab_motes', 0.12]);
   if (n >= 8) list.push(['pg_ab_mimic', 0.3]);
@@ -49,6 +53,7 @@ function troopsFor(n) {
 }
 
 // The first chest(s) on each floor hold something special; the rest roll from a pool.
+/** @type {Record<number, Array<[string, number]>>} floor -> chest i's item, count */
 const SPECIAL = {
   1: [['hi_ether', 3]], 2: [['mega_tonic', 3]], 3: [['pg_tobbs_letter', 1], ['power_fruit', 1]], 4: [['dusk_ring', 1]],
   5: [['magic_fruit', 1]], 6: [['crest_tome', 2]], 7: [['guard_fruit', 1]], 8: [['pg_abyss_heart', 1]], 9: [['spirit_fruit', 1]],
@@ -58,12 +63,14 @@ const SPECIAL = {
   23: [['pg_unwritten', 1]], 24: [['swift_fruit', 2]], 25: [['ribbon', 1]], 26: [['crest_tome', 4]], 27: [['pg_noonless_veil', 1]],
   28: [['pg_before_blade', 1]], 29: [['megalixir', 2]], 30: [['megalixir', 1], ['dawn_plume', 3]],
 };
+/** @type {Array<[string, number, number]>} item, count, weight */
 const POOL = [
   ['x_tonic', 2, 2], ['mega_tonic', 3, 2], ['hi_ether', 3, 2], ['x_ether', 1, 1.5], ['dawn_plume', 1, 1.5], ['elixir', 1, 1],
   ['megalixir', 1, 0.3], ['afterglow_vial', 2, 1.2], ['starfall_bomb', 2, 1], ['gloam_shard', 3, 1.2], ['crest_tome', 1, 0.8],
   ['vigor_seed', 2, 0.7], ['wisdom_seed', 2, 0.7], ['panacea', 3, 1], ['gold', 0, 1.6],
 ];
 
+/** @returns {import('../../types/data').ChestDef[]} */
 function chestsFor(n, spots) {
   const R = rng(n * 7717 + 3);
   const total = POOL.reduce((t, p) => t + p[2], 0);
@@ -77,6 +84,7 @@ function chestsFor(n, spots) {
   });
 }
 
+/** @returns {import('../../types/data').MapDef} */
 function floorMap(n) {
   const L = ABYSS_LAYOUTS[n];
   const S = L.spots;

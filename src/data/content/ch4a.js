@@ -85,6 +85,15 @@ const LOOKS = {
 };
 
 // ------------------------------------------------------------------ enemies
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, ...opts });
 
 const ENEMIES = [
@@ -228,6 +237,11 @@ const ENEMIES = [
 ];
 
 // ------------------------------------------------------------------ troops
+/**
+ * @param {string[]} enemies
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (enemies, opts = {}) => ({ enemies, ...opts });
 const BOSS = { boss: true, music: 'boss', canFlee: false };
 const TROOPS = {
@@ -349,6 +363,7 @@ const bossAI = {
 };
 
 // ------------------------------------------------------------------ world map
+/** @type {import('../../types/data').WorldNode[]} */
 const worldNodes = [
   { id: 'saltglass', name: 'Saltglass', region: 'Sunscar Desert', act: 1, x: 600, y: 640, mapId: 'c4a_saltglass', tx: 3, ty: 20, dir: 'right',
     unlock: 'c4a_saltglass_arrived', desc: 'A town of glass and wind around the blind Keeper\'s Lantern. The caravans gather here.' },
@@ -356,6 +371,7 @@ const worldNodes = [
     unlock: 'c4a_frosthollow_arrived', desc: 'The snow monastery, where the oldest Dawnsong is carved in ice.' },
 ];
 
+/** @type {import('../../types/data').ContentPack} */
 export default {
   maps: [...DESERT_MAPS, ...SALTGLASS_MAPS, ...GREYSPINE_MAPS],
   enemies: ENEMIES,

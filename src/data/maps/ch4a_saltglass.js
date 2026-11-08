@@ -13,6 +13,7 @@ const toTown = (layout, x, w, tx, ty) => ({ x, y: layout.h - 1, w, to: 'c4a_salt
 const done = (st) => st.flags.c4a_done;
 const jorahHome = (st) => st.flags.c4a_jorah_freed;
 
+/** @type {import('../../types/data').MapDef} */
 export const saltglass = {
   ...TOWN,
   id: 'c4a_saltglass', name: 'Saltglass', region: 'Sunscar Desert',
@@ -55,6 +56,7 @@ export const saltglass = {
   onEnter: (s) => C4A.saltglassArrival(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const sgLantern = {
   ...LANTERN, ...interior,
   id: 'c4a_sg_lantern', name: 'The Saltglass Lantern', mood: 'temple', music: 'kindling', particles: 'motes_gold', camera: { dist: 17, pitch: 0.72 },
@@ -70,6 +72,7 @@ export const sgLantern = {
   onEnter: (s) => C4A.tamsin(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const sgInn = {
   ...INN, ...interior,
   id: 'c4a_sg_inn', name: 'The Cool Well',
@@ -85,6 +88,7 @@ export const sgInn = {
   exits: [toTown(INN, 5, 3, 9, 14)],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const sgHouse = {
   ...HOUSE, ...interior,
   id: 'c4a_sg_house', name: 'Asha\'s House',
@@ -103,6 +107,7 @@ export const sgHouse = {
 const DOOR = 'blocker:c4a_glass_caverns:queen_door';
 const WALL = 'blocker:c4a_glass_caverns:jorah_wall';
 
+/** @type {import('../../types/data').MapDef} */
 export const glassCaverns = {
   ...CAVERNS,
   id: 'c4a_glass_caverns', name: 'The Glass Caverns', region: 'Sunscar Desert', mood: 'cave', music: 'cave', battleBg: 'cave',
@@ -144,6 +149,7 @@ export const glassCaverns = {
   ],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const glassNest = {
   ...NEST,
   id: 'c4a_glass_nest', name: 'The Queen\'s Nest', region: 'The Glass Caverns', mood: 'cave', music: 'cave', battleBg: 'cave', particles: 'motes_gold',

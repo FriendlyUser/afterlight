@@ -38,7 +38,7 @@ for (const [id, f] of Object.entries(FISH)) {
 export function rollFish(region, rnd = Math.random) {
   const pool = Object.entries(FISH).filter(([, f]) => f.region === region);
   if (!pool.length) return null;
-  const weights = pool.map(([id, f]) => [id, [0, 50, 26, 9, 2][f.rarity]]);
+  const weights = pool.map(([id, f]) => /** @type {[string, number]} */ ([id, [0, 50, 26, 9, 2][f.rarity]]));
   const total = weights.reduce((s, [, w]) => s + w, 0);
   let r = rnd() * total;
   for (const [id, w] of weights) if ((r -= w) <= 0) return id;

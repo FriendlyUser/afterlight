@@ -46,6 +46,12 @@ export class Actor {
     this.visible = true;
     this.bobOffset = 0;
     this.lockFacing = false;
+    // Field NPCs (FieldScene.spawnActor): their map definition, post and wander timer.
+    /** @type {any} */
+    this.def = null;
+    /** @type {{ x: number, y: number } | null} */
+    this.home = null;
+    this.wanderT = 0;
 
     const w = FIELD_W / PX_PER_UNIT, h = FIELD_H / PX_PER_UNIT;
     this.geometry = new THREE.PlaneGeometry(w, h);

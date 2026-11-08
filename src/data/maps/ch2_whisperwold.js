@@ -1,8 +1,9 @@
 // Chapter 2 — the Whisperwold: the Murmuring Path (outer wood) and the Hollow (heart).
 import OUTER from './layouts/c2_wold_outer.js';
 import HEART from './layouts/c2_wold_heart.js';
-import { WOLD, MERRY_SPOTS } from '../../story/ch2_wold.js';
+import { WOLD, MERRY_SPOTS, merryDef } from '../../story/ch2_wold.js';
 
+/** @type {Partial<import('../../types/data').MapDef>} shared by the maps below */
 const forest = {
   mood: 'forest', music: 'forest', battleBg: 'wold', treeType: 'tree_autumn', particles: 'fireflies', region: 'The Whisperwold',
   backdrop: { plane: '#122016', y: -0.3 },
@@ -10,6 +11,7 @@ const forest = {
 const merryAt = (k) => (st) => (st.vars.c2_merry || 0) === k && !st.flags.c2_merry_found;
 const voice = (id, x, y, w, h, key) => ({ id, x, y, w, h, run: (s) => WOLD.passing(s, key) });
 
+/** @type {import('../../types/data').MapDef} */
 export const woldOuter = {
   ...OUTER, ...forest,
   id: 'c2_wold_outer', name: 'The Whisperwold',
@@ -17,7 +19,7 @@ export const woldOuter = {
     rate: 1.1, bg: 'wold',
     troops: [['gw_wolves', 2], ['gw_spore', 2], ['gw_beetle', 2], ['gw_wisp', 2], ['c2_moths', 3], ['c2_saplings', 2], ['gw_thorn', 1]],
   },
-  npcs: MERRY_SPOTS.map((_, k) => ({ ...WOLD.merryDef(k), cond: merryAt(k) })),
+  npcs: MERRY_SPOTS.map((_, k) => ({ ...merryDef(k), cond: merryAt(k) })),
   chests: [
     { id: 'wo_cradle', x: 17, y: 6, item: 'book_of_tides' },
     { id: 'wo_hollow', x: 21, y: 30, item: 'hi_tonic', count: 2 },
@@ -53,6 +55,7 @@ export const woldOuter = {
   onEnter: (s) => WOLD.enter(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const woldHeart = {
   ...HEART, ...forest,
   id: 'c2_wold_heart', name: 'The Hollow',

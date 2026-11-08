@@ -24,6 +24,7 @@ const buildings = L.buildings.map((b) => {
   return { ...b, door: { ...b.door, to, tx, ty, locked: true, unlockFlag: 'c5_homes', lockedText: 'No time. RUN.' } };
 });
 
+/** @type {import('../../types/data').MapDef} */
 export const lfSunset = {
   ...L,
   buildings,
@@ -102,6 +103,7 @@ export const lfSunset = {
 const interior = { mood: 'interior', camera: { dist: 15, pitch: 0.75 }, noBanner: true, particles: 'dust', battleBg: 'town', music: 'lanternfall' };
 const out = (x, y, tx, ty, w = 2) => ({ x, y, w, to: 'lf_sunset', tx, ty, dir: 'down' });
 
+/** @type {import('../../types/data').MapDef} */
 export const c5WrenHouse = {
   ...WREN, ...interior,
   id: 'c5_wren_house', name: 'Halloway House', music: 'sad',
@@ -116,6 +118,7 @@ export const c5WrenHouse = {
   onEnter: (s) => CH5.houseEnter(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const c5NanaHouse = {
   ...NANA, ...interior,
   id: 'c5_nana_house', name: 'Nana Brisa\'s House',
@@ -127,6 +130,7 @@ export const c5NanaHouse = {
   exits: [out(4, 7, 24, 12)],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const c5Inn = {
   ...INN, ...interior,
   id: 'c5_inn', name: 'The Gull\'s Rest',
@@ -140,6 +144,7 @@ export const c5Inn = {
   exits: [out(5, 9, 31, 15)],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const c5Store = {
   ...STORE, ...interior,
   id: 'c5_store', name: 'Marlow\'s Goods',
@@ -150,6 +155,7 @@ export const c5Store = {
   exits: [out(4, 6, 10, 16)],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const c5Tobias = {
   ...TOBIAS, ...interior,
   id: 'c5_tobias', name: 'Tobias\'s Shack',

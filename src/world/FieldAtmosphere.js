@@ -50,7 +50,7 @@ export class FieldAtmosphere {
       const geo = new THREE.PlaneGeometry(400, 400);
       geo.rotateX(-Math.PI / 2);
       geo.setAttribute('shore', new THREE.BufferAttribute(new Float32Array(geo.attributes.position.count), 1));
-      const water = built.group.children.find((c) => c.material?.uniforms?.shallow);
+      const water = /** @type {any} */ (built.group.children.find((c) => /** @type {any} */ (c).material?.uniforms?.shallow));
       const mat = water ? water.material.clone() : new THREE.MeshLambertMaterial({ color: '#2a6a9a' });
       const ocean = new THREE.Mesh(geo, mat);
       ocean.position.set(grid.w / 2, -0.14, grid.h / 2);
@@ -71,7 +71,7 @@ export class FieldAtmosphere {
   tintWater(k) {
     if (k === 1) return;
     this.field.built.group.traverse((o) => {
-      const u = o.material?.uniforms;
+      const u = /** @type {any} */ (o).material?.uniforms;
       if (!u?.deep) return;
       for (const key of ['deep', 'shallow', 'foam']) u[key].value.multiplyScalar(k);
     });

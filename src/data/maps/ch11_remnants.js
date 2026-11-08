@@ -30,6 +30,7 @@ const sky = { backdrop: { plane: '#3a2440', y: -12 } };
 // ====================================================================== Saltglass
 const sgStar = star(SG, 'salt');
 const sgRem = remnant('salt', 'Tamsin', 'tamsin', 20, 6, { x: 9, y: 8, w: 23, h: 1 });
+/** @type {import('../../types/data').MapDef} */
 const saltglass = {
   ...SG, ...sky,
   id: 'c11_saltglass', name: 'Saltglass', region: 'The Glass Steps',
@@ -75,6 +76,7 @@ const saltglass = {
 // ====================================================================== Frosthollow
 const fhStar = star(FH, 'frost');
 const fhRem = remnant('frost', 'Halvard', 'c11_penitence', 22, 6, { x: 11, y: 7, w: 18, h: 1 });
+/** @type {import('../../types/data').MapDef} */
 const frosthollow = {
   ...FH, ...sky,
   id: 'c11_frosthollow', name: 'Frosthollow', region: 'The Greyspine',
@@ -117,6 +119,7 @@ const frosthollow = {
 // ====================================================================== Mirefen
 const mfStar = star(MF, 'mire');
 const mfRem = remnant('mire', 'Osk', 'osk', 20, 5, { x: 10, y: 6, w: 21, h: 1 });
+/** @type {import('../../types/data').MapDef} */
 const mirefen = {
   ...MF, ...sky,
   id: 'c11_mirefen', name: 'Mirefen', region: 'The Rotting Lake',
@@ -160,6 +163,7 @@ const mirefen = {
 // ====================================================================== Thornwood
 const twStar = star(TW, 'thorn');
 const twRem = remnant('thorn', 'Elowen', 'elowen', 20, 7, { x: 12, y: 8, w: 17, h: 1 });
+/** @type {import('../../types/data').MapDef} */
 const thornwood = {
   ...TW, ...sky,
   id: 'c11_thornwood', name: 'Thornwood', region: 'Verdance',
@@ -203,6 +207,7 @@ const thornwood = {
 // ====================================================================== Skyreach
 const srStar = star(SR, 'sky');
 const srRem = remnant('sky', 'Vasha', 'vasha', 20, 6, { x: 10, y: 7, w: 21, h: 1 });
+/** @type {import('../../types/data').MapDef} */
 const skyreach = {
   ...SR, ...sky,
   id: 'c11_skyreach', name: 'Skyreach', region: 'Stormcrown',
@@ -240,6 +245,7 @@ const skyreach = {
 
 // ====================================================================== the Grand Lantern
 const glStar = star(GN, 'grand');
+/** @type {import('../../types/data').MapDef} */
 const grandNave = {
   ...GN, ...sky,
   id: 'c11_grand_nave', name: 'The Grand Lantern', region: 'Aurenne, the City of Bells',
@@ -273,6 +279,7 @@ const grandNave = {
   triggers: [{ id: 'gl_arrive', x: 14, y: 34, w: 12, h: 5, run: (s) => REM.glArrive(s) }],
 };
 
+/** @type {import('../../types/data').MapDef} */
 const grandGallery = {
   ...GG,
   id: 'c11_grand_gallery', name: 'The Lamp Gallery', region: 'The Grand Lantern',
@@ -285,6 +292,7 @@ const grandGallery = {
 };
 
 // ====================================================================== Lanternfall
+/** @type {import('../../types/data').MapDef} */
 const lfRuins = {
   ...LF, ...sky,
   id: 'c11_lf_ruins', name: 'Lanternfall', region: 'The Westmost Isle',
@@ -314,6 +322,7 @@ const lfRuins = {
   onEnter: async (s) => { await REM.lfArrive(s); },
 };
 
+/** @type {import('../../types/data').MapDef} */
 const lfHome = {
   ...LH,
   id: 'c11_lf_home', name: 'Halloway House', mood: 'interior', music: 'sad',
@@ -328,6 +337,7 @@ const lfHome = {
   onEnter: async (s) => { await REM.lfHome(s); },
 };
 
+/** @type {import('../../types/data').MapDef} */
 const lfLantern = {
   ...LL,
   id: 'c11_lf_lantern', name: 'The Lantern of Lanternfall',

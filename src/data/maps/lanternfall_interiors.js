@@ -10,6 +10,7 @@ import { CH1 } from '../../story/ch1.js';
 const interior = { mood: 'interior', camera: { dist: 15, pitch: 0.75 }, noBanner: true, particles: 'dust', battleBg: 'town' };
 const out = (x, y, tx, ty, w = 2) => ({ x, y, w, to: 'lanternfall', tx, ty, dir: 'down' });
 
+/** @type {import('../../types/data').MapDef} */
 export const lfWrenHouse = {
   ...WREN, ...interior,
   id: 'lf_wren_house', name: 'Halloway House',
@@ -31,6 +32,7 @@ export const lfWrenHouse = {
   },
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const lfNanaHouse = {
   ...NANA, ...interior,
   id: 'lf_nana_house', name: 'Nana Brisa\'s House',
@@ -47,6 +49,7 @@ export const lfNanaHouse = {
   onEnter: async (s) => { await CH1.namingSable(s); },
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const lfInn = {
   ...INN, ...interior,
   id: 'lf_inn', name: 'The Gull\'s Rest',
@@ -63,6 +66,7 @@ export const lfInn = {
   exits: [out(5, 9, 31, 15)],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const lfStore = {
   ...STORE, ...interior,
   id: 'lf_store', name: 'Marlow\'s Goods',
@@ -73,6 +77,7 @@ export const lfStore = {
   exits: [out(4, 6, 10, 16)],
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const lfTobias = {
   ...TOBIAS, ...interior,
   id: 'lf_tobias', name: 'Tobias\'s Shack',

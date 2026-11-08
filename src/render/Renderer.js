@@ -91,6 +91,8 @@ export class Renderer {
   constructor(canvas) {
     this.canvas = canvas;
     this.flashScale = 1; // accessibility: 'Reduced' flashes scale every screen flash down
+    /** @type {((w: number, h: number) => void) | null} called after the canvas resizes */
+    this.onResize = null;
     this.gl = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
     this.gl.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     this.gl.shadowMap.enabled = true;

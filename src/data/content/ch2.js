@@ -24,8 +24,18 @@ EQUIPMENT.c2_pell_horseshoe = {
 };
 
 // ------------------------------------------------------------------ enemies
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, ...opts });
 
+/** @type {import('../../types/data').EnemyDef[]} */
 const enemies = [
   // Gale Coast
   E('c2_cliff_kite', 'Cliff Kite', 7, { type: 'bird', color: '#c8b89a', accent: '#6a5a4a', eye: '#ffcc40', seed: 17 }, {
@@ -99,7 +109,13 @@ const enemies = [
 ];
 
 // ------------------------------------------------------------------ troops
+/**
+ * @param {string[]} list
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (list, opts = {}) => ({ enemies: list, ...opts });
+/** @type {Record<string, import('../../types/data').TroopDef>} */
 const troops = {
   c2_thornes_pair: T(['c2_thorne_guard', 'c2_thorne_guard'], { canFlee: false, bg: 'town' }),
   c2_kites: T(['c2_cliff_kite', 'c2_cliff_kite']),
@@ -211,12 +227,14 @@ const looks = {
 };
 
 // ------------------------------------------------------------------ fast travel
+/** @type {import('../../types/data').WorldNode[]} */
 const worldNodes = [
   { id: 'port_gale', name: 'Port Gale', region: 'The Gale Coast', act: 1, x: 240, y: 500, mapId: 'port_gale', tx: 24, ty: 9, dir: 'down', unlock: 'c2_stealth_done', desc: 'Harbor town of the Gale Coast. Sailors, smugglers, and the Salt & Lantern.' },
   { id: 'whisperwold', name: 'The Whisperwold', region: 'The Gale Coast', act: 1, x: 330, y: 440, mapId: 'c2_wold_outer', tx: 3, ty: 20, dir: 'right', unlock: 'c2_wold_enter', desc: 'An ancient forest where the trees speak with the voices of the dead.' },
   { id: 'thistledown', name: 'Thistledown', region: 'The Heartland', act: 1, x: 420, y: 470, mapId: 'thistledown', tx: 23, ty: 18, dir: 'down', unlock: 'c2_td_arrived', desc: 'A farming village of beehives and autumn fields. Home of the Crestless Sage.' },
 ];
 
+/** @type {import('../../types/data').ContentPack} */
 export default {
   maps: [portGale, pgInn, pgShop, pgOdile, galeRoad, woldOuter, woldHeart, thistledown, tdInn, tdShop, sageHouse, tdFields, quarry],
   enemies,

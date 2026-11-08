@@ -3,6 +3,7 @@
 
 import { spawnParty, clearParty, pc } from './ch2_common.js';
 
+/** @type {import('../types/data').StoryScripts} */
 export const THISTLE = {
   // ------------------------------------------------------------------ Arrival
   async arrive(s) {

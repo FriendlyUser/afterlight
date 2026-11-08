@@ -38,7 +38,7 @@ export class UI {
 
   /** Apply user-facing display settings (text size). */
   applySettings(settings) {
-    document.documentElement.style.setProperty('--text-scale', [1, 1.15, 1.3][settings.textSize || 0]);
+    document.documentElement.style.setProperty('--text-scale', String([1, 1.15, 1.3][settings.textSize || 0]));
   }
 
   /** Resolve a speaker name to a look for portraits. */

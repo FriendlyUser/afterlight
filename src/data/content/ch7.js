@@ -47,8 +47,18 @@ const looks = {
 };
 
 // ---------------------------------------------------------------- enemies
+/**
+ * An enemy definition (see EnemyDef); `opts` holds everything past the basics.
+ * @param {string} id
+ * @param {string} name
+ * @param {number} level
+ * @param {import('../../types/data').EnemyDef['sprite']} sprite
+ * @param {Partial<import('../../types/data').EnemyDef>} [opts]
+ * @returns {import('../../types/data').EnemyDef}
+ */
 const E = (id, name, level, sprite, opts = {}) => ({ id, name, level, sprite, ...opts });
 
+/** @type {import('../../types/data').EnemyDef[]} */
 const enemies = [
   // ---- Undercroft, floor 1 (Lv 38–41)
   E('c7_rotgnawer', 'Rotgnawer', 38, { type: 'hound', color: '#5a4a5a', accent: '#b080c0', eye: '#e080ff', seed: 71 }, {
@@ -124,7 +134,13 @@ for (const e of enemies) {
   for (const [k, f] of Object.entries(TUNE)) e.stats[k] = Math.round((e.stats[k] ?? 1) * f * 100) / 100;
 }
 
+/**
+ * @param {string[]} list
+ * @param {Partial<import('../../types/data').TroopDef>} [opts]
+ * @returns {import('../../types/data').TroopDef}
+ */
 const T = (list, opts = {}) => ({ enemies: list, ...opts });
+/** @type {Record<string, import('../../types/data').TroopDef>} */
 const troops = {
   c7_rats: T(['c7_rotgnawer', 'c7_rotgnawer', 'c7_rotgnawer']),
   c7_rat_bloom: T(['c7_rotgnawer', 'c7_rot_bloom', 'c7_rotgnawer']),
@@ -175,6 +191,7 @@ const bossAI = {
   },
 };
 
+/** @type {import('../../types/data').ContentPack} */
 export default {
   maps: [ruinedAurenne, emberWard, lastBell, drownedUndercroft, drownedChoir],
   enemies,

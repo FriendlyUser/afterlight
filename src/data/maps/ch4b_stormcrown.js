@@ -15,6 +15,7 @@ const STORM_BELOW = { plane: '#2a3048', y: -12 };
 // =====================================================================
 // Stormfoot
 // =====================================================================
+/** @type {import('../../types/data').MapDef} */
 const stormfoot = {
   ...FOOT,
   id: 'c4b_stormfoot', name: 'Stormfoot', region: 'The Stormcrown',
@@ -48,6 +49,7 @@ const stormfoot = {
 // The Halcyon, aloft
 // =====================================================================
 const homeward = f('c4b_homeward');
+/** @type {import('../../types/data').MapDef} */
 const deck = {
   ...DECK, backdrop: { plane: '#3a4060', y: -10 },
   id: 'c4b_halcyon_deck', name: 'The Halcyon', region: 'Above the Stormcrown',
@@ -61,6 +63,7 @@ const deck = {
 // =====================================================================
 // Skyreach
 // =====================================================================
+/** @type {import('../../types/data').MapDef} */
 const skyreach = {
   ...SKY, backdrop: STORM_BELOW,
   id: 'c4b_skyreach', name: 'Skyreach', region: 'Above the Stormcrown',
@@ -108,6 +111,7 @@ const skyreach = {
   onEnter: (s) => C4S.skyArrive(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 const hall = {
   ...HALL, mood: 'temple', camera: { dist: 15, pitch: 0.75 }, noBanner: true, particles: 'dust', battleBg: 'temple',
   id: 'c4b_sky_lantern', name: 'The Skyreach Lantern', music: (st) => (st.flags.c4b_vasha_met ? 'cassian' : 'tension'),
@@ -125,6 +129,7 @@ const hall = {
 // The Undercradle
 // =====================================================================
 const U = UNDER.spots;
+/** @type {import('../../types/data').MapDef} */
 const undercradle = {
   ...UNDER, backdrop: STORM_BELOW,
   id: 'c4b_undercradle', name: 'The Undercradle', region: 'Beneath Skyreach',

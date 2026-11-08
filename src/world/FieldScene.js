@@ -18,6 +18,7 @@ import { FieldAtmosphere } from './FieldAtmosphere.js';
 import { Followers } from './Followers.js';
 import { Minimap } from './Minimap.js';
 import { QuestMarkers } from './QuestMarkers.js';
+import { attuneNear } from './Waystones.js';
 
 const CAM = { fov: 30, dist: 20, pitch: 0.68, lookHeight: 0.7 };
 const WALK_SPEED = 3.9;
@@ -143,8 +144,9 @@ export class FieldScene {
     this.hud?.remove();
     this.particles?.dispose(this.scene);
     this.scene.traverse((o) => {
-      if (o.geometry) o.geometry.dispose();
-      if (o.material) (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => m.dispose());
+      const m = /** @type {THREE.Mesh} */ (o);
+      if (m.geometry) m.geometry.dispose();
+      if (m.material) (Array.isArray(m.material) ? m.material : [m.material]).forEach((mat) => mat.dispose());
     });
   }
 
@@ -438,7 +440,13 @@ export class FieldScene {
     switch (t.kind) {
       case 'npc': return this.talkTo(t.actor);
       case 'chest': return this.openChest(t.chest);
-      case 'save': return this.runScript(async (s) => { s.sfx('save'); s.heal(); await s.system('The Hearthstone\'s warmth restores you.'); await s.saveMenu(); });
+      case 'save': return this.runScript(async (s) => {
+        this.attune(this.player.tileX, this.player.tileY);
+        s.sfx('save');
+        s.heal();
+        await s.system('The Hearthstone\'s warmth restores you.');
+        await s.saveMenu();
+      });
       case 'sign': return this.runScript(async (s) => s.say(null, t.data.text, { style: 'system', portrait: false }));
       case 'inspect': return this.runScript(async (s) => {
         if (t.data.run) await t.data.run(s);
@@ -505,7 +513,13 @@ export class FieldScene {
       return;
     }
     this.state.setLocation(this.mapId, x, y, this.player.dir, this.map.name);
+    this.attune(x, y);
     this.stepEncounter();
+  }
+
+  /** Passing a route or dungeon Hearthstone makes it a fast-travel point (world/Waystones.js). */
+  attune(x, y) {
+    if (attuneNear(this, x, y)) this.game.ui.toast(`<span class="hl">Hearthstone attuned</span> — travel back to ${this.map.name} from the world map (Menu → Travel).`, 3600);
   }
 
   // =====================================================================

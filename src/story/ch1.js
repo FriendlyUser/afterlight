@@ -1,6 +1,7 @@
 // CHAPTER 1 — "The Kindling"
 // Sable is named; the Kindling ceremony; the overheard argument; leaving home.
 
+/** @type {import('../types/data').StoryScripts} */
 export const CH1 = {
   async namingSable(s) {
     if (!s.flag('ch1_morning') || s.flag('ch1_named')) return;

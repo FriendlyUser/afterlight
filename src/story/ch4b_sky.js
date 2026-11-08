@@ -7,6 +7,7 @@ const CORES = ['c4b_core1', 'c4b_core2', 'c4b_core3'];
 const PYLONS = ['c4b_pylon_w', 'c4b_pylon_e', 'c4b_pylon_s'];
 const count = (s, flags) => flags.filter((k) => s.flag(k)).length;
 
+/** @type {import('../types/data').StoryScripts} */
 export const C4S = {
   // ================================================================ Stormfoot
   async footArrive(s) {

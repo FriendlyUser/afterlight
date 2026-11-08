@@ -14,6 +14,7 @@ import { abyssGate, echoArena, hidingPlace } from '../maps/postgame_gate.js';
 
 ITEMS.pg_tobbs_letter = { name: 'Blue Envelope', kind: 'key', desc: 'Water-stained, still sealed. "To Da, from Mara." It landed on the third stair of the Abyss.', icon: '✪' };
 
+/** @type {import('../../types/data').ContentPack} */
 export default {
   maps: [abyssGate, echoArena, hidingPlace, ...ABYSS_MAPS],
   enemies: ENEMY_LIST,

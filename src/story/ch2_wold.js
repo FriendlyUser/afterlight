@@ -5,6 +5,7 @@
 import { spawnParty, clearParty, pc, whisper } from './ch2_common.js';
 
 /** Where Merry hides: the Ring of Stones, the Cradle Glade, the Drowned Hollow. */
+/** @type {Array<[number, number, string]>} where Merry hides: x, y, facing */
 export const MERRY_SPOTS = [[31, 18, 'left'], [11, 7, 'down'], [19, 32, 'left']];
 const STONE_ORDER = ['cradle', 'wedding', 'grave'];
 
@@ -14,13 +15,14 @@ function questNote(s, id, desc) {
   if (q) q.desc = desc;
 }
 
-function merryDef(k) {
+/** Merry's NPC definition at hiding spot k. */
+export function merryDef(k) {
   const [x, y, dir] = MERRY_SPOTS[k];
   return { id: 'merry', name: 'Merry', look: 'merry', x, y, dir, noTurn: true, run: (s) => WOLD.merry(s) };
 }
 
+/** @type {import('../types/data').StoryScripts} */
 export const WOLD = {
-  merryDef,
 
   // ------------------------------------------------------------------ Into the wold
   async enter(s) {

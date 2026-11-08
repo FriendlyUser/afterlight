@@ -10,6 +10,7 @@ export function dismiss(s, ids) { for (const id of ids) s.remove(`${id}_c`); }
 export const has = (s, id) => s.state.party.includes(id);
 const PARTY = ['ilse', 'bram', 'sable', 'pip', 'corvin'];
 
+/** @type {import('../types/data').StoryScripts} */
 export const C4A = {
   // =================================================================== The Pilgrim Road
   async roadOpening(s) {

@@ -30,8 +30,9 @@ const kp = (v, k) => (Array.isArray(v[0]) ? [lerp(v[0][0], v[1][0], k), lerp(v[0
 const cutDur = (shot) => shot.cutDur ?? CUT_DUR[shot.cut || 'hard'];
 
 export class OpeningScene {
-  /** @param {{ shots?: object[], from?: number }} opts  `from` starts mid-movie (debugging, frame grabs). */
-  constructor(game, { shots = OPENING, from = 0 } = {}) {
+  /** @param {{ shots?: object[], from?: number }} [opts]  `from` starts mid-movie (debugging, frame grabs). */
+  constructor(game, opts = {}) {
+    const { shots = OPENING, from = 0 } = opts;
     this.game = game;
     this.shots = shots;
     this.index = Math.max(0, Math.min(shots.length - 1, from)) - 1;

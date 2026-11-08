@@ -5,6 +5,7 @@ import { PORT } from '../../story/ch2_port.js';
 
 const guarded = (st) => !st.flags.c2_tam_done;
 
+/** @type {import('../../types/data').MapDef} */
 export const galeRoad = {
   ...L,
   id: 'c2_gale_road', name: 'The Gale Coast Road', region: 'The Gale Coast',

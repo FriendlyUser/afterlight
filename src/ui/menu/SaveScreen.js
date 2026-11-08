@@ -20,6 +20,7 @@ export class SaveScreen extends Screen {
 
   build() {
     this.el.innerHTML = header(this.mode === 'save' ? 'Save Game' : 'Load Game', `${KEYS.nav} ${KEYS.ok} ${keyCap('info')} Export / Import ${KEYS.back}`);
+    /** @type {Array<{ slot: number | string, s: any, label: string, disabled: boolean }>} slot: 0–5 or AUTO_SLOT */
     const items = SaveStore.summaries().map((s, i) => ({ slot: i, s, label: String(i + 1), disabled: this.mode === 'load' && !s }));
     if (this.mode === 'load') {
       const auto = SaveStore.read(AUTO_SLOT)?.summary || null;

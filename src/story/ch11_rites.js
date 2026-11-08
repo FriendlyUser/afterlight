@@ -5,6 +5,7 @@ import { mainObjective, returnToShip, stageParty, unstage } from './ch11.js';
 const done = (s, who) => s.flag(`c11_rite_${who}_done`);
 // Each rite sets its own objectives; finishing it puts the main one (mainObjective) back.
 
+/** @type {import('../types/data').StoryScripts} */
 export const RITES = {
   // ================================================================== WREN — the Drowned Light
   async compass(s) {
@@ -608,6 +609,7 @@ export const RITES = {
     s.vars.c11_stars_given = total;
     s.sfx('holy');
     await s.say('Ottoline', `Oh, _lovely_. Hold still, little one — there. That\'s ${total} of seven on the chart.`);
+    /** @type {Array<[number, () => Promise<any>]>} */
     const tiers = [[1, async () => s.give('crest_tome')], [3, async () => { await s.give('magic_fruit', 2); await s.give('spirit_fruit'); }],
       [5, async () => { await s.give('crest_tome', 2); await s.give('archmage_ring'); }]];
     for (const [n, reward] of tiers) {

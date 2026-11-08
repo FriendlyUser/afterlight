@@ -37,12 +37,14 @@ export function tally(st) {
   return { total, named, pct: total ? Math.floor((100 * named) / total) : 0, per, mastered, deepest: st.vars.pg_deepest || 0, rank: st.vars.pg_arena || 0 };
 }
 
+/** @type {Array<{ pct: number, flag: string, items: Array<[string, number]>, line: string }>} */
 const NAME_MILESTONES = [
   { pct: 25, flag: 'pg_tb_25', items: [['megalixir', 2]], line: 'A quarter of everything that crawls. The dark is a little smaller for it. Here — for the road.' },
   { pct: 50, flag: 'pg_tb_50', items: [['pg_tally_lens', 1]], line: 'Half. Half the monsters of the world, named. Take my spare lens. It sees what things are, which is most of the battle.' },
   { pct: 75, flag: 'pg_tb_75', items: [['power_fruit', 1], ['magic_fruit', 1], ['guard_fruit', 1], ['spirit_fruit', 1], ['swift_fruit', 1]], line: 'Three quarters. I had to start a new ledger. I have not started a new ledger in nineteen years.' },
   { pct: 95, flag: 'pg_tb_95', items: [['pg_tally_book', 1]], line: 'That is... nearly all of them. Take the Tally. No — take it. It\'s more yours than mine now.' },
 ];
+/** @type {Array<{ n: number, flag: string, items: Array<[string, number]>, line: string }>} */
 const CREST_MILESTONES = [
   { n: 1, flag: 'pg_tc_1', items: [['crest_tome', 3]], line: 'One Crest, mastered all the way down to the bottom. Most people get one in their whole life and never finish it.' },
   { n: 6, flag: 'pg_tc_6', items: [['pg_kindling_lamp', 1]], line: 'Six masteries. You\'re all becoming a great many things. Here: a lamp lit at the Nadir Light. For choosing who you are next.' },
@@ -98,6 +100,7 @@ const BANTER = {
   },
 };
 
+/** @type {import('../types/data').StoryScripts} */
 export const PG = {
   // ------------------------------------------------------------------ the Gate
   async gateEnter(s) {

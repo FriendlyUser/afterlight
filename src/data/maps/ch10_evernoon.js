@@ -4,6 +4,7 @@ import LORNE from './layouts/c10_lorne_house.js';
 import { CH10, puppet } from '../../story/ch10.js';
 import { CH10_SIDE } from '../../story/ch10_side.js';
 
+/** @type {import('../../types/data').MapDef} */
 export const evernoon = {
   ...EVERNOON,
   id: 'c10_evernoon', name: 'Evernoon', region: 'Aurenne, forty years ago',
@@ -91,6 +92,7 @@ export const evernoon = {
   onEnter: (s) => CH10.evernoonArrive(s),
 };
 
+/** @type {import('../../types/data').MapDef} */
 export const lorneHouse = {
   ...LORNE,
   id: 'c10_lorne_house', name: 'The Keeper\'s House', mood: (st) => (st.flags.c10_escape ? 'gloam' : 'interior'),

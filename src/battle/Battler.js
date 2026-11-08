@@ -13,6 +13,7 @@ export class Battler {
     this.index = index;
     this.statuses = new Map(); // id -> { turns, charges }
     this.stages = {}; // key -> { v, turns }
+    this.acting = false; // mid-turn: statuses applied now skip this turn's tick
     this.av = 0;
     this.revealed = new Set();
     this.flagsUsed = new Set(); // once-per-battle triggers
