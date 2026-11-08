@@ -29,6 +29,7 @@ export class Battler {
       const m = ch.modifiers();
       this.base = s;
       this.mods = m.mods;
+      this.artPower = ch.artPower(); // Ascension: skill id -> power multiplier
       this.flags = m.flags;
       this.immune = m.immune;
       this.resist = m.resist;
@@ -49,6 +50,7 @@ export class Battler {
       const s = enemyStats(def);
       this.base = s;
       this.mods = {};
+      this.artPower = {};
       this.flags = new Set(def.flags || []);
       this.immune = new Set(def.immune || []);
       this.resist = { ...(def.resist || {}) };

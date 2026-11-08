@@ -249,6 +249,7 @@ em { color: #e8dcff; }
 .v-cpbar { display: inline-block; width: 90px; height: 5px; background: rgba(0,0,0,0.6); }
 .v-cpbar i { display: block; height: 100%; background: var(--gold); }
 .v-learn { font-size: 15px; color: #ffe8a0; }
+.v-stars { color: #ffe08a; letter-spacing: 1px; }
 .v-hint { text-align: right; color: var(--gold); animation: bob 0.9s infinite; }
 
 .gameover { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(20,10,30,0.7), rgba(0,0,0,0.95)); animation: fadeIn 1.2s; }
@@ -332,6 +333,7 @@ em { color: #e8dcff; }
 .tag { font-family: var(--font-caps); font-size: 10px; padding: 1px 5px; border-radius: 3px; letter-spacing: 0.1em; }
 .tag.p { background: #a8823c; color: #fff; } .tag.s { background: #3a5a8a; color: #fff; }
 .pips { margin-left: auto; font-size: 9px; color: var(--gold); letter-spacing: -1px; }
+.pips.stars { font-size: 12px; letter-spacing: 1px; color: #ffe08a; text-shadow: 0 0 6px rgba(255,210,110,0.45); }
 .cs-who { align-self: start; display: flex; flex-direction: column; gap: 10px; align-items: center; text-align: center; }
 .cd-req { font-size: 15px; margin-bottom: 8px; } .cd-req .ok { color: #8ae0a0; } .cd-req .no { color: #ff9a8a; }
 .cd-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 18px; margin: 6px 0 10px; }
@@ -341,6 +343,12 @@ em { color: #e8dcff; }
 .cd-statbar i.up { background: #6ac080; } .cd-statbar i.down { background: #c06060; }
 .cd-gear { font-size: 15px; color: var(--ink-dim); margin-bottom: 8px; }
 .cd-prog { font-family: var(--font-caps); font-size: 14px; color: var(--gold); margin-bottom: 8px; }
+.cd-stars { color: #ffe08a; letter-spacing: 1px; text-shadow: 0 0 6px rgba(255,210,110,0.45); }
+.mbar.asc i { background: linear-gradient(90deg, #d9a84a, #ffe9a8); }
+.cd-legacy { font-size: 15px; color: var(--ink-dim); margin-bottom: 6px; }
+.cd-legacy.have { color: var(--ink); }
+.cd-legacy .k { font-family: var(--font-caps); font-size: 12px; color: var(--gold); margin-right: 6px; }
+.cd-legacy.asc { font-size: 13px; font-style: italic; margin-top: -2px; }
 .cd-ranks { display: flex; flex-direction: column; gap: 2px; }
 .cd-rank { display: grid; grid-template-columns: 34px 62px 1fr 56px; font-size: 15px; color: var(--ink-faint); padding: 2px 0; }
 .cd-rank.learned { color: var(--ink); }
@@ -379,6 +387,7 @@ em { color: #e8dcff; }
 .st-bio { margin: 10px 0; font-size: 17px; line-height: 1.5; }
 .st-personal { font-size: 16px; padding-top: 8px; border-top: 1px solid var(--line-faint); }
 .st-crest { display: flex; justify-content: space-between; font-size: 16px; padding: 2px 0; }
+.st-legacy { font-size: 14px; color: var(--ink-dim); padding: 1px 0; }
 
 .fm-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 1100px; }
 .set-list { max-width: 640px; padding: 12px 6px; }

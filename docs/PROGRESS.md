@@ -48,6 +48,7 @@ Estimated 40–60 hours with side content.
 | postgame | Gloam Abyss B1–30, Echo Colosseum (10 rounds), Lysa's Echo, the First Dark | `postgame`, `postgame_finale` |
 | opening | The opening movie, New Game difficulty picker, title attract loop | `opening` |
 | world map | Fast travel to towns and attuned Hearthstones | `fast_travel` |
+| crests | Mastery Legacies and Ascension stars | `crest_ascension`, `crest_balance` |
 
 ## Testing
 Headless Windows Chrome via WSL, against the local server.
@@ -228,6 +229,19 @@ done directly this session:
   telegraphs (Grizzlemaw, Iron Bull, Scythe Matron, Valka), a `colosseum` battle stage and a
   `bell` SFX. Tuned so an auto party at the cup's level wins the whole gauntlet ~70–90%
   (≥90% two levels up). Gone with the rest of Act I at the Sundering. Test: `colosseum`.
+- **Crest Mastery and Ascension** (`data/crests.js`, `state/Character.js`): mastering a
+  Crest (rank 10, 800 CP) still gives +1% to all stats, and now also its **Legacy** — one
+  authored, permanent bonus per Crest (Vanguard STR +5%, Mender healing +10%, Sage MP
+  costs −10%…), active whatever Crest is worn; they stack. CP no longer stops at 800: it
+  fills five **Ascension stars** (`ASCEND_CP` 1100/1450/1850/2300/2800, then capped). Each
+  star: +1% to all stats while that Crest is primary, and +3% power to the Arts it teaches
+  wherever they're used (damage and healing, via `Battler.artPower`). A fully Ascended Crest
+  adds a Support Point (up to +3). Shown as ★ in place of the rank pips on the Crest and
+  Status screens, a Legacy line and star progress in the Crest detail, ★ on the victory
+  screen and party card, and a "Mastery & Ascension" help entry. Balance: the sim party only
+  masters its primary, so it never sees stars; in A/B runs a 5★ primary is worth about what
+  six extra mastered Crests already were (e.g. Echo Colosseum round 10 at Lv 99: 75% → 100%),
+  and the First Dark stays out of reach without real preparation. Test: `crest_ascension`.
 
 ## Next
 Everything below is optional; the game is complete and the suite passes.

@@ -6,9 +6,25 @@
 //  ranks:    10 unlocks (index 0 = rank 1). { skill } actives or { passive } supports.
 //  requires: per-character crest ranks needed before an advanced crest can be equipped
 //  unlock:   'start' | 'story' | 'stone' (bought/found Crest Stone) | 'requirement'
+//  legacy:   what mastering the Crest (rank 10) leaves in the character, whatever they wear
+//            (attached from LEGACIES below; a passive-like source: mods / resist)
+//
+// Past rank 10, CP keeps flowing into Ascension: five stars (ASCEND_CP). Each star makes
+// the Crest a little stronger as Primary (+STAR_STATS% to every stat) and its Arts a
+// little stronger wherever they are used (+STAR_ARTS% power); five stars add a Support Point.
 
 export const CREST_RANK_CP = [0, 15, 40, 80, 140, 220, 320, 440, 600, 800];
 export const MAX_RANK = 10;
+/** Cumulative CP for Ascension stars 1–5 (rank 10 is 800). */
+export const ASCEND_CP = [1100, 1450, 1850, 2300, 2800];
+export const MAX_STARS = ASCEND_CP.length;
+/** CP stops accruing at the fifth star. */
+export const CP_CAP = ASCEND_CP[MAX_STARS - 1];
+/** Per star: % to every stat while Primary; % power to the Crest's Arts. */
+export const STAR_STATS = 1;
+export const STAR_ARTS = 3;
+/** Support Points from fully Ascended Crests: +1 each, up to this many. */
+export const STAR_SUPPORT_MAX = 3;
 
 /**
  * @param {import('../types/data').CrestDef} def
@@ -246,7 +262,50 @@ const COSTUMES = {
 };
 for (const [id, c] of Object.entries(COSTUMES)) CRESTS[id].costume = c;
 
+// Legacies: a mastered Crest stays with you. Small, permanent, and they stack — the more
+// callings a character has lived, the more of each they carry.
+/** @type {Record<string, import('../types/data').CrestLegacy>} */
+const LEGACIES = {
+  vanguard: { desc: 'STR +5%', mods: { strPct: 5 } },
+  warden: { desc: 'Max HP +6%', mods: { hpPct: 6 } },
+  ranger: { desc: 'Critical rate +4%', mods: { crit: 4 } },
+  rogue: { desc: 'SPD +4%', mods: { spdPct: 4 } },
+  mender: { desc: 'Healing power +10%', mods: { healPct: 10 } },
+  arcanist: { desc: 'MAG +5%', mods: { magPct: 5 } },
+  pugilist: { desc: '10% chance to counter physical attacks', mods: { counter: 10 } },
+  cantor: { desc: 'Afterglow gain +10%', mods: { afterglow: 10 } },
+  dawnknight: { desc: 'RES +6%', mods: { resPct: 6 } },
+  runeblade: { desc: 'STR and MAG +3%', mods: { strPct: 3, magPct: 3 } },
+  nightblade: { desc: 'Evasion +4%', mods: { evade: 4 } },
+  sage: { desc: 'MP costs −10%', mods: { mpCost: -10 } },
+  beastcaller: { desc: 'Max MP +10%', mods: { mpPct: 10 } },
+  alchemist: { desc: 'Items are 20% more effective', mods: { itemPct: 20 } },
+  skylancer: { desc: 'STR and DEF +3%', mods: { strPct: 3, defPct: 3 } },
+  timewright: { desc: 'SPD +5%', mods: { spdPct: 5 } },
+  duskdancer: { desc: 'LCK +10%, Evasion +2%', mods: { lckPct: 10, evade: 2 } },
+  berserker: { desc: 'Max HP +4%, STR +3%', mods: { hpPct: 4, strPct: 3 } },
+  lanternkeeper: { desc: 'Afterglow gain +10%, RES +4%', mods: { afterglow: 10, resPct: 4 } },
+  gloamweaver: { desc: 'MAG +4%; dark damage taken −25%', mods: { magPct: 4 }, resist: { dark: 0.75 } },
+  starseer: { desc: 'EXP +10%, LCK +10%', mods: { expPct: 10, lckPct: 10 } },
+  gambler: { desc: 'Gold +15%, Critical rate +3%', mods: { goldPct: 15, crit: 3 } },
+  sunforged: { desc: 'STR, MAG, DEF and RES +3%', mods: { strPct: 3, magPct: 3, defPct: 3, resPct: 3 } },
+  afterlight: { desc: 'All stats +5%', mods: { hpPct: 5, mpPct: 5, strPct: 5, magPct: 5, defPct: 5, resPct: 5, spdPct: 5, lckPct: 5 } },
+};
+for (const [id, l] of Object.entries(LEGACIES)) CRESTS[id].legacy = l;
+
 export const CREST_ORDER = Object.keys(CRESTS);
+
+/** Ascension stars earned with `cp` on one Crest (0–5). */
+export function starsFor(cp) {
+  let n = 0;
+  while (n < MAX_STARS && (cp || 0) >= ASCEND_CP[n]) n++;
+  return n;
+}
+
+/** Star string for UI: ★ earned, ☆ to come. */
+export function starText(stars) {
+  return '★'.repeat(stars) + '☆'.repeat(MAX_STARS - stars);
+}
 
 /** Cumulative CP needed to reach `rank` (1-based). */
 export function cpForRank(rank) {

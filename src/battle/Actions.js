@@ -127,7 +127,7 @@ export class ActionResolver {
 
   doDamage(user, skill, targets, action, ev) {
     const hits = (skill.hits || 1);
-    let power = skill.power ?? 100;
+    let power = (skill.power ?? 100) * (user.artPower?.[action.id] || 1);
     if (action.gambit) power *= 2;
     if (skill.special === 'revenge') power += 200 * (1 - user.hp / user.maxHp);
     if (skill.special === 'afterglowScale') power *= 1 + this.b.afterglow / 150;
@@ -314,7 +314,7 @@ export class ActionResolver {
       }
       if (!t.alive) continue;
       if (skill.power) {
-        let amt = computeHeal(user, t, skill.power * (action.gambit ? 2 : 1) * (1 + 0.5 * (action.surge || 0)));
+        let amt = computeHeal(user, t, skill.power * (user.artPower?.[action.id] || 1) * (action.gambit ? 2 : 1) * (1 + 0.5 * (action.surge || 0)));
         const h = t.heal(amt);
         ev.push({ t: 'heal', target: t, amount: h });
       }

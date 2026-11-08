@@ -4,7 +4,7 @@
 import { el } from '../UI.js';
 import { keyCap } from '../../core/Input.js';
 import { getPortrait } from '../../render/SpriteFactory.js';
-import { CRESTS } from '../../data/crests.js';
+import { CRESTS, MAX_RANK } from '../../data/crests.js';
 import { expToNext } from '../../state/Character.js';
 
 /** Vertical list with selection, scrolling and disabled rows. */
@@ -99,7 +99,7 @@ export function partyCard(ch, { active = true, selected = false } = {}) {
   const need = expToNext(ch.level);
   const body = el('div', 'pc-body', `
     <div class="pc-top"><span class="pc-name">${ch.name}</span><span class="pc-lv">Lv <b>${ch.level}</b></span></div>
-    <div class="pc-crest" style="color:${crest.color}">${crest.icon} ${crest.name} <span class="pc-rank">R${prog.rank}</span>${ch.secondary ? ` <span class="pc-sec">/ ${CRESTS[ch.secondary].name}</span>` : ''}</div>
+    <div class="pc-crest" style="color:${crest.color}">${crest.icon} ${crest.name} <span class="pc-rank">R${prog.rank}${prog.rank >= MAX_RANK && ch.starsOf(ch.crest) ? ` ★${ch.starsOf(ch.crest)}` : ''}</span>${ch.secondary ? ` <span class="pc-sec">/ ${CRESTS[ch.secondary].name}</span>` : ''}</div>
     <div class="pc-vit"><span>HP</span>${bar(ch.hp, s.hp, 'hp')}<span class="num">${ch.hp}/${s.hp}</span></div>
     <div class="pc-vit"><span>MP</span>${bar(ch.mp, s.mp, 'mp')}<span class="num">${ch.mp}/${s.mp}</span></div>
     <div class="pc-vit small"><span>EXP</span>${bar(ch.exp, need, 'exp')}<span class="num">${need - ch.exp} to next</span></div>`);

@@ -78,6 +78,8 @@ or hand it to auto-battle — and turn on Fast Mode to fly through fights and cu
 
 **Class customization** — 24 Crests (8 callings, 10 braided, 6 legendary) × 10 ranks,
 a primary and a secondary Crest per character, Supports on a point budget, and 300+ Arts.
+A mastered Crest leaves a *Legacy* — a small bonus you keep whatever you wear — and CP
+past mastery climbs five Ascension stars that strengthen its stats and Arts.
 
 **Exploration** — 145 hand-laid maps, a party that follows you, a Quest Guide that
 marks where to go next (in the field, on the minimap and on the world map), doors that
@@ -136,6 +138,7 @@ Add these to the URL to jump straight into the game:
 | `?map=<id>&x=&y=` | Start on a map at a tile |
 | `&party=ilse,bram&lv=20` | Party members and level |
 | `&flags=a,b` | Set story flags |
+| `&cp=vanguard:1500,mender:800` | Crest CP for every member (800 = mastered, more = Ascension) |
 | `&battle=<troop>&bg=<bg>` | Start a battle |
 | `&menu=crests\|world\|settings\|shop:<id>` | Open a menu |
 | `&debug` | FPS, draw calls and triangles overlay |

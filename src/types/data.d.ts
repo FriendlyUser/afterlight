@@ -360,6 +360,15 @@ export interface CrestDef {
   costume?: Record<string, any>;
   requires?: Record<string, number>;
   unlock?: string;
+  /** Mastery Legacy, attached from LEGACIES. */
+  legacy?: CrestLegacy;
+}
+
+/** What a mastered Crest leaves in the character: a permanent passive-like bonus. */
+export interface CrestLegacy {
+  desc: string;
+  mods?: Record<string, number>;
+  resist?: Record<string, number>;
 }
 
 export interface CharacterDef {

@@ -79,6 +79,11 @@ async function boot() {
     state.gold = 500;
     if (params.has('lv')) for (const c of state.allMembers()) c.setLevel(+params.get('lv'));
     if (params.has('flags')) for (const f of params.get('flags').split(',')) state.flags[f] = true;
+    // Debug: Crest CP for every member, e.g. ?cp=vanguard:1260,mender:800 (past 800 = Ascension).
+    for (const pair of (params.get('cp') || '').split(',').filter(Boolean)) {
+      const [crest, n] = pair.split(':');
+      for (const c of state.allMembers()) c.crests[crest] = +n;
+    }
     const field = new FieldScene(game);
     await game.start(field, { mapId: params.get('map'), x: +(params.get('x') || 16), y: +(params.get('y') || 13), dir: 'down' });
     game.fadeIn(0.6);

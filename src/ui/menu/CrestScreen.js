@@ -3,7 +3,7 @@
 import { el, richText } from '../UI.js';
 import { keyCap } from '../../core/Input.js';
 import { Screen, ListView, header, KEYS, portraitEl } from './common.js';
-import { CRESTS, CREST_ORDER, MAX_RANK } from '../../data/crests.js';
+import { CRESTS, CREST_ORDER, MAX_RANK, MAX_STARS, STAR_STATS, STAR_ARTS, starText } from '../../data/crests.js';
 import { SKILLS } from '../../data/skills.js';
 import { PASSIVES } from '../../data/passives.js';
 import { WEAPON_TYPES } from '../../data/equipment.js';
@@ -64,7 +64,9 @@ export class CrestScreen extends MemberScreen {
       pageSize: 14,
       render: (e) => {
         const tag = ch.crest === e.id ? '<span class="tag p">PRIMARY</span>' : ch.secondary === e.id ? '<span class="tag s">SECOND</span>' : '';
-        const pips = e.rank ? `<span class="pips">${'◆'.repeat(e.rank)}${'◇'.repeat(MAX_RANK - e.rank)}</span>` : '';
+        // Mastered crests show their Ascension stars in place of the rank pips.
+        const pips = e.rank >= MAX_RANK ? `<span class="pips stars">${starText(ch.starsOf(e.id))}</span>`
+          : e.rank ? `<span class="pips">${'◆'.repeat(e.rank)}${'◇'.repeat(MAX_RANK - e.rank)}</span>` : '';
         return `<span class="ci" style="color:${e.c.color}">${e.c.icon}</span><span class="cn ${e.known ? '' : 'locked'}">${e.known ? e.c.name : e.c.tier === 1 ? '??? (Crest Stone)' : e.c.name}</span>${tag}${pips}`;
       },
     });
@@ -122,7 +124,19 @@ export class CrestScreen extends MemberScreen {
     }
     html += '</div>';
     html += `<div class="cd-gear">Weapons: ${c.weapons.map((w) => WEAPON_TYPES[w].name).join(', ')}<br>Armor: ${c.armor.join(', ')}${c.shield ? ', shields' : ''}</div>`;
-    if (prog) html += `<div class="cd-prog">Rank ${prog.rank}${prog.need ? ` — ${prog.need} CP to next` : ' — MASTERED'}<div class="mbar exp"><i style="width:${prog.frac * 100}%"></i></div></div>`;
+    if (prog && prog.need) html += `<div class="cd-prog">Rank ${prog.rank} — ${prog.need} CP to next<div class="mbar exp"><i style="width:${prog.frac * 100}%"></i></div></div>`;
+    else if (prog) {
+      const asc = ch.ascendProgress(e.id);
+      html += `<div class="cd-prog">MASTERED · Ascension <span class="cd-stars">${starText(asc.stars)}</span>${asc.need ? ` — ${asc.need} CP to ★${asc.stars + 1}` : ''}<div class="mbar exp asc"><i style="width:${asc.frac * 100}%"></i></div></div>`;
+    }
+    if (c.legacy) {
+      const have = e.rank >= MAX_RANK;
+      html += `<div class="cd-legacy ${have ? 'have' : ''}"><span class="k">Legacy</span> ${c.legacy.desc} <span class="dim">${have ? '— yours, whatever you wear' : '— on mastery, whatever you wear'}</span></div>`;
+      if (have) {
+        const stars = ch.starsOf(e.id);
+        html += `<div class="cd-legacy asc dim">Each ★: all stats +${STAR_STATS}% as Primary, this Crest's Arts +${STAR_ARTS}%; ${MAX_STARS}★ adds a Support Point.${stars ? ` Now: stats +${stars * STAR_STATS}%, Arts +${stars * STAR_ARTS}%.` : ''}</div>`;
+      }
+    }
     html += '<div class="cd-ranks">';
     c.ranks.forEach((u, i) => {
       const learned = e.rank > i;

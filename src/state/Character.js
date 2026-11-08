@@ -1,7 +1,7 @@
 // A party member's persistent progression: level, crests, supports, gear.
 
 import { CHARACTERS } from '../data/characters.js';
-import { CRESTS, CREST_RANK_CP, MAX_RANK } from '../data/crests.js';
+import { CRESTS, CREST_RANK_CP, MAX_RANK, ASCEND_CP, MAX_STARS, CP_CAP, STAR_STATS, STAR_ARTS, STAR_SUPPORT_MAX, starsFor } from '../data/crests.js';
 import { PASSIVES } from '../data/passives.js';
 import { EQUIPMENT, WEAPON_TYPES } from '../data/equipment.js';
 import { LOOKS } from '../data/looks.js';
@@ -94,6 +94,18 @@ export class Character {
     return { rank, cp, need: hi - cp, frac: (cp - lo) / (hi - lo) };
   }
 
+  /** Ascension stars on a mastered crest (0–5): CP past rank 10. */
+  starsOf(crestId) { return starsFor(this.crests[crestId]); }
+
+  /** Progress toward the next Ascension star: { stars, cp, need, frac } (need 0 at five stars). */
+  ascendProgress(crestId) {
+    const stars = this.starsOf(crestId);
+    const cp = this.crests[crestId] || 0;
+    if (stars >= MAX_STARS) return { stars, cp, need: 0, frac: 1 };
+    const lo = stars ? ASCEND_CP[stars - 1] : CREST_RANK_CP[MAX_RANK - 1], hi = ASCEND_CP[stars];
+    return { stars, cp, need: hi - cp, frac: Math.max(0, (cp - lo) / (hi - lo)) };
+  }
+
   /** Can this character take up the crest right now? (global unlock checked by caller) */
   meetsRequirements(crestId) {
     const req = CRESTS[crestId].requires;
@@ -140,7 +152,11 @@ export class Character {
     return [...set];
   }
 
-  supportBudget() { return Math.min(14, 3 + Math.floor(this.level / 8)); }
+  /** Support Points: grow with level (to 14), +1 per fully Ascended crest (up to +3). */
+  supportBudget() {
+    const full = Object.keys(this.crests).filter((c) => this.starsOf(c) >= MAX_STARS).length;
+    return Math.min(14, 3 + Math.floor(this.level / 8)) + Math.min(STAR_SUPPORT_MAX, full);
+  }
 
   supportUsed() { return this.passives.reduce((s, p) => s + (PASSIVES[p]?.cost || 0), 0); }
 
@@ -152,14 +168,42 @@ export class Character {
     return true;
   }
 
-  /** Gain CP. Returns list of { crest, rank, unlock } for new ranks reached. */
+  /**
+   * Gain CP. Past rank 10 it fills Ascension stars, up to CP_CAP. Returns the milestones
+   * reached: { crest, rank, unlock } for new ranks (rank 10 also carries `legacy`) and
+   * { crest, star } for new stars.
+   */
   gainCp(crestId, amount) {
     if (!crestId) return [];
-    const before = this.rankOf(crestId);
-    this.crests[crestId] = Math.min(CREST_RANK_CP[MAX_RANK - 1], (this.crests[crestId] || 0) + amount);
-    const after = this.rankOf(crestId);
+    const before = this.rankOf(crestId), starsBefore = this.starsOf(crestId);
+    this.crests[crestId] = Math.min(CP_CAP, (this.crests[crestId] || 0) + amount);
+    const after = this.rankOf(crestId), starsAfter = this.starsOf(crestId);
+    /** @type {Array<{ crest: string, rank?: number, unlock?: { skill?: string, passive?: string }, legacy?: import('../types/data').CrestLegacy, star?: number }>} */
     const out = [];
-    for (let r = before + 1; r <= after; r++) out.push({ crest: crestId, rank: r, unlock: CRESTS[crestId].ranks[r - 1] });
+    for (let r = before + 1; r <= after; r++) {
+      out.push({ crest: crestId, rank: r, unlock: CRESTS[crestId].ranks[r - 1], ...(r === MAX_RANK ? { legacy: CRESTS[crestId].legacy } : {}) });
+    }
+    for (let n = starsBefore + 1; n <= starsAfter; n++) out.push({ crest: crestId, star: n });
+    return out;
+  }
+
+  /** Mastered crests whose Legacies this character carries. */
+  legacies() { return Object.keys(this.crests).filter((c) => this.rankOf(c) >= MAX_RANK && CRESTS[c].legacy); }
+
+  /**
+   * Arts strengthened by Ascension: skill id -> power multiplier (+STAR_ARTS% per star on
+   * the crest that teaches it; a skill taught by two crests takes the better one).
+   * @returns {Record<string, number>}
+   */
+  artPower() {
+    /** @type {Record<string, number>} */
+    const out = {};
+    for (const c of Object.keys(this.crests)) {
+      const stars = this.starsOf(c);
+      if (!stars) continue;
+      const mult = 1 + (STAR_ARTS * stars) / 100;
+      for (const u of CRESTS[c].ranks) if (u.skill) out[u.skill] = Math.max(out[u.skill] || 1, mult);
+    }
     return out;
   }
 
@@ -213,17 +257,18 @@ export class Character {
     };
     for (const p of this.passives) addSrc(PASSIVES[p]);
     for (const it of this.equippedItems()) addSrc(it);
+    for (const c of this.legacies()) addSrc(CRESTS[c].legacy);
     if (this.id === 'sable') immune.add('doom');
     return { mods, flags, immune, resist, autoStatus };
   }
 
-  /** Crests mastered to max rank; each grants +1% to every stat permanently. */
+  /** Crests mastered to max rank; each grants +1% to every stat permanently (plus its Legacy). */
   masteredCount() { return Object.keys(this.crests).filter((c) => this.rankOf(c) >= MAX_RANK).length; }
 
   stats() {
     const crest = CRESTS[this.crest];
     const { mods } = this.modifiers();
-    const mastery = 1 + this.masteredCount() / 100;
+    const mastery = (1 + this.masteredCount() / 100) * (1 + (STAR_STATS * this.starsOf(this.crest)) / 100);
     const gear = this.equippedItems();
     const flat = (k) => gear.reduce((s, it) => s + (it[k] || 0), 0);
     const out = {};

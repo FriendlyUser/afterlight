@@ -4,7 +4,7 @@
 import { el, richText } from '../ui/UI.js';
 import { keyCap } from '../core/Input.js';
 import { SKILLS } from '../data/skills.js';
-import { CRESTS } from '../data/crests.js';
+import { CRESTS, MAX_RANK, starText } from '../data/crests.js';
 import { STATUSES } from '../data/statuses.js';
 import { LINKS } from '../data/links.js';
 import { PASSIVES } from '../data/passives.js';
@@ -229,13 +229,19 @@ export class BattleUI {
       for (const r of summary.results) {
         const ch = r.ch;
         const prog = ch.rankProgress(ch.crest);
+        // Past mastery the bar tracks the next Ascension star.
+        const asc = prog.rank >= MAX_RANK ? ch.ascendProgress(ch.crest) : null;
+        const standing = asc ? `<span class="v-stars">${starText(asc.stars)}</span>` : `R${prog.rank}`;
         html += `<div class="v-mem ${r.active ? '' : 'reserve'}"><div class="v-name">${ch.name}</div>
           <div class="v-lv">Lv ${ch.level}${r.levels ? ` <span class="v-up">LEVEL UP!</span>` : ''}</div>
-          <div class="v-crest">${CRESTS[ch.crest].name} R${prog.rank} <span class="v-cpbar"><i style="width:${prog.frac * 100}%"></i></span></div>`;
+          <div class="v-crest">${CRESTS[ch.crest].name} ${standing} <span class="v-cpbar"><i style="width:${(asc || prog).frac * 100}%"></i></span></div>`;
         for (const k of r.ranks) {
+          const name = CRESTS[k.crest].name;
+          if (k.star) { html += `<div class="v-learn">${name} ascends: <b>★${k.star}</b></div>`; continue; }
           const u = k.unlock;
           const nm = u.skill ? SKILLS[u.skill].name : PASSIVES[u.passive].name;
-          html += `<div class="v-learn">${CRESTS[k.crest].name} rank ${k.rank}: learned <b>${nm}</b></div>`;
+          html += `<div class="v-learn">${name} rank ${k.rank}: learned <b>${nm}</b></div>`;
+          if (k.legacy) html += `<div class="v-learn">${name} mastered — Legacy: <b>${k.legacy.desc}</b></div>`;
         }
         html += '</div>';
       }

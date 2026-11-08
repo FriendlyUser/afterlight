@@ -7,7 +7,7 @@ import { Screen, ListView, header, KEYS, partyCard, statDiffHtml, portraitEl } f
 import { MemberScreen } from './CrestScreen.js';
 import { ITEMS } from '../../data/items.js';
 import { EQUIPMENT } from '../../data/equipment.js';
-import { CRESTS } from '../../data/crests.js';
+import { CRESTS, MAX_RANK, starText } from '../../data/crests.js';
 import { DIFFICULTIES, DEFAULT_DIFFICULTY } from '../../data/difficulty.js';
 import { ENEMIES, enemyStats } from '../../data/enemies.js';
 import { getMonsterSprite } from '../../render/MonsterFactory.js';
@@ -143,7 +143,13 @@ export class StatusScreen extends MemberScreen {
     for (const id of Object.keys(ch.crests)) {
       const c = CRESTS[id];
       const r = ch.rankOf(id);
-      html += `<div class="st-crest"><span style="color:${c.color}">${c.icon} ${c.name}</span><span class="pips">${'◆'.repeat(r)}${'◇'.repeat(10 - r)}</span></div>`;
+      const pips = r >= MAX_RANK ? `<span class="pips stars">${starText(ch.starsOf(id))}</span>` : `<span class="pips">${'◆'.repeat(r)}${'◇'.repeat(MAX_RANK - r)}</span>`;
+      html += `<div class="st-crest"><span style="color:${c.color}">${c.icon} ${c.name}</span>${pips}</div>`;
+    }
+    const legacies = ch.legacies();
+    if (legacies.length) {
+      html += '<div class="sd-title" style="margin-top:14px">Legacies</div>';
+      html += legacies.map((id) => `<div class="st-legacy"><span style="color:${CRESTS[id].color}">${CRESTS[id].icon}</span> ${CRESTS[id].legacy.desc}</div>`).join('');
     }
     html += `<div class="sd-title" style="margin-top:14px">Supports (${ch.supportUsed()}/${ch.supportBudget()})</div>`;
     html += ch.passives.length ? ch.passives.map((p) => `<div class="dim">◆ ${p}</div>`).join('') : '<div class="dim">None</div>';
@@ -367,6 +373,7 @@ const GUIDE = [
   ['Afterglow', 'The party shares the *Afterglow* gauge (three segments). It fills when you hit weaknesses, Break foes, land criticals and take hits. Spend it on *Surge* (Q/E before acting: up to +150% power and extra Poise damage) or on *Link Arts* — combination techniques between specific friends.'],
   ['Big Attacks', 'When a foe is *Charging* (⚡) or *Winding Up* (⚠), its next move is a big one — charged blows hit 1.5× harder. *Guard* halves damage until your next turn and acts sooner. Better still: *Break* a foe while it winds up and the attack is interrupted.'],
   ['Crests', '_One Crest, one life_ — or so they say. Your *primary* Crest sets your stats, weapons and armor, and grants its Arts. A *secondary* Crest adds its learned Arts too. Crests rank up (1–10) with CP earned in battle; each rank teaches an Art or a Support. Braided (Tier II) Crests open when two prerequisite Crests reach rank 5.'],
+  ['Mastery & Ascension', 'A Crest at rank 10 is *mastered*: it leaves a *Legacy*, a small bonus that stays with you whatever Crest you wear, and every mastered Crest adds +1% to all stats. CP keeps flowing past mastery into five *Ascension stars* ★. Each star gives +1% to all stats while that Crest is primary and makes its Arts 3% stronger, wherever you use them. A fully Ascended Crest (★★★★★) adds a Support Point, up to three.'],
   ['Supports', 'Supports are passive abilities learned from any Crest rank. Once learned they belong to you, whatever Crest you wear. Equip them in *Supports* within your Support Point budget, which grows with level.'],
   ['Equipment', 'Weapons and armor depend on your primary Crest. In *Equipment*, press *F* to Optimize. Accessories fit anyone.'],
   ['Saving', 'Golden *Hearthstones* restore the party and let you save; you can also save from the menu almost anywhere, and the game autosaves whenever you enter a new area. Saves live in this browser. Press *F* on a save slot to *export* it to a file or *import* one, to keep a backup or carry your game to another computer.'],
