@@ -19,9 +19,13 @@ const ENTRIES = [
   // ------------------------------------------------------------------ Chapter 1 (Lanternfall)
   { text: 'The Kindling begins at noon. Go to the Lantern on the northwest bluff.', at: { map: 'lf_lantern' } },
   // Nothing happens at home: entering the Lantern again (onEnter) plays the overheard argument.
-  { text: 'Rest at home. Something tells you to come back to the Lantern tonight...', at: { map: 'lf_lantern' } },
+  // Legacy: saves from before resting moved home — the bed now moves the story on.
+  { text: 'Rest at home. Something tells you to come back to the Lantern tonight...', at: { map: 'lf_wren_house', x: 1, y: 2 } },
+  { text: 'Home at last. It has been a very long day — rest in your bed.', at: { map: 'lf_wren_house', x: 1, y: 2 } },
+  { text: 'Voices from the Lantern — Mom and the Hierophant. Go and listen.', at: { map: 'lf_lantern' } },
   // The 'depart' trigger on the dock (Tobias is spawned by the scene).
-  { text: 'Leave for the mainland at dawn. Tobias will sail you from the docks.', at: { map: 'lanternfall', x: 23, y: 28 } },
+  { text: 'Leave for the mainland at dawn. Tobias will sail you from the docks.', at: { map: 'lanternfall', x: 23, y: 28 } }, // legacy
+  { text: 'Leave for the mainland. Tobias will sail you from the docks.', at: { map: 'lanternfall', x: 23, y: 28 } },
   // Set just before the teleport; Port Gale's onEnter (arrival) replaces it.
   { text: 'Explore Port Gale, then take the Whisperwold road toward Aurenne.', at: { map: 'port_gale' } },
 

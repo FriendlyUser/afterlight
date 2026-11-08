@@ -393,8 +393,10 @@ function addProp(group, type, variant, x, y, z, lightSources, night = true) {
     glowMap: def.glow && lit ? glowMaskFor(spr.canvas) : null,
   });
   const mesh = new THREE.Mesh(geo, mat);
-  mesh.position.set(x, y, z);
-  mesh.rotation.x = -0.12;
+  // Most props stand up as billboards; a few lie back toward the floor (beds), their
+  // foot near the front of the tile.
+  mesh.position.set(x, y, z + (def.lean ? def.leanOffset ?? 0.4 : 0));
+  mesh.rotation.x = -(def.lean ?? 0.12);
   if (def.shadow) {
     mesh.castShadow = true;
     mesh.customDepthMaterial = makeDepthMaterial(spr.texture);

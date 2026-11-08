@@ -3,7 +3,7 @@ import L from './layouts/lanternfall.js';
 import { PRO } from '../../story/prologue.js';
 import { CH1 } from '../../story/ch1.js';
 
-const day = (st) => !st.flags.lfNight;
+const day = (st) => !st.flags.lfNight && !st.flags.ch1_night;
 const beforeKindling = (st) => day(st) && !st.flags.kindled;
 
 /** @type {import('../../types/data').MapDef} */
@@ -12,8 +12,8 @@ export default {
   id: 'lanternfall',
   name: 'Lanternfall',
   region: 'The Westmost Isle',
-  mood: (st) => (st.flags.lfNight ? 'storm' : st.flags.lfDusk ? 'dusk' : 'morning'),
-  music: (st) => (st.flags.lfNight ? 'tension' : 'lanternfall'),
+  mood: (st) => (st.flags.lfNight ? 'storm' : st.flags.ch1_night ? 'night' : st.flags.lfDusk ? 'dusk' : 'morning'),
+  music: (st) => (st.flags.lfNight ? 'tension' : st.flags.ch1_night ? null : 'lanternfall'),
   backdrop: 'ocean',
   battleBg: 'beach',
   encounters: {

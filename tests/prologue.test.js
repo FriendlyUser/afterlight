@@ -28,9 +28,19 @@ export async function run(game, h) {
   await h.goto('lf_lantern', 7, 11, 'up');
   h.expect(h.flags().kindled, 'kindling');
   await h.idle();
+  h.expect(game.scene.mapId === 'lf_wren_house', 'sent home after the Kindling');
+  await h.goto('lf_lantern', 7, 11, 'up');
+  h.expect(!h.flags().ch1_overheard, 'the Lantern stays empty until Wren has rested');
+  await h.goto('lf_wren_house', 1, 3, 'up');
+  game.scene.player.face('up');
+  game.scene.interact(); // the bed
+  await h.idle();
+  h.expect(h.flags().ch1_rested && h.flags().ch1_voices && game.state.vars.objective.startsWith('Voices from the Lantern'), 'rested; voices from the Lantern in the night');
   await h.goto('lf_lantern', 7, 11, 'up');
   h.expect(h.flags().ch1_overheard, 'overheard');
   await h.idle();
+  h.expect(game.scene.mapId === 'lf_wren_house' && h.flags().ch1_dawn, 'home again, and dawn');
+  await h.goto('lanternfall', 16, 12);
   await h.stepOn(23, 27);
   h.expect(h.flags().ch1_departed, 'departed');
   h.log(`party: ${game.state.party.join(',')} lv ${game.state.leader().level}`);

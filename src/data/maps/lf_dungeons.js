@@ -16,7 +16,8 @@ export const lfLantern = {
   exits: [{ x: 6, y: 12, w: 3, to: 'lanternfall', tx: 8, ty: 6, dir: 'down' }],
   onEnter: async (s) => {
     if (s.flag('ch1_named') && !s.flag('kindled')) await CH1.kindling(s);
-    else if (s.flag('ch1_evening') && !s.flag('ch1_overheard')) await CH1.overhear(s);
+    else if (s.flag('ch1_rested') && !s.flag('ch1_overheard')) await CH1.overhear(s);
+    else if (s.flag('ch1_evening') && !s.flag('ch1_rested')) await s.say('Wren', 'Empty. Everyone went home — like Mom said. I should too.');
   },
 };
 

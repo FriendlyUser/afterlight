@@ -401,13 +401,22 @@ export const PROPS = {
       pc.poly([[9, 4], [12, 12], [9, 19]], hex('#fffbe8'));
     },
   },
+  // Lies back toward its headboard (lean) so it reads as a bed from above, not a wardrobe:
+  // headboard, pillow, turned-down sheet, a patchwork quilt, footboard.
   bed: {
-    w: 24, h: 30, solid: true,
+    w: 24, h: 27, solid: true, lean: 1.0, leanOffset: 0.44,
     paint(pc) {
-      const w = ramp('#7a5634');
-      pc.shadedRect(0, 0, 24, 30, w);
-      pc.shadedRect(2, 3, 20, 7, ramp('#f0ece0'));
-      pc.shadedRect(2, 10, 20, 18, ramp('#4a6aa0'));
+      const wood = ramp('#8a5e36'), sheet = ramp('#f2ecdc'), quilt = ramp('#4a72b0'), patch = ramp('#c8a048');
+      pc.shadedRect(0, 0, 24, 5, wood); // headboard
+      pc.rect(0, 0, 2, 27, wood[1]); pc.rect(22, 0, 2, 27, wood[1]); // side rails
+      pc.rect(1, 0, 22, 1, wood[3]);
+      pc.shadedRect(3, 5, 18, 5, sheet); // pillow
+      pc.rect(5, 6, 14, 1, sheet[4]);
+      pc.shadedRect(2, 10, 20, 3, sheet); // turned-down sheet
+      pc.shadedRect(2, 13, 20, 11, quilt); // quilt
+      for (let y = 13; y < 24; y += 4) for (let x = 2 + ((y / 4) % 2) * 5; x < 22; x += 10) pc.rect(x, y, 5, 3, patch[2]);
+      pc.rect(2, 13, 20, 1, quilt[4]);
+      pc.shadedRect(0, 24, 24, 3, wood); // footboard
     },
   },
   bookshelf: {

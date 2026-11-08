@@ -278,6 +278,17 @@ done directly this session:
   the party waits while it's open. After a victory, a **Level Up!** panel shows a card
   for each member who levelled: old → new level, every stat's gain, and new Support Points.
   Tests: `side_quests` (data), `side_markers` (in play), `levelup`.
+- **Chapter 1 evening, reworked.** After the Kindling ("Everyone — home. Now.") Wren is
+  sent home at dusk with "rest in your bed" (marker on the bed) instead of being dropped
+  outside the Lantern with a hint to come back. Resting (`CH1.restEvening`): she can't
+  sleep, the room goes to night (`ch1_night`: Lanternfall and the house dark, day NPCs
+  indoors), and voices from the Lantern move the marker there; the Lantern stays empty
+  ("I should go home") until she has rested. After the overheard argument she wakes at
+  home at dawn (`ch1_dawn`) and leaves for the docks. Old saves mid-step follow the new
+  path (their objective now points at the bed). Wren's bed restores HP and MP any time
+  (`CH1.bed`). Beds everywhere are repainted to lie back toward their headboard
+  (PropFactory `lean`) — sheet, pillow, patchwork quilt — instead of reading as an upright
+  wardrobe. Tests: `prologue` (the new sequence), `home_rest`.
 - **Autosave and cutscene walking.** Autosave (`world/Autosave.js`) now keeps three
   rotating slots (`AUTO_SLOTS`: the old `auto` plus `auto2`, `auto3`): the newest is updated
   in place for 10 minutes of play, then the next goes to a free slot or over the oldest (a

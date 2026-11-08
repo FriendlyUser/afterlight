@@ -14,21 +14,22 @@ const out = (x, y, tx, ty, w = 2) => ({ x, y, w, to: 'lanternfall', tx, ty, dir:
 export const lfWrenHouse = {
   ...WREN, ...interior,
   id: 'lf_wren_house', name: 'Halloway House',
-  music: (st) => (st.flags.lfNight ? null : 'lanternfall'),
-  mood: (st) => (st.flags.lfNight ? 'night' : st.flags.lfDusk || st.flags.p_brooch_done ? 'interior' : 'interior'),
+  music: (st) => (st.flags.lfNight || st.flags.ch1_night ? null : 'lanternfall'),
+  mood: (st) => (st.flags.lfNight || st.flags.ch1_night ? 'night' : 'interior'),
   npcs: [
     { id: 'ysolde', name: 'Ysolde', look: 'ysolde', x: 6, y: 5, dir: 'left', cond: (st) => !st.flags.lfNight && !st.flags.kindled, run: (s) => PRO.ysoldeTalk(s) },
   ],
   inspect: [
     { x: 7, y: 2, text: 'Your father\'s books. Sea charts, star charts, a novel about a pirate queen with the last chapter torn out.' },
     { x: 8, y: 2, text: 'A shelf of your own books. Every one has washed ashore at some point. Most of them are still a little salty.' },
-    { x: 1, y: 2, text: 'Your bed. Unmade, obviously.' },
+    { x: 1, y: 2, hint: 'Rest', run: (s) => CH1.bed(s) }, // your bed: rest to restore HP and MP
     { x: 4, y: 4, text: 'Two plates. There have been two plates for seven years.' },
   ],
   exits: [out(4, 8, 16, 12)],
   onEnter: async (s) => {
     await PRO.opening(s);
     if (s.flag('p_brooch_done') && !s.flag('p_dinner')) await PRO.supper(s);
+    await CH1.home(s);
   },
 };
 

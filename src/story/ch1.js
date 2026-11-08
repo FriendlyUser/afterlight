@@ -129,12 +129,58 @@ export const CH1 = {
     await s.say('Bram', 'Did he just call her "Lysa"?');
     await s.say('Ilse', 'Who\'s Lysa?');
     await s.say('Sable', 'I don\'t know. But I think I have heard it before. In the water.');
-    s.objective('Rest at home. Something tells you to come back to the Lantern tonight...');
+    s.objective('Home at last. It has been a very long day — rest in your bed.');
     s.journal('The Kindling. I am a Vanguard. Ilse is a Mender, like she always knew. When Sable stepped into the light, the Lantern went dark — and the Hierophant called her "Lysa."');
     s.setFlag('lfDusk');
     s.setFlag('ch1_evening');
     await s.fadeOut(1);
-    await s.teleport('lanternfall', 8, 6, 'down');
+    await s.teleport('lf_wren_house', 4, 7, 'up', { faded: true });
+  },
+
+  /** Home: after the Kindling (dusk), the night of the voices, and the next dawn. */
+  async home(s) {
+    if (s.flag('ch1_ready') && !s.flag('ch1_dawn')) {
+      s.setFlag('ch1_dawn');
+      s.heal();
+      await s.narrate(['You don\'t sleep. You lie listening to the sea until the window goes grey, and then gold.', 'Down at the docks, Tobias is already loading his boat.']);
+      await s.say('Wren', 'Aurenne. I\'m really going.');
+      return;
+    }
+    if (s.flag('ch1_rested') && !s.flag('ch1_voices')) {
+      s.setFlag('ch1_voices');
+      await s.narrate('Late in the night, voices. Down the hill, carried up from the Lantern: your mother\'s, sharp as a gull\'s — and the Hierophant\'s.');
+      await s.say('Wren', 'Mom? At this hour?');
+      s.objective('Voices from the Lantern — Mom and the Hierophant. Go and listen.');
+      return;
+    }
+    if (s.flag('ch1_evening') && !s.flag('ch1_rested') && !s.flag('ch1_home')) {
+      s.setFlag('ch1_home');
+      await s.say('Wren', ['Home. Mom\'s still up at the Lantern with the Hierophant.', 'I feel like I\'ve been awake for a week.']);
+    }
+  },
+
+  /** Wren's bed: rest any time to restore HP and MP; the night after the Kindling, it moves the story on. */
+  async bed(s) {
+    if (s.flag('ch1_evening') && !s.flag('ch1_rested')) return CH1.restEvening(s);
+    if (s.flag('lfNight')) return s.narrate('Not with the storm howling like that — and something is out there on the black rocks.');
+    if (!await s.confirm('Rest in your bed? (Restores HP and MP.)', 'Rest', 'Not now')) return null;
+    await s.fadeOut(0.6);
+    s.heal();
+    s.sfx('save');
+    await s.wait(0.5);
+    await s.fadeIn(0.6);
+    return s.system('You rest a while. HP and MP restored.');
+  },
+
+  /** The night after the Kindling: Wren tries to sleep, and wakes in the dark to voices. */
+  async restEvening(s) {
+    await s.narrate(['You lie down in your clothes. The bed smells of salt and old books.', 'Sleep won\'t come. Every time you close your eyes, the Lantern goes dark again — and the eye opens on Sable\'s hand.']);
+    await s.fadeOut(1.2);
+    s.heal();
+    s.setFlag('ch1_rested');
+    s.setFlag('ch1_night');
+    await s.wait(0.8);
+    await s.teleport('lf_wren_house', 2, 3, 'down', { faded: true, sfx: false }); // the same room, at night
   },
 
   /** Evening: overhear Cassian and Ysolde at the Lantern. */
@@ -172,12 +218,13 @@ export const CH1 = {
     await s.say('Wren', 'She objects to everything.');
     await s.say('Cassian', '_(smiling)_ So did mine. Goodnight, Wren Halloway.');
     s.remove('cassian');
-    s.objective('Leave for the mainland at dawn. Tobias will sail you from the docks.');
+    s.objective('Leave for the mainland. Tobias will sail you from the docks.');
     s.journal('Mom refused to give the Hierophant the Dawnstone. He asked me — ME — to take Sable to Aurenne.');
     s.setFlag('ch1_ready');
     await s.fadeOut(1);
     s.setFlag('lfDusk', false);
-    await s.teleport('lanternfall', 8, 6, 'down');
+    s.setFlag('ch1_night', false);
+    await s.teleport('lf_wren_house', 2, 3, 'down', { faded: true }); // home to bed; dawn
   },
 
   /** Dawn at the docks: Ysolde's goodbye. */
