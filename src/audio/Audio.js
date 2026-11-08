@@ -14,6 +14,7 @@ export function noteToMidi(tok) {
   return n + (parseInt(m[3], 10) + 1) * 12;
 }
 const mtof = (m) => 440 * Math.pow(2, (m - 69) / 12);
+const LOOKAHEAD = 0.3; // seconds of music scheduled ahead, so short main-thread stalls don't stutter
 
 // ---------------------------------------------------------------- chords
 
@@ -161,9 +162,12 @@ export class AudioEngine {
   schedule() {
     const cur = this.current;
     if (!cur || !this.ctx) return;
-    const ahead = this.ctx.currentTime + 0.15;
-    while (cur.nextTime < ahead) {
-      for (const tr of cur.tracks) {
+    const now = this.ctx.currentTime;
+    while (cur.nextTime < now + LOOKAHEAD) {
+      // After a main-thread stall longer than the look-ahead (a map being built), skip
+      // the notes that are already late rather than playing them all at once.
+      const late = cur.nextTime < now - 0.03;
+      for (const tr of late ? [] : cur.tracks) {
         const ev = tr.events.get(cur.step % tr.totalSteps);
         if (!ev) continue;
         for (const e of ev) this.voice(tr.inst, e.midi, cur.nextTime, e.len * cur.stepDur, e.vel * tr.vol, cur.gain);

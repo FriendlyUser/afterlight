@@ -1,4 +1,6 @@
 // Title screen: Lanternfall at dusk behind the logo; New Game / Continue / Load.
+// New Game asks for a difficulty, then plays the opening movie; left idle, the title
+// plays the movie too and comes back.
 
 import * as THREE from 'three';
 import { keysFor } from '../core/Input.js';
@@ -10,11 +12,16 @@ import { el } from '../ui/UI.js';
 import { GameState, SaveStore, AUTO_SLOT } from '../state/GameState.js';
 import { FieldScene } from '../world/FieldScene.js';
 import { startNewGame, startNewGamePlus } from '../story/newGame.js';
+import { DIFFICULTIES, DEFAULT_DIFFICULTY, difficultyStats } from '../data/difficulty.js';
+import { OpeningScene } from './OpeningScene.js';
+
+const ATTRACT_AFTER = 45; // seconds of no input before the title plays the opening
 
 export class TitleScene {
   constructor(game) {
     this.game = game;
     this.time = 0;
+    this.idle = 0;
   }
 
   enter() {
@@ -44,9 +51,11 @@ export class TitleScene {
     this.root.innerHTML = `
       <div class="ts-logo"><div class="ts-pre">A coming-of-age at the end of the world</div><div class="ts-name">AFTERLIGHT</div><div class="ts-rule"></div></div>
       <div class="ts-menu"></div>
+      <div class="ts-diff" style="display:none"></div>
       <div class="ts-foot">${keysFor('up').join(' / ')} and the other arrows to move · ${keysFor('confirm').slice(0, 2).join(' / ')} to confirm · ${[...keysFor('cancel').slice(0, 1), 'Esc'].join(' / ')} to cancel · ${keysFor('menu')[0] ?? 'Esc'} for the menu · remap in Settings → Controls</div>`;
     game.ui.layers.hud.appendChild(this.root);
     this.menuEl = this.root.querySelector('.ts-menu');
+    this.diffEl = this.root.querySelector('.ts-diff');
     this.hasSave = SaveStore.latestSlot() !== -1;
     this.clearSlot = this.findClearedSave();
     this.options = [
@@ -68,6 +77,8 @@ export class TitleScene {
   }
 
   async handleInput(input) {
+    if (input.edges.size) this.idle = 0;
+    if (this.picker) { this.handlePicker(input); return; }
     if (this.busy) return;
     const n = this.options.length;
     if (input.repeat('up')) { this.index = (this.index + n - 1) % n; this.game.audio?.sfx('cursor'); this.renderMenu(); }
@@ -100,19 +111,81 @@ export class TitleScene {
     return best;
   }
 
+  // ------------------------------------------------------------------ new game
+
+  /** Ask for a difficulty, then start fresh (or New Game+ from a cleared save). */
   async newGame(clearedSlot = null) {
     const game = this.game;
+    const difficulty = await this.pickDifficulty();
+    if (difficulty === null) return;
     game.audio?.stopMusic(2);
     await game.fadeOut(1.5);
     this.cleanupUi();
     const settings = game.state.settings; // a new game keeps the player's settings
+    settings.difficulty = difficulty;
     Object.assign(game.state, new GameState(), { settings });
     game.applySettings();
     const start = clearedSlot === null
       ? startNewGame(game.state)
       : startNewGamePlus(game.state, GameState.deserialize(SaveStore.read(clearedSlot).data));
+    if (clearedSlot === null) await this.playOpening(); // New Game+ players have seen it
     await game.setScene(new FieldScene(game), start);
     await game.fadeIn(1.0);
+  }
+
+  /** The difficulty picker in place of the menu. Resolves to an index, or null on Cancel. */
+  pickDifficulty() {
+    this.menuEl.style.display = 'none';
+    this.diffEl.style.display = '';
+    this.diffIndex = this.game.state.settings.difficulty ?? DEFAULT_DIFFICULTY;
+    this.renderPicker();
+    return new Promise((resolve) => {
+      this.picker = (choice) => {
+        this.picker = null;
+        this.diffEl.style.display = 'none';
+        this.menuEl.style.display = '';
+        resolve(choice);
+      };
+    });
+  }
+
+  renderPicker() {
+    const d = DIFFICULTIES[this.diffIndex];
+    this.diffEl.innerHTML = `
+      <div class="ts-diff-head">Choose a difficulty</div>
+      <div class="ts-diff-opts">${DIFFICULTIES.map((o, i) => `<div class="ts-diff-opt ${i === this.diffIndex ? 'sel' : ''}">${o.name}</div>`).join('')}</div>
+      <div class="ts-diff-desc">${d.desc}</div>
+      <div class="ts-diff-stats">${difficultyStats(d)}</div>
+      <div class="ts-diff-note">You can change this at any time in Settings.</div>`;
+  }
+
+  handlePicker(input) {
+    const n = DIFFICULTIES.length;
+    const step = (input.repeat('left') || input.repeat('up') ? -1 : 0) + (input.repeat('right') || input.repeat('down') ? 1 : 0);
+    if (step) {
+      this.diffIndex = (this.diffIndex + step + n) % n;
+      this.game.audio?.sfx('cursor');
+      this.renderPicker();
+    }
+    if (input.pressed('confirm')) { input.consumeAll(); this.game.audio?.sfx('confirm'); this.picker(this.diffIndex); }
+    else if (input.pressed('cancel')) { input.consumeAll(); this.game.audio?.sfx('cancel'); this.picker(null); }
+  }
+
+  /** Play the opening movie (this scene exits); resolves with the screen black. */
+  async playOpening() {
+    const opening = new OpeningScene(this.game);
+    await this.game.setScene(opening);
+    await opening.done;
+  }
+
+  /** Left alone, the title shows the opening and then comes back. */
+  async attract() {
+    const game = this.game;
+    this.busy = true;
+    game.audio?.stopMusic(1.5);
+    await game.fadeOut(1.5);
+    await this.playOpening();
+    await game.setScene(new TitleScene(game));
   }
 
   async loadSlot(slot) {
@@ -141,6 +214,7 @@ export class TitleScene {
 
   update(dt) {
     this.time += dt;
+    if (!this.busy && !this.picker && (this.idle += dt) > ATTRACT_AFTER) this.attract();
     windUniform.value = this.time;
     const a = this.time * 0.04;
     const center = new THREE.Vector3(9, 3, 6);

@@ -3,11 +3,14 @@
 // screenshots can't see the WebGL canvas mid-battle; reading it right after a
 // render can. URL params: map, x, y, dir, party=a,b, lv, flags=a,b, battle, bg, wait,
 // door=x,y,open,playerZ,fade (pose a door and the player in its doorway).
+// Or opening=<shot index>&wait=<sec>: a frame of the opening movie (3D only, no captions).
 import { FieldScene } from '../src/world/FieldScene.js';
+import { OpeningScene } from '../src/scenes/OpeningScene.js';
 
 export async function run(game, h) {
   const p = new URLSearchParams(location.search);
-  if (!p.get('map')) { h.log('frame: pass map=<id>'); return; }
+  if (p.has('opening')) return grab(game, h, p, new OpeningScene(game, { from: +p.get('opening') }));
+  if (!p.get('map')) { h.log('frame: pass map=<id> or opening=<shot>'); return; }
   game.autoBattle = false;
   game.autoConfirm = false;
   const st = game.state;
@@ -29,6 +32,19 @@ export async function run(game, h) {
     pl.setInDoorway(z < dy + 1.3);
     pl.syncMesh();
   }
+  capture(game, h);
+}
+
+/** Opening movie frame: start at the shot, wait into it, grab. */
+async function grab(game, h, p, scene) {
+  game.autoConfirm = false;
+  await game.start(scene);
+  await h.wait(+(p.get('wait') || 1));
+  capture(game, h);
+  h.log(`shot ${scene.shotId}`);
+}
+
+function capture(game, h) {
   game.scene.render(game.time);
   const c = document.createElement('canvas');
   c.width = game.canvas.width;

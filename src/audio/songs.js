@@ -181,6 +181,17 @@ export const SONGS = {
     melody2: 'e4:16 c4:16 a3:16 b3:16 e4:16 c4:16 d4:16 b3:16', melody2Vol: 0.6,
     style: { arp: 'harp', arpRate: 1, arpPattern: [0, 1, 2, 3], arpVol: 0.5, pad: 'pad', padVol: 0.6, bass: 'drive', drums: 'boss' },
   },
+  opening: {
+    // The opening movie: the title motif at a gallop, lifting into the major-key
+    // phrase the ending finds — the whole story in sixteen bars.
+    bpm: 128,
+    chords: ['Am', 'F', 'C', 'G', 'Am', 'F', 'G', 'E', 'F', 'G', 'Em', 'Am', 'F', 'G', 'C', 'E'],
+    melody: 'e5:6 d5:2 c5:4 b4:4  c5:6 a4:2 a4:8  g4:4 c5:4 e5:4 g5:4  f5:6 e5:2 d5:8  e5:6 d5:2 c5:4 e5:4  a5:6 g5:2 f5:4 e5:4  d5:4 e5:2 f5:2 g5:4 b4:4  b4:6 c5:2 b4:4 g#4:4 '
+      + 'a5:6 g5:2 f5:4 e5:4  d5:6 e5:2 g5:8  g5:4 b5:4 e6:4 d6:4  c6:12 b5:2 a5:2  a5:6 g5:2 f5:4 a5:4  b5:6 c6:2 d6:8  e6:4 d6:4 c6:4 g5:4  b5:8 g#5:4 e5:4',
+    inst: { melody: 'brass', melody2: 'strings' },
+    melody2: 'a3:16 f3:16 g3:16 g3:16 a3:16 a3:16 b3:16 g#3:16  c4:16 b3:16 b3:16 a3:16 a3:16 b3:16 c4:16 g#3:16', melody2Vol: 0.55,
+    style: { arp: 'pluck', arpRate: 1, arpPattern: [0, 1, 2, 3, 2, 1], arpVol: 0.6, pad: 'strings', padVol: 0.55, bass: 'drive', drums: 'battle' },
+  },
   abyss: {
     // The Gloam beneath the world: before the sun gave things edges.
     bpm: 58, chords: ['Cm', 'Cm', 'Db', 'Db', 'Bbm', 'Bbm', 'G', 'G'],

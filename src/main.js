@@ -97,6 +97,15 @@ async function boot() {
     return;
   }
   const { TitleScene } = await import('./scenes/TitleScene.js');
+  if (params.has('opening')) {
+    // Debug: play the opening movie (?opening=<shot index> starts mid-way), then the title.
+    const { OpeningScene } = await import('./scenes/OpeningScene.js');
+    const opening = new OpeningScene(game, { from: Number(params.get('opening')) || 0 });
+    await game.start(opening);
+    await opening.done;
+    await game.setScene(new TitleScene(game));
+    return;
+  }
   game.start(new TitleScene(game));
   // If anything goes wrong before the title fades in, make sure the screen is visible.
   setTimeout(() => { if (parseFloat(document.getElementById('fader').style.opacity || '1') > 0.9 && !game.scene) game.fadeIn(1); }, 4000);

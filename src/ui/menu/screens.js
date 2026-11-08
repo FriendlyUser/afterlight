@@ -8,6 +8,7 @@ import { MemberScreen } from './CrestScreen.js';
 import { ITEMS } from '../../data/items.js';
 import { EQUIPMENT } from '../../data/equipment.js';
 import { CRESTS } from '../../data/crests.js';
+import { DIFFICULTIES, DEFAULT_DIFFICULTY } from '../../data/difficulty.js';
 import { ENEMIES, enemyStats } from '../../data/enemies.js';
 import { getMonsterSprite } from '../../render/MonsterFactory.js';
 import { ELEM_ICONS } from '../../battle/BattleUI.js';
@@ -231,7 +232,7 @@ export class SettingsScreen extends Screen {
       { key: 'textSize', label: 'Text Size', value: ['Normal', 'Large', 'Largest'][s.textSize || 0], step: 1, min: 0, max: 2 },
       { key: 'textSpeed', label: 'Text Speed', value: ['Slow', 'Normal', 'Fast', 'Instant'][s.textSpeed] || 'Normal', step: 1, min: 0, max: 3 },
       { key: 'encounters', label: 'Encounter Rate', value: ['Normal', 'Half', 'Off (story only)'][s.encounters || 0], step: 1, min: 0, max: 2 },
-      { key: 'difficulty', label: 'Difficulty', value: ['Story', 'Normal', 'Hard'][s.difficulty ?? 1], step: 1, min: 0, max: 2 },
+      { key: 'difficulty', label: 'Difficulty', value: DIFFICULTIES[s.difficulty ?? DEFAULT_DIFFICULTY].name, step: 1, min: 0, max: DIFFICULTIES.length - 1 },
       { key: 'battleSpeed', label: 'Battle Speed', value: ['Normal', 'Fast', 'Fastest'][s.battleSpeed || 0], step: 1, min: 0, max: 2 },
       { key: 'fastMode', label: `Fast Mode (${keysFor('fast')[0] ?? '—'})`, value: s.fastMode ? 'On' : 'Off', toggle: true },
       { key: 'fastSpeed', label: 'Fast Mode Speed', value: `${s.fastSpeed || 3}×`, step: 1, min: 2, max: 4 },

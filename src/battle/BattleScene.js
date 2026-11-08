@@ -8,8 +8,8 @@ import { autoAction } from './AutoPlay.js';
 import { BattleSystem } from './BattleSystem.js';
 import { BattleUI, ELEM_ICONS } from './BattleUI.js';
 import { playEffect, isMelee } from './Effects.js';
-import { windUniform, makeSpriteMaterial, makeDepthMaterial } from '../world/MapBuilder.js';
-import { buildBattleStage } from './BattleStage.js';
+import { windUniform } from '../world/MapBuilder.js';
+import { buildBattleStage, partySlot, enemySlot, battlerMesh, setBattlePose } from './BattleStage.js';
 import { applyMood, MOODS } from '../render/Moods.js';
 import { ParticleSystem } from '../render/Particles.js';
 import { getCharacterSheet, BATTLE_W, BATTLE_H } from '../render/SpriteFactory.js';
@@ -94,26 +94,14 @@ export class BattleScene {
   }
 
   placeBattlers() {
-    const party = this.sys.party;
-    party.forEach((b, i) => {
-      // A diagonal wide enough that nobody hides behind the next in line.
-      const pos = new THREE.Vector3(2.9 + i * 0.85, 0, -2.6 + i * 0.95);
-      this.addSprite(b, pos);
-    });
+    this.sys.party.forEach((b, i) => this.addSprite(b, partySlot(i)));
     const enemies = this.sys.enemies;
-    const n = enemies.length;
     // Biggest sprites take the front/central slots so a giant never hangs off-screen.
     const bySize = [...enemies].sort((a, b) => (b.def.sprite.size || 1) - (a.def.sprite.size || 1));
-    enemies.forEach((b) => this.addSprite(b, this.enemySlot(bySize.indexOf(b), n, b)));
+    enemies.forEach((b) => this.addSprite(b, this.enemySlot(bySize.indexOf(b), enemies.length, b)));
   }
 
-  enemySlot(i, n, b) {
-    const big = (b.def.sprite.size || 1) >= 2;
-    if (n === 1) return new THREE.Vector3(big ? -3.4 : -3, 0, -1.2);
-    const rows = [[-2.6, -2.0], [-5.0, -1.4], [-3.6, 0.3], [-6.6, 0.2], [-1.6, 0.6]];
-    const slot = rows[i % rows.length];
-    return new THREE.Vector3(slot[0] + (big ? -0.8 : 0), 0, slot[1]);
-  }
+  enemySlot(i, n, b) { return enemySlot(i, n, (b.def.sprite.size || 1) >= 2); }
 
   addSprite(b, pos) {
     let tex, w, h, sheet = null;
@@ -128,15 +116,7 @@ export class BattleScene {
       w = spr.width;
       h = spr.height;
     }
-    const geo = new THREE.PlaneGeometry(w, h);
-    geo.translate(0, h / 2 - 0.05, 0);
-    const mat = makeSpriteMaterial(tex);
-    mat.emissive = new THREE.Color('#ffffff');
-    mat.emissiveIntensity = 0;
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.castShadow = true;
-    mesh.customDepthMaterial = makeDepthMaterial(tex);
-    mesh.rotation.x = -0.08;
+    const mesh = battlerMesh(tex, w, h);
     mesh.position.copy(pos);
     this.scene.add(mesh);
     const s = { b, mesh, sheet, base: pos.clone(), offset: new THREE.Vector3(), h, w, pose: 'idle', poseLock: 0, alpha: 1, seed: Math.random() * 10 };
@@ -150,11 +130,7 @@ export class BattleScene {
     if (!s?.sheet) return;
     s.pose = pose;
     s.poseLock = lockSec;
-    const r = s.sheet.battleFrame(pose);
-    const uv = s.mesh.geometry.attributes.uv;
-    uv.setXY(0, r.u0, r.v1); uv.setXY(1, r.u1, r.v1);
-    uv.setXY(2, r.u0, r.v0); uv.setXY(3, r.u1, r.v0);
-    uv.needsUpdate = true;
+    setBattlePose(s.mesh, s.sheet, pose);
   }
 
   /** 'A', 'B'... when several enemies share a name; '' otherwise. */

@@ -441,6 +441,56 @@ em { color: #e8dcff; }
 .ts-item.off { color: rgba(140,130,120,0.5); }
 .ts-foot { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; font-family: var(--font-caps); font-size: 13px; color: rgba(220,210,190,0.6); letter-spacing: 0.08em; }
 
+/* New Game: difficulty picker (replaces the title menu) */
+.ts-diff { position: absolute; left: 50%; bottom: 10vh; transform: translateX(-50%); width: min(640px, 92vw); padding: 16px 28px 14px; text-align: center;
+  background: radial-gradient(ellipse at center, rgba(10, 8, 18, 0.78), rgba(10, 8, 18, 0.5) 70%, transparent); }
+.ts-diff-head { font-family: var(--font-caps); letter-spacing: 0.42em; font-size: 15px; color: rgba(255, 228, 190, 0.85); text-shadow: 0 2px 6px #000; }
+.ts-diff-opts { display: flex; justify-content: center; gap: 4px; margin-top: 10px; }
+.ts-diff-opt { font-family: var(--font-title); font-size: 26px; letter-spacing: 0.15em; color: rgba(240, 228, 210, 0.5); padding: 4px 6px; text-shadow: 0 2px 4px #000; }
+.ts-diff-opt.sel { color: #fff; text-shadow: 0 0 16px rgba(255, 200, 130, 0.9), 0 2px 4px #000; }
+.ts-diff-opt::before, .ts-diff-opt::after { content: '◆'; color: var(--gold); font-size: 11px; margin: 0 10px; vertical-align: middle; visibility: hidden; }
+.ts-diff-opt.sel::before, .ts-diff-opt.sel::after { visibility: visible; }
+.ts-diff-desc { margin: 12px auto 0; max-width: 540px; min-height: 2.9em; font-size: 18px; line-height: 1.45; color: var(--ink); text-shadow: 0 2px 4px #000; text-wrap: balance; }
+.ts-diff-stats { margin-top: 6px; font-family: var(--font-caps); font-size: 14px; letter-spacing: 0.14em; color: var(--gold); }
+.ts-diff-note { margin-top: 10px; font-family: var(--font-caps); font-size: 13px; letter-spacing: 0.08em; color: rgba(220, 210, 190, 0.6); }
+
+/* ==========================================================================
+   Opening movie (scenes/OpeningScene.js). Captions are faded/slid from script.
+   ========================================================================== */
+.opening { position: absolute; inset: 0; pointer-events: none; overflow: hidden; --bar: 7.5vh; }
+.op-bar { position: absolute; left: 0; right: 0; height: var(--bar); background: #000; z-index: 2; }
+.op-bar.top { top: 0; }
+.op-bar.bottom { bottom: 0; }
+.op-captions { position: absolute; inset: 0; }
+.op-captions > * { visibility: hidden; }
+.op-skip { position: absolute; right: 24px; bottom: calc(var(--bar) / 2 - 9px); z-index: 3; opacity: 0; font-family: var(--font-caps); font-size: 14px; letter-spacing: 0.12em; color: var(--ink-dim); }
+
+.op-tag { position: absolute; left: 6vw; bottom: calc(var(--bar) + 6vh); text-shadow: 0 2px 8px #000, 0 0 2px #000; }
+.op-tag-name { font-family: var(--font-title); font-size: clamp(26px, 3.3vw, 44px); letter-spacing: 0.12em; color: #fff6e4; }
+.op-tag-rule { width: 240px; height: 1px; margin: 6px 0 7px; background: linear-gradient(90deg, var(--gold), transparent); }
+.op-tag-sub { font-family: var(--font-caps); font-size: 15px; letter-spacing: 0.3em; color: rgba(255, 228, 190, 0.88); }
+
+.op-card { position: absolute; left: 5.5vw; top: 50%; margin-top: -70px; display: flex; align-items: center; gap: 24px; }
+.op-card-art { width: 126px; height: 114px; overflow: hidden; transform: skewX(-8deg); border: 1px solid var(--line); background: linear-gradient(160deg, rgba(60, 46, 80, 0.75), rgba(10, 8, 18, 0.75)); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6), inset 0 0 18px rgba(255, 200, 130, 0.12); }
+.op-card-art canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; transform: skewX(8deg) scale(1.12); }
+.op-card-text { text-shadow: 0 2px 8px #000, 0 0 2px #000; }
+.op-card-crest { font-family: var(--font-caps); font-size: 14px; letter-spacing: 0.32em; color: var(--gold); }
+.op-card-name { font-family: var(--font-title); font-size: clamp(30px, 4vw, 54px); line-height: 1.08; letter-spacing: 0.06em; color: #fff6e4; text-shadow: 0 2px 10px #000, 0 0 26px rgba(255, 190, 120, 0.35); }
+.op-card-title { margin-top: 6px; font-style: italic; font-size: clamp(16px, 1.7vw, 23px); color: rgba(244, 234, 214, 0.94); }
+
+.op-line { position: absolute; left: 8vw; right: 8vw; bottom: calc(var(--bar) + 6vh); text-align: center; font-size: clamp(20px, 2.3vw, 31px); color: #fff4e2; text-shadow: 0 2px 8px #000, 0 0 2px #000; }
+.op-by { display: block; margin-top: 8px; font-family: var(--font-caps); font-size: 14px; letter-spacing: 0.3em; color: var(--gold); }
+.op-big { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-title); font-size: clamp(28px, 4.2vw, 56px); letter-spacing: 0.32em; text-transform: uppercase; color: #f4ead6; }
+.op-pop { position: absolute; left: 64%; top: 36%; font-family: var(--font-title); font-weight: 700; font-size: clamp(40px, 6vw, 86px); letter-spacing: 0.08em; color: #fff; white-space: nowrap;
+  text-shadow: 0 0 18px rgba(140, 200, 255, 0.95), 0 4px 0 #1a2a4a, 0 0 3px #000; }
+.op-pop.gold { color: #fff2c8; text-shadow: 0 0 20px rgba(255, 190, 90, 0.95), 0 4px 0 #5a3a10, 0 0 3px #000; }
+
+.op-crests { position: absolute; right: 9vw; top: 50%; transform: translateY(-50%); text-align: right; }
+.op-crest { font-family: var(--font-title); font-size: clamp(14px, 1.5vw, 20px); line-height: 1.55; letter-spacing: 0.24em; text-transform: uppercase; color: #e8dcc4; text-shadow: 0 2px 6px #000; transform-origin: right center; }
+.op-crest.on { color: #fff; transform: scale(1.35); text-shadow: 0 0 14px rgba(255, 210, 140, 0.95), 0 2px 6px #000; }
+
+.op-logo { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+
 /* ==========================================================================
    World map
    ========================================================================== */

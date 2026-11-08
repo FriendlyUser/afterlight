@@ -18,8 +18,9 @@ Debug: `?map=<id>&x=&y=&party=ilse,bram&lv=20` jumps into a map; add `&battle=<t
 - Menus: main, items, Crests (primary/secondary), Supports, equipment (optimize),
   status, formation, bestiary, journal + quest log, Guide, settings, save/load
   (6 slots + autosave), shops, world map with fast travel, fishing.
-- Audio: WebAudio synth + sequencer, 29 songs, 46 SFX.
-- Title, New Game, New Game+, credits; two endings (Evernoon and true).
+- Audio: WebAudio synth + sequencer, 30 songs, 46 SFX.
+- Title, New Game (difficulty picker → opening movie), New Game+, credits; two endings
+  (Evernoon and true).
 
 ## Content
 The 14 story chapters of `docs/STORY.md` (code packs `prologue`, `ch2`–`ch12`), side
@@ -44,6 +45,7 @@ Estimated 40–60 hours with side content.
 | ch12 | Ch.13–14 Evernoon: the Hierophant, the Noon King, Vesper; the ending | `ch12`, `ch12_evernoon`, `ch12_finale` |
 | side | Hunters' Lodge + 10 bounties, Drowned Observatory, Fort Ashwatch, Hollow Bell, Garden That Remembers, 2 hidden hunts | `side`, `side_reach` |
 | postgame | Gloam Abyss B1–30, Echo Colosseum (10 rounds), Lysa's Echo, the First Dark | `postgame`, `postgame_finale` |
+| opening | The opening movie, New Game difficulty picker, title attract loop | `opening` |
 
 ## Testing
 Headless Windows Chrome via WSL, against the local server.
@@ -170,6 +172,23 @@ done directly this session:
   covers a marker; the Belfry's great bell (`bell` prop, wide-prop `footprint`); floor
   decor `scatter` in the nine sparsest dungeons; the lighthouse beam fades out; the
   `?debug` overlay counts the whole frame.
+- **New Game difficulty + opening movie.** New Game (and New Game+) first shows a
+  difficulty picker (Story / Normal / Hard with the HP/damage numbers; `data/difficulty.js`
+  is the one source for the multipliers, the picker and Settings). A fresh game then plays
+  the opening (`scenes/OpeningScene.js` stages the screenplay in `story/opening.js`):
+  ~75 s, 29 shots cut to a new `opening` theme — cold open, Lanternfall, an anime-opening-style
+  cast roll with portrait cards, Wren cycling through Crest costumes, a six-region world
+  montage, three battles (deck, desert, ruin), the sun stopping and splitting into the
+  seven wounds, one year later, Evernoon, the logo over Lanternfall's ruins. Shots reuse
+  the real maps (`OpeningStages.js`: a map set is a FieldScene without player/HUD/scripts
+  that FieldAtmosphere can light; a battle set uses the shared `BattleStage` helpers).
+  Captions are DOM, faded by script so they stay on the shot clock. Any confirm/cancel/
+  menu press skips; it runs on real time (not Fast Mode) to stay with the music. An idle
+  title (45 s) plays it as an attract loop. It avoids the twists (who breaks the sun,
+  Sable's face, the Penitent's). Set builds are hidden in white/black cut dips; the
+  sequencer now schedules 0.3 s ahead and drops notes a stall made late instead of
+  bunching them. Test: `opening` (all shots in order, timing, skip, New Game → Cancel →
+  Hard → opening → prologue, attract). Frames: `tools/frame.sh "opening=<shot>&wait=1"`.
 
 ## Next
 Everything below is optional; the game is complete and the suite passes.

@@ -60,14 +60,16 @@ These are the default keys: remap any of them in **Settings → Controls** (up t
 keys per action; <kbd>Esc</kbd> always cancels and opens the menu). Your bindings are
 saved with your game and travel with exported save files.
 
-Settings also include text size and speed, encounter rate, difficulty (Story / Normal /
-Hard), battle speed, Fast Mode speed, the minimap, the Quest Guide, and reduced flashes
-& screen shake.
+New Game asks for a difficulty (Story / Normal / Hard) before the opening movie; you can
+change it any time in Settings, along with text size and speed, encounter rate, battle
+speed, Fast Mode speed, the minimap, the Quest Guide, and reduced flashes & screen shake.
 
 ## Features
 
 **Story** — 14 chapters across three acts (~74k words of scenes), two endings, and a
-post-game descent through the 30-floor Gloam Abyss.
+post-game descent through the 30-floor Gloam Abyss. A 75-second opening movie, cut to its
+own theme, introduces the cast and the world (it plays after New Game, or if the title
+screen is left idle; any key skips it).
 
 **Battle** — a turn-order timeline, Poise & Break, and the shared Afterglow gauge for
 Surge and duo/trio Link Arts. Bosses telegraph their big attacks: Guard against them,
@@ -84,7 +86,7 @@ swing open as you walk in, a minimap, a world map with fast travel, fishing, per
 
 **Presentation** — three.js 2D-HD rendering (bloom, tilt-shift depth of field, color
 grading) with procedural pixel art for characters, monsters, tiles and props, and a
-WebAudio soundtrack of 29 songs.
+WebAudio soundtrack of 30 songs.
 
 ## Build & deploy
 
@@ -129,6 +131,7 @@ Add these to the URL to jump straight into the game:
 | `&battle=<troop>&bg=<bg>` | Start a battle |
 | `&menu=crests\|world\|settings\|shop:<id>` | Open a menu |
 | `&debug` | FPS, draw calls and triangles overlay |
+| `?opening` or `?opening=<shot>` | Play the opening movie (from a shot), then the title |
 </details>
 
 <details>
@@ -144,6 +147,7 @@ Add these to the URL to jump straight into the game:
 | `EXTRA='troop=<id>' tools/test.sh fightlog 100000` | One fight, turn by turn |
 | `tools/shot.sh "<url>" out.png 9000` | Screenshot (page + UI) |
 | `tools/frame.sh "map=…&battle=…" out.jpg` | The rendered 3D frame (use for battles) |
+| `tools/frame.sh "opening=<shot>&wait=<sec>" out.jpg` | A frame of the opening movie |
 
 The runners drive Windows Chrome from WSL. More in [`docs/PROGRESS.md`](docs/PROGRESS.md).
 </details>

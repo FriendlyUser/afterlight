@@ -12,8 +12,7 @@ import { TROOPS } from '../data/troops.js';
 import { SKILLS } from '../data/skills.js';
 import { STATUSES } from '../data/statuses.js';
 import { ITEMS } from '../data/items.js';
-
-const DIFFICULTY = [{ hp: 0.7, dmg: 0.65 }, { hp: 1, dmg: 1 }, { hp: 1.3, dmg: 1.25 }];
+import { DIFFICULTIES, DEFAULT_DIFFICULTY } from '../data/difficulty.js';
 
 export class BattleSystem {
   constructor({ state, troopId, random = false, rnd = Math.random }) {
@@ -42,8 +41,7 @@ export class BattleSystem {
     const def = ENEMIES[id];
     if (!def) { console.warn('Unknown enemy', id); return null; }
     const b = new Battler('enemy', { ...def, id }, index);
-    // Difficulty: 0 Story, 1 Normal, 2 Hard
-    const d = DIFFICULTY[this.state.settings.difficulty ?? 1] || DIFFICULTY[1];
+    const d = DIFFICULTIES[this.state.settings.difficulty ?? DEFAULT_DIFFICULTY] || DIFFICULTIES[DEFAULT_DIFFICULTY];
     b.maxHp = b.hp = Math.max(1, Math.round(b.maxHp * d.hp));
     b.base = { ...b.base, atk: b.base.atk * d.dmg, matk: b.base.matk * d.dmg };
     return b;
