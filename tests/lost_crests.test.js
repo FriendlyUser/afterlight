@@ -83,17 +83,20 @@ export async function run(game, h) {
     const f = game.scene;
     const side = [[-1, 0, 'right'], [1, 0, 'left'], [0, 1, 'up'], [0, -1, 'down']].find(([dx, dy]) => f.grid.walkable(sx + dx, sy + dy));
     if (!side) throw new Error(`${id}: no tile beside the crest-glass at ${sx},${sy}`);
+    // The first trial is lost (the battle reports a loss, so it can't be won by luck):
+    // healed, nothing learned, the glass waits.
+    const realBattle = f.startBattle;
     if (first) {
-      // A lost fight first: healed, nothing learned, the glass waits.
       for (const cid of ['wren', 'ilse', 'bram', 'sable']) st.characters[cid].hp = 1;
-      st.characters.ilse.hp = 0; st.characters.bram.hp = 0; st.characters.sable.hp = 0;
+      f.startBattle = async () => 'lose';
     }
     f.player.placeAt(sx + side[0], sy + side[1], f.grid);
     f.player.face(side[2]);
     f.interact();
     await h.idle();
     if (first) {
-      h.expect(!st.flags[`lost_${id}`] && st.activeMembers().every((c) => c.hp > 0), 'a lost trial heals the party and leaves the glass waiting');
+      f.startBattle = realBattle;
+      h.expect(!st.flags[`lost_${id}`] && st.activeMembers().every((c) => c.hp === c.stats().hp), 'a lost trial heals the party and leaves the glass waiting');
       for (const cid of ['wren', 'ilse', 'bram', 'sable']) st.characters[cid].fullHeal();
       f.interact();
       await h.idle();

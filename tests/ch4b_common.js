@@ -1,4 +1,7 @@
-// Shared setup for the Chapter 4b smoke tests: a party as ch4a hands it over.
+// Shared setup for the Chapter 4b smoke tests: a party as ch4a hands it over —
+// its gear, and Crest ranks, a secondary Crest and Supports for its level like a real
+// playthrough (tests/party_kit.js), so its boss fights aren't a coin toss.
+import { kitCharacter } from './party_kit.js';
 
 const GEAR = {
   wren: { weapon: 'starsteel_sword', body: 'starweave_coat', head: 'starweave_hood' },
@@ -18,6 +21,8 @@ export async function setupParty(game, h, level, flags = {}) {
     c.sealed = false;
     Object.assign(c.equipment, GEAR[id]);
     c.setLevel(level);
+    kitCharacter(c, level);
+    c.fullHeal();
   }
   st.gold = 20000;
   st.inventory.add('tuning_fork', 1);
