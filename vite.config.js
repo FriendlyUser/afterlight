@@ -4,7 +4,7 @@
 // unbundled source. This config only bundles and minifies it for release.
 import { defineConfig } from 'vite';
 import { fileURLToPath } from 'node:url';
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 
 const here = (p) => fileURLToPath(new URL(p, import.meta.url));
 
@@ -14,6 +14,23 @@ const fontLicenses = {
   generateBundle() {
     for (const name of readdirSync(here('./fonts/')).filter((f) => f.startsWith('OFL'))) {
       this.emitFile({ type: 'asset', fileName: `fonts/${name}`, source: readFileSync(here(`./fonts/${name}`)) });
+    }
+  },
+};
+
+/**
+ * Recorded voice lines are optional and fetched at run time (src/audio/VoiceLines.js),
+ * so the bundler never sees them: copy voice/manifest.json and the recordings as they are.
+ */
+const voicePack = {
+  name: 'afterlight-voice-pack',
+  generateBundle() {
+    const root = here('./voice/');
+    if (!existsSync(root)) return;
+    for (const entry of readdirSync(root, { recursive: true, withFileTypes: true })) {
+      if (!entry.isFile() || !/^manifest\.json$|\.(ogg|mp3|m4a|wav|opus|webm|flac)$/i.test(entry.name)) continue;
+      const file = `${entry.parentPath ?? entry.path}/${entry.name}`.replace(/\\/g, '/');
+      this.emitFile({ type: 'asset', fileName: `voice/${file.slice(file.lastIndexOf('/voice/') + 7)}`, source: readFileSync(file) });
     }
   },
 };
@@ -33,7 +50,7 @@ export default defineConfig({
       { find: /^three$/, replacement: here('./vendor/three/three.module.js') },
     ],
   },
-  plugins: [dropImportMap, fontLicenses],
+  plugins: [dropImportMap, fontLicenses, voicePack],
   build: {
     outDir: 'dist',
     target: 'es2022',

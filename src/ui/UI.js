@@ -3,6 +3,8 @@
 // so scripts can simply `await` them.
 
 import { getPortrait } from '../render/SpriteFactory.js';
+import { blipFor } from '../data/voices.js';
+import { keyCap } from '../core/Input.js';
 
 export function el(tag, cls, html) {
   const e = document.createElement(tag);
@@ -10,6 +12,13 @@ export function el(tag, cls, html) {
   if (html !== undefined) e.innerHTML = html;
   return e;
 }
+
+/** Timing tags inside a line: {wait=0.4} {speed=0.5} {shake=0.3} {sfx=bell}. */
+const CONTROL_TAG = /\{(wait|speed|spd|shake|sfx)(?:=([^}]*))?\}/g;
+const CUE = '\uE000'; // stands in for a tag while the text is marked up
+
+/** A line without its timing tags (history, menus). */
+export const plainText = (str) => String(str).replace(CONTROL_TAG, '');
 
 /** Escape and apply light markup: *gold*, _italic_, {red|text}. */
 export function richText(str) {
@@ -34,6 +43,8 @@ export class UI {
     };
     Object.values(this.layers).forEach((l) => root.appendChild(l));
     this.lookups = { look: () => null };
+    /** @type {Array<{ speaker: string | null, text: string, style?: string }>} the last lines shown (the backlog) */
+    this.history = [];
   }
 
   /** Apply user-facing display settings (text size). */
@@ -79,11 +90,22 @@ export class UI {
   // Dialogue
   // ---------------------------------------------------------------------
 
+  /**
+   * Show one line and resolve when the player moves on. opts: style, speed, portrait,
+   * auto (seconds), voice (a voice-line id: plays if the voice pack has it).
+   */
   dialogue(speaker, text, opts = {}) {
+    this.history.push({ speaker, text: plainText(text), style: opts.style });
+    if (this.history.length > HISTORY_LINES) this.history.splice(0, this.history.length - HISTORY_LINES);
     return new Promise((resolve) => {
       const w = new DialogueBox(this, speaker, text, opts, resolve);
       this.push(w, 'dialog');
     });
+  }
+
+  /** The backlog: the last lines of dialogue, scrollable. Resolves when closed. */
+  backlog() {
+    return new Promise((resolve) => this.push(new Backlog(this, resolve), 'top'));
   }
 
   choice(options, opts = {}) {
@@ -150,6 +172,10 @@ export class UI {
 // ---------------------------------------------------------------------------
 
 const CHARS_PER_SEC = 55;
+const HISTORY_LINES = 100;
+/** Auto-advance: how long a finished line stays up, by its length. */
+const autoDelay = (chars) => Math.min(4, Math.max(1.2, chars * 0.05));
+const SPOKEN = /[\p{L}\p{N}]/u; // characters that make a sound when typed
 
 class DialogueBox {
   constructor(ui, speaker, text, opts, resolve) {
@@ -170,22 +196,36 @@ class DialogueBox {
     this.hint = el('div', 'dlg-hint', '▼');
     this.el.appendChild(this.hint);
 
-    // Pre-render rich text, then reveal characters progressively.
-    this.textEl.innerHTML = richText(text);
+    // Lift the timing tags out, mark the text up, then reveal it character by character.
+    const tags = [];
+    const marked = String(text).replace(CONTROL_TAG, (_, kind, value) => { tags.push({ kind: kind === 'spd' ? 'speed' : kind, value }); return CUE; });
+    this.textEl.innerHTML = richText(marked);
     this.chars = [];
-    this.wrapChars(this.textEl);
+    this.cues = new Map(); // character index -> tags to run just before it appears
+    this.wrapChars(this.textEl, tags);
     this.shown = 0;
     this.acc = 0;
     this.done = false;
     this.pause = 0;
+    this.rate = 1; // {speed=…}
     this.blipT = 0;
+    this.idle = 0; // seconds since the line finished (auto-advance)
+    this.blip = blipFor(speaker, opts.style);
+    // A recorded line, when the voice pack has one: it replaces the typing blips.
+    this.voice = (opts.voice && ui.game.voiceLines?.play(opts.voice)) || null;
   }
 
-  wrapChars(node) {
+  wrapChars(node, tags) {
     for (const child of [...node.childNodes]) {
       if (child.nodeType === 3) {
         const frag = document.createDocumentFragment();
         for (const ch of child.textContent) {
+          if (ch === CUE) {
+            const at = this.chars.length;
+            if (!this.cues.has(at)) this.cues.set(at, []);
+            this.cues.get(at).push(tags.shift());
+            continue;
+          }
           const s = document.createElement('span');
           s.textContent = ch;
           s.className = 'ch';
@@ -194,18 +234,35 @@ class DialogueBox {
         }
         child.replaceWith(frag);
       } else {
-        this.wrapChars(child);
+        this.wrapChars(child, tags);
       }
     }
   }
 
+  /** Run the tags waiting at the next character; true if one of them paused the line. */
+  runCues() {
+    const cues = this.cues.get(this.shown);
+    if (!cues) return false;
+    this.cues.delete(this.shown);
+    const game = this.ui.game;
+    for (const { kind, value } of cues) {
+      if (kind === 'wait') this.pause = Number(value) || 0.4;
+      else if (kind === 'speed') this.rate = Number(value) || 1;
+      else if (kind === 'shake') game.scene?.shake?.(Number(value) || 0.2, 0.35);
+      else if (kind === 'sfx') this.ui.sfx(value);
+    }
+    return this.pause > 0;
+  }
+
   update(dt) {
-    if (this.done) return;
-    if (this.pause > 0) { this.pause -= dt * this.ui.game.speedFactor; return; }
-    const ts = this.ui.game.state?.settings?.textSpeed ?? 1;
+    const game = this.ui.game;
+    if (this.done) { this.autoAdvance(dt); return; }
+    if (this.pause > 0) { this.pause -= dt * game.speedFactor; return; }
+    const ts = game.state?.settings?.textSpeed ?? 1;
     if (ts >= 3) { this.finish(); return; }
-    this.acc += dt * this.ui.game.speedFactor * CHARS_PER_SEC * (this.opts.speed || 1) * [0.6, 1, 1.8][ts];
+    this.acc += dt * game.speedFactor * CHARS_PER_SEC * (this.opts.speed || 1) * this.rate * [0.6, 1, 1.8][ts];
     while (this.acc >= 1 && this.shown < this.chars.length) {
+      if (this.runCues()) { this.acc = 0; return; }
       this.acc -= 1;
       const c = this.chars[this.shown++];
       c.classList.add('on');
@@ -213,9 +270,12 @@ class DialogueBox {
       if ('.!?'.includes(t)) { this.pause = 0.18; this.acc = 0; break; }
       if (t === ',' || t === '—') { this.pause = 0.08; this.acc = 0; break; }
       this.blipT -= 1;
-      if (this.blipT <= 0 && t.trim()) { this.ui.sfx('blip'); this.blipT = 3; }
+      if (this.blipT <= 0 && SPOKEN.test(t) && !this.voice) { game.audio?.blip(this.blip, this.shown); this.blipT = this.blip.every || 3; }
     }
-    if (this.shown >= this.chars.length) this.finish();
+    if (this.shown >= this.chars.length) {
+      if (this.runCues()) return; // a tag at the very end, e.g. a closing {wait=1}
+      this.finish();
+    }
   }
 
   finish() {
@@ -225,9 +285,22 @@ class DialogueBox {
     if (this.opts.auto) setTimeout(() => this.close(), this.opts.auto * 1000);
   }
 
+  /**
+   * Settings → Auto-Advance: move on by itself once the line has been up long enough
+   * to read (and its recording, if any, has finished). Tips wait for a key.
+   */
+  autoAdvance(dt) {
+    const game = this.ui.game;
+    if (!game.state?.settings?.autoAdvance || this.opts.style === 'system' || this.ui.top() !== this) return;
+    if (this.voice && !this.voice.done) { this.idle = 0; return; }
+    this.idle += dt * game.speedFactor;
+    if (this.idle >= (this.voice ? 0.45 : autoDelay(this.chars.length))) this.close();
+  }
+
   close() {
     if (this.closed) return;
     this.closed = true;
+    this.voice?.stop();
     this.ui.remove(this);
     this.resolve();
   }
@@ -237,6 +310,36 @@ class DialogueBox {
       input.consumeAll();
       if (!this.done) this.finish();
       else { this.ui.sfx('confirm'); this.close(); }
+    } else if (input.pressed('up') && this.ui.history.length > 1) {
+      input.consumeAll();
+      this.ui.sfx('cursor');
+      this.ui.backlog();
+    }
+  }
+}
+
+/** The backlog: recent dialogue, newest at the bottom. Up / Down scroll; any button closes. */
+class Backlog {
+  constructor(ui, resolve) {
+    this.ui = ui;
+    this.resolve = resolve;
+    this.el = el('div', 'backlog');
+    const rows = ui.history.map((h) => `<div class="bl-row ${h.style || ''}">${h.speaker ? `<span class="bl-who">${h.speaker}</span>` : ''}<span class="bl-text">${richText(h.text)}</span></div>`).join('');
+    this.el.innerHTML = `<div class="panel bl-panel"><div class="bl-title">Backlog</div><div class="bl-list">${rows}</div><div class="bl-hint">${keyCap('up')}${keyCap('down')} Scroll · ${keyCap('cancel')} Close</div></div>`;
+    this.list = this.el.querySelector('.bl-list');
+  }
+
+  onPush() { this.list.scrollTop = this.list.scrollHeight; }
+
+  handleInput(input) {
+    const step = this.list.clientHeight * 0.3;
+    if (input.repeat('up')) this.list.scrollTop -= step;
+    if (input.repeat('down')) this.list.scrollTop += step;
+    if (input.pressed('cancel') || input.pressed('confirm') || input.pressed('menu')) {
+      input.consumeAll();
+      this.ui.sfx('cancel');
+      this.ui.remove(this);
+      this.resolve();
     }
   }
 }

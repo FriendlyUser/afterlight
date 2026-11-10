@@ -20,6 +20,67 @@ export type Dyn<T> = T | ((st: GameState) => T);
 export type StoryScripts = Record<string, Script>;
 
 /** A facing. Any string type-checks (generated layouts store plain strings); editors suggest the four. */
+// ---------------------------------------------------------------- dialogue lines
+
+/**
+ * A condition on a line: a function of the game state, or data — 'flag', '!flag',
+ * 'party:bram', 'item:tonic>=2', 'quest:c2_cat=done', 'var:c2_scare>=3', 'gold>=100',
+ * 'chapter>=3', 'level>=10', joined with & and |; or { all }, { any }, { not }.
+ * See src/script/Lines.js.
+ */
+export type LineCond = boolean | string | Cond | LineCond[] | { all: LineCond[] } | { any: LineCond[] } | { not: LineCond };
+
+/** How a line is shown. */
+export interface LineOpts {
+  style?: 'narration' | 'thought' | 'system' | (string & {});
+  /** Typing speed multiplier for this line. */
+  speed?: number;
+  portrait?: boolean;
+  /** Close by itself after this many seconds. */
+  auto?: number;
+  /** Voice id to play instead of the one derived from speaker + text. */
+  voice?: string;
+}
+
+/** Flags to set: 'flag', ['a', 'b'] or { flag: value }. */
+export type LineSet = string | string[] | Record<string, any>;
+
+/** One entry of a line script: a line, a conditional block, a branch, a choice… */
+export interface LineNode extends LineOpts {
+  /** The line (or lines) to say. */
+  text?: string | string[];
+  /** Narration, whoever is speaking around it. */
+  narrate?: string | string[];
+  /** Who says it (default: the speaker of the enclosing call or block). */
+  by?: string | null;
+  if?: LineCond;
+  unless?: LineCond;
+  /** A block of lines sharing this node's condition, speaker and options. */
+  lines?: LineSpec;
+  /** Branches: the first whose condition holds plays; one without a condition is the fallback. */
+  pick?: LineNode[];
+  /** A choice: the prompt (or true for none)… */
+  ask?: string | true;
+  /** …its options (those whose condition fails are hidden)… */
+  options?: LineOption[];
+  /** …and the key its picked index is returned under. */
+  id?: string;
+  set?: LineSet;
+  run?: Script;
+}
+
+export interface LineOption {
+  text: string;
+  if?: LineCond;
+  unless?: LineCond;
+  set?: LineSet;
+  run?: Script;
+  lines?: LineSpec;
+}
+
+/** What s.say / s.narrate / s.talk and an NPC's `talk` accept. Falsy entries are skipped. */
+export type LineSpec = string | number | boolean | null | undefined | LineNode | LineSpec[];
+
 export type Dir = 'up' | 'down' | 'left' | 'right' | (string & {});
 
 // ---------------------------------------------------------------- maps
@@ -32,8 +93,8 @@ export interface NpcDef {
   x: number;
   y: number;
   dir?: Dir;
-  /** Lines to say, or a script; `run` takes over the whole interaction. */
-  talk?: string | string[] | Script;
+  /** Lines to say (the line language: conditions, branches, `by`), or a script; `run` takes over the whole interaction. */
+  talk?: LineSpec | Script;
   run?: Script;
   cond?: Cond;
   /** Interaction hint shown over them ("Shop"). */

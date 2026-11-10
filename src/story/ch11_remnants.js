@@ -500,8 +500,10 @@ export const REM = {
     await s.say('Bram', '...Yes.');
     await s.say('Wren', 'Bram—');
     await s.say('Bram', 'If I don\'t, he\'s right about me. Forever. And I am so tired of forever, Wren.');
-    if (s.flag('c11_rite_bram_done')) await s.say('Garrick', 'That blade. That\'s Venn\'s. Where did you—');
-    if (s.flag('c11_rite_bram_done')) await s.say('Bram', 'Where we buried him.');
+    await s.talk({ if: 'c11_rite_bram_done', lines: [
+      'Garrick: That blade. That\'s Venn\'s. Where did you—',
+      'Bram: Where we buried him.',
+    ] });
     unstage(s);
     s.spawn('p_wren_watch', s.state.characters.wren.lookId, 8, 12, 'up');
     const saved = [...s.state.party];
@@ -540,12 +542,15 @@ export const REM = {
     s.shake(0.3, 1.0);
     await s.say('Corvin', 'The tower\'s coming down! Everybody out — that includes you, Lord-Commander.');
     await s.say('Garrick', 'I\'ll walk. I\'ll not be carried out of my own Lantern by a squire.');
-    await s.say('Bram', s.flag('c11_rite_bram_done') ? 'Knight. Sir Bram Kestrel.' : 'Then walk.');
-    if (s.flag('c11_rite_bram_done')) {
-      await s.say('Garrick', 'Hm. And who dubbed you?');
-      await s.say('Bram', 'A deserter.');
-      await s.say('Garrick', '...Ha. Of course he did.');
-    }
+    await s.talk({ pick: [
+      { if: 'c11_rite_bram_done', lines: [
+        'Bram: Knight. Sir Bram Kestrel.',
+        'Garrick: Hm. And who dubbed you?',
+        'Bram: A deserter.',
+        'Garrick: ...Ha. Of course he did.',
+      ] },
+      { text: 'Bram: Then walk.' },
+    ] });
     s.journal('The Grand Lantern. Bram fought Garrick alone. He went down twice and got up twice. He didn\'t kill him. Garrick gave us the Shard and walked out on his own. Bram\'s hands didn\'t stop shaking for an hour. He says that\'s the trick.');
     s.objective(mainObjective(s));
     await s.fadeOut(1.0);

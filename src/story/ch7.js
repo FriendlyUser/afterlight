@@ -243,7 +243,7 @@ export const CH7 = {
   async wallOfNames(s) {
     await s.narrate('Names, chalked on the old bell-casting wall. Dozens. Some neat, some shaking. The newest three have no dates: DORAN. MAGS. LITTLE COBB.');
     if (s.flag('c7_tags_returned')) return s.narrate('Three tin tags hang on a nail beneath the newest names. Someone has polished them.');
-    if (ILSE_IN(s)) await s.say('Ilse', 'I write them. Every one. My handwriting\'s getting worse.');
+    await s.say('Ilse', { if: 'party:ilse', text: 'I write them. Every one. My handwriting\'s getting worse.' });
     return null;
   },
 
@@ -375,10 +375,10 @@ export const CH7 = {
       await s.wait(0.4);
       s.shake(0.35, 1.4);
       await s.narrate('Far off, in the Nave, iron grinds against stone — and the sluice gate rises.');
-      if (ILSE_IN(s)) await s.say('Ilse', 'That\'s both. The gate north of the Nave should be open now.');
+      await s.say('Ilse', { if: 'party:ilse', text: 'That\'s both. The gate north of the Nave should be open now.' });
       s.objective('The Nave gate is open. Go north through the Nave.');
     } else {
-      if (ILSE_IN(s)) await s.say('Ilse', 'One. The plate said both wheels. The other one must be across the Nave.');
+      await s.say('Ilse', { if: 'party:ilse', text: 'One. The plate said both wheels. The other one must be across the Nave.' });
       s.objective('Turn the second sluice wheel to raise the Nave gate.');
     }
   },
@@ -386,7 +386,7 @@ export const CH7 = {
   async gateCheck(s) {
     if (s.flag('c7_gate_open')) return;
     await s.narrate('An iron sluice gate bars the way north. Two chains run from it into the walls — west and east.');
-    if (ILSE_IN(s)) await s.say('Ilse', 'Sluice gates have wheels. Find the wheels.');
+    await s.say('Ilse', { if: 'party:ilse', text: 'Sluice gates have wheels. Find the wheels.' });
   },
 
   async secretWall(s) {
@@ -654,7 +654,7 @@ export const CH7 = {
     await s.say('Old Aurel', 'Lovely, isn\'t it? I read it to the Hierophant once, when he was a boy. He cried. I thought it was the poetry.');
     await s.wait(0.8);
     await s.think('Wren', 'A breath held forever is a drowning. He knew. He read it as a boy and he knew.');
-    if (ILSE_IN(s)) await s.say('Ilse', '_(quietly)_ Wren. Breathe.');
+    await s.say('Ilse', { if: 'party:ilse', text: '_(quietly)_ Wren. Breathe.' });
     await s.say('Old Aurel', 'Take this, reader. An archivist\'s workbook. Knowledge is for spending.');
     await s.give('crest_tome');
     s.quest('c7_q_aurel', null, null, 'done');
@@ -815,7 +815,7 @@ export const CH7 = {
       await s.say('Sorrel', 'Doran. Mags. Little Cobb.');
       await s.wait(1.0);
       await s.say('Sorrel', 'I bricked up that gate so nobody else would go. And now I\'ve got their tags in my hand, and it doesn\'t feel like I did anything right.');
-      if (ILSE_IN(s)) await s.say('Ilse', 'You did. You kept forty people from following them. That\'s the job, Sorrel. It never feels like anything.');
+      await s.say('Ilse', { if: 'party:ilse', text: 'You did. You kept forty people from following them. That\'s the job, Sorrel. It never feels like anything.' });
       await s.say('Sorrel', 'I\'ll hang them on the Ward wall. Under their names. Here — Mags would\'ve wanted somebody strong to have this.');
       await s.give('guard_fruit', 2);
       s.quest('c7_q_tags', null, null, 'done');
@@ -847,7 +847,7 @@ export const CH7 = {
     await s.narrate('Something uncoils in the shallows of the Reliquary — scaled, rust-red, its belly swollen around a shape that is unmistakably a bell.');
     await s.narrate('It breathes in. Deep inside it, something tolls.');
     await s.follow(0.5);
-    if (ILSE_IN(s)) await s.say('Ilse', 'It swallowed a bell. It _swallowed a bell_. How is it alive?');
+    await s.say('Ilse', { if: 'party:ilse', text: 'It swallowed a bell. It _swallowed a bell_. How is it alive?' });
     await s.say('Wren', 'Spite, mostly. I can relate.');
     const r = await s.battle('c7_boss_clapper', { bg: 'undercroft' });
     if (r !== 'win') return;

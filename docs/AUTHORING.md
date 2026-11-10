@@ -244,6 +244,52 @@ Markup in text: `*gold highlight*`, `_italic_`, `{red|colored}` (red/blue/green/
 Portraits appear automatically for main-cast names and LOOKS ids matching the
 speaker's first name in lowercase.
 
+**Conditional lines (the line language, `src/script/Lines.js`).** Wherever lines go —
+`s.say`, `s.narrate`, `s.think`, `s.talk`, an NPC's `talk` — an entry can be data
+instead of a string, so a scene needs no `if` around every line:
+
+```js
+await s.say('Garrick', [
+  'You came.',
+  { if: 'party:bram', text: 'And you brought him.' },          // only if it holds
+  { unless: 'c3_forks', by: 'Ilse', text: 'He stayed behind.' }, // someone else cuts in
+  { if: 'item:tonic>=2 & !c2_cat_done', lines: ['…', '…'] },     // a conditional block
+  { pick: [                                                      // first branch that holds;
+    { if: 'var:c2_scare>=3', text: 'Three down.' },             // one without a condition
+    { text: 'They are still out there.' },                      // is the fallback
+  ] },
+  cond && 'A JS condition works too: falsy entries are skipped.',
+]);
+```
+
+- **Conditions** (`if` / `unless`): `'flag'`, `'!flag'`, `'flag=2'`, `'party:bram'`,
+  `'item:tonic'`, `'item:tonic>=2'`, `'quest:c2_cat'` (known), `'quest:c2_cat=done'`,
+  `'var:c2_scare>=3'`, `'gold>=100'`, `'chapter>=3'`, `'level>=10'` (average active
+  level), joined with `&` and `|` (`&` binds tighter, no parentheses). A flag whose name
+  has a colon is `'flag:chest:map:id'`. For anything else: `{ all: […] }`,
+  `{ any: […] }`, `{ not: … }`, or a function `(st) => bool`. A condition the reader
+  cannot parse throws, so a typo fails loudly. `s.test(cond)` checks one in script code.
+- **`s.talk([...])`** is a conversation as data: each string names its speaker,
+  `'Ilse: You\'re late.'`; a bare string is narration; `'Wren (thought): …'` is a thought.
+  Use `{ by: 'Name', text }` when a line itself begins with `Word: `.
+- **Choices and effects inside lines:** `{ ask: 'Stay?', id: 'stay', options: [{ text:
+  'Stay.', set: 'c12_stayed', lines: […] }, { text: 'Wake up.', if: '!locked' }] }` (options
+  whose condition fails are hidden; `say`/`talk` resolve to `{ stay: pickedIndex }`),
+  `{ set: 'flag' }`, `{ run: async (s) => { … } }`.
+- **Text tokens** keep a line's text fixed whatever the values (unlike a `${}` template
+  string): `{gold}`, `{var:name}`, `{item:id}` (count carried), `{name:charId}`.
+- **Timing tags** inside a line: `{wait=0.4}` (seconds), `{speed=0.5}` (multiplier from
+  there on), `{shake=0.3}`, `{sfx=bell}`. They never show, and a player who skips the
+  typing skips them.
+- Lines are type-checked (`LineSpec` in `src/types/data.d.ts`): a misspelled key is an error.
+
+**Voices.** Speakers type in their own blip voice (`src/data/voices.js`: add a named
+profile for anyone important; everyone else gets a steady one from their name). Every
+line also has a stable voice id, and a recording listed in `voice/manifest.json` plays
+instead of the blips — see `voice/README.md`. To keep ids stable, prefer text tokens to
+template strings, and give a line an explicit id (`{ text, voice: 'wren/oath' }`) if its
+recording must survive rewording.
+
 Actors: `s.spawn(id, look, x, y, dir, opts)` (look = LOOKS id or object),
 `s.remove(id)`, `s.show(id, bool)`, `s.refreshNpcs()` (NPC `cond`s are also re-checked
 automatically after every scene ends), `await s.move(id, [[x,y],...], speed)`,

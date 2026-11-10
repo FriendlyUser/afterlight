@@ -11,7 +11,7 @@ import { LINKS } from '../data/links.js';
 import { PASSIVES } from '../data/passives.js';
 import { ITEMS } from '../data/items.js';
 import { getPortrait } from '../render/SpriteFactory.js';
-import { AFTERGLOW_MAX } from './Actions.js';
+import { AFTERGLOW_MAX, turnShifts } from './Actions.js';
 
 export const ELEM_ICONS = {
   slash: ['⚔', '#e8e0d0'], pierce: ['➶', '#e8e0d0'], blunt: ['⚒', '#e8e0d0'],
@@ -120,15 +120,42 @@ export class BattleUI {
 
   // ------------------------------------------------------------------ timeline
 
-  refreshTimeline(order, current) {
+  /**
+   * The turn order: who is acting now, then the turns that follow. While a command
+   * is being chosen, `action` previews it: the actor's next turn is marked where
+   * that command would put it (quick Arts sooner, heavy ones later), and `shift`
+   * (Actions.turnShifts) shows foes pushed back or an ally pulled forward.
+   * @param {import('./Battler.js').Battler | null} current
+   * @param {object | null} [action]
+   * @param {Map<import('./Battler.js').Battler, number> | null} [shift]
+   */
+  refreshTimeline(current, action = null, shift = null) {
+    const sys = this.scene.sys;
+    const SHOWN = 7;
+    const order = sys.forecast(current ? SHOWN + 8 : SHOWN + 1, current, current ? sys.actionDelay(current, action) : 1, shift);
+    const key = `${current?.index}${current?.side}|${action?.kind}:${action?.id}|${order.map((b) => `${b.side}${b.index}`).join(',')}|${shift ? [...shift.keys()].map((b) => b.index).join('.') : ''}`;
+    if (key === this.timelineKey) return; // nothing moved: keep the DOM (and its transitions)
+    this.timelineKey = key;
     this.timeline.innerHTML = '';
-    const list = current ? [current, ...order.filter((_, i) => i < 7)] : order.slice(0, 8);
-    list.forEach((b, i) => {
-      const d = el('div', `tl-item ${b.isParty ? 'ally' : 'foe'} ${i === 0 && current ? 'now' : ''}`);
+    const chip = (b, cls) => {
+      const d = el('div', `tl-item ${b.isParty ? 'ally' : 'foe'} ${cls}`);
       if (b.isParty) d.appendChild(getPortrait(b.ch.look, 1));
       else d.appendChild(el('span', 'tl-foe', `${b.name[0]}${this.scene.enemyLetter(b)}`));
       this.timeline.appendChild(d);
+    };
+    if (current) chip(current, 'now');
+    const nextAt = action && current ? order.indexOf(current) : -1; // where this command lands the actor
+    const seen = new Set();
+    order.slice(0, current ? SHOWN : SHOWN + 1).forEach((b, i) => {
+      const moved = shift?.has(b) && !seen.has(b) ? (shift.get(b) > 0 ? 'pushed' : 'pulled') : '';
+      seen.add(b);
+      chip(b, `${i === nextAt ? 'next' : ''} ${moved}`);
     });
+    if (nextAt >= SHOWN) {
+      // The actor's next turn is further off than the bar shows.
+      this.timeline.appendChild(el('div', 'tl-gap', '···'));
+      chip(current, 'next');
+    }
   }
 
   // ------------------------------------------------------------------ enemy tags
@@ -393,6 +420,15 @@ class CommandMenu {
     if (cur?.desc) html += `<div class="cmd-desc">${richText(cur.desc)}${cur.detail || ''}</div>`;
     html += `<div class="cmd-surge ${surgeOk ? '' : 'off'}">${keyCap('pageLeft')}${keyCap('pageRight')} Surge ${'◆'.repeat(this.surge)}${'◇'.repeat(Math.max(0, 3 - this.surge))}</div>`;
     this.el.innerHTML = html;
+    this.bui.refreshTimeline(this.actor, this.entryAction(cur));
+  }
+
+  /** The action a menu entry stands for (for the turn-order preview), or null for a sub-menu. */
+  entryAction(e) {
+    if (!e || e.disabled) return null;
+    if (e.kind === 'skill' || e.kind === 'item' || e.kind === 'link') return { kind: e.kind, id: e.id };
+    if (e.kind === 'swap' || e.kind === 'swapTo') return { kind: 'swap' };
+    return null;
   }
 
   // ---------------------------------------------------------------- input
@@ -457,22 +493,22 @@ class CommandMenu {
         return;
       case 'skill':
         if (e.id === 'guard') { this.finish({ kind: 'skill', id: 'guard', targets: [this.actor] }); return; }
-        this.selectTarget(SKILLS[e.id].target, (targets) => this.finish({ kind: 'skill', id: e.id, targets, surge: this.surge }));
+        this.selectTarget(SKILLS[e.id].target, (targets) => this.finish({ kind: 'skill', id: e.id, targets, surge: this.surge }), this.entryAction(e));
         return;
       case 'item':
-        this.selectTarget(ITEMS[e.id].use.target, (targets) => this.finish({ kind: 'item', id: e.id, targets }));
+        this.selectTarget(ITEMS[e.id].use.target, (targets) => this.finish({ kind: 'item', id: e.id, targets }), this.entryAction(e));
         return;
       case 'link': {
         const partners = this.sys.party.filter((p) => e.link.members.includes(p.id) && p !== this.actor);
-        this.selectTarget(SKILLS[e.id].target, (targets) => this.finish({ kind: 'link', id: e.id, targets, cost: e.link.cost, partners }));
+        this.selectTarget(SKILLS[e.id].target, (targets) => this.finish({ kind: 'link', id: e.id, targets, cost: e.link.cost, partners }), this.entryAction(e));
         return;
       }
       default:
     }
   }
 
-  selectTarget(targetType, done) {
-    const sel = new TargetSelector(this, targetType, done);
+  selectTarget(targetType, done, action = null) {
+    const sel = new TargetSelector(this, targetType, done, action);
     this.ui.push(sel, 'menus');
   }
 
@@ -487,12 +523,13 @@ class CommandMenu {
 }
 
 class TargetSelector {
-  constructor(menu, type, done) {
+  constructor(menu, type, done, action = null) {
     this.menu = menu;
     this.scene = menu.scene;
     this.sys = menu.sys;
     this.type = type;
     this.done = done;
+    this.action = action; // what is being aimed (for the turn-order preview)
     this.el = el('div', 'b-target');
     const actor = menu.actor;
     const foes = this.sys.enemies.filter((e) => e.alive && !e.hasStatus('airborne'));
@@ -527,6 +564,10 @@ class TargetSelector {
     if (!t) return;
     const label = this.group ? (this.type === 'allies' ? 'All allies' : 'All foes') : t.name;
     this.el.innerHTML = `<div class="tgt-name">${label}</div>`;
+    if (this.action) {
+      const skill = this.action.kind === 'item' ? null : SKILLS[this.action.id];
+      this.menu.bui.refreshTimeline(this.menu.actor, this.action, turnShifts(this.sys, this.menu.actor, skill, this.current()));
+    }
   }
 
   handleInput(input) {

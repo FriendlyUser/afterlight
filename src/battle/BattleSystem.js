@@ -92,8 +92,21 @@ export class BattleSystem {
   }
 
   /** Predicted upcoming turns (for the timeline UI). */
-  previewOrder(count = 8) {
-    const sim = this.living.map((b) => ({ b, av: b.av }));
+  previewOrder(count = 8) { return this.forecast(count); }
+
+  /**
+   * The turns to come. With `actor`, the turns after the one `actor` is taking now,
+   * supposing it costs `delay` (see actionDelay) — what the timeline shows while a
+   * command is being chosen. `shift` adds Action Value to others first: a foe pushed
+   * back by Stasis (+), an ally Quickened to act at once (-Infinity).
+   * @param {number} [count]
+   * @param {import('./Battler.js').Battler | null} [actor]
+   * @param {number} [delay]
+   * @param {Map<import('./Battler.js').Battler, number> | null} [shift]
+   * @returns {import('./Battler.js').Battler[]}
+   */
+  forecast(count = 8, actor = null, delay = 1, shift = null) {
+    const sim = this.living.map((b) => ({ b, av: b === actor ? b.baseAV() * delay : Math.max(0, b.av + (shift?.get(b) || 0)) }));
     const out = [];
     if (!sim.length) return out;
     for (let i = 0; i < count; i++) {
@@ -105,6 +118,26 @@ export class BattleSystem {
       n.av = n.b.baseAV();
     }
     return out;
+  }
+
+  /**
+   * How long until `actor` acts again after `action`, as a multiple of its base wait:
+   * quick Arts < 1 < heavy Arts; Guard 0.6, items 0.85, a swap 0.5.
+   */
+  actionDelay(actor, action) {
+    let delay = 1;
+    if (action) {
+      if (action.kind === 'skill' || action.kind === 'link') delay = SKILLS[action.id]?.delay ?? 1;
+      if (action.kind === 'item') delay = actor.flags?.has('quickItems') ? 0.5 : 0.85;
+      if (action.kind === 'skill' && actor.flags?.has('quickCast')) {
+        const k = SKILLS[action.id]?.kind;
+        if (k === 'mag' || k === 'heal') delay *= 0.8;
+      }
+      if (action.id === 'guard') delay = 0.6;
+      if (action.kind === 'swap') delay = 0.5;
+    }
+    if (actor.hasStatus('airborne')) delay = 0.9;
+    return delay;
   }
 
   // ------------------------------------------------------------------ turns
@@ -215,19 +248,7 @@ export class BattleSystem {
   queueText(text) { this.textQueue.push(text); }
 
   endTurn(actor, action) {
-    let delay = 1;
-    if (action) {
-      if (action.kind === 'skill' || action.kind === 'link') delay = SKILLS[action.id]?.delay ?? 1;
-      if (action.kind === 'item') delay = actor.flags?.has('quickItems') ? 0.5 : 0.85;
-      if (action.kind === 'skill' && actor.flags?.has('quickCast')) {
-        const k = SKILLS[action.id]?.kind;
-        if (k === 'mag' || k === 'heal') delay *= 0.8;
-      }
-      if (action.id === 'guard') delay = 0.6;
-      if (action.kind === 'swap') delay = 0.5;
-    }
-    if (actor.hasStatus('airborne')) delay = 0.9;
-    actor.av = actor.baseAV() * delay;
+    actor.av = actor.baseAV() * this.actionDelay(actor, action);
     const expired = actor.tickDurations();
     actor.acting = false;
     return expired.filter((id) => STATUSES[id]).map((id) => ({ t: 'status', target: actor, id, on: false }));

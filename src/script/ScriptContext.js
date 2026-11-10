@@ -6,6 +6,7 @@ import { routeAround } from '../world/CutscenePath.js';
 import { CHAPTERS } from '../story/chapters.js';
 import { LOOKS } from '../data/looks.js';
 import { playFishing } from '../ui/Fishing.js';
+import { playLines, testCond } from './Lines.js';
 
 export class ScriptContext {
   constructor(game, field) {
@@ -18,19 +19,48 @@ export class ScriptContext {
 
   // ------------------------------------------------------------------ dialogue
 
-  /** say('Wren', 'Hello') or say('Wren', ['line 1', 'line 2']) */
-  async say(speaker, lines, opts = {}) {
-    const list = Array.isArray(lines) ? lines : [lines];
-    for (const line of list) await this.ui.dialogue(this.name(speaker), this.fill(line), opts);
-  }
+  /**
+   * say('Wren', 'Hello') or say('Wren', ['line 1', 'line 2']). Lines can be
+   * conditional and branch — the line language is described in script/Lines.js:
+   *   say('Garrick', ['You came.', { if: 'party:bram', text: 'And you brought him.' }])
+   * @param {string | null} speaker
+   * @param {import('../types/data').LineSpec} lines
+   * @param {import('../types/data').LineOpts} [opts]
+   */
+  say(speaker, lines, opts = {}) { return playLines(this, lines, { by: speaker, opts }); }
 
-  /** Narration without a speaker. */
-  async narrate(lines, opts = {}) {
-    const list = Array.isArray(lines) ? lines : [lines];
-    for (const line of list) await this.ui.dialogue(null, this.fill(line), { style: 'narration', portrait: false, ...opts });
-  }
+  /**
+   * Narration without a speaker.
+   * @param {import('../types/data').LineSpec} lines
+   * @param {import('../types/data').LineOpts} [opts]
+   */
+  narrate(lines, opts = {}) { return playLines(this, lines, { by: null, opts: { style: 'narration', portrait: false, ...opts } }); }
 
-  async think(speaker, lines) { return this.say(speaker, lines, { style: 'thought' }); }
+  /**
+   * @param {string | null} speaker
+   * @param {import('../types/data').LineSpec} lines
+   */
+  think(speaker, lines) { return this.say(speaker, lines, { style: 'thought' }); }
+
+  /**
+   * A conversation as data: each string names its speaker ('Ilse: You\'re late.'; a
+   * bare string is narration), with the same conditions, branches and choices as say().
+   * Resolves to the option picked for every `ask` that has an id.
+   *   const { stay } = await s.talk([
+   *     'Ysolde: Wren? You\'ve gone pale.',
+   *     { if: 'party:ilse', text: 'Ilse: She does that.' },
+   *     { ask: 'Stay?', id: 'stay', options: [{ text: 'Stay.' }, { text: 'Wake up.' }] },
+   *   ]);
+   * @param {import('../types/data').LineSpec} spec
+   * @param {import('../types/data').LineOpts} [opts]
+   */
+  talk(spec, opts = {}) { return playLines(this, spec, { by: null, talk: true, opts }); }
+
+  /**
+   * Does a line condition hold right now? test('party:bram & item:tonic>=2')
+   * @param {import('../types/data').LineCond} cond
+   */
+  test(cond) { return testCond(cond, this.state); }
 
   async system(text) { return this.ui.dialogue(null, this.fill(text), { style: 'system', portrait: false }); }
 
@@ -48,9 +78,18 @@ export class ScriptContext {
     return ch ? ch.name : speaker;
   }
 
-  /** Template substitutions like {gold}. */
+  /**
+   * Template substitutions: {gold}, {var:name} (a story variable), {item:id} (how many
+   * are carried), {name:id} (a character's name). Unlike a JS template string these
+   * keep a line's text — and so its voice id — the same whatever the values are.
+   */
   fill(text) {
-    return String(text).replace(/\{gold\}/g, () => this.state.gold);
+    const st = this.state;
+    return String(text)
+      .replace(/\{gold\}/g, () => String(st.gold))
+      .replace(/\{var:([\w.-]+)\}/g, (_, k) => String(st.vars[k] ?? 0))
+      .replace(/\{item:([\w.-]+)\}/g, (_, k) => String(st.inventory.count(k)))
+      .replace(/\{name:(\w+)\}/g, (_, k) => st.characters[k]?.name ?? k);
   }
 
   // ------------------------------------------------------------------ timing / fx

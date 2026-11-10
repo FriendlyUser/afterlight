@@ -53,6 +53,7 @@ or import one.
 | Cancel · back | <kbd>X</kbd> <kbd>Backspace</kbd> <kbd>Esc</kbd> | <kbd>B</kbd> |
 | Open the menu | <kbd>C</kbd> <kbd>Tab</kbd> <kbd>Esc</kbd> | <kbd>Y</kbd> / <kbd>Start</kbd> |
 | Switch leader (field) · Surge (battle) | <kbd>Q</kbd> / <kbd>E</kbd> | <kbd>LB</kbd> / <kbd>RB</kbd> |
+| Backlog: reread the last 100 lines (during dialogue) | <kbd>↑</kbd> | D-pad up |
 | Auto-battle (battle) · Optimize (Equipment) · Export / Import (save slots) | <kbd>F</kbd> | <kbd>Back</kbd> |
 | Fast Mode on / off (2–4×, set in Settings) | <kbd>T</kbd> | Left-stick click |
 
@@ -61,8 +62,9 @@ keys per action; <kbd>Esc</kbd> always cancels and opens the menu). Your binding
 saved with your game and travel with exported save files.
 
 New Game asks for a difficulty (Story / Normal / Hard) before the opening movie; you can
-change it any time in Settings, along with text size and speed, encounter rate, battle
-speed, Fast Mode speed, the minimap, the Quest Guide, and reduced flashes & screen shake.
+change it any time in Settings, along with text size and speed, auto-advancing text,
+encounter rate, battle speed, Fast Mode speed, the minimap, the Quest Guide, and reduced
+flashes & screen shake.
 
 ## Features
 
@@ -71,10 +73,19 @@ post-game descent through the 30-floor Gloam Abyss. A 75-second opening movie, c
 own theme, introduces the cast and the world (it plays after New Game, or if the title
 screen is left idle; any key skips it).
 
-**Battle** — a turn-order timeline, Poise & Break, and the shared Afterglow gauge for
-Surge and duo/trio Link Arts. Bosses telegraph their big attacks: Guard against them,
-or Break the boss while it winds up to interrupt them. Swap party members mid-fight,
-or hand it to auto-battle — and turn on Fast Mode to fly through fights and cutscenes.
+**Battle** — a turn-order timeline that previews where each command would put your
+next turn, Poise & Break, and the shared Afterglow gauge for Surge and duo/trio Link
+Arts. Hits land with weight: a chime and a held frame for a struck weakness, a crack
+for a critical, a thud for a resisted blow. Bosses telegraph their big attacks: Guard
+against them, or Break the boss while it winds up to interrupt them. Swap party
+members mid-fight, or hand it to auto-battle — and turn on Fast Mode to fly through
+fights and cutscenes. If the party falls: try again, load the last save, or the title.
+
+**Dialogue** — every speaker has their own typing voice, a backlog keeps the last
+hundred lines, and Auto-Advance lets scenes play themselves. Scenes are written in a
+small line language with conditional lines and branches, so characters react to who is
+in the party and what you have done. Recorded voice lines are optional: drop files into
+[`voice/`](voice/README.md) and they play in place of the typing blips.
 
 **Class customization** — 28 Crests (8 callings, 10 braided, 6 legendary, 4 lost) × 10 ranks,
 a primary and a secondary Crest per character, Supports on a point budget, and 300+ Arts.
@@ -165,6 +176,8 @@ Add these to the URL to jump straight into the game:
 | `tools/shot.sh "<url>" out.png 9000` | Screenshot (page + UI) |
 | `tools/frame.sh "map=…&battle=…" out.jpg` | The rendered 3D frame (use for battles) |
 | `tools/frame.sh "opening=<shot>&wait=<sec>" out.jpg` | A frame of the opening movie |
+| `python3 tools/voice.py export` | List every line of dialogue with its voice id (`voice/lines.csv`) |
+| `python3 tools/voice.py manifest` | Register the recordings found in `voice/` |
 
 The runners drive Windows Chrome from WSL. More in [`docs/PROGRESS.md`](docs/PROGRESS.md).
 </details>
@@ -178,12 +191,14 @@ The runners drive Windows Chrome from WSL. More in [`docs/PROGRESS.md`](docs/PRO
 | `src/world` | Field scene, maps, actors, followers, minimap, world map |
 | `src/battle` | Battle rules, enemy AI, auto-play, presentation |
 | `src/ui` | Menus and HUD |
-| `src/audio` | Synthesizer, songs and sound effects |
+| `src/audio` | Synthesizer, songs, sound effects, the optional voice-line player |
 | `src/state` | Characters, inventory, save data |
 | `src/data` | Game data and the chapter content packs |
+| `src/script` | The script API for scenes and the dialogue line language |
 | `src/story` | Scripted scenes for every chapter |
-| `tools/`, `tests/` | Map painter, test runners, headless tests |
-| `docs/` | [Story bible](docs/STORY.md), [authoring guide](docs/AUTHORING.md), [progress](docs/PROGRESS.md) |
+| `voice/` | Optional recorded dialogue (empty by default; see its [README](voice/README.md)) |
+| `tools/`, `tests/` | Map painter, voice-line lister, test runners, headless tests |
+| `docs/` | [Story bible](docs/STORY.md), [authoring guide](docs/AUTHORING.md), [progress](docs/PROGRESS.md), [polish brief](docs/OVERHAUL_PROMPT.md) |
 
 ## Credits
 

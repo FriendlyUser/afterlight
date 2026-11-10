@@ -16,6 +16,7 @@ export class Game {
     this.scene = null;
     this.tasks = new Set(); // per-frame updaters: fn(dt) -> true when done
     this.timeScale = 1;
+    this.freeze = 0; // seconds of hit-stop left (see hitStop)
     // Wired up by main.js (and the test harness):
     this.autoConfirm = false; // headless tests: dialogue advances itself
     /** @type {import('../ui/Menus.js').MenuSystem | null} */
@@ -24,8 +25,14 @@ export class Game {
     this.returnToTitle = null;
     /** @type {(() => void | Promise<void>) | null} */
     this.onGameOver = null;
+    /** @type {((slot: number | string) => Promise<void>) | null} */
+    this.loadSave = null;
+    /** @type {'load' | null} what the player chose on the defeat screen, for onGameOver */
+    this.defeatChoice = null;
     /** @type {((msg: string) => void) | null} battle tracing for ?debug runs */
     this.debugTrace = null;
+    /** @type {import('../audio/VoiceLines.js').VoiceLines | null} recorded dialogue, if installed */
+    this.voiceLines = null;
     const params = new URLSearchParams(location.search);
     this.debug = params.has('debug');
     this.maxDt = Number(params.get('dtmax')) || 0.05; // raised only for headless testing
@@ -41,7 +48,7 @@ export class Game {
   /** Apply the player's settings to every subsystem (audio, text, comfort options). */
   applySettings(settings = this.state.settings) {
     this.input.setBindings(settings.keys);
-    this.audio?.setVolumes(settings.musicVolume, settings.sfxVolume);
+    this.audio?.setVolumes(settings.musicVolume, settings.sfxVolume, settings.voiceVolume ?? 0.8);
     this.ui?.applySettings(settings);
     const reduced = !!settings.reduceEffects;
     this.renderer.flashScale = reduced ? 0.25 : 1;
@@ -101,8 +108,15 @@ export class Game {
     this.ui?.toast(s.fastMode ? `Fast Mode ×${s.fastSpeed || 3}` : 'Fast Mode off', 1200);
   }
 
+  /**
+   * Hit-stop: hold the world still for a few frames (a heavy blow landing). Game
+   * time, tweens and scenes pause; input, the UI and sound carry on.
+   */
+  hitStop(seconds) { this.freeze = Math.max(this.freeze, seconds); }
+
   tick(rawDt) {
-    const dt = rawDt * this.timeScale * this.speedFactor;
+    let dt = rawDt * this.timeScale * this.speedFactor;
+    if (this.freeze > 0) { this.freeze -= rawDt; dt = 0; }
     this.time += dt;
     this.input.update(rawDt);
     if (this.input.pressed('fast') && this.state) { this.input.consume('fast'); this.toggleFastMode(); }

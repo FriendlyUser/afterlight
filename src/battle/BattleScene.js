@@ -19,8 +19,10 @@ import { STATUSES } from '../data/statuses.js';
 import { TROOPS } from '../data/troops.js';
 import { BATTLE_BACKGROUNDS } from './Backgrounds.js';
 import { el } from '../ui/UI.js';
+import { SaveStore } from '../state/GameState.js';
 
 const LETTERS = 'ABCDEFG';
+const FOV = 33;
 
 export class BattleScene {
   constructor(game) {
@@ -28,6 +30,7 @@ export class BattleScene {
     this.sprites = new Map();
     this.time = 0;
     this.shakeAmt = 0;
+    this.punch = 0; // camera punch-in on heavy hits: eases back to 0
     this.tempLights = [];
   }
 
@@ -55,7 +58,7 @@ export class BattleScene {
     this.particles.setAmbient(bg.particles ?? this.env.mood.particles);
     this.particles.area = { w: 20, d: 10 };
 
-    this.camera = new THREE.PerspectiveCamera(33, 1, 0.5, 300);
+    this.camera = new THREE.PerspectiveCamera(FOV, 1, 0.5, 300);
     // Colossal foes (sprite size 4) get a wider shot so their silhouette fits.
     const colossal = this.sys.enemies.some((e) => (e.def.sprite.size || 1) >= 4);
     this.camBase = colossal ? new THREE.Vector3(0.6, 5.4, 13.8) : new THREE.Vector3(0.6, 4.6, 11.2);
@@ -149,6 +152,10 @@ export class BattleScene {
 
   exit() {
     this.game.timeScale = 1;
+    this.game.freeze = 0; // no hit-stop, shake or punch outlives the battle (or leaks into a retry)
+    this.shakeAmt = 0;
+    this.punch = 0;
+    this.game.audio?.muffle(false);
     this.ui.dispose();
     this.highlightEls?.forEach((e) => e.remove());
     this.particles.dispose(this.scene);
@@ -223,7 +230,7 @@ export class BattleScene {
       if (!actor) break;
       this.trace(`turn ${sys.turn} ${actor.name}`);
       this.ui.setActive(actor.isParty ? actor : null);
-      this.ui.refreshTimeline(sys.previewOrder(8), actor);
+      this.ui.refreshTimeline(actor);
       const turn = sys.beginTurn(actor);
       await this.present(turn.events);
       if (sys.outcome()) break;
@@ -444,7 +451,7 @@ export class BattleScene {
     const b = e.target;
     if (e.silent) { if (e.ko) this.knockOut(b); return; }
     const scr = this.screenOf(b, 'mid');
-    if (e.immune) { this.ui.popup(scr, 'Immune', 'miss'); return; }
+    if (e.immune) { this.ui.popup(scr, 'Immune', 'miss'); this.game.audio?.sfx('resist'); return; }
     let cls = 'dmg';
     if (e.crit) cls += ' crit';
     if (e.weak) cls += ' weakhit';
@@ -455,9 +462,30 @@ export class BattleScene {
     if (e.weak) this.ui.popup({ x: scr.x, y: scr.y - 28 }, 'WEAK', 'tag weak');
     this.hurt(b, e.crit || e.weak ? 0.22 : 0.12);
     if (b.isParty) this.game.audio?.sfx('hurt');
+    this.impact(e);
     if (e.ko) this.knockOut(b);
     this.refreshBattler(b);
   }
+
+  /**
+   * What the blow meant, felt before the number is read: a chime and a held frame for
+   * a weakness, a crack for a critical, a dull thud for a resisted hit. Damage over
+   * time stays quiet.
+   */
+  impact(e) {
+    if (e.dot) return;
+    const audio = this.game.audio;
+    if (e.weak) audio?.sfx('weak');
+    else if (e.resisted) audio?.sfx('resist');
+    if (e.crit) audio?.sfx('crit');
+    if (e.weak || e.crit) {
+      this.hitStop(e.weak && e.crit ? 6 : 4);
+      this.punch = Math.max(this.punch, e.crit ? 1 : 0.7);
+    }
+  }
+
+  /** Freeze the scene for a few frames (at 60 fps), whatever the battle speed. */
+  hitStop(frames) { this.game.hitStop(frames / 60); }
 
   showHeal(e) {
     const scr = this.screenOf(e.target, 'mid');
@@ -527,6 +555,8 @@ export class BattleScene {
     this.ui.bigText(this.screenOf(b, 'mid'), 'BREAK', 'break');
     this.flash('#ffffff', 0.15, 0.35);
     this.shake(0.15, 0.25);
+    this.hitStop(6);
+    this.punch = 1.4;
     this.ui.refreshEnemyTag(b);
     await this.game.wait(0.45);
   }
@@ -608,8 +638,8 @@ export class BattleScene {
         // Headless tests: surface the loss instead of auto-retrying forever.
         console.error(`Test: party lost battle '${this.params.troopId}' (levels ${this.sys.party.map((b) => b.level).join('/')})`);
       } else if (!this.params.loseOk) {
-        const retry = await this.defeatScreen();
-        if (retry) {
+        const choice = await this.defeatScreen();
+        if (choice === 'retry') {
           // Restore the pre-battle state and fight again.
           const { GameState } = await import('../state/GameState.js');
           const restored = GameState.deserialize(JSON.parse(this.snapshot));
@@ -622,25 +652,37 @@ export class BattleScene {
           await game.fadeIn(0.5);
           return;
         }
+        game.defeatChoice = choice === 'load' ? 'load' : null; // main.js: load the last save, or the title
       } else {
         for (const c of game.state.activeMembers()) if (c.hp <= 0) c.hp = 1;
       }
     }
     await game.fadeOut(0.4);
-    game.popScene(outcome === 'lose' && !this.params.loseOk ? 'lose' : outcome);
-    await game.fadeIn(0.4);
+    const lost = outcome === 'lose' && !this.params.loseOk;
+    game.popScene(lost ? 'lose' : outcome);
+    if (!lost) await game.fadeIn(0.4); // after a defeat, the title or the loaded save fades itself in
   }
 
+  /**
+   * The party has fallen: the battle music sinks behind a low-pass, then the choice —
+   * fight again from the moment before the battle, go back to the last save, or the title.
+   * @returns {Promise<'retry' | 'load' | 'title'>}
+   */
   defeatScreen() {
-    this.game.audio?.playMusic('gameover');
+    const game = this.game;
+    game.audio?.muffle(true);
     return new Promise((resolve) => {
       const box = el('div', 'gameover');
       box.innerHTML = '<div class="go-title">The light fades...</div><div class="go-sub">but it has not gone out.</div>';
-      this.game.ui.layers.top.appendChild(box);
+      game.ui.layers.top.appendChild(box);
       setTimeout(async () => {
-        const i = await this.game.ui.choice(['Try again', 'Return to title'], { prompt: '' });
+        game.audio?.playMusic('gameover');
+        game.audio?.muffle(false);
+        const last = SaveStore.read(SaveStore.latestSlot())?.summary;
+        const options = [['retry', 'Try again'], ...(last ? [['load', `Load last save — ${last.location || 'saved game'}`]] : []), ['title', 'Return to title']];
+        const i = await game.ui.choice(options.map((o) => o[1]), { prompt: '' });
         box.remove();
-        resolve(i === 0);
+        resolve(/** @type {'retry' | 'load' | 'title'} */ (options[i][0]));
       }, 1200);
     });
   }
@@ -684,6 +726,12 @@ export class BattleScene {
       base.z,
     );
     this.camera.lookAt(look);
+    // A heavy hit punches the lens in for a moment.
+    if (this.punch > 0) {
+      this.punch = this.punch < 0.01 ? 0 : this.punch * Math.exp(-9 * dt);
+      this.camera.fov = FOV - this.punch * 1.6 * (this.game.shakeScale ?? 1);
+      this.camera.updateProjectionMatrix();
+    }
     this.particles.focus.set(0, 0, -1);
     this.particles.update(dt, this.camera);
     // Sun

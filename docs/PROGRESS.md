@@ -350,6 +350,46 @@ done directly this session:
   save already stuck gets it at her grave; and if nobody met her before the Mother fell,
   she isn't there. *Glassback / the Lidless*: Warden Hale stopped paying bounties once
   the Unmoored was dead (he checked that first); he now pays first. Test: `story_fixes`.
+- **The line language** (`src/script/Lines.js`; types `LineSpec` / `LineCond`). `s.say`,
+  `s.narrate`, `s.think`, the new `s.talk`, and an NPC's `talk` accept lines as data:
+  `{ if / unless, text, by }`, conditional blocks (`lines`), `pick` (first branch that
+  holds, a condition-less branch as fallback), `ask` choices with conditional options,
+  `set` and `run`. Conditions are strings (`'party:bram & item:tonic>=2'`,
+  `'quest:id=done'`, `'var:n>=3'`, `'gold>=100'`, `'level>=10'`), `{ all | any | not }`,
+  or functions; unreadable ones throw. `s.talk` reads `'Speaker: text'` strings (bare =
+  narration). `fill` gained `{var:x}`, `{item:id}`, `{name:id}`. Conditions are tested
+  when their line comes up, so earlier `set`/`run`/choices steer later lines. Existing
+  scripts are untouched except a few converted as examples (ch7 Ilse asides, the
+  Garrick / Bram exchange in ch11). Test: `lines`.
+- **Dialogue box.** Timing tags in text (`{wait=}`, `{speed=}`, `{shake=}`, `{sfx=}`);
+  per-speaker typing blips (`data/voices.js`: named profiles for the cast, a steady
+  derived voice for everyone else, ±4% pitch wobble fixed by character position, silent
+  on spaces and punctuation); a backlog of the last 100 lines on Up; Settings →
+  Auto-Advance Text (`clamp(chars × 0.05, 1.2, 4.0)` s, waits for a voice line, never
+  advances tips). Test: `lines`.
+- **Voice-line hook (no audio is generated).** Each line has a stable id,
+  `<speaker>/<12 hex>` from speaker + spoken text (`voiceId`; tags and markup ignored).
+  `audio/VoiceLines.js` reads `voice/manifest.json` and plays a listed recording in
+  place of the blips, on its own bus (Settings → Voice Volume, shown once a pack
+  exists), ducking the music; a new line or moving on cuts it off. `tools/voice.py
+  export` lists every line the source states outright (6,997 lines, 87,620 words, 355
+  speakers; 114 run-time-built lines are skipped) to `voice/lines.csv` (git-ignored);
+  `tools/voice.py manifest` rebuilds the manifest from the files present. The build
+  copies the manifest and recordings to `dist/voice/`. See `voice/README.md`.
+- **Battle feel.** While a command is chosen the timeline previews it: the actor's
+  next turn is marked where that command's cost would put it (`BattleSystem.forecast`
+  / `actionDelay`), and Stasis-type Arts show who is pushed back or pulled forward
+  (`Actions.turnShifts`). The bar no longer lists the acting battler twice. Hits carry
+  meaning (`BattleScene.impact`): SFX `weak` (chime), `resist` (thud), `crit` (crack), a
+  rebuilt `break` (shatter + rumble); 4 frames of hit-stop on a weakness or critical, 6
+  on both and on Break (`game.hitStop`: game time holds, UI and sound continue); a
+  camera punch-in scaled by Flashes & Shake. Defeat muffles the music behind a 400 Hz
+  low-pass (`AudioEngine.muffle`) until the game-over theme; the screen offers Try
+  again, Load last save (newest manual or autosave; hidden if none) and the title.
+  Leaving a battle clears hit-stop, shake, punch and the filter. Test: `battle_feel`.
+- **`docs/OVERHAUL_PROMPT.md`** is the polish brief rewritten for this codebase: what
+  is done, and work packages with acceptance tests for the rest (hold-to-skip, quest
+  levels and pinning, input buffer, corner sliding, a balance guard, save migration).
 
 ## Next
 Everything below is optional; the game is complete and the suite passes.

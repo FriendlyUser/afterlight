@@ -23,3 +23,6 @@ desktop.ini
 # Python caches from the map tools
 __pycache__/
 *.pyc
+
+# The voice-line script is generated: tools/voice.py export
+voice/lines.csv

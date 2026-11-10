@@ -400,6 +400,22 @@ export class ActionResolver {
 // Special handlers: (resolver, user, skill, targets, action, ev, quiet?)
 // =====================================================================
 
+/** How far a turn-delaying Art pushes a target back, in its own base waits (bosses resist). */
+const pushback = (t, all) => (t.isEnemy && t.def.boss ? (all ? 0.5 : 0.4) : 1);
+
+/**
+ * How an Art would move others on the timeline, for the turn-order preview: a Map of
+ * battler -> Action Value added (Stasis, Eternal Moment) or -Infinity (Quicken: at once).
+ * Null when the Art leaves the order alone.
+ */
+export function turnShifts(sys, user, skill, targets) {
+  const shift = new Map();
+  if (skill?.special === 'delay') for (const t of targets) shift.set(t, t.baseAV() * pushback(t, false));
+  else if (skill?.special === 'delayAll') for (const t of sys.resolver.livingOpponents(user)) shift.set(t, t.baseAV() * pushback(t, true));
+  else if (skill?.special === 'quicken') for (const t of targets) { if (t !== user) shift.set(t, -Infinity); }
+  return shift.size ? shift : null;
+}
+
 const SPECIALS = {
   guard(r, user, skill, targets, action, ev) {
     user.addStatus('guard', 1);
@@ -474,14 +490,13 @@ const SPECIALS = {
   delay(r, user, skill, targets, action, ev) {
     ev.push({ t: 'anim', user, anim: 'debuff', targets });
     for (const t of targets) {
-      const resist = t.isEnemy && t.def.boss ? 0.4 : 1;
-      t.av += t.baseAV() * resist;
+      t.av += t.baseAV() * pushback(t, false);
       ev.push({ t: 'text', text: `${t.name} is pushed back in time.` });
     }
   },
   delayAll(r, user, skill, targets, action, ev) {
     ev.push({ t: 'anim', user, anim: 'dark', targets });
-    for (const t of r.livingOpponents(user)) t.av += t.baseAV() * (t.isEnemy && t.def.boss ? 0.5 : 1);
+    for (const t of r.livingOpponents(user)) t.av += t.baseAV() * pushback(t, true);
     ev.push({ t: 'text', text: 'Time stands still.' });
   },
   quicken(r, user, skill, targets, action, ev) {

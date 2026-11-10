@@ -15,6 +15,8 @@ export function noteToMidi(tok) {
 }
 const mtof = (m) => 440 * Math.pow(2, (m - 69) / 12);
 const LOOKAHEAD = 0.3; // seconds of music scheduled ahead, so short main-thread stalls don't stutter
+const OPEN_HZ = 20000; // the music low-pass, wide open
+const DUCK = 0.45; // music level under a voice line
 
 // ---------------------------------------------------------------- chords
 
@@ -60,6 +62,9 @@ export class AudioEngine {
     this.current = null;
     this.musicVol = 0.55;
     this.sfxVol = 0.6;
+    this.voiceVol = 0.8;
+    this.ducked = false; // music lowered under a recorded voice line
+    this.muffled = false; // music low-passed (the party has fallen)
     this.pendingSong = null;
     const unlock = () => {
       this.init();
@@ -90,21 +95,47 @@ export class AudioEngine {
     this.reverbSend.gain.value = 0.32;
     this.reverbSend.connect(this.reverb);
     this.reverb.connect(this.master);
-    this.musicBus.connect(this.master);
-    this.musicBus.connect(this.reverbSend);
+    // Music runs through a low-pass that normally stands wide open; muffle() closes it.
+    this.musicFilter = ctx.createBiquadFilter();
+    this.musicFilter.type = 'lowpass';
+    this.musicFilter.frequency.value = OPEN_HZ;
+    this.musicBus.connect(this.musicFilter);
+    this.musicFilter.connect(this.master);
+    this.musicFilter.connect(this.reverbSend);
     this.sfxBus.connect(this.master);
+    // Recorded voice lines (audio/VoiceLines.js) get their own volume.
+    this.voiceBus = ctx.createGain();
+    this.voiceBus.gain.value = this.voiceVol;
+    this.voiceBus.connect(this.master);
     this.noiseBuf = this.makeNoise();
     this.timer = setInterval(() => this.schedule(), 25);
     if (this.pendingSong) { const p = this.pendingSong; this.pendingSong = null; this.playMusic(p.id, p.opts); }
   }
 
-  setVolumes(music, sfx) {
+  setVolumes(music, sfx, voice = this.voiceVol) {
     this.musicVol = music;
     this.sfxVol = sfx;
+    this.voiceVol = voice;
     if (this.ctx) {
-      this.musicBus.gain.value = music;
+      this.musicBus.gain.value = music * (this.ducked ? DUCK : 1);
       this.sfxBus.gain.value = sfx;
+      this.voiceBus.gain.value = voice;
     }
+  }
+
+  /** Lower the music while a recorded line plays, and bring it back after. */
+  duck(on) {
+    this.ducked = !!on;
+    if (this.ctx) this.musicBus.gain.setTargetAtTime(this.musicVol * (on ? DUCK : 1), this.ctx.currentTime, 0.12);
+  }
+
+  /**
+   * Muffle the music as if heard through a wall (defeat): a low-pass at `hz`.
+   * muffle(false) opens it again.
+   */
+  muffle(on, hz = 400) {
+    this.muffled = !!on;
+    if (this.ctx) this.musicFilter.frequency.setTargetAtTime(on ? hz : OPEN_HZ, this.ctx.currentTime, on ? 0.015 : 0.25);
   }
 
   impulse(sec, decay) {
@@ -355,6 +386,18 @@ export class AudioEngine {
   }
 
   /** @param {{ type?: OscillatorType, vol?: number, slide?: number, attack?: number, filter?: number }} [opts] */
+  /**
+   * One typing blip in a speaker's voice (data/voices.js). The pitch wobbles ±4% by
+   * the character's position, so a line always sounds the same.
+   * @param {{ wave?: OscillatorType, freq: number, vol?: number, dur?: number, filter?: number }} profile
+   * @param {number} n  index of the character being typed
+   */
+  blip(profile, n) {
+    if (!this.ctx) return;
+    const jitter = 1 + 0.04 * (2 * (((Math.imul(n + 1, 0x9e3779b1) >>> 0) % 1000) / 999) - 1);
+    this.tone(this.ctx.currentTime, profile.freq * jitter, profile.dur || 0.028, { type: profile.wave || 'triangle', vol: profile.vol ?? 0.035, filter: profile.filter || 0 });
+  }
+
   tone(t, freq, dur, opts = {}) {
     const { type = 'square', vol = 0.2, slide = 0, attack = 0.005, filter = 0 } = opts;
     const ctx = this.ctx;
@@ -464,7 +507,20 @@ const SFX = {
   // A struck bronze bell: inharmonic partials, a long ring (the Bellring's round bell).
   bell: (a, t) => [[1, 0.1, 2.6], [2.0, 0.05, 1.8], [2.76, 0.05, 1.4], [5.4, 0.025, 0.8]].forEach(([r, vol, dur]) => a.tone(t, 392 * r, dur, { type: 'sine', vol })),
   interrupt: (a, t) => { a.noise(t, 0.35, { freq: 6500, vol: 0.3, q: 0.6 }); [24, 19, 12, 7].forEach((s, i) => a.tone(t + i * 0.035, 660 * 2 ** (s / 12), 0.25, { type: 'triangle', vol: 0.06 })); },
-  break: (a, t) => { a.noise(t, 0.4, { freq: 5000, vol: 0.35, q: 0.4 }); [12, 7, 0].forEach((s, i) => a.tone(t + i * 0.04, 880 * 2 ** (s / 12), 0.3, { type: 'square', vol: 0.05, filter: 5000 })); },
+  // Impact tiers: what a hit *meant* is audible before the number is read.
+  // A weakness struck: a bright, ringing chime (two partials a fifth apart, slow decay).
+  weak: (a, t) => { [[1568, 0.07, 0.55], [2349, 0.045, 0.7], [3136, 0.02, 0.4]].forEach(([f, vol, dur]) => a.tone(t, f, dur, { type: 'sine', vol, attack: 0.002 })); a.noise(t, 0.05, { freq: 7000, vol: 0.12, q: 0.8 }); },
+  // Resisted: a low, muffled thud.
+  resist: (a, t) => { a.noise(t, 0.16, { freq: 180, type: 'lowpass', vol: 0.5 }); a.tone(t, 72, 0.18, { type: 'sine', vol: 0.22, slide: 0.6 }); },
+  // A critical hit: a sharp crack on top of the weapon's own sound.
+  crit: (a, t) => { a.noise(t, 0.07, { freq: 5200, vol: 0.32, q: 0.5 }); a.tone(t, 1244, 0.12, { type: 'square', vol: 0.05, slide: 1.5, filter: 6000 }); },
+  // Guard broken: glass shattering — a bright burst and falling shards — over a short low rumble.
+  break: (a, t) => {
+    a.noise(t, 0.3, { freq: 6500, vol: 0.4, q: 0.4 });
+    [3520, 2794, 4186, 2217, 3136, 1865].forEach((f, i) => a.tone(t + 0.02 + i * 0.035, f, 0.16 + i * 0.03, { type: 'triangle', vol: 0.05, slide: 0.82, attack: 0.001 }));
+    a.noise(t, 0.2, { freq: 95, type: 'lowpass', vol: 0.6 });
+    a.tone(t, 55, 0.2, { type: 'sine', vol: 0.3, slide: 0.7 });
+  },
   flee: (a, t) => [0, 1, 2, 3].forEach((i) => a.noise(t + i * 0.07, 0.06, { freq: 900, vol: 0.12 })),
   surge: (a, t) => a.tone(t, 330, 0.25, { type: 'sawtooth', vol: 0.06, slide: 3, filter: 3000 }),
 };

@@ -2,8 +2,9 @@
 
 import { Game } from './core/Game.js';
 import { UI } from './ui/UI.js';
-import { GameState } from './state/GameState.js';
+import { GameState, SaveStore } from './state/GameState.js';
 import { AudioEngine } from './audio/Audio.js';
+import { VoiceLines } from './audio/VoiceLines.js';
 import { FieldScene } from './world/FieldScene.js';
 import { LOOKS } from './data/looks.js';
 import './data/fish.js'; // registers fish as items
@@ -19,6 +20,7 @@ const ui = new UI(document.getElementById('ui'), game);
 const audio = new AudioEngine(game);
 const state = new GameState();
 game.attach({ ui, audio, state });
+game.voiceLines = new VoiceLines(audio); // recorded lines, if a voice pack is installed (voice/)
 game.applySettings();
 
 // Speaker name -> portrait look
@@ -57,7 +59,27 @@ game.returnToTitle = async () => {
   game.ui.layers.hud.innerHTML = '';
   await game.setScene(new TitleScene(game));
 };
-game.onGameOver = () => game.returnToTitle();
+/** Load a save slot from anywhere (the defeat screen): the field it was saved in replaces whatever is running. */
+game.loadSave = async (slot) => {
+  const rec = SaveStore.read(slot);
+  if (!rec) return game.returnToTitle();
+  game.audio?.stopMusic(0.8);
+  await game.fadeOut(0.8);
+  game.sceneStack = [];
+  for (const w of [...game.ui.stack]) game.ui.remove(w);
+  game.ui.layers.hud.innerHTML = '';
+  Object.assign(game.state, GameState.deserialize(rec.data));
+  game.applySettings();
+  const loc = game.state.location;
+  await game.setScene(new FieldScene(game), { mapId: loc.mapId, x: loc.x, y: loc.y, dir: loc.dir });
+  await game.fadeIn(0.8);
+};
+// After a defeat the player picked "Load last save" (defeatChoice, set by the battle) or the title.
+game.onGameOver = () => {
+  const load = game.defeatChoice === 'load';
+  game.defeatChoice = null;
+  return load ? game.loadSave(SaveStore.latestSlot()) : game.returnToTitle();
+};
 
 async function boot() {
   const params = new URLSearchParams(location.search);
