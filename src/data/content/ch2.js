@@ -94,7 +94,7 @@ const enemies = [
   E('c2_quarry_hound', 'Tam\'s Mastiff', 9, { type: 'hound', color: '#8a4a2a', accent: '#3a2a1a', eye: '#ffb030', seed: 21 }, {
     stats: { hp: 1.0, str: 1.1, spd: 1.25 }, weak: ['fire', 'pierce'], poise: 3,
     skills: [['e_bite', 3], ['e_howl', 1]], drops: [['wolf_pelt', 0.3], ['tonic', 0.2]], steal: ['tonic', 'antidote'],
-    desc: 'Answers to "Biscuit". Do not call it Biscuit.',
+    desc: 'Answers to "Biscuit." Do not call it Biscuit.',
   }),
   E('c2_rubblekin', 'Rubblekin', 10, { type: 'golem', color: '#8a8478', accent: '#b07aff', eye: '#c080ff', seed: 31 }, {
     stats: { hp: 1.3, def: 1.7, res: 0.8, spd: 0.75 }, weak: ['blunt', 'light'], resist: { slash: 0.6, pierce: 0.5, dark: 0.5 }, poise: 4,

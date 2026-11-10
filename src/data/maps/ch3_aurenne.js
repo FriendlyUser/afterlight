@@ -33,7 +33,7 @@ const npcs = [
     talk: phased('Gate Warden Basil', {
       before: ['Lost something already? Should\'ve minded your purse. I did say.', '...I was going to say.'],
       day1: ['Low Town folk keep asking the Watch about missing children. The Captain says Low Town is always losing people.', 'Says that\'s what Low Town is _for._ I didn\'t laugh. He noticed.'],
-      after: ['Mercy Vale. I gave her a nod every morning at this gate. She\'d bless my boots.', 'Can you imagine. I\'ve thrown the boots in the river.'],
+      after: ['Mercy Vale. I gave her a nod every morning at this gate. She\'d bless my boots.', 'I\'ve thrown the boots in the river.'],
       forks: ['Heading south? The Pilgrim Road runs straight to the Sunscar. Take water.', 'Take more water than that.'],
     }) },
   { id: 'bc_crier', name: 'Bellring Crier', look: 'bc_crier', x: 17, y: 38, dir: 'right', hint: 'The Bellring',
@@ -74,7 +74,7 @@ const npcs = [
   { id: 'annick', name: 'Widow Annick', look: 'villager_17', x: 36, y: 9, dir: 'up',
     talk: phased('Widow Annick', {
       before: ['Forty years ago this autumn, the Lantern went out for one night. I was nine.', 'My mother held her hand over my eyes until dawn. I\'ve come every day since to thank it. For coming back.'],
-      after: ['Some didn\'t come back, that night. Three hundred and twelve, they say. The Keeper\'s own daughter among them.', 'The Hierophant was her brother, you know. Twelve years old. He saw it all. Imagine carrying that.'],
+      after: ['Some didn\'t come back, that night. Three hundred and twelve, they say. The Keeper\'s own daughter among them.', 'The Hierophant was her brother, you know. Twelve years old. He saw it all.'],
     }) },
   { id: 'sentry_l', name: 'Lantern Sentry', look: 'dawnguard', x: 33, y: 7, dir: 'down',
     talk: ['The Grand Lantern is open to the Choir only, citizen.', 'Admire it from there. It\'s very admirable from there.'] },

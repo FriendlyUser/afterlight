@@ -50,7 +50,7 @@ export const c6HermitShard = {
   ],
   inspect: [
     { x: 3, y: 12, hint: 'Rock', run: (s) => CH6.rock(s) },
-    { x: 26, y: 8, text: 'A cairn of stacked grey stones. Scratched on the flat stone at its foot: EDRIN HALLOWAY. HE\'D WANT A BETTER STONE.' },
+    { x: 26, y: 8, text: 'A cairn of stacked gray stones. Scratched on the flat stone at its foot: EDRIN HALLOWAY. HE\'D WANT A BETTER STONE.' },
     { x: 28, y: 8, text: 'A newer cairn. The stones are still sharp-edged. YSOLDE HALLOWAY. KEEPER. SHE HELD.' },
     { x: 21, y: 22, text: 'A little fishing boat, upright on the ash, a long way from any water. Painted on the bow: THE SEAGULL. Fennick\'s boat. It rose with the sea, and came down here, with him.' },
     { x: 8, y: 10, text: 'Fennick\'s garden. Ash-potatoes, a stubborn rosemary, and — tucked in a sheltered corner — one sprig of sea lavender, in a pot, carefully watered.' },
@@ -116,7 +116,7 @@ export const c6Keelhaven = {
     { id: 'mott', name: 'Sentry Mott', look: 'c6_sentry', x: 4, y: 18, dir: 'right', cond: f('c6_keelhaven'),
       talk: ['Don\'t steal, don\'t fight, don\'t fall off. That\'s the whole law.', 'Folk keep falling off. You\'d think it\'d be the easy one.'] },
     { id: 'rook', name: 'Sentry Rook', look: 'c6_sentry', x: 44, y: 18, dir: 'left',
-      talk: (s) => s.say('Sentry Rook', s.flag('c6_gate_open') ? ['Warden says you\'re going east. Alone.', 'I\'ll keep the soup warm. Hale says I\'m not to say that. I said it anyway.'] : ['East gate\'s shut. Strait\'s shut. Everything east of here\'s shut.', 'Warden Hale\'s orders. Big hull, north side.']) },
+      talk: (s) => s.say('Sentry Rook', s.flag('c6_gate_open') ? ['Warden says you\'re going east. Alone.', 'I\'ll keep the soup warm. Hale says I\'m not to say that. I said it anyway.'] : ['East gate\'s shut. Strait\'s shut. Everything east of here\'s shut.', 'Warden Hale\'s orders. Ask at the big hull, north side.']) },
     { id: 'maela', name: 'Maela', look: 'maela', x: 14, y: 13, dir: 'down', hint: 'Talk', run: (s) => CH6.maela(s) },
     { id: 'pell', name: 'Pell', look: 'pell', x: 12, y: 14, wander: 1, cond: f('c6_maela'), run: (s) => CH6.pell(s) },
     { id: 'orla', name: 'Orla', look: 'orla', x: 27, y: 28, dir: 'up', run: (s) => CH6.orla(s) },
@@ -136,7 +136,7 @@ export const c6Keelhaven = {
     { id: 'kay', name: 'Kay', look: 'villager_20', x: 22, y: 23, wander: 1,
       talk: ['I don\'t like that game. I think the Keeper\'s girl was probably just sad.', 'Mama says sad people do stupid things. Mama did one once. She married Papa.'] },
     { id: 'jessamy', name: 'Jessamy', look: 'villager_42', x: 31, y: 14, dir: 'down',
-      talk: (s) => s.say('Jessamy', ['Trader, out of Kiteholm. North, past the wind-stacks. Town of kites and scrap.', 'There\'s a gang of orphans runs the scrap-yards there. Boss is a boy — twelve, maybe. Mouth like a sailor, fingers like a magpie. He took my purse, then gave it back because I "looked like I needed it more."', 'And a big blond sellsword who drinks too much and cries at sea shanties. Kiteholm\'s a strange place.']) },
+      talk: (s) => s.say('Jessamy', ['Trader, out of Kiteholm. North, past the wind-stacks. Town of kites and scrap.', 'A gang of orphans runs the scrap-yards there. Boss is a boy — twelve, maybe. Mouth like a sailor, fingers like a magpie. He took my purse, then gave it back because I "looked like I needed it more."', 'And a big blond sellsword who drinks too much and cries at sea shanties. Kiteholm\'s a strange place.']) },
     { id: 'ambrose', name: 'Ambrose', look: 'villager_50', x: 24, y: 32, dir: 'down',
       talk: ['I come out here to the edge every morning and I count to a hundred.', 'I don\'t jump. I just count. Then I go back and eat my soup.', 'It\'s a good number, a hundred. You should try it.'] },
   ],
@@ -146,7 +146,7 @@ export const c6Keelhaven = {
     { x: 26, y: 27, text: '"DAD — I KEPT THE BOAT. I KEPT IT. COME AND SEE." "To Corporal Hask, if you\'re alive: I forgive you for the thing with the goat."' },
     { x: 28, y: 27, hint: 'Lost Wall', run: (s) => s.narrate(s.flag('c6_own_letter') ? 'Right in the middle of the wall: "Dear Sun." And beside it, a small square of paper signed only "— W."' : 'Hundreds of letters to people nobody can find. The paper rustles in the ash-wind like a flock of birds that cannot quite take off.') },
     { x: 30, y: 27, text: '"Bram — if a girl with red hair asks, tell her I\'m sorry I never wrote back." The handwriting is shaky. There\'s no name.' },
-    { x: 13, y: 13, text: 'Maela\'s kettle. Big enough to bathe a pony in. Always full. Always grey.' },
+    { x: 13, y: 13, text: 'Maela\'s kettle. Big enough to bathe a pony in. Always full. Always gray.' },
   ],
   exits: [
     { x: 0, y: 16, h: 2, to: 'c6_drift', tx: 64, ty: 15, dir: 'left' },
@@ -168,7 +168,7 @@ export const c6KeelInn = {
     { id: 'drinker', name: 'Old Drinker', look: 'villager_61', x: 5, y: 6, dir: 'right',
       talk: ['There was a sky-captain through here, back in the spring. Tried to buy a whole barrel of rum on a promise.', 'Said he had a ship. Said she was grounded at some place called the Roost. Said a lot of things. Sang most of them.'] },
     { id: 'gambler', name: 'Card Player', look: 'villager_26', x: 11, y: 6, dir: 'left',
-      talk: ['We play for ash-potatoes. Stakes are high. Very high. I\'m down eleven potatoes.', 'Funny. Nothing to buy, and we still gamble. People are strange.'] },
+      talk: ['We play for ash-potatoes. Stakes are high. Very high. I\'m down eleven potatoes.', 'Funny. Nothing to buy, and we still gamble.'] },
   ],
   inspect: [{ x: 6, y: 3, text: 'The bar: a ship\'s rail laid across two barrels. A brass bell hangs over it. Nobody rings it. Nobody likes bells anymore.' }],
   exits: [{ x: 6, y: 9, to: 'c6_keelhaven', tx: 11, ty: 9, dir: 'down' }],
@@ -184,7 +184,7 @@ export const c6KeelHall = {
   ],
   inspect: [
     { x: 6, y: 3, text: 'A chart of the Shattered Sea, drawn on the back of a sail. Shards marked in charcoal. Most of them have notes: HOUNDS. GLASS. DON\'T. One, far to the east, just says: AURENNE? and underneath, smaller: HOSPITAL.' },
-    { x: 9, y: 3, text: 'A man asleep under a thin blanket. A grey patch has crept up his neck like frost on a window. Gloam-rot.' },
+    { x: 9, y: 3, text: 'A man asleep under a thin blanket. A gray patch has crept up his neck like frost on a window. Gloam-rot.' },
   ],
   exits: [{ x: 6, y: 8, to: 'c6_keelhaven', tx: 34, ty: 8, dir: 'down' }],
 };
@@ -216,7 +216,7 @@ export const c6ShatteredSea = {
   ],
   npcs: [
     { id: 'quill', name: 'Old Quill', look: 'villager_63', x: 22, y: 23, dir: 'down',
-      talk: (s) => s.say('Old Quill', winchDone(s.state) ? ['Bridge is down. Gods help you.', 'If you see the Unmoored... don\'t look it in the eye. It looks back. It remembers things.'] : ['Salvager. Was. North spoke\'s the Chainyard — winch is on the old deck. South spoke\'s the Psalm — winch is in the deckhouse.', 'Turn both and the strait bridge comes down. I\'d do it myself, but I like being alive. It\'s a habit.']) },
+      talk: (s) => s.say('Old Quill', winchDone(s.state) ? ['Bridge is down. Gods help you.', 'If you see the Unmoored... don\'t look it in the eye. It looks back. It remembers things.'] : ['Salvager, once. North spoke\'s the Chainyard — winch is on the old deck. South spoke\'s the Psalm — winch is in the deckhouse.', 'Turn both and the strait bridge comes down. I\'d do it myself, but I like being alive. It\'s a habit.']) },
   ],
   inspect: [
     { x: 66, y: 24, hint: 'Crest-glass', run: (s) => LOST_QUESTS.shrine(s, 'tidecaller') },

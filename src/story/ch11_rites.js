@@ -15,7 +15,7 @@ export const RITES = {
     s.place('player', 3, 9, 'left');
     await s.wait(0.6);
     await s.narrate('Wren\'s hand goes to her pocket without her meaning it to. Dad\'s compass. It points west. It has always pointed west, wherever she was.');
-    await s.say('Wren', '...That\'s not right.');
+    await s.say('Wren', 'That\'s not right.');
     await s.narrate('The needle swings, shivers, and points _down_ — through the deck, through the cloud, to somewhere south and west and very far below.');
     await s.say('Sable', 'There are Shards in the hold now. Their light is very loud. Perhaps it woke something in the compass.');
     await s.say('Corvin', 'South-west and down. That\'s the Drowned Reef. When the sea fell upward, the sea floor came with it. Every ship that ever sank off the Westmost Isle is out there, hanging in the dark. Sailors don\'t go.');
@@ -30,7 +30,7 @@ export const RITES = {
 
   async reefArrive(s) {
     s.music('sea');
-    await s.narrate('The bottom of the Western Sea, hanging in the sky. Grey coral. Bones of fish the size of houses. Ships of every age lying on their sides in the sand, as if they had only lain down for a moment.');
+    await s.narrate('The bottom of the Western Sea, hanging in the sky. Gray coral. Bones of fish the size of houses. Ships of every age lying on their sides in the sand, as if they had only lain down for a moment.');
     await s.say('Pip', 'Fish bones. Big fish bones. Unreasonably big fish bones.');
     await s.say('Ilse', 'Wren. Are you alright?');
     await s.say('Wren', 'The needle\'s pointing north. To the big wrecks. He\'s— it\'s up there.');
@@ -38,11 +38,11 @@ export const RITES = {
   },
 
   async reefBoat(s) {
-    if (s.flag('c11_reef_boat')) return s.narrate('The Gull\'s Return, lying in the grey sand where the sea set her down.');
+    if (s.flag('c11_reef_boat')) return s.narrate('The Gull\'s Return, lying in the gray sand where the sea set her down.');
     s.setFlag('c11_reef_boat');
     stageParty(s, 15, 8, 'up');
     s.music('sad');
-    await s.narrate('A fishing boat lies on its side in the grey sand, its paint long gone. On the bow, under the barnacles, letters you have known your whole life: _GULL\'S RETURN._');
+    await s.narrate('A fishing boat lies on its side in the gray sand, its paint long gone. On the bow, under the barnacles, letters you have known your whole life: _GULL\'S RETURN._');
     await s.say('Wren', 'It\'s his. It\'s Dad\'s boat.');
     await s.say('Ilse', 'Wren.');
     await s.say('Wren', 'He painted the name himself. He said the gull was me. Because I always came back.');
@@ -138,8 +138,8 @@ export const RITES = {
     await s.say('Tilly', 'I found it! The Lucky Shiv! The Rook Queen had it in her nest and I stole it right out from under her, and she was SO mad—');
     s.shake(0.4, 1.0);
     s.sfx('surprise');
-    await s.narrate('The sky over Scrapfall goes dark with wings. Something enormous lands on the junk-heap, and every shiny thing on the island seems to lean toward it.');
-    await s.say('Tilly', '...Oh no, she\'s back.');
+    await s.narrate('The sky over Scrapfall goes dark with wings. Something enormous lands on the junk-heap, and every shiny thing on the island leans toward it.');
+    await s.say('Tilly', 'Oh no, she\'s back.');
     s.music('boss');
     const r = await s.battle('c11_boss_queen');
     if (r !== 'win') return;
@@ -199,7 +199,7 @@ export const RITES = {
   },
 
   async reforgeKnife(s) {
-    await s.say('Nell', '...This is a kitchen knife.');
+    await s.say('Nell', 'This is a kitchen knife.');
     await s.say('Pip', 'It\'s the Lucky Shiv.');
     await s.say('Nell', 'It\'s a kitchen knife with rust on it and a hair ribbon round the handle.');
     await s.say('Pip', 'It\'s the LUCKY SHIV. It was in the Rook Queen\'s nest. Stolen from the best.');
@@ -241,7 +241,7 @@ export const RITES = {
     await s.say('Bram', '...You\'d come?');
     await s.say('Pip', 'Obviously.');
     await s.say('Corvin', 'And you\'ll need a knight to dub you, after. I might know one. Deserted. Disgraced. Technically never stripped of his spurs, because he ran before they could take them off him.');
-    await s.say('Bram', '...Corvin?');
+    await s.say('Bram', 'Corvin?');
     await s.say('Corvin', 'Don\'t make it weird.');
     s.setFlag('c11_vigil_open');
     s.quest('c11_rite_bram', 'Bram\'s Rite: The Vigil', 'Bram wants to stand the knight\'s vigil at the Vigil Hall in the Greyspine, where he froze on the night Sir Aldous died.');
@@ -290,7 +290,7 @@ export const RITES = {
     s.remove('dread');
     s.flash('#ffe8c0', 1.0);
     s.music('kindling');
-    await s.narrate('And through the high windows of the Vigil Hall, grey and thin and absolutely ordinary: dawn. Or the nearest thing the broken sky still has to one.');
+    await s.narrate('And through the high windows of the Vigil Hall, gray and thin and absolutely ordinary: dawn. Or the nearest thing the broken sky still has to one.');
     await s.move('v_bram', [[13, 6], [12, 5]], 1.6);
     await s.say('Bram', 'Sir Aldous Venn. He stood between.');
     await s.say('Bram', 'The Penitent carried a sword the Gloam made. The real one\'s here. We buried it with him.');
@@ -307,7 +307,7 @@ export const RITES = {
     await s.say('Corvin', 'Arise, Sir Bram Kestrel.');
     await s.wait(0.8);
     await s.say('Bram', 'That was beautiful.');
-    await s.say('Corvin', 'I\'ve been practising in the mirror for eighteen years.');
+    await s.say('Corvin', 'I\'ve been practicing in the mirror for eighteen years.');
     await s.say('Pip', 'You were going to knight _yourself_?');
     await s.say('Corvin', 'Tell anyone and I\'ll leave you on a rock.');
     await s.give('guard_fruit', 2);
@@ -340,7 +340,7 @@ export const RITES = {
     if (s.flag('c11_inf_entered')) return;
     s.setFlag('c11_inf_entered');
     s.music('sad');
-    await s.narrate('Ilse cut the red cord herself. Inside: the smell of bitterleaf and old linen, and rows of beds, every one made with hospital corners.');
+    await s.narrate('Ilse cuts the red cord herself. Inside: the smell of bitterleaf and old linen, and rows of beds, every one made with hospital corners.');
     await s.say('Ilse', 'She kept it so clean. A year with no one to see it, and she kept it so clean.');
     s.objective('Find Osk\'s staff in the infirmary.');
   },
@@ -370,7 +370,7 @@ export const RITES = {
     if (r !== 'win') return;
     s.remove('matron');
     s.music('sad');
-    await s.narrate('The Matron comes apart like wet ash and settles on the clean floor. Ilse stands very still for a long moment.');
+    await s.narrate('The Matron comes apart like wet ash and settles on the clean floor. Ilse stands still for a long moment.');
     await s.say('Ilse', 'I want to study. Properly. In a real hospital with clean sheets and nobody bleeding on me before breakfast.');
     await s.say('Ilse', 'I want to sleep until noon. I want to grow lavender, badly, on a windowsill. I want—');
     await s.wait(0.8);
@@ -438,7 +438,7 @@ export const RITES = {
     s.stopMusic(2);
     await s.narrate([
       'The Squall King tears away into the storm, shrieking. And then — all at once — quiet.',
-      'The eye. A bowl of still air, a mile wide, with a pale sky at the top of it. And hanging in the middle of the stillness: a broken gunship, her colours still flying.',
+      'The eye. A bowl of still air, a mile wide, with a pale sky at the top of it. And hanging in the middle of the stillness: a broken gunship, her colors still flying.',
     ]);
     await s.say('Corvin', '...There she is.');
     s.quest('c11_rite_corvin', null, 'Corvin flew into the Stormwall and stayed at the helm. The wreck of the Kingfisher hangs in the eye of the storm.');

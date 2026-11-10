@@ -39,8 +39,8 @@ export const C4S = {
     await s.say('Joss', 'Her name was Patience.');
     await s.say('Corvin', 'Of course it was.');
     await s.wait(0.5);
-    await s.say('Corvin', 'Right. Shape of it. The singing glass we set in the desert keeps her floating. And I\'ve a hold full of spare Saltglass panes.');
-    await s.say('Corvin', 'But floating isn\'t climbing, and the Stormcrown is all climb. Sunlight won\'t carry her through that. For that, the glass needs _lightning_.');
+    await s.say('Corvin', 'Right. Shape of it. The singing glass we set in the desert keeps her floating. And I\'ve a hold full of spare saltglass panes.');
+    await s.say('Corvin', 'But floating isn\'t climbing, and the Stormcrown is all climb. Sunlight won\'t carry her through it. For that, the glass needs _lightning_.');
     await s.say('Joss', 'Storm-seams, up on the crags. Lightning hits the same three rocks every night up here, and the glass in the strike-holes fuses solid. Full to the brim with thunder.');
     await s.say('Joss', 'Storm cores, the prospectors call them. Mind you, the prospectors mostly don\'t come back.');
     await s.say('Corvin', 'Three cores. One for each lift-cell. Then she\'ll fly.');
@@ -102,7 +102,7 @@ export const C4S = {
       await s.take('c4b_storm_core', 3);
       await s.narrate([
         'Corvin fits the storm cores into the Halcyon\'s lift-cells one by one, swearing gently at each of them.',
-        'The Saltglass panes along her hull begin to glow — then to _sing_, a low hum that climbs up through the soles of your boots.',
+        'The saltglass panes along her hull begin to glow — then to _sing_, a low hum that climbs up through the soles of your boots.',
       ]);
       await s.say('Corvin', 'That\'s her. Lift-cells charged, glass singing. She\'ll fly.');
       await s.wait(0.8);
@@ -147,7 +147,7 @@ export const C4S = {
     await s.say('Captain Corder', 'The Lord-Commander\'s been and gone from Skyreach already. Their Ardent handed him the stone with a smile. You\'re too late. You\'re always too late.');
     await s.say('Captain Corder', 'But he\'ll forgive a great deal if I bring him the girl. Step aside, and I\'ll tell him you were useful. For once.');
     await s.wait(1.0);
-    await s.narrate('Bram looks at Sable. His sword-hand is shaking. Then, very slowly, he steps in front of her.');
+    await s.narrate('Bram looks at Sable. His sword hand is shaking. Then, slowly, he steps in front of her.');
     await s.move(P.bram, [[23, 16]], 1.2);
     await s.say('Bram', 'I\'m still frozen, Corder. I\'m frozen right here.');
     await s.say('Bram', 'You\'ll have to move me.');
@@ -172,7 +172,7 @@ export const C4S = {
       bram: [16, 8, 'up'], sable: [20, 7, 'right'], pip: [15, 6, 'right'],
     });
     await s.wait(0.6);
-    await s.narrate('The Halcyon lifts off her cradle with a groan of timber and a sound from the Saltglass like a choir clearing its throat.');
+    await s.narrate('The Halcyon lifts off her cradle with a groan of timber and a sound from the saltglass like a choir clearing its throat.');
     s.shake(0.3, 1.2);
     await s.say('Corvin', 'Come on, girl. Come on. _Up._');
     s.flash('#e8f0ff', 0.3);
@@ -386,7 +386,7 @@ export const C4S = {
     await s.say('Ardent Vasha', 'Then they should have said yes.');
     await s.say('Bram', 'Halvard said no. Halvard is _dead_.');
     await s.wait(0.8);
-    await s.say('Ardent Vasha', '...I grieve for Halvard. Truly. He was a good man and a stubborn one.');
+    await s.say('Ardent Vasha', 'I grieve for Halvard. Truly. He was a good man and a stubborn one.');
     await s.say('Ardent Vasha', 'When the song is sung, perhaps we will have him back as well.');
     await s.move(P.sable, [[7, 6]], 1.2);
     await s.say('Sable', 'Your fork is singing.');
@@ -401,7 +401,7 @@ export const C4S = {
     await s.say('Bram', 'They went _back_? After Halvard — they went back up the mountain for it?');
     await s.say('Ardent Vasha', 'His Grace does not leave things unfinished.');
     await s.say('Ardent Vasha', 'Only Lanternfall remains.');
-    await s.say('Wren', '...My mother won\'t give it to him. She\'s already told him no.');
+    await s.say('Wren', 'My mother won\'t give it to him. She\'s already told him no.');
     await s.say('Ardent Vasha', 'He knows. He told me not to worry about Lanternfall.');
     await s.say('Ardent Vasha', 'He said the last stone would come to him freely. He said the Keeper\'s daughter would bring it.');
     await s.wait(2.0);
@@ -413,7 +413,7 @@ export const C4S = {
     // The island lurches.
     s.shake(0.6, 1.4);
     s.sfx('quake');
-    await s.narrate('The whole hall lurches, like a ship striking a reef. Somewhere below, thunder answers — from _underneath_.');
+    await s.narrate('The whole hall lurches, like a ship striking a reef. Thunder answers — from _underneath_.');
     await s.say('Ardent Vasha', '...It\'s nothing. The isle settles. It does that.');
     s.spawn('tern', 'c4b_skyfolk2', 7, 11, 'up');
     await s.move('tern', [[7, 9]], 5);
@@ -421,7 +421,7 @@ export const C4S = {
     await s.say('Ardent Vasha', 'It will hold until the Long Light. His Grace promised. He\'ll send the stone back harmonized, before—');
     await s.say('Wren', 'Before your whole island falls into the storm?');
     await s.wait(1.0);
-    await s.say('Ardent Vasha', '...Without the stone, the Lantern cannot hold the Thunderhead down. It never could. The Lantern was always what kept it below us.');
+    await s.say('Ardent Vasha', '...Without the stone, the Lantern cannot hold the Thunderhead down. The Lantern was always what kept it below us.');
     await s.say('Ilse', 'And you didn\'t think about that when you gave it away?');
     await s.say('Ardent Vasha', 'I thought about it. I _believed_ him.');
     await s.wait(1.0);
@@ -432,7 +432,7 @@ export const C4S = {
     await s.say('Wren', 'Because it\'s falling. And we\'re here.');
     await s.wait(1.2);
     await s.say('Ardent Vasha', '...Ysolde\'s girl.');
-    await s.say('Ardent Vasha', 'Go. Tell Tamm at the lift that I sent you. Corvin — there are Saltglass sockets in every pylon. You\'ll know what to do.');
+    await s.say('Ardent Vasha', 'Go. Tell Tamm at the lift that I sent you. Corvin — there are saltglass sockets in every pylon. You\'ll know what to do.');
     await s.move('tern', [[7, 11]], 5);
     s.remove('tern');
     unstage(s, P, [7, 9, 'down']);
@@ -492,14 +492,14 @@ export const C4S = {
   // ================================================================ the Undercradle
   async underEnter(s) {
     await s.narrate('Beneath Skyreach, the island is a great hanging root of stone, open to the sky on every side. Far below, the Stormcrown boils — and something in it is climbing.');
-    await s.say('Corvin', 'For the record, I was promised the hard part was over.');
+    await s.say('Corvin', 'I was promised the hard part was over.');
     await s.say('Ilse', 'Nobody promised you that.');
     await s.say('Corvin', 'I promised me that.');
   },
 
   async pylon(s, which) {
     const key = `c4b_pylon_${which}`;
-    if (s.flag(key)) return s.narrate('The pylon hums, steady and bright. The Saltglass in its heart is singing.');
+    if (s.flag(key)) return s.narrate('The pylon hums, steady and bright. The saltglass in its heart is singing.');
     await s.narrate('An old brass pylon, thick with cables, bolted deep into the stone. The saltglass heart at its top is cracked and dark.');
     const intro = {
       w: 'Brass eyes open in the rock around it. The Keel Sentinels have been guarding this pylon for three hundred years, and they are not about to stop now.',

@@ -69,7 +69,7 @@ export const dunes = {
     { x: 31, y: 8, hint: 'Skull', run: (s) => C4A.skull(s) },
     { x: 32, y: 8, hint: 'Skull', run: (s) => C4A.skull(s) },
     { x: 20, y: 9, text: 'The ribs of a giant wyrm arch out of the sand like the frame of a ship nobody finished building.' },
-    { x: 23, y: 18, text: ['A weathered statue of a Keeper, holding a lamp above her head. The wind has worn away her face.', 'Someone has left a cup of water at her feet. It is still cool.'] },
+    { x: 23, y: 18, text: ['A weathered statue of a Keeper, holding a lamp above her head. The wind has worn away her face.', 'There is a cup of water at her feet. It is still cool.'] },
     { x: 12, y: 29, hint: 'Water', run: (s) => C4A.oasis(s) },
   ],
   triggers: [
@@ -103,7 +103,7 @@ export const halcyon = {
     { x: 18, y: 9, hint: 'Lift-glass housing', run: (s) => C4A.liftHousing(s) },
     { x: 15, y: 10, text: 'The mainmast. Someone has carved a tally into it — dozens of little marks — and, at the top, a single word: STAY.' },
     { x: 22, y: 10, text: 'The foremast, splintered halfway up. A torn sail flaps from it like a flag of surrender. Or a very tired wave.' },
-    { x: 12, y: 12, text: 'Cargo crates stamped with a dozen different port seals. Half of them are empty. The other half are labeled "DEFINITELY NOT CONTRABAND".' },
+    { x: 12, y: 12, text: 'Cargo crates stamped with a dozen different port seals. Half of them are empty. The other half are labeled "DEFINITELY NOT CONTRABAND."' },
   ],
   exits: [{ x: 16, y: 29, w: 5, to: 'c4a_dunes', tx: 41, ty: 1, dir: 'down' }],
   onEnter: (s) => C4A.halcyonWreck(s),

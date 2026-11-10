@@ -40,7 +40,7 @@ export const kiteholm = {
         ? ['Saw the Boss flying a kite up here. Laughing like a gull.', 'Been waiting a year to hear that. Didn\'t know I was waiting till I heard it.']
         : ['Flew kites on the Gale Coast sixty years. Now the whole world\'s the sky, and I\'m still flying kites.', 'Wind\'s honest. Wind doesn\'t promise you noon forever. It just blows.']) },
     { id: 'netta', name: 'Netta', look: 'villager_24', x: 12, y: 28, dir: 'down', cond: calm,
-      talk: say('Netta', ['I wash for the whole shard. Ash in everything. You get used to grey.', 'The Boss brings me the Kites\' things once a week. Folded. He folds them. Twelve years old and he _folds_.']) },
+      talk: say('Netta', ['I wash for the whole shard. Ash in everything. You get used to gray.', 'The Boss brings me the Kites\' things once a week. Folded. He folds them. Twelve years old and he _folds_.']) },
     { id: 'ivo', name: 'Ivo', look: 'c8_thug', x: 26, y: 10, dir: 'down', cond: calm,
       talk: (s) => s.say('Ivo', s.flag('c8_raid_done')
         ? ['The Baron says he was always going to send us. He was getting his boots on. Big boots. Took a while.']
@@ -138,7 +138,7 @@ export const kiteNest = {
   ],
   inspect: [
     { x: 7, y: 4, text: 'A map of Kiteholm drawn on a sail, covered in pins and string. Every Kite has a pin. Every pin has a name. In the corner, a list in a careful child\'s hand: FOOD. WATER. SLINGSHOTS. COUNT HEADS. COUNT AGAIN.' },
-    { x: 8, y: 4, text: 'Tucked under the map\'s corner: a folded scrap of paper. Inside, in pencil, a drawing of four tall people and two short ones on a beach. One of the tall ones has a sword. The short one is holding her hand.' },
+    { x: 8, y: 4, text: 'Tucked under the map\'s corner: a folded scrap of paper. Inside, in pencil, a drawing of four tall people and two short ones on a beach. One of the tall ones has a sword. One of the short ones is holding her hand.' },
   ],
   exits: [{ x: 6, y: 10, w: 3, to: 'kiteholm', tx: 30, ty: 18, dir: 'down' }],
   onEnter: async (s) => {

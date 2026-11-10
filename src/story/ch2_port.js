@@ -33,12 +33,12 @@ export const PORT = {
     await s.pan(26, 12, 2.4);
     await s.narrate([
       'Port Gale. More people on one street than live on all of Lanternfall.',
-      'Masts stand in the harbour like a winter forest, gulls argue on every roof, and somewhere a bell is ringing for something nobody here has time to stop for.',
+      'Masts stand in the harbor like a winter forest, gulls argue on every roof, and somewhere a bell is ringing for something nobody here has time to stop for.',
     ]);
     await s.follow(1.4);
     await s.say('Bram', 'Solid ground. Blessed, unmoving, non-serpent-infested ground.');
     await s.say('Ilse', 'You can let go of the rail now, Bram.');
-    await s.say('Bram', 'I am *saluting* the rail. It served with honor.');
+    await s.say('Bram', 'I am _saluting_ the rail. It served with honor.');
     await s.say('Sable', 'The ground is still moving.');
     await s.say('Ilse', 'That\'s your legs. They\'ll stop in an hour.');
     await s.say('Sable', 'I would like them to stop now.');
@@ -47,7 +47,7 @@ export const PORT = {
     await s.say('Fisher Tobias', 'Tide turns within the hour. Miss it, and your mother sends a search party. And if she sends one, she leads it.');
     await s.move('tobias_pg', [[10, 23]]);
     await s.say('Fisher Tobias', 'She gave me a message for you, once you\'d made it across. Word for word, she said.');
-    await s.say('Wren', '...What did she say?');
+    await s.say('Wren', 'What did she say?');
     await s.say('Fisher Tobias', '"Eat something green once a week."');
     await s.wait(0.8);
     await s.say('Fisher Tobias', 'Then she stood on the dock a long while, not saying the rest of it. I expect you can fill that part in yourself.');
@@ -93,7 +93,7 @@ export const PORT = {
     s.face('player', 'down');
     await s.say('Sable', 'They are looking for me.');
     await s.say('Ilse', 'They don\'t know that. They know "black hair". ...Which, I grant you, is a start.');
-    await s.say('Ilse', '...How does he know she came ashore on Lanternfall? It\'s been four days. Nobody\'s crossed the strait but us.');
+    await s.say('Ilse', 'How does he know she came ashore on Lanternfall? It\'s been four days. Nobody\'s crossed the strait but us.');
     await s.say('Wren', 'Gulls? Gossip? Lanternfall gossip could cross an ocean.');
     await s.say('Ilse', 'Mm.');
     s.face(pc('ilse'), 'right');
@@ -196,7 +196,7 @@ export const PORT = {
     s.show('mags', true);
     // Bram goes quiet.
     await s.wait(0.6);
-    await s.say('Ilse', 'Bram hasn\'t said a word in an hour. Is that a record? I feel like we should write it down.');
+    await s.say('Ilse', 'Bram hasn\'t said a word in an hour. Is that a record? We should write it down.');
     s.face('player', pc('bram'));
     await s.say('Wren', 'Bram. You know them. Thorne\'s Own.');
     await s.wait(1.0);
@@ -237,7 +237,7 @@ export const PORT = {
     }
     await s.say('Old Osric', 'Halloway, did you say? Red hair, Lanternfall accent... You\'re Edrin\'s girl.');
     await s.say('Wren', 'You knew my dad?');
-    await s.say('Old Osric', 'Sold him that compass on your belt. Off this very pier, twenty years back. He haggled me down to nothing and then paid full price anyway, because he felt bad. Daft man. Lovely man.');
+    await s.say('Old Osric', 'Sold him that compass on your belt. Off this very pier, twenty years back. He haggled me down to nothing and then paid full price anyway, because he felt bad. Daft man. I liked him.');
     await s.say('Old Osric', 'He brought a girl over from the island, that summer. Braid down to here. Never said two words to me.');
     await s.say('Old Osric', 'Danced till dawn on the pier, the pair of them, to a fiddler who only knew one song. Then she went home and never came back across.');
     await s.wait(0.8);
@@ -322,7 +322,7 @@ export const PORT = {
 
   async odileMessage(s) {
     s.setFlag('c2_odile_done');
-    await s.say('Odile', 'You\'ve been to the wold. I can see it on you. People come back from that forest looking like they\'ve been listening too hard.');
+    await s.say('Odile', 'You\'ve been to the wold. People come back from that forest looking like they\'ve been listening too hard.');
     await s.say('Wren', 'We heard him. Jory. By the black pond.');
     await s.wait(0.8);
     await s.say('Odile', '...Go on.');
@@ -332,7 +332,7 @@ export const PORT = {
     await s.say('Odile', 'Stupid boy. Stupid, lovely boy. Always had to have the last word.');
     await s.narrate('Odile leans over the lamp. For a moment she only looks at it. Then she blows it out.');
     await s.say('Odile', 'There. He\'s home. He doesn\'t need it.');
-    await s.say('Odile', 'This was his. He wore it for luck, the daft thing, and left it on the hook the day he needed it most. Take it. Somebody should be lucky in it.');
+    await s.say('Odile', 'This was his. He wore it for luck, the daft thing, and left it on the hook the day he needed it most. Take it. It still owes somebody some luck.');
     await s.give('wake_charm');
     await s.gold(300);
     await s.say('Sable', 'The voices in the trees. They were not cruel. They were only... unfinished.');
@@ -417,7 +417,7 @@ export const PORT = {
     await s.say('Hesketh', 'Since then I\'ve been a lamp-keeper, a fisherman, a husband, a widower, a cook and a namer of logs. Not one of those was on my hand.');
     await s.say('Hesketh', 'The light tells you what you are at sixteen, girl. It doesn\'t tell you what you\'ll _do_ about it.');
     await s.wait(0.6);
-    await s.say('Hesketh', 'One more thing. Down on the cove there\'s three stone cairns, west of the goat path. Marit\'s things are under the third one. Her ring. I buried it the year she went.');
+    await s.say('Hesketh', 'One more thing. Down on the cove there\'s three stone cairns, west of the goat path. Marit\'s things are under the third one, farthest west. Her ring. I buried it the year she went.');
     await s.say('Hesketh', 'She\'d hate it in the dark. Take it. Somebody should wear it in the light.');
     s.setFlag('c2_cairn_tip');
     s.quest('c2_cairn', 'Marit\'s Ring', 'Hesketh buried his late wife\'s ring under the third cairn on the cove, west of the goat path. He wants someone to wear it in the light.');
@@ -454,7 +454,7 @@ export const PORT = {
   },
 
   async gullLight(s) {
-    await s.narrate(['The Gull Light: a stubby tower of whitewashed stone, streaked with twenty years of gulls.', 'The lamp room is dark. Through the salt-fogged glass you can just make out a great brass lamp, its wick trimmed and waiting, as if someone means to come back.']);
+    await s.narrate(['The Gull Light: a stubby tower of whitewashed stone, streaked with twenty years of gulls.', 'The lamp room is dark. Through the salt-fogged glass you can make out a great brass lamp, its wick trimmed and waiting.']);
     if (s.flag('c2_hermit_met')) await s.say('Sable', 'He said he cannot climb the stairs. But someone trims the wick.');
   },
 };

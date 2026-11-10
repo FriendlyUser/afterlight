@@ -11,7 +11,7 @@ ITEMS.c9_lift_key = { name: 'Boneyard Lift Key', kind: 'key', desc: 'Mags\'s key
 ITEMS.c9_permit = { name: 'Odessa\'s Mining Permit', kind: 'key', desc: 'Stamped in violet ink: ADMIT BEARERS. DO NOT DIE ON MY PROPERTY.', icon: '✪' };
 ITEMS.c9_pilgrim_clock = { name: 'Pilgrim\'s Clock', kind: 'key', desc: 'A brass carriage clock from the Benediction. It stopped at seven minutes past the end of the world.', icon: '✪' };
 const accessory = (id, def) => { EQUIPMENT[id] = { id, slot: 'accessory', tier: 0, price: 0, ...def }; };
-accessory('c9_gamblers_ace', { name: 'Gambler\'s Ace', lck: 12, mods: { crit: 8 }, desc: 'LCK +12, crit +8%. Ferro swears it isn\'t marked.' });
+accessory('c9_gamblers_ace', { name: 'Gambler\'s Ace', lck: 12, mods: { crit: 8 }, desc: 'LCK +12, critical rate +8%. Ferro swears it isn\'t marked.' });
 accessory('c9_mags_goggles', { name: 'Mags\'s Goggles', spd: 4, immune: ['blind'], desc: 'SPD +4, immune to Blind. Too big. You\'ll grow.' });
 
 // ------------------------------------------------------------------ looks
@@ -95,7 +95,7 @@ const enemies = [
   E('c9_rustback', 'Rustback Rat', 46, { type: 'hound', color: '#8a5a3a', accent: '#c87a4a', eye: '#ff5030', seed: 46 }, {
     stats: { hp: 0.9, spd: 1.25 }, weak: ['fire', 'pierce'], poise: 2,
     skills: [['e_bite', 3], ['e_sting', 1]], drops: [['antidote', 0.3], ['scrap_gear', 0.3]], steal: ['hi_tonic', 'scrap_gear'],
-    desc: 'Rats that learned to eat rust. Their bite turns your blood a funny colour.',
+    desc: 'Rats that learned to eat rust. Their bite turns your blood a funny color.',
   }),
   E('c9_scrap_golem', 'Scrap Golem', 47, { type: 'golem', color: '#7a6a5a', accent: '#c8a050', eye: '#ffb040', seed: 47 }, {
     stats: { hp: 1.4, def: 1.5, spd: 0.75 }, weak: ['bolt', 'blunt'], resist: { slash: 0.6, pierce: 0.6 }, poise: 4,
@@ -142,7 +142,7 @@ const enemies = [
   E('c9_squall_harpy', 'Squall Harpy', 48, { type: 'bird', color: '#6a7a90', accent: '#c8d8f0', eye: '#80f0ff', size: 1.5, seed: 53 }, {
     stats: { hp: 0.9, spd: 1.35 }, weak: ['pierce', 'ice'], resist: { wind: 0.5 }, poise: 3,
     skills: [['e_gust', 2], ['e_peck', 2], ['e_thunder', 0.5]], drops: [['gale_bomb', 0.2]], steal: ['gale_bomb', 'feather_cape'],
-    desc: 'Rides the Squall the way gulls rode the sea. Screams like it, too.',
+    desc: 'Rides the Squall the way gulls rode the sea. Screams like one, too.',
   }),
   E('c9_rigging_spider', 'Rigging Spider', 48, { type: 'spider', color: '#4a4a5a', accent: '#a0b0c0', eye: '#ff6060', seed: 54 }, {
     stats: { hp: 1.1, def: 1.2 }, weak: ['fire', 'slash'], poise: 3,
@@ -206,7 +206,7 @@ const enemies = [
   E('c9_severine', 'Knight-Captain Severine', 50, { type: 'humanoid', look: 'severine', size: 2 }, {
     boss: true, stats: { hp: 13, str: 1.3, def: 1.3, spd: 1.1, exp: 9, gold: 10, cp: 4 }, weak: ['dark', 'bolt'], resist: { light: 0.3, pierce: 0.7 }, poise: 8,
     ai: 'c9_severine', summons: ['c9_sky_marine'], drops: [['sunshard_lance', 1]], steal: ['mega_tonic', 'dawn_plume'],
-    desc: 'Knight-Captain of the Steadfast. She lost an eye in the battle Corvin ran from, and has never once forgiven him.',
+    desc: 'Knight-Captain of the Steadfast. She lost an eye in the battle Corvin ran from, and has never forgiven him.',
   }),
 ];
 

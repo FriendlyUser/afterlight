@@ -63,7 +63,7 @@ export const C12 = {
     if (s.flag('c12_gate_open')) return;
     s.setFlag('c12_gate_open');
     await s.pan(20, 7, 1.2);
-    await s.narrate('The arch is sealed with light — not a door, but a single moment, hung across the gap like a curtain.');
+    await s.narrate('The arch is sealed with light: a single moment, hung across the gap like a curtain.');
     await s.say('Ilse', 'It\'s... a note. Held. Like the Lanterns used to hold the Dawnsong.');
     await s.say('Sable', 'It is the Vespersong. The first note. He never let it finish.');
     await s.say('Wren', 'Then let\'s give it something to listen to.');
@@ -155,7 +155,7 @@ export const C12 = {
     await s.say('Bram', 'Pardon us. Excuse — pardon — they will not budge. Not rudely. They just... don\'t.');
     await s.say('Corvin', 'Could go round.');
     await s.say('Ilse', 'There is no round. The steps are the only way up. I checked. Twice.');
-    await s.say('Pip', 'Could go *over*.');
+    await s.say('Pip', 'Could go _over_.');
     await s.narrate('Pip tries. He bounces off a ribbon as if it were an iron bar.');
     await s.say('Pip', '...Could not go over.');
     await s.say('Sable', 'They are waiting for the next beat of the music. The music is waiting for the next minute. The minute is waiting.');
@@ -231,7 +231,7 @@ export const C12 = {
       await s.say('Bram', '...Yes. I am.');
       await s.say('Squire Venn', 'Were you scared? Your first watch?');
       await s.say('Bram', 'I\'m scared now.');
-      await s.say('Squire Venn', '...Oh. Good. I mean — not good. But good.');
+      await s.say('Squire Venn', 'Oh. Good. I mean — not good. But good.');
       await s.say('Bram', 'Here is what someone very wise once told me. You will be afraid. Do it anyway. That\'s the whole secret. There isn\'t a better one.');
       await s.say('Squire Venn', 'Do it anyway.');
       await s.say('Squire Venn', 'Here. Take this — it\'s my squire\'s badge. Tin. Not worth much. I\'ve got a spare.');
@@ -239,7 +239,7 @@ export const C12 = {
       await s.narrate('He hasn\'t got a spare. There is a clean, pale square on his surcoat where it was pinned.');
       await s.say('Bram', '_(very quietly)_ He always did that. Gave you the thing and said he had another.');
       s.quest('c12_q_aldous', null, null, 'done');
-      s.journal('Bram met Sir Aldous at seventeen, terrified of his first watch. Bram told him what Aldous once told him. He called himself a knight. He didn\'t even stumble over it.');
+      s.journal('Bram met Sir Aldous, seventeen and terrified of his first watch. Bram told him what Aldous once told him. He called himself a knight. He didn\'t even stumble over it.');
       return;
     }
     if (s.flag('c12_q_aldous')) return s.say('Squire Venn', 'It\'s a little tin sun. I had it by the fountain, I\'m sure I did...');
@@ -248,7 +248,7 @@ export const C12 = {
     await s.wait(0.6);
     await s.say('Bram', '...');
     await s.say('Ilse', 'Bram? Bram, you\'ve gone white.');
-    await s.say('Bram', 'That\'s him. That\'s Sir Aldous. He\'s— he\'s younger than me. Look at him. He\'s a *child*.');
+    await s.say('Bram', 'That\'s him. That\'s Sir Aldous. He\'s— he\'s younger than me. Look at him. He\'s a _child_.');
     await s.say('Squire Venn', 'Squire Aldous Venn, Dawnguard. First night watch tonight. On the Lantern plaza. Which is an honor. A large honor. I am large-ly honored.');
     await s.say('Squire Venn', 'Only I\'ve lost my token. Mum gave it me. For luck. I had it by the fountain, and now...');
     await s.say('Bram', 'We\'ll find it. I— we\'ll find it. Squire.');
@@ -289,7 +289,7 @@ export const C12 = {
       s.journal('Pip made wind in Evernoon so a kid could fly his kite. He says he wasn\'t grinning. He was grinning.');
       return;
     }
-    if (s.flag('c12_q_kite')) return s.say('Tomas', ['There\'s no wind. There\'s never any wind. Do you have any wind?', '(Pip: "A Gale Bomb would do it. That pedlar at the gate sells anything that goes bang.")']);
+    if (s.flag('c12_q_kite')) return s.say('Tomas', ['There\'s no wind. There\'s never any wind. Do you have any wind?', '(Pip: "A Gale Bomb would do it. That peddler Mott, at the gate, sells anything that goes bang.")']);
     s.setFlag('c12_q_kite');
     await s.say('Tomas', 'I\'m going to fly it. I\'m going to fly it any second.');
     await s.say('Tomas', 'I\'ve been going to fly it any second for... for a really long time.');
@@ -339,7 +339,7 @@ export const C12 = {
   async dawe(s) {
     if (s.flag('c12_q_knee_done') && !s.flag('c12_q_knee_paid')) {
       s.setFlag('c12_q_knee_paid');
-      await s.say('Mother Dawe', 'She cried! She actually cried, and then she *stopped*. Do you know how long I\'ve waited for her to stop?');
+      await s.say('Mother Dawe', 'She cried! She actually cried, and then she _stopped_. Do you know how long I\'ve waited for her to stop?');
       await s.say('Mother Dawe', 'Please, take this. My mother wore it in the Thornwood. Moss grows back over anything, she used to say.');
       await s.give('regen_bangle');
       await s.say('Ilse', 'That\'s how it\'s supposed to work. It hurts, and then it stops. Nobody here remembers the second part.');
@@ -419,7 +419,7 @@ export const C12 = {
       await s.give('c12_festival_ribbon');
       return;
     }
-    return s.say('Haberdasher', ['Ribbons! Ribbons for the festival! Every color but grey.', 'Grey\'s for getting old. Nobody here needs grey.']);
+    return s.say('Haberdasher', ['Ribbons! Ribbons for the festival! Every color but gray.', 'Gray\'s for getting old. Nobody here needs gray.']);
   },
 
   // --- "Lysa's Atlas" (Wren): the bookstall.
@@ -458,7 +458,7 @@ export const C12 = {
     s.spawn('boy', 'cassian_young', 22, 34, 'down');
     await s.move('boy', [[22, 42]], 5);
     await s.say('Cass', 'Have you seen my sister? She\'s ten, she\'s got black hair and a white dress and a ribbon, it\'s always coming undone—');
-    await s.narrate('A boy of twelve, out of breath. Fair hair. Eyes the exact grey-blue of the Hierophant\'s.');
+    await s.narrate('A boy of twelve, out of breath. Fair hair. Eyes the exact gray-blue of the Hierophant\'s.');
     await s.say('Wren', '...Cassian?');
     await s.say('Cass', 'How do you know my name? Are you from the Choir? Did Father send you? No — he wouldn\'t, he can\'t leave the Lantern, not tonight—');
     await s.say('Cass', 'She went to see the purple lights. She said they were pretty. I said I\'d come with her and I didn\'t. I was eating honeycake.');
@@ -589,7 +589,7 @@ export const C12 = {
     await s.say('Cass', 'If I could stop it at the afternoon. Just before. Just the good part, forever. Then nobody would ever have to choose.');
     await s.narrate('There it is. Forty years of the Vespersong, in one sentence, in a twelve-year-old\'s mouth.');
     await s.say('Wren', '...I know. I know you would.');
-    await s.say('Wren', 'I almost did too. I gave you — I gave *him* — the Dawnstone. Because I wanted the good part back.');
+    await s.say('Wren', 'I almost did too. I gave you — I gave _him_ — the Dawnstone. Because I wanted the good part back.');
     if (has(s, 'sable')) {
       s.spawn('p_sable', lookOf(s, 'sable'), 20, 14, 'up');
       await s.move('p_sable', [[20, 13], [21, 13]], 1.4);
@@ -661,7 +661,7 @@ export const C12 = {
     await s.narrate('Above, the way up is barred by a gate of gold. To either side, a bell hangs silent — one in the west gallery, one in the east.');
     await s.follow(1.0);
     s.objective('Ring the bells in the west and east galleries to open the stair.');
-    s.journal('The Grand Lantern, as Cassian remembers it. The stair is barred. Two bells.');
+    s.journal('The Grand Lantern, as Cassian remembers it. The stair is barred. Two bells, west gallery and east.');
   },
 
   /** side: 'w' | 'e' */
@@ -670,7 +670,7 @@ export const C12 = {
     if (s.flag(flag)) return s.narrate('The bell still hums, very faintly, the note it was given.');
     await s.narrate(side === 'w'
       ? 'A bronze bell on a marble post. Before you can touch it, the statues of the gallery turn their heads.'
-      : 'A bronze bell above the writing desks. The ink in every well begins to boil, and something steps out of the light.');
+      : 'A bronze bell above the writing desks. The ink in every well boils, and something steps out of the light.');
     const r = await s.battle(side === 'w' ? 'c12_sentry_w' : 'c12_sentry_e', { bg: 'evernoon' });
     if (r !== 'win') return;
     s.setFlag(flag);
@@ -719,7 +719,7 @@ export const C12 = {
     await s.wait(0.8);
     await s.say('Sable', 'After the top. After him. What happens?');
     await s.narrate('Nobody answers right away. The fire pops.');
-    await s.say('Wren', '...I don\'t know. I don\'t think anybody gets to know that part ahead of time.');
+    await s.say('Wren', 'I don\'t know. I don\'t think anybody gets to know that part ahead of time.');
     await s.say('Sable', 'Good. I would like to not know it with you.');
     s.objective('Talk with everyone around the fire. When you\'re ready, rest by it.');
     s.journal('We made camp at the top of the stair. Corvin\'s new rule: never storm a throne on an empty stomach. Sable asked what happens after.');
@@ -820,10 +820,10 @@ const STATUES = {
     text: 'Letters. Thousands of them, from every corner of Solmere, every one answered and filed. "Dear Hierophant, my son is sick." "Dear Hierophant, the Lantern in our village has gone dim."',
   },
   wren_letters: {
-    text: 'A shelf labelled HALLOWAY, W. Every letter you ever wrote him, pressed flat. Beside each, a note in his hand: "Restless. Like L." "Asks where the sun goes. Like L." "Wants to leave the island. Like L."',
+    text: 'A shelf labeled HALLOWAY, W. Every letter you ever wrote him, pressed flat. Beside each, a note in his hand: "Restless. Like L." "Asks where the sun goes. Like L." "Wants to leave the island. Like L."',
     react: [['Wren', 'He wasn\'t writing to me. He was writing to her.'], ['Ilse', 'He was writing to both of you. That\'s worse.']],
   },
-  drafts: { text: 'A shelf labelled VESPERSONG — DRAFTS. Forty years of music. The earliest pages are in a boy\'s handwriting, with the notes drawn as little suns.' },
+  drafts: { text: 'A shelf labeled VESPERSONG — DRAFTS. Forty years of music. The earliest pages are in a boy\'s handwriting, with the notes drawn as little suns.' },
   unsent: {
     text: 'An unfinished letter on the desk: "Dear Wren — By the time you read this, the sun will have stopped, and you will never have to lose anyone again. I\'m sorry it had to be your mother\'s Dawnstone. I\'m sorry for—" Nothing more. The ink has dried on the nib.',
     react: [['Corvin', 'Didn\'t finish the sorry. Man never could.']],
@@ -878,7 +878,7 @@ const CAMP = {
       await s.say('Wren', 'And?');
       await s.say('Sable', 'Half an inch. Since the Kindling, I have grown half an inch.');
       await s.say('Sable', 'In Evernoon I would be sixteen forever. Never older. Never anything.');
-      await s.say('Sable', 'I want the other halves. All of the inches. I want grey hair. Corvin has some. He says it is terrible. I think it is the best thing I have ever seen.');
+      await s.say('Sable', 'I want the other halves. All of the inches. I want gray hair. Corvin has some. He says it is terrible. I think it is the best thing I have ever seen.');
       await s.say('Wren', 'Don\'t tell him that.');
       await s.say('Sable', 'I told him. He went very quiet and gave me his hat.');
       await s.wait(0.8);

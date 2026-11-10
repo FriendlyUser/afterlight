@@ -64,7 +64,7 @@ export const SIDE = {
   async vaultDoor(s) {
     await s.narrate('A bronze door, green with age, is set into the wall. Carved above it: *THE DAWN WAKES LOW, CLIMBS HIGH, RESTS BETWEEN, AND RISES.*');
     if (s.flag('c3_peal_known')) await s.say('Wren', 'That\'s Tolliver\'s Dawn Peal! Low, high, middle, high.');
-    else await s.say('Ilse', 'Three bells over there. Low, middle, high, by the sound of them. It\'s an order.');
+    else await s.say('Ilse', 'Three bells over there. Low, middle, high, by the sound of them. The carving is the order to ring them in.');
   },
 
   async ringVaultBell(s, note) {
@@ -93,14 +93,14 @@ export const SIDE = {
     if (!s.flag('c3_pages_quest')) return SIDE.quillStart(s);
     const n = s.state.inventory.count('c3_chronicle_page');
     if (n >= 4) return SIDE.chronicle(s);
-    return s.say('Quill', [`${n} of four. My heart is old, Page, but it is patient.`, 'One misfiled on these shelves, one in the alcove, and two that went down below the city with the careless and the dead.']);
+    return s.say('Quill', [`${n} of four. My heart is old, Page, but it is patient.`, 'One misfiled on these shelves, one in the alcove, and two that went down into the Undercroft with the careless and the dead.']);
   },
 
   async quillStart(s) {
     s.setFlag('c3_pages_quest');
     await s.say('Quill', 'The Hierophant\'s guests. He said _all_ of the archives. All. He was quite specific, which he never is.');
     await s.say('Quill', 'You\'re looking for something about the young lady? The one with the... remarkable face?');
-    await s.say('Sable', 'I don\'t know what I\'m looking for.');
+    await s.say('Sable', 'I do not know what I am looking for.');
     await s.say('Quill', 'Then you\'ll fit right in. Nobody here does.');
     await s.say('Quill', 'Here is a puzzle for you, then. The _Chronicle of the Long Night_ — the account of the night the Grand Lantern went dark, forty years ago this autumn.');
     await s.say('Quill', 'It is the one book in this archive I have never seen whole. Four pages missing. Borrowed, torn, lost — one went down into the Undercroft with a careless deacon, they say.');
@@ -137,8 +137,8 @@ export const SIDE = {
     await s.say('Quill', 'Who would do that to a forty-year-old book? The names are the only part of a chronicle that is _true._ Everything else is somebody\'s opinion.');
     await s.say('Sable', 'The girl\'s name was Lysa. It is on a wall, under the city. There was a candle.');
     await s.wait(1.4);
-    await s.say('Quill', '...Then someone has been very careful for a very long time.');
-    await s.say('Quill', 'Here. For your trouble — and for your eyes, which are better than mine. A scholar\'s monocle; it makes the world give up its lessons a little faster. And a Crest Tome I have been saving for someone who deserved it.');
+    await s.say('Quill', 'Then someone has been very careful for a very long time.');
+    await s.say('Quill', 'For your trouble — and for your eyes, which are better than mine. A scholar\'s monocle; it makes the world give up its lessons faster. And a Crest Tome I have been saving for someone who deserved it.');
     await s.give('scholars_monocle');
     await s.give('crest_tome');
     s.quest('c3_chronicle', null, null, 'done');
@@ -153,7 +153,7 @@ export const SIDE = {
     if (s.has('c3_sir_pounce')) return SIDE.catReturn(s);
     if (s.flag('c3_cat_quest')) return s.say('Orsolya', ['Up on the roofs above the Bell Market, the last time anyone saw him. Very orange. Very large. Very rude.']);
     s.setFlag('c3_cat_quest');
-    await s.say('Orsolya', 'Oh — visitors. Forgive me, I\'m not myself today. Sir Pounce has gone up on the rooftops again, and he will not come down.');
+    await s.say('Orsolya', 'Oh — visitors. Forgive me, I\'m not myself today. Sir Pounce has gone up on the roofs above the Bell Market again, and he will not come down.');
     await s.say('Orsolya', 'He\'s very large and very orange. You can\'t miss him, though people do try.');
     if (inParty(s, 'bram')) {
       await s.narrate('Bram has gone still. He is looking at the old armor on its stand by the wall — and the sunburst on the breastplate, notched by some long-ago blade.');
@@ -176,7 +176,7 @@ export const SIDE = {
     await s.narrate('An enormous orange cat regards you from the ridge of the thatch with an expression of total contempt.');
     await s.say('Sable', 'Cat.');
     await s.say('Wren', 'Sable, careful, he might—');
-    await s.narrate('Sable picks him up. He goes entirely limp and begins to rumble like a distant cart.');
+    await s.narrate('Sable picks him up. He goes entirely limp and rumbles like a distant cart.');
     await s.say('Sable', 'He is very warm. He vibrates.');
     await s.say('Pip', 'That\'s a purr. Have you never— no. You haven\'t, have you.');
     await s.say('Sable', '_Purr._ I will remember that word.');
@@ -204,7 +204,7 @@ export const SIDE = {
       await s.say('Orsolya', 'Then prove him wrong. Or don\'t. But you\'ll have to live long enough to find out which.');
       await s.say('Orsolya', 'Here. His signet. It\'s no use to anyone in a drawer, and he never meant it for a drawer.');
       await s.give('c3_venn_signet');
-      await s.say('Bram', '...It\'s too big for me. I\'ll wear it on a cord.');
+      await s.say('Bram', 'It\'s too big for me. I\'ll wear it on a cord.');
       await s.say('Orsolya', 'For now.');
       s.journal('Dame Orsolya Venn — Sir Aldous\'s widow — gave Bram her husband\'s signet. Bram wears it on a cord around his neck and keeps touching it when he thinks nobody\'s looking.');
     } else {
@@ -285,7 +285,7 @@ export const SIDE = {
       await s.say('Posy', 'I\'ll remember this, Pipkin Tallow. I remember EVERYTHING.');
       return;
     }
-    if (s.state.gold < 3) { await s.say('Wren', 'I... don\'t actually have three coppers.'); return; }
+    if (s.state.gold < 3) { await s.say('Wren', 'I... don\'t have three coppers.'); return; }
     s.setFlag('c3_posy_paid');
     await s.gold(-3, true);
     await s.say('Posy', 'Paid in full! Pleasure doing business. Here — dawnbells, for your trouble. Chew one if you lose your voice.');
@@ -316,7 +316,7 @@ export const SIDE = {
       return;
     }
     s.setFlag('c3_spar_won');
-    await s.say('Hollis', '...Yield! I yield. Dawn and daylight, Kestrel. Where did _that_ come from?');
+    await s.say('Hollis', 'Yield! I yield. Dawn and daylight, Kestrel. Where did _that_ come from?');
     await s.say('Bram', 'It\'s easier when it doesn\'t matter.');
     await s.say('Hollis', 'Is it?');
     await s.wait(1.0);
@@ -332,7 +332,7 @@ export const SIDE = {
     await s.say('Wren', 'Rowan? Hettie\'s Rowan? We\'re getting you out.');
     await s.say('Rowan', 'Hettie. Tell Hettie... I\'m sorry about the bread. I couldn\'t lift it. I couldn\'t lift anything.');
     await s.narrate('The lock on the cell door is a knot of violet light. When Wren touches it, it is cold enough to burn.');
-    await s.say('Sable', 'It is a Gloam-seal. It won\'t open while the one who made it is awake.');
+    await s.say('Sable', 'It is a Gloam-seal. It will not open while the one who made it is awake.');
     if (!s.flag('c3_rowan_found')) {
       s.setFlag('c3_rowan_found');
       if (s.flag('c3_rowan_quest')) s.quest('c3_rowan', null, 'Rowan is alive, locked in a Gloam-sealed cell in Mercy\'s laboratory. The seal won\'t break while its maker is awake.');
@@ -341,7 +341,7 @@ export const SIDE = {
 
   async childrenPen(s) {
     if (s.flag('c3_mercy_down')) return s.narrate('The pen is empty. Someone has scratched a crown into the wall, very small, with a stone.');
-    await s.narrate('Behind the bars, three children sit close together under one grey blanket.');
+    await s.narrate('Behind the bars, three children sit close together under one gray blanket.');
     await s.say('Nell', 'Pip...?');
     if (inParty(s, 'pip')) {
       await s.say('Pip', 'NELL! Nell, I\'m here, I— this lock, it\'s— _ow!_ It\'s cold, it bit me—');

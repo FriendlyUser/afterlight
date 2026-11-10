@@ -34,7 +34,7 @@ import NADIR from '../maps/layouts/side_nadir.js';
 ITEMS.side_aldous_letter = { name: 'Aldous\'s Letter', kind: 'key', desc: 'Unsent. "To my squire, whoever he turns out to be."', icon: '✪' };
 const acc = (id, def) => { EQUIPMENT[id] = { id, slot: 'accessory', tier: 0, price: 0, ...def }; };
 acc('side_ashwatch_ring', { name: 'Ashwatch Signet', def: 12, res: 12, mods: { counter: 15 }, desc: 'A commander\'s ring. DEF/RES +12, counter 15%.' });
-acc('side_harrow_fang', { name: 'Harrow\'s Fang', str: 18, mods: { crit: 12 }, desc: 'STR +18, critical +12%. The Lodge\'s founder, avenged.' });
+acc('side_harrow_fang', { name: 'Harrow\'s Fang', str: 18, mods: { crit: 12 }, desc: 'STR +18, critical rate +12%. The Lodge\'s founder, avenged.' });
 acc('agathes_bell', { name: 'Agathe\'s Bell', autoStatus: ['veil'], mods: { evade: 5 }, desc: 'Start battles with Veil (dodge two attacks). It rings very quietly.' });
 acc('black_star_shard', { name: 'Black Star Shard', mag: 30, str: 30, mods: { afterglow: 30 }, desc: 'STR/MAG +30, Afterglow +30%. Hums below hearing.' });
 
@@ -88,7 +88,7 @@ const ENEMIES = [
 
   // ---------------------------------------------------------------- bounties
   E('side_bounty_bristleback', 'Bristleback', 13, { type: 'boar', color: '#5a4030', accent: '#e0c080', size: 2, seed: 51 }, boss({ stats: { hp: 7, str: 1.2 }, weak: ['pierce', 'ice'], poise: 6, ai: 'side_bristleback', drops: [['vigor_seed', 1]], desc: 'Bounty. Ate a cart. The cart was occupied.' })),
-  E('side_bounty_lanternjaw', 'Lanternjaw', 15, { type: 'angler', color: '#2a4a5a', accent: '#60c0a0', eye: '#ffe080', size: 2, seed: 52 }, boss({ stats: { hp: 7, mag: 1.25 }, weak: ['bolt', 'pierce'], resist: { ice: 0.5 }, poise: 6, ai: 'side_lanternjaw', drops: [['wisdom_seed', 1]], desc: 'Bounty. Its lure is the last light many travellers saw.' })),
+  E('side_bounty_lanternjaw', 'Lanternjaw', 15, { type: 'angler', color: '#2a4a5a', accent: '#60c0a0', eye: '#ffe080', size: 2, seed: 52 }, boss({ stats: { hp: 7, mag: 1.25 }, weak: ['bolt', 'pierce'], resist: { ice: 0.5 }, poise: 6, ai: 'side_lanternjaw', drops: [['wisdom_seed', 1]], desc: 'Bounty. Its lure is the last light many travelers saw.' })),
   E('side_bounty_gravelgut', 'Gravelgut', 17, { type: 'golem', color: '#7a7470', accent: '#c0a060', size: 2, seed: 53 }, boss({ stats: { hp: 8, def: 1.6, spd: 0.8 }, weak: ['bolt', 'blunt'], resist: { slash: 0.5, pierce: 0.5 }, poise: 7, ai: 'side_gravelgut', drops: [['guard_fruit', 1]], desc: 'Bounty. A cairn that got hungry.' })),
   E('side_bounty_pinch', 'The Pinch', 19, { type: 'crab', color: '#a04030', accent: '#e0a080', size: 2, seed: 54 }, boss({ stats: { hp: 8, def: 1.5 }, weak: ['bolt', 'blunt'], resist: { ice: 0.5, slash: 0.6 }, poise: 7, ai: 'side_pinch', drops: [['power_fruit', 1]], desc: 'Bounty. The toll is fingers.' })),
   E('side_bounty_mange', 'Mange', 27, { type: 'hound', color: '#4a4040', accent: '#a83232', eye: '#ff4040', size: 2, seed: 55 }, boss({ stats: { hp: 8, str: 1.2, spd: 1.2 }, weak: ['light', 'fire'], poise: 7, ai: 'side_mange', drops: [['swift_fruit', 1]], desc: 'Bounty. Still on patrol.' })),
@@ -276,7 +276,7 @@ const MAPS = [
     ...LODGE, id: 'side_lodge', name: 'The Hunters\' Lodge', region: 'Brackenmoor', mood: 'morning', music: 'town', battleBg: 'fields', treeType: 'tree_autumn',
     npcs: [
       { id: 'sill', name: 'Old Sill', look: 'sill', x: 23, y: 20, dir: 'up', run: (s) => SIDE.angler(s) },
-      { id: 'hunter1', name: 'Tamsk', look: 'side_hunter', x: 8, y: 15, wander: 2, talk: ['Bounties pay better than honest work. Also, they are honest work. Mostly.', 'Brackenmoor\'s east of here. Take the gate and mind your ankles.'] },
+      { id: 'hunter1', name: 'Tamsk', look: 'side_hunter', x: 8, y: 15, wander: 2, talk: ['Bounties pay better than honest work. Also, they are honest work.', 'Brackenmoor\'s east of here. Take the gate and mind your ankles.'] },
       { id: 'hunter2', name: 'Reyna', look: 'villager_33', x: 28, y: 12, dir: 'left', talk: ['The old man built this Lodge with his hands. Harrow. Something killed him in a hollow south of the moor.', 'Adelind won\'t post it. Says we\'re not good enough. She\'s right, which is the annoying part.'] },
     ],
     inspect: [fish(23, 19, 'river'), fish(29, 23, 'river')],

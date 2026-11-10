@@ -11,12 +11,12 @@ import { c5TideCaves, c5KeepersStair, ch5Lantern } from '../maps/ch5_dungeons.js
 Object.assign(ITEMS, {
   c5_kindling_tea: {
     name: 'Kindling Tea', kind: 'consumable', price: 0, sell: 120, icon: '☕', battle: true, field: true,
-    desc: 'Nana Brisa\'s brew for the night before every hard thing. Restores 1,200 HP and 60 MP to the party.',
+    desc: 'Restores 1,200 HP and 60 MP to the party. Nana Brisa\'s brew for the night before every hard thing.',
     use: { target: 'allies', heal: 1200, mp: 60 },
   },
   c5_ysolde_bread: {
     name: 'Ysolde\'s Bread', kind: 'consumable', price: 0, sell: 5, icon: '◒', battle: true, field: true,
-    desc: 'Dense, a little burnt. Not as good as Nana\'s. Restores 800 HP.',
+    desc: 'Restores 800 HP. Dense, a little burnt. Not as good as Nana\'s.',
     use: { target: 'ally', heal: 800 },
   },
 });

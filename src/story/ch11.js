@@ -349,7 +349,7 @@ export const CH11 = {
         : ['Sir Bram Kestrel. I keep saying it under my breath.', 'Garrick is at the Grand Lantern. I\'m still scared of him. That\'s alright. I\'m scared of lots of things. I go anyway now.']);
     }
     if (s.flag('c11_shard_frost') && !s.flag('c11_vigil_open')) return RITES.bramAsk(s);
-    if (s.flag('c11_shard_grand')) return s.say('Bram', ['I beat him. Garrick. On my own, with my own hands, and they were shaking the whole time.', 'I think that\'s the trick. Nobody tells you the trick is that your hands shake the whole time.']);
+    if (s.flag('c11_shard_grand')) return s.say('Bram', ['I beat him. Garrick. On my own, with my own hands, and they were shaking the whole time.', 'I think that\'s the trick. Nobody tells you your hands shake the whole time.']);
     if (s.flag('c11_grand_open')) return s.say('Bram', ['The Grand Lantern. Garrick. I\'ve been dreaming about his voice for a year.', 'Don\'t let me do anything stupid. Or do. I haven\'t decided.']);
     return s.say('Bram', ['I stand up here at the bow because it\'s the first place anything will hit us. Very knightly.', 'Also the wind is nice. Don\'t tell anyone the second part.']);
   },

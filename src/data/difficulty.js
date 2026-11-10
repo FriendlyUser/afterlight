@@ -8,7 +8,7 @@ export const DIFFICULTIES = [
   },
   {
     name: 'Normal', hp: 1, dmg: 1,
-    desc: 'The intended challenge. Learn each foe\'s weaknesses, Break them, and bosses will test your build.',
+    desc: 'The intended challenge. Learn each foe\'s weaknesses and Break them; bosses will test your build.',
   },
   {
     name: 'Hard', hp: 1.3, dmg: 1.25,

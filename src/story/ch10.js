@@ -55,7 +55,7 @@ export const CH10 = {
     ]);
     await s.say('Mags', '_(from somewhere far above)_ I\'ll keep her circling! If you\'re not back by the Long Bell I\'m coming in after you, and I WILL scratch the paint!', { portrait: false });
     await s.say('Corvin', 'She means it about the paint.');
-    await s.say('Corvin', 'Huh. Always wanted to see the sun up close. Thought it\'d be bigger.');
+    await s.say('Corvin', 'Always wanted to see the sun up close. Thought it\'d be bigger.');
     await s.say('Pip', 'It\'s the *biggest piece*.');
     await s.say('Corvin', 'Like I said.');
     await s.say('Ilse', 'It\'s warm. The ground is warm. Nothing\'s been warm for a year.');
@@ -112,7 +112,7 @@ export const CH10 = {
     await s.say('Wren', '...Then we stop them.');
     uncrowd(s);
     s.objective('Find the three clocks that still tick (west wing, east wing, north-west gallery) and stop them at noon.');
-    s.journal('The Spire is full of clocks, all stopped at noon. Three are still ticking. To reach Sable, we have to stop them ourselves.');
+    s.journal('The Spire is full of clocks, all stopped at noon. Three are still ticking: west, east, and up in the gallery. To reach Sable, we have to stop them ourselves.');
   },
 
   async clock(s, which) {
@@ -156,14 +156,14 @@ export const CH10 = {
   async echo_east(s) {
     s.spawn('composer_e', 'cassian', 35, 27, 'down');
     s.music('sad');
-    await s.narrate('A younger man, already grey at the temples, at a desk heaped with music. Night outside. A single candle.');
+    await s.narrate('A younger man, already gray at the temples, at a desk heaped with music. Night outside. A single candle.');
     await s.say('Cassian', 'Forward, the Dawnsong calls the sun up. Backward...');
     await s.say('Cassian', 'Backward, it might hold it still. Just one afternoon. Just one.');
     await s.narrate('He writes. Crosses it out. Writes again.');
     await s.say('Cassian', 'Forgive me, Father. I am going to save the wrong thing too.');
     s.remove('composer_e');
     s.music('cassian');
-    await s.say('Corvin', 'He knew. Even then. He knew it was the wrong thing.');
+    await s.say('Corvin', 'He knew. Even then.');
     await s.say('Bram', 'Knowing doesn\'t stop anybody. Believe me.');
   },
 
@@ -189,10 +189,10 @@ export const CH10 = {
     s.stopMusic(0.5);
     await s.pan(21, 7, 1.2);
     await s.narrate('On the dais, a figure of gold rises from its knees: a winged statue with a clock where its face should be. All twelve numerals are blank but one.');
-    await s.say('Corvin', 'Let me guess. It counts to twelve.');
+    await s.say('Corvin', 'Don\'t tell me. It counts to twelve.');
     await s.say('Ilse', 'And then it\'s noon.');
     await s.say('Pip', 'And then we\'re dead?');
-    await s.say('Bram', 'Don\'t be there at twelve. Got it. Excellent plan. Love it.');
+    await s.say('Bram', 'Don\'t be there at twelve. Got it. Excellent plan.');
     await s.follow(0.5);
     const r = await s.battle('c10_boss_warden', { bg: 'temple' });
     if (r !== 'win') return;
@@ -236,7 +236,7 @@ export const CH10 = {
     s.face('player', 'up');
     await s.narrate([
       'A girl\'s room. Paper stars on the ceiling. A ribbon on the bedpost. Jars of festival flowers on every surface, none of them wilting.',
-      'At the vanity sits a girl in white and gold, brushing her black hair in long, slow strokes. In the mirror her face comes and goes, like a candle in a draught.',
+      'At the vanity sits a girl in white and gold, brushing her black hair in long, slow strokes. In the mirror her face comes and goes, like a candle in a draft.',
     ]);
     await s.say('Wren', 'Sable?');
     await s.say('Sable', '...Cassian? You\'re late. Mama says the fireworks start at dusk.', { portrait: false });
@@ -284,7 +284,7 @@ export const CH10 = {
     await s.narrate('Sister Mercy walks out into the festival, still smiling, into the brightest part of the light — and then she is not there anymore.');
     s.face('sable_l', 'down');
     await s.say('Sable', 'Wren.');
-    await s.say('Sable', 'Someone is coming. My — his —');
+    await s.say('Sable', 'Someone is coming. My— his—');
     await flicker(s, 'sable_l', 3);
     await s.say('Sable', 'Cassian\'s home!', { portrait: false });
     await s.move('sable_l', [[5, 8]], 3);
@@ -329,7 +329,7 @@ export const CH10 = {
     // --- Ilse
     s.spawn('ana_e', 'c10_ana', 20, 25, 'right');
     await s.say('Ana Marrow', 'Ilse, sweetheart. Come and help me with the rosemary.');
-    await s.say('Ilse', 'I don\'t — I don\'t even remember her voice. I was two.');
+    await s.say('Ilse', 'I don\'t— I don\'t even remember her voice. I was two.');
     await s.say('Ilse', 'That\'s not fair. That isn\'t *fair*, that he\'d know it and I wouldn\'t.');
     // --- Bram
     s.spawn('aldous_e', 'c10_aldous', 27, 24, 'left');
@@ -344,7 +344,7 @@ export const CH10 = {
     // --- Corvin
     s.spawn('hal_e', 'c10_hal', 28, 25, 'left');
     await s.say('Hal', 'Corvin Ashe. You\'re late. You\'re *always* late.');
-    await s.say('Corvin', '...No. No, no, no. Not you. Not *you*, Hal.');
+    await s.say('Corvin', 'No. No, no, no. Not you. Not *you*, Hal.');
     // --- Sable
     s.face('cassian_e', 'sable_e');
     await s.say('Cassian', 'And you, Lysa. Mother is waiting. I am here. You never have to be cold again.');
@@ -415,7 +415,7 @@ export const CH10 = {
     await s.say('Corvin', 'Uh. Sparrow? The sky\'s coming apart.');
     await s.say('Ilse', 'She was holding it together. Without her it\'s all—');
     await s.say('Ilse', 'Here. Your coat. I\'ve been carrying it for a year. Don\'t ask.');
-    await s.say('Sable', 'I won\'t ask. I will just wear it.');
+    await s.say('Sable', 'I will not ask. I will just wear it.');
     await s.say('Sable', 'Wren.');
     await s.say('Wren', 'Yeah?');
     await s.say('Sable', 'Thank you for my name. I would like to keep it.');
@@ -440,7 +440,7 @@ export const CH10 = {
   async escapeEvernoon(s) {
     if (s.flag('c10_esc_ev')) return;
     s.setFlag('c10_esc_ev');
-    await s.narrate('Evernoon is unravelling. Where the sky was, there are seams of violet dark. The puppets stand frozen mid-sentence, and the Gloam is coming in through the gaps between their words.');
+    await s.narrate('Evernoon is unraveling. Where the sky was, there are seams of violet dark. The puppets stand frozen mid-sentence, and the Gloam is coming in through the gaps between their words.');
     await s.say('Sable', 'The gate. South. The way you came in.');
   },
 
@@ -491,7 +491,7 @@ export const CH10 = {
     crowd(s, { ilse: [35, 7, 'right'], bram: [35, 9, 'right'], pip: [36, 10, 'right'], corvin: [34, 8, 'right'], sable: [37, 9, 'right'] });
     s.shake(0.5, 2.0);
     s.music('afterlight');
-    await s.narrate('Out of the bruised dark, engines howling, comes the Halcyon — listing, scorched, trailing smoke, and absolutely beautiful.');
+    await s.narrate('Out of the bruised dark, engines howling, comes the Halcyon — listing, scorched, trailing smoke, and beautiful.');
     await s.say('Mags', 'DID SOMEBODY ORDER A SHIP?', { portrait: false });
     await s.say('Corvin', 'MAGS! You magnificent wrench!');
     await s.say('Mags', 'I scratched the paint! I\'m putting it on your tab!', { portrait: false });
@@ -508,19 +508,19 @@ export const CH10 = {
       'They jump.',
       'For one long moment there is nothing under them at all —',
       '— and then there is a deck, and Bram landing on Corvin, and Pip landing on Bram, and Ilse landing on her feet because of course she does.',
-      'Behind them the Noon Spire stands, white and untouched. The circle of blue sky at its top dims, just slightly. Then it steadies again.',
+      'Behind them the Noon Spire stands, white and untouched. The circle of blue sky at its top dims, slightly. Then it steadies.',
     ]);
     await s.fadeOut(0.6, '#000000');
-    await s.say('Sable', 'The sky is the wrong colour.', { portrait: false });
-    await s.say('Pip', 'It\'s been the wrong colour for a year.', { portrait: false });
-    await s.say('Sable', 'I know. I like it. It is the colour of _after_.', { portrait: false });
+    await s.say('Sable', 'The sky is the wrong color.', { portrait: false });
+    await s.say('Pip', 'It\'s been the wrong color for a year.', { portrait: false });
+    await s.say('Sable', 'I know. I like it. It is the color of _after_.', { portrait: false });
     await s.say('Wren', 'What was it like? In there?', { portrait: false });
     await s.say('Sable', 'Warm. All the time. Like a hand on your forehead when you are sick.', { portrait: false });
     await s.say('Sable', 'I do not want to be held like that. I want to be let go of. A little at a time.', { portrait: false });
     await s.say('Corvin', '...Kid\'s a natural.', { portrait: false });
     await s.say('Ilse', 'Seven Shards. He\'s going after every piece of the sun.', { portrait: false });
     await s.say('Bram', 'Then we get there first.', { portrait: false });
-    await s.say('Wren', 'All seven. Before he does.', { portrait: false });
+    await s.say('Wren', 'All seven.', { portrait: false });
     s.setFlag('act3');
     s.journal('We got Sable back. She chose her own name, and then she jumped. Cassian is going after the seven Shards. So are we.');
     // Chapter 11's card plays aboard the Halcyon, after its opening narration (CH11.deckEnter).

@@ -67,7 +67,7 @@ export const ENEMY_LIST = [
   E('pg_umbral_hound', 'Umbral Hound', 76, { type: 'hound', color: '#1c1630', accent: '#8a6aff', eye: '#d0b0ff', seed: 21 }, {
     stats: { hp: 1.0, spd: 1.2 }, weak: ['light', 'fire'], resist: { dark: 0.5 },
     skills: [['e_bite', 3], ['e_howl', 1], ['e_darkwave', 1]], drops: [['gloam_dust', 0.5], ['hi_tonic', 0.2]], steal: ['hi_tonic', 'gloam_shard'],
-    desc: 'Not a hound. The rumour of one — the feeling of being followed home, given teeth.',
+    desc: 'Not a hound. The rumor of one — the feeling of being followed home, given teeth.',
   }),
   E('pg_murk_ooze', 'Murk Ooze', 76, { type: 'slime', color: '#2c1c40', eye: '#ff80d0', seed: 22 }, {
     stats: { hp: 1.4, def: 0.7, res: 1.4 }, weak: ['fire', 'light'], resist: { dark: -1, blunt: 0.5 },
@@ -99,12 +99,12 @@ export const ENEMY_LIST = [
   E('pg_eye_below', 'Eye of Below', 79, { type: 'eye', color: '#3a2a58', eye: '#ffe060', seed: 27 }, {
     stats: { hp: 0.9, mag: 1.3, evade: 6 }, weak: ['pierce', 'light'],
     skills: [['e_dark', 2], ['e_gravity', 1], ['e_stun', 1]], drops: [['eye_drops', 0.4], ['hi_ether', 0.15]], steal: ['eye_drops', 'hunters_eye'],
-    desc: 'It has been looking up for a very long time, waiting for something to fall.',
+    desc: 'It has been looking up for a long time, waiting for something to fall.',
   }),
   E('pg_gloam_golem', 'Gloamcrystal Golem', 79, { type: 'golem', color: '#4a2a6a', accent: '#c080ff', eye: '#ff80ff', seed: 28 }, {
     stats: { hp: 1.5, def: 1.6, spd: 0.75 }, weak: ['blunt', 'bolt'], resist: { slash: 0.5, pierce: 0.5, dark: 0.5 }, poise: 5,
     skills: [['e_crush', 2], ['e_quake', 1], ['e_shell', 1]], drops: [['gloam_shard', 0.3]], steal: ['gloam_shard', 'guard_fruit'],
-    desc: 'Gloam that sat still long enough to crystallise, then got up again.',
+    desc: 'Gloam that sat still long enough to crystallize, then got up again.',
   }),
 
   // ===================================================== Band 3 — the Drowned Ruins (B8–B11, Lv 82)
@@ -209,7 +209,7 @@ export const ENEMY_LIST = [
   E('pg_primordial_ooze', 'Primordial Ooze', 94, { type: 'slime', color: '#f4ece0', eye: '#c0a060', seed: 53 }, {
     stats: { hp: 1.8, def: 0.6, res: 1.6 }, weak: ['fire', 'dark'], resist: { slash: 0.5, pierce: 0.5, blunt: 0.5, ice: 0.5, bolt: 0.5, wind: 0.5, light: 0.5 }, poise: 4,
     skills: [['attack', 2], ['e_mpdrain', 1], ['e_poison', 1]], drops: [['elixir', 0.08]], steal: ['elixir', 'vigor_seed'],
-    desc: 'Everything was this, once. It would like everything to be this again. It is very patient.',
+    desc: 'Everything was this, once. It would like everything to be this again. It is patient.',
   }),
   E('pg_sketch_beast', 'Sketch of a Beast', 94, { type: 'boar', color: '#e8e0d0', accent: '#808080', eye: '#202020', seed: 54 }, {
     stats: { hp: 1.4, str: 1.25 }, weak: ['pierce', 'dark'], poise: 5,
@@ -226,7 +226,7 @@ export const ENEMY_LIST = [
   E('pg_edge_knight', 'Edge Knight', 97, { type: 'knight', color: '#f0f0f0', accent: '#202020', weapon: 'greatsword', seed: 56 }, {
     stats: { hp: 1.5, str: 1.3, def: 1.5 }, weak: ['dark', 'bolt'], resist: { slash: 0.5, light: 0.5 }, poise: 6,
     skills: [['e_cleave', 2], ['e_slash', 2], ['e_crush', 1]], drops: [['x_tonic', 0.2]], steal: ['x_tonic', 'worldcleaver'],
-    desc: 'Where the light ended and the dark began, someone had to stand guard. This is the line, wearing armour.',
+    desc: 'Where the light ended and the dark began, someone had to stand guard. This is the line, wearing armor.',
   }),
   E('pg_unblinking', 'The Unblinking', 97, { type: 'eye', color: '#ffffff', eye: '#000000', seed: 57 }, {
     stats: { hp: 1.1, mag: 1.5 }, weak: ['dark', 'pierce'], resist: { light: -1 },
@@ -300,7 +300,7 @@ export const ENEMY_LIST = [
   }),
   E('pg_ar_pup', 'Remembered Pup', 70, { type: 'hound', color: '#2a3a50', accent: '#60c0ff', eye: '#80e0ff', seed: 82 }, {
     stats: { hp: 0.9 }, weak: ['slash', 'light'], resist: { dark: 0.5 }, skills: [['e_bite', 3], ['e_howl', 1]],
-    desc: 'Even the shadows of the shadow got an upgrade.',
+    desc: 'Even the pups came back bigger.',
   }),
   E('pg_ar_brinefang', 'Brinefang, Twice-Told', 75, { type: 'serpent', color: '#1a4a6a', accent: '#ffe0a0', eye: '#ff6040', size: 3, seed: 83 }, {
     ...BOSS, stats: { hp: 12, mag: 1.25, exp: 4, gold: 4, cp: 3 }, weak: ['bolt', 'pierce'], resist: { ice: 0, fire: 0.5 }, poise: 7,
@@ -337,7 +337,7 @@ export const ENEMY_LIST = [
   E('pg_ar_penitent', 'The Penitent, Remembered', 87, { type: 'humanoid', look: 'penitent', size: 2 }, {
     ...BOSS, stats: { hp: 15, str: 1.35, def: 1.3, exp: 5, gold: 5, cp: 3 }, weak: ['light', 'bolt'], resist: { dark: 0 }, poise: 8,
     ai: 'pg_ar_penitent', skills: [['e_slash', 3], ['e_drain', 1]], drops: [['x_ether', 1]],
-    desc: 'The black knight, the hollow mask. The Gloam remembers the armour. It does not remember who was inside.',
+    desc: 'The black knight, the hollow mask. The Gloam remembers the armor. It does not remember who was inside.',
   }),
   E('pg_ar_garrick', 'Garrick Thorne, Remembered', 90, { type: 'humanoid', look: 'garrick', size: 2 }, {
     ...BOSS, stats: { hp: 15, str: 1.4, def: 1.2, exp: 5, gold: 6, cp: 3 }, weak: ['ice', 'pierce'], poise: 8,
@@ -505,7 +505,7 @@ const KNIGHT_STANCES = {
 const DARK_FORMS = [
   { id: 'wolf', text: 'The First Dark pulls itself into the shape of a wolf — too many legs, too many teeth. (Fire and steel could find its edges.)', weak: ['fire', 'slash'], resist: { dark: -1 }, moves: [['e_rampage', 3], ['e_bite', 2], ['pg_every_edge', 1]] },
   { id: 'winter', text: 'The First Dark becomes a winter: long, white and silent. (Fire and lightning could crack it.)', weak: ['fire', 'bolt'], resist: { ice: -1, dark: -1 }, moves: [['e_icebreath', 3], ['e_frost', 2], ['pg_lightless', 1]] },
-  { id: 'sun', text: 'The First Dark wears the shape of a sun. It is the wrong colour. (Light feeds it now — shadow and ice will cut.)', weak: ['dark', 'ice'], resist: { light: -1, fire: 0.5 }, moves: [['pg_false_dawn', 3], ['e_holy', 2]] },
+  { id: 'sun', text: 'The First Dark wears the shape of a sun. It is the wrong color. (Light feeds it now — shadow and ice will cut.)', weak: ['dark', 'ice'], resist: { light: -1, fire: 0.5 }, moves: [['pg_false_dawn', 3], ['e_holy', 2]] },
   { id: 'lantern', text: 'The First Dark folds into the shape of a Lantern and sings the Dawnsong backwards. (Wind and blunt force could topple it.)', weak: ['wind', 'blunt'], resist: { dark: -1, light: 0.5 }, moves: [['e_vesper', 2], ['e_lament', 2], ['e_drain', 1]] },
 ];
 

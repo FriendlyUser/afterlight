@@ -37,11 +37,11 @@ const rootholm = {
       talk: ['The soldiers came a month back. Fifty of them, white and gold, the Hierophant\'s sun on every shield.', 'The big one with the beard didn\'t even go in. Sat on my woodpile eating our apples while his men carried the Keeper\'s light out in a box.', 'Didn\'t pay for the apples, either.'] },
     { id: 'linden', name: 'Linden', look: 'villager_44', ...at(ROOT, 'poet'), dir: 'right',
       talk: (s) => s.say('Linden', s.flag('c4b_elowen_done')
-        ? ['You\'ve seen her? Truly? Is she — is she very old?', 'Of course she is. I only meant — is she very _kind_? I always imagined she was.']
+        ? ['You\'ve seen her? Truly? Is she— is she very old?', 'Of course she is. I only meant — is she very _kind_? I always imagined she was.']
         : ['I\'m writing an epic about Keeper Elowen. Nobody in Rootholm has seen her in thirty years.', 'Some say she is four hundred years old. Some say she has turned into a tree. I have rhymed both possibilities, just in case.']) },
     { id: 'willa', name: 'Willa', look: 'villager_50', ...at(ROOT, 'tree_front'), dir: 'up', run: (s) => C4V.willa(s) },
     { id: 'wick_h', name: 'Wick', look: 'c4b_sapling', ...at(ROOT, 'child'), dir: 'down', wander: 1, cond: f('c4b_wick'),
-      talk: ['I\'m not allowed in the Tangle any more. Or near the Tangle. Or near anyone who\'s been near the Tangle.', 'Mum\'s very thorough.'] },
+      talk: ['I\'m not allowed in the Tangle anymore. Or near the Tangle. Or near anyone who\'s been near the Tangle.', 'Mum\'s very thorough.'] },
     { id: 'bryony_h', name: 'Bryony', look: 'c4b_sapling2', x: 22, y: 21, dir: 'up', cond: f('c4b_bryony'),
       talk: ['I tied a ribbon for Gran on the Memory Tree. A yellow one. She liked yellow.', 'The pretty lights in the forest weren\'t her. Ilse said. Ilse says it\'s all right to miss her anyway.'] },
     { id: 'tamsel_h', name: 'Tamsel', look: 'villager_9', x: 25, y: 13, dir: 'down', cond: f('c4b_tamsel'),

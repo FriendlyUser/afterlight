@@ -257,7 +257,7 @@ export const C12F = {
     s.spawn('cassian', 'cassian', 15, 9, 'down');
     await s.wait(0.8);
     await s.narrate('The throne. The Shards hang in the air where the King came apart, turning slowly, like the hands of a clock.');
-    await s.narrate('On the steps, a man in scorched white robes kneels where the King fell. Smaller than you remember. Greyer.');
+    await s.narrate('On the steps, a man in scorched white robes kneels where the King fell. Smaller than you remember. Grayer.');
     await s.say('Cassian', '_(barely a whisper)_ You said no.');
     await s.say('Cassian', 'To her. To her face. How could you— I couldn\'t. I never could. Not once in forty years.');
     await s.say('Wren', 'I know. That\'s why you built all this.');
@@ -453,7 +453,7 @@ export const C12F = {
     await s.say('Ilse', 'Since spring.');
     await s.say('Sable', '_(quietly delighted)_ I am going to be enormous.');
     s.face('sable_e', 'player');
-    await s.say('Sable', 'Wren. Look. I found a grey hair. One. Corvin says it is from worrying about Pip.');
+    await s.say('Sable', 'Wren. Look. I found a gray hair. One. Corvin says it is from worrying about Pip.');
     await s.say('Wren', 'Are you worried about Pip?');
     await s.say('Sable', 'Constantly. It is wonderful.');
     s.face('ilse_e', 'player');

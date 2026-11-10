@@ -38,17 +38,17 @@ export const C4M = {
     await s.say('Ilse', 'Bram? You\'ve gone quiet. You\'re never quiet.');
     await s.wait(0.8);
     await s.say('Bram', 'I\'ve been here before. My knighting trial — the Vigil. It\'s up there. On the pass.');
-    await s.say('Bram', '...It\'s fine. It\'s just a mountain. Mountains can\'t hurt you. Except by falling on you. Which they do. Up here. Regularly.');
+    await s.say('Bram', 'It\'s fine. It\'s just a mountain. Mountains can\'t hurt you. Except by falling on you. Which they do. Up here. Regularly.');
     dismiss(s, PARTY);
     s.objective('Climb the Greyspine Pass to Frosthollow monastery.');
-    s.journal('Nine days north with Oyelaran\'s caravan, and then the snow. Sable likes it. Pip has threatened to fight it. Bram has been here before — this is where his knighting trial happened.');
+    s.journal('Nine days north with Oyelaran\'s caravan, and then the snow. Sable likes it. Pip has threatened to fight it. Bram has been here before — for his knighting trial.');
   },
 
   /** The quiet ways: walk and the snow keeps still; run and it comes down. */
   async quietZone(s, back) {
     if (!s.flag('c4a_quiet_warned')) {
       s.setFlag('c4a_quiet_warned');
-      await s.narrate('Above the trail, the snow hangs in a smooth white lip, heavy as a held breath. It creaks.');
+      await s.narrate('Above the trail, the snow hangs in a smooth white lip. It creaks.');
       await s.say('Ilse', 'Nobody run. Nobody shout. Bram, that includes _humming_.');
       await s.say('Bram', 'I wasn\'t humming.');
       await s.say('Ilse', 'You were humming the Dawnguard march.');
@@ -75,7 +75,7 @@ export const C4M = {
 
   async lily(s, i) {
     s.setFlag(`c4a_lily_${i}`);
-    await s.narrate('A frost lily, pale blue and perfectly still, growing straight out of the snow.');
+    await s.narrate('A frost lily, pale blue, growing straight out of the snow.');
     if (!s.flag('c4a_lily_explained')) {
       s.setFlag('c4a_lily_explained');
       await s.say('Ilse', 'Frost lilies! They only bloom above the snowline. Nana used them for fevers and frostbite salve. Take it by the root — gently.');
@@ -92,7 +92,7 @@ export const C4M = {
   },
 
   async vigil(s) {
-    await s.narrate('A standing stone at the cliff\'s edge, carved with the Dawnguard sunburst. At its foot, a cairn of grey rocks, and a sword driven into the top of it, rusting.');
+    await s.narrate('A standing stone at the cliff\'s edge, carved with the Dawnguard sunburst. At its foot, a cairn of gray rocks, and a sword driven into the top of it, rusting.');
     if (!has(s, 'bram') || s.flag('c4a_vigil_seen')) return;
     s.setFlag('c4a_vigil_seen');
     s.music('sad');
@@ -128,9 +128,9 @@ export const C4M = {
     if (s.flag('c4a_whitefang_dead')) return;
     await s.narrate('The den reeks of old blood. Goat bones everywhere. At the back of the cave, something huge and white uncurls and lifts its head.');
     if (s.flag('c4a_vigil_seen') && has(s, 'bram')) {
-      await s.say('Bram', '...That\'s him.');
+      await s.say('Bram', 'That\'s him.');
       await s.say('Wren', 'Bram?');
-      await s.say('Bram', 'The white one. From the Vigil. He\'s — he\'s gone grey round the muzzle.');
+      await s.say('Bram', 'The white one. From the Vigil. He\'s — he\'s gone gray round the muzzle.');
       await s.say('Bram', '...So have I, a bit. Let\'s go.');
     } else {
       await s.say('Bram', 'Wolf. A very, very large wolf. Everyone stand behind me. Please.');
@@ -146,7 +146,7 @@ export const C4M = {
     if (s.flag('c4a_vigil_seen') && has(s, 'bram')) {
       await s.say('Bram', '...Huh.');
       await s.say('Bram', 'He\'s just a wolf. An old, mean wolf. I\'ve been afraid of him for three years.');
-      if (has(s, 'corvin')) await s.say('Corvin', 'That\'s the trick with monsters, big lad. Up close, they\'re mostly just tired.');
+      if (has(s, 'corvin')) await s.say('Corvin', 'That\'s the trick with monsters, big lad. Up close, they\'re mostly tired.');
     }
     s.journal('We put down Whitefang, the old white wolf of the pass. Bram looked at him for a long time.');
   },
@@ -161,7 +161,7 @@ export const C4M = {
     s.setFlag('c4a_frosthollow_arrived');
     crew(s, [['ilse', 20, 34, 'up'], ['bram', 22, 34, 'up'], ['sable', 23, 33, 'up'], ['pip', 19, 33, 'up'], ['corvin', 21, 35, 'up']]);
     await s.pan(22, 12, 1.6);
-    await s.narrate('Frosthollow clings to the mountain like a swallow\'s nest: grey stone, slate roofs heavy with snow, and above it all the bell tower that holds the Lantern.');
+    await s.narrate('Frosthollow clings to the mountain like a swallow\'s nest: gray stone, slate roofs heavy with snow, and above it all the bell tower that holds the Lantern.');
     await s.follow(1);
     s.spawn('kidrun1', 'c4a_tomas', 16, 28, 'right');
     s.spawn('kidrun2', 'c4a_lars', 15, 28, 'right');
@@ -184,7 +184,7 @@ export const C4M = {
 
   async ansel(s) {
     if (s.flag('c4a_done')) {
-      await s.say('Brother Ansel', ['Grey cloaks came back, after the snow settled. Three days later. Ten of them, very polite.', 'They climbed the tower and did something to the light. Nobody stopped them. Nobody was left who knew how.', 'It sounds different at dawn now. Flatter. Like a bell with a crack in it that only you can hear.']);
+      await s.say('Brother Ansel', ['Gray cloaks came back, after the snow settled. Three days later. Ten of them, very polite.', 'They climbed the tower and did something to the light. Nobody stopped them. Nobody was left who knew how.', 'It sounds different at dawn now. Flatter. Like a bell with a crack in it that only you can hear.']);
     } else {
       await s.say('Brother Ansel', ['The monastery stores! Everything blessed. Nothing refunded.', 'The cheese is from our own goats. The goats have opinions about this.']);
     }
@@ -216,7 +216,7 @@ export const C4M = {
     await s.say('Sister Agathe', 'Moss from the infirmary roof, woven round copper. Old novices\' trick. Keeps the blood moving and the heart stubborn.');
     await s.give('regen_bangle');
     s.quest('c4a_lilies', null, null, 'done');
-    s.journal('Sister Agathe told Ilse the light knows the job but not the person. Ilse didn\'t say anything for a whole hour. I think that\'s the most important thing anyone has said to her in years.');
+    s.journal('Sister Agathe told Ilse the light knows the job but not the person. Ilse didn\'t say anything for a whole hour.');
   },
 
   async ivo(s) {
@@ -328,7 +328,7 @@ export const C4M = {
     s.place('player', 8, 11, 'up');
     crew(s, [['ilse', 7, 11, 'up'], ['bram', 9, 11, 'up'], ['sable', 6, 11, 'up'], ['pip', 10, 11, 'up'], ['corvin', 9, 12, 'up']]);
     await s.wait(0.5);
-    await s.narrate('Six children in grey novice robes stand in two crooked rows, singing at the top of their lungs. The hymn is old and beautiful. They are murdering it.');
+    await s.narrate('Six children in gray novice robes stand in two crooked rows, singing at the top of their lungs. The hymn is old and beautiful. They are murdering it.');
     s.sfx('song');
     await s.say('Halvard', 'Lovely! Lovely. Oskar, a little less like a goat being sat on. Yrsa, a little more like anything at all. Again, from "the sun is kind"—');
     s.face('halvard_h', 'down');
@@ -366,9 +366,9 @@ export const C4M = {
     await s.say('Halvard', 'The same note, turned upside down. Sung downward instead of up. A song that doesn\'t let go of the sun — a song that _holds_ it.');
     await s.say('Halvard', 'The oldest texts have a name for the Dawnsong sung backward. Only a name: _the Vespersong_. And after the name, someone has scratched out the rest of the page.');
     if (has(s, 'pip')) {
-      await s.say('Pip', '...Vesper. Like those grey-cloak soldiers? The ones who keep sniffing after Sable?');
+      await s.say('Pip', 'Vesper. Like those gray-cloak soldiers? The ones who keep sniffing after Sable?');
       await s.wait(0.8);
-      await s.say('Halvard', '...Grey cloaks?');
+      await s.say('Halvard', '...Gray cloaks?');
     }
     await s.say('Wren', 'There\'s a mistake. There has to be. The forks were made in the Cathedral foundry — a hundred people could have touched them. Sister Mercy was _in_ the Cathedral, she could have—');
     await s.say('Ilse', 'Wren.');
@@ -398,7 +398,7 @@ export const C4M = {
       await s.say('Halvard', 'Aldous stayed in my guesthouse the night before your Vigil. He couldn\'t sleep. Kept me up till two.');
       await s.say('Halvard', 'He kept saying, "That boy is the best I\'ve trained in thirty years, Halvard, and he hasn\'t the faintest idea."');
       await s.wait(1.2);
-      await s.say('Bram', '...He never said.');
+      await s.say('Bram', 'He never said.');
       await s.say('Halvard', 'Men like Aldous never do. They say it to old monks at midnight and leave us to pass it on.');
       await s.say('Halvard', 'Consider it passed.');
       s.journal('Halvard told Bram that Sir Aldous called him the best squire he\'d trained in thirty years. Bram went outside to look at the mountains for a while.');
@@ -417,7 +417,7 @@ export const C4M = {
   async quill(s) {
     if (s.flag('c4a_done')) return s.say('Brother Quill', ['I\'m copying the Ice Score onto vellum. All of it. Before anyone else comes to "tune" anything.', 'He\'d have done it himself. He kept meaning to. He kept saying there was time.']);
     if (s.flag('c4a_halvard_met')) return s.say('Brother Quill', ['The Keeper\'s been at the score for an hour, striking that fork and listening.', 'He\'s not singing. He always sings. Even at funerals. _Especially_ at funerals.']);
-    return s.say('Brother Quill', ['The Ice Score is read from the bottom up — it rises, like the sun.', 'Twelve hundred years old. The first Keepers carved it while the glacier was still warm from their hands. That\'s the legend, anyway. Glaciers aren\'t warm. I\'ve checked.']);
+    return s.say('Brother Quill', ['The Ice Score is read from the bottom up. It rises like the sun, the Keeper says.', 'Twelve hundred years old. The first Keepers carved it while the glacier was still warm from their hands. That\'s the legend, anyway. Glaciers aren\'t warm. I\'ve checked.']);
   },
 
   async iceScore(s) {
@@ -452,8 +452,8 @@ export const C4M = {
     await s.fadeIn(0.6);
     s.music('tension');
     await s.move('tolle_n', [[5, 4]], 5);
-    await s.say('Brother Tolle', 'Up! Everyone up! Soldiers at the gate — grey cloaks, dozens of them — the Keeper says come _now_, quietly, and bring your swords!');
-    if (has(s, 'corvin')) await s.say('Corvin', 'Grey cloaks. Of course it\'s grey cloaks. It is _always_ grey cloaks.');
+    await s.say('Brother Tolle', 'Up! Everyone up! Soldiers at the gate — gray cloaks, dozens of them — the Keeper says come _now_, quietly, and bring your swords!');
+    if (has(s, 'corvin')) await s.say('Corvin', 'Gray cloaks. Of course it\'s gray cloaks. It is _always_ gray cloaks.');
     await s.move('tolle_n', [[5, 7]], 5);
     s.remove('tolle_n');
     s.objective('Go outside and find Brother Halvard.');
@@ -473,7 +473,7 @@ export const C4M = {
     await s.fadeIn(0.8);
     await s.say('Garrick', 'Brother Halvard. The Hierophant sends his regards. And his patience, which is at an end.');
     await s.say('Halvard', 'Lord-Commander Thorne. Forty soldiers, to visit a monastery of six children and an old man. Cassian\'s regards have grown heavy.');
-    await s.say('Garrick', 'The fork, Keeper. Set it in your light, and we are gone by morning. Refuse, and I set it myself, and we are gone anyway. The only thing you choose tonight is how many of your monks are standing when we go.');
+    await s.say('Garrick', 'The fork, Keeper. Set it in your light, and we are gone by morning. Refuse, and I set it myself, and we are gone anyway. All you choose tonight is how many of your monks are standing when we go.');
     await s.wait(0.8);
     await s.say('Halvard', 'This fork?');
     await s.narrate('Halvard turns and, with an old soldier\'s arm, throws the fork out over the cliff. It glints once in the lantern-light and is gone into the dark.');
@@ -563,7 +563,7 @@ export const C4M = {
     await s.say('Ilse', 'It\'s too heavy. Even for— Bram?');
     await s.wait(0.6);
     await s.say('Bram', 'Stand back.');
-    await s.narrate('Bram sets his shoulder against the biggest block. For a long moment nothing happens except Bram going red, then purple. Then the ice groans, and shifts, and topples sideways with a crash that echoes all the way down the stair.');
+    await s.narrate('Bram sets his shoulder against the biggest block. Nothing happens, except Bram going red, then purple. Then the ice groans, and shifts, and topples sideways with a crash that echoes all the way down the stair.');
     s.shake(0.4, 1.0);
     s.clearBlocker('rubble');
     await s.say('Bram', 'Ha. HA. Lifting! I\'m good at lifting. Lifting is— lifting I can _do_.');
@@ -633,7 +633,7 @@ export const C4M = {
     await s.say('Garrick', 'But you\'ve won a skirmish, children. I have forty more men on this mountain.');
     [[30, 10], [32, 10], [34, 10], [28, 11]].forEach(([x, y], i) => s.spawn(`ridge${i}`, 'vesper_soldier', x, y, 'left'));
     await s.pan(31, 11, 1.2);
-    await s.narrate('Torches crest the ridge to the east — a line of them, then another. Grey cloaks, coming down.');
+    await s.narrate('Torches crest the ridge to the east — a line of them, then another. Gray cloaks, coming down.');
     s.stopMusic(0.5);
     await s.wait(0.8);
     s.sfx('holy');
@@ -668,11 +668,11 @@ export const C4M = {
   },
 
   async aftermath(s) {
-    await s.narrate(['When they dig their way out of the stair-mouth, the ledge is gone beneath a slope of new snow, smooth as a bedsheet. The ridge is empty. No torches. No grey cloaks.', 'Far down the mountain, small dark shapes are limping east. One of them is very large, and walks like a man who is used to giving orders.']);
+    await s.narrate(['When they dig their way out of the stair-mouth, the ledge is gone beneath a slope of new snow, smooth as a bedsheet. The ridge is empty. No torches. No gray cloaks.', 'Far down the mountain, small dark shapes are limping east. One of them is very large, and walks like a man who is used to giving orders.']);
     await s.pan(19, 6, 2);
     await s.narrate('Above, the bell tower stands half-buried, leaning a little to one side. The bell is silent.');
     await s.wait(1.0);
-    await s.narrate('For a long moment, the Lantern\'s light flickers.');
+    await s.narrate('The Lantern\'s light flickers.');
     await s.wait(1.6);
     await s.narrate('...And holds.');
     await s.follow(1.2);
@@ -707,14 +707,14 @@ export const C4M = {
     await s.wait(1.0);
     await s.say('Ilse', 'Three things.');
     await s.say('Ilse', 'One: Tolle takes the children down the eastern trail, then south to Saltglass. Tamsin will take them in.');
-    await s.say('Ilse', 'Two: we warn the other Keepers. All of them. Before anyone in a grey cloak gets there first.');
+    await s.say('Ilse', 'Two: we warn the other Keepers. All of them. Before anyone in a gray cloak gets there.');
     await s.wait(0.8);
     await s.say('Ilse', 'Three—', { speed: 0.6 });
     await s.wait(1.2);
     await s.say('Ilse', '...I don\'t have a three.');
     await s.say('Wren', 'Mirefen\'s closest. Mother Osk. Then Thornwood. Then Skyreach.');
     if (has(s, 'corvin')) {
-      await s.say('Corvin', 'Mirefen. Swamps, leeches, and a Keeper older than dirt. My favorite.');
+      await s.say('Corvin', 'Mirefen. Mud, leeches, and a Keeper older than both. My favorite.');
       await s.wait(0.8);
       await s.say('Corvin', 'Had a speech ready, you know. For the bottom of the mountain. "Been a pleasure, kids. The Halcyon calls." Very moving. There was a bit with a sunset.');
       await s.say('Corvin', '...Ah, hell. Somebody has to carry the little one.');

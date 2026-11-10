@@ -52,12 +52,12 @@ export const THISTLE = {
     await s.say('Ilse', 'That— that\'s not possible. One Crest, one life.');
     await s.say('Bethan', 'Mender at sixteen. Arcanist at twenty-two, when I got bored of bandages. Ranger at thirty. Cantor at forty, to annoy a bishop.');
     await s.say('Bethan', 'And Pugilist at sixty-one, because a man in Aurenne told me I was too old to learn anything.');
-    await s.say('Bram', '...Pugilist. At sixty-one.');
+    await s.say('Bram', 'Pugilist. At sixty-one.');
     await s.say('Bethan', 'He was wrong. I showed him how wrong. Twice.');
     await s.say('Wren', 'But _how_?');
     await s.say('Bethan', 'The Lantern doesn\'t _give_ you a Crest, girl. It _finds_ one. It looks into you and picks out the loudest thing — whatever\'s ready. That\'s all a Kindling is. A first draft.');
     await s.say('Bethan', '"One Crest, one life" is a lie. A comfortable one. It keeps farmers farming and soldiers soldiering, and nobody asking awkward questions in the Cathedral.');
-    await s.say('Ilse', '_(quietly)_ ...The light knew I\'d be a Mender. I always knew I would be.');
+    await s.say('Ilse', '_(quietly)_ The light knew I\'d be a Mender. I always knew I would be.');
     await s.say('Bethan', 'Course you did, herb-girl. That\'s your loudest thing. Doesn\'t mean it\'s your _only_ thing.');
     await s.wait(0.6);
     await s.say('Bethan', 'And you. Come here, child. Give me that hand.');
@@ -87,7 +87,7 @@ export const THISTLE = {
     else await s.say('Bethan', 'Up you get. No shame losing to an old woman. I\'ve had sixty years\' more practice at being difficult.');
     await s.say('Bethan', 'Did you watch? Every few breaths I was something different. Mender. Arcanist. Pugilist. Same old woman. Different _tools_.');
     await s.say('Bethan', 'Now hold out your hands. All of you. No, the Dawnguard boy too. Don\'t sulk.');
-    await s.narrate(['She presses her thumb to each Crest in turn and hums a note so low you feel it in your teeth.', 'Your Crest grows warm. Then, for one strange instant, it feels like a door you never noticed — standing open.']);
+    await s.narrate(['She presses her thumb to each Crest in turn and hums a note so low you feel it in your teeth.', 'Your Crest grows warm. Then, for an instant, it feels like a door you never noticed — standing open.']);
     s.setFlag('crestArtLearned');
     s.setFlag('c2_sage_done');
     s.sfx('revive');
@@ -96,7 +96,7 @@ export const THISTLE = {
     await s.say('Bethan', 'Your *Primary* Crest is what you are today. It shapes your body — strength, speed, how much light can pour through you — and which weapons sit right in your hand.');
     await s.say('Bethan', 'Your *Secondary* Crest is what you\'re learning on the side. You can use its Arts in a fight, but it won\'t change your bones.');
     await s.say('Bethan', 'Every Crest grows on its own as you fight with it. Each rank teaches you an Art — or a *Support*. A habit. A knack.');
-    await s.say('Bethan', 'And here\'s the bit the Choir truly hates: a Support you\'ve learned is yours forever. Learn to counter as a Pugilist, and you\'ll still counter as a Mender. Your *Support Points* decide how many knacks you can carry at once.');
+    await s.say('Bethan', 'And here\'s the bit the Choir hates: a Support you\'ve learned is yours forever. Learn to counter as a Pugilist and you\'ll still counter as a Mender. Your *Support Points* decide how many knacks you can carry.');
     await s.say('Bethan', 'Raise two Crests to rank five and they\'ll braid into something new. I won\'t spoil it. Experiment.');
     await s.system('Open the menu: *Crests* to set Primary and Secondary Crests; *Supports* to equip learned passives. Braided (Tier II) Crests need rank 5 in two Crests.');
     await s.say('Bethan', 'And a gift. Cantor — the singer\'s Crest. Songs that steady the heart. I learned it at forty to annoy that bishop. It\'ll suit at least one of you.');
@@ -191,7 +191,7 @@ export const THISTLE = {
 
   async hedge(s) {
     if (s.flag('c2_sage_done')) return null;
-    return s.narrate('A dense hawthorn hedge. Someone has woven it very tight here, on purpose. You can smell rosemary and mint somewhere behind it.');
+    return s.narrate('A dense hawthorn hedge. Someone has woven it tight here, on purpose. You can smell rosemary and mint behind it.');
   },
 
   async yard(s) {
@@ -271,17 +271,17 @@ export const THISTLE = {
     await s.say('Red Tam', '...Dawnguard. Black trim on the shoulders. Lieutenant, name of Harrow.');
     await s.say('Red Tam', 'Rode up the Aurenne road a fortnight back. Paid in good Aurenne silver for my lads to watch the road for a black-haired girl. Sixteen-ish. Pale.');
     await s.wait(0.8);
-    await s.say('Ilse', '...A fortnight ago? Sable washed up on Lanternfall barely a _week_ ago.');
+    await s.say('Ilse', 'A fortnight ago? Sable washed up on Lanternfall barely a _week_ ago.');
     await s.say('Red Tam', 'Then somebody knew she was coming before she did, didn\'t they?');
     await s.say('Red Tam', 'Take her alive, he said. Not a bruise on her. "Unharmed." Said it twice. Made me swear on my mother. I haven\'t _got_ a mother, but I swore.');
     await s.narrate('Tam fishes a folded paper out of his vest and flicks it at Bram. The wax seal is black.');
     await s.give('c2_thorne_writ');
     await s.say('Bram', '"The girl is to be detained and conveyed to the Cathedral of Dawn. Unharmed. By order of the Lord-Commander, Garrick Thorne."', { speed: 0.8 });
-    await s.say('Bram', 'That\'s his seal. His own seal. And — the _Cathedral_. Not the barracks. The Cathedral of Dawn.');
+    await s.say('Bram', 'That\'s his seal. His own seal. And — the _Cathedral_. Not the barracks.');
     await s.say('Wren', 'The Cathedral\'s where we\'re going anyway. Cassian said the Choir\'s archives could help her.');
     await s.say('Ilse', 'Wren...');
     await s.say('Wren', 'Don\'t. He\'s the one who _sent_ us. If Thorne wants her too, it\'s because— I don\'t know. Because something\'s gone wrong. Because someone\'s lying to him.');
-    await s.say('Ilse', 'Bram, you said Thorne doesn\'t say "unharmed" about anyone. So someone told him to.');
+    await s.say('Ilse', 'Mags was right. Thorne doesn\'t say "unharmed" about anyone. So someone told him to.');
     await s.say('Bram', '...Someone he answers to. Yes.');
     await s.say('Wren', 'Then we ask Cassian who. When we get there. Okay?');
     await s.wait(0.8);

@@ -111,7 +111,7 @@ export const CH7 = {
     await s.say('Wren', 'Ilse.');
     await s.wait(1.4);
     await s.narrate('Her hands stop moving. Only for a moment.');
-    await s.say('Ilse', '...Basin\'s by the door.');
+    await s.say('Ilse', 'Basin\'s by the door.');
     await s.say('Wren', 'Ilse, it\'s me. It\'s Wren. I looked for you — after — I didn\'t know if anybody—');
     await s.say('Ilse', 'I know who it is.');
     await s.say('Ilse', 'Noll. Bed six needs his dressing changed. Bed nine needs a priest. We haven\'t got one, so she needs you to hold her hand.');
@@ -120,7 +120,7 @@ export const CH7 = {
     await s.say('Ilse', 'Three things.');
     await s.say('Ilse', 'One. This is a hospital, and you are standing in the only clean aisle. Two. I have forty-one patients, and none of them is you.');
     await s.wait(1.0);
-    await s.say('Wren', '...And three?');
+    await s.say('Wren', 'And three?');
     await s.say('Ilse', 'Three is none of your business.');
     await s.move('ilse', [[5, 7], [8, 7], [8, 4], [10, 4], [10, 3]], 3.2);
     s.face('ilse', 'up');
@@ -210,7 +210,7 @@ export const CH7 = {
     s.flash('#ffe0a0', 0.5);
     await s.wait(1.2);
     await s.narrate('The violet slows. Stops. Retreats, a little, the way the tide retreats: to gather itself.');
-    await s.say('Ilse', '...That buys him a week. Maybe less.');
+    await s.say('Ilse', 'That buys him a week. Maybe less.');
     await s.follow(0.6);
     await s.say('Ilse', 'Noll. Get my coat.');
     await s.say('Noll', 'Ward Mother, no. You made the rule. Nobody goes down there—');
@@ -269,7 +269,7 @@ export const CH7 = {
     await s.say('Sorrel', 'Then you know why I bricked it. Three good people. Mags could carry a door on her back.');
     await s.say('Ilse', 'And Pell has a week. Move the rubble.');
     await s.wait(1.0);
-    await s.say('Sorrel', '...You\'re the only one who knows how to keep them breathing. You know that? If you don\'t come back, nobody does.');
+    await s.say('Sorrel', 'You\'re the only one who knows how to keep them breathing. You know that? If you don\'t come back, nobody does.');
     await s.say('Ilse', 'Noll does. I taught him.');
     await s.say('Sorrel', 'Noll is thirteen.');
     await s.say('Ilse', 'So was I, once. It didn\'t last.');
@@ -364,7 +364,7 @@ export const CH7 = {
   async wheel(s, side) {
     const key = `c7_wheel_${side}`;
     if (s.flag(key)) return s.narrate('The sluice wheel is turned as far as it will go. Water roars somewhere behind the walls.');
-    await s.narrate('A great iron sluice-wheel, crusted with rust. A plate reads: NAVE GATE — BOTH WHEELS TO RAISE.');
+    await s.narrate('A great iron sluice wheel, crusted with rust. A plate reads: NAVE GATE — BOTH WHEELS TO RAISE.');
     if (!await s.confirm('Turn the wheel?')) return;
     s.setFlag(key);
     s.shake(0.2, 1.0);
@@ -386,7 +386,7 @@ export const CH7 = {
   async gateCheck(s) {
     if (s.flag('c7_gate_open')) return;
     await s.narrate('An iron sluice gate bars the way north. Two chains run from it into the walls — west and east.');
-    await s.say('Ilse', { if: 'party:ilse', text: 'Sluice gates have wheels. Find the wheels.' });
+    await s.say('Ilse', { if: 'party:ilse', text: 'Sluice gates have wheels. One west, one east.' });
   },
 
   async secretWall(s) {
@@ -491,7 +491,7 @@ export const CH7 = {
     await s.narrate('Shelves. Crates. Racks of little stoppered phials, each one glowing like a coal kept under ash.');
     await s.give('c7_sunsalt');
     await s.say('Ilse', 'That\'s... that\'s enough for a year. For everyone. For _everyone_—');
-    await s.narrate('Ilse laughs — once, sharp and bright, like something breaking — and then stops herself, as if she\'s been caught at something.');
+    await s.narrate('Ilse laughs — once, sharp and bright, like something breaking — and then stops herself, as if she\'s been caught.');
     await s.say('Wren', 'You\'re allowed to laugh.');
     await s.say('Ilse', 'I know what I\'m allowed. Let\'s go. Pell has a week and we\'ve used two days of it.');
     s.remove('ilse_s');
@@ -563,7 +563,7 @@ export const CH7 = {
     await s.say('Ilse', 'There. That\'s a list. Happy?');
     await s.say('Wren', 'Fenna — the scrap-trader in Ash Square — says there\'s a sellsword up at Kiteholm. Big. Blond. Drinks like a drain. Terrible at cards.');
     await s.wait(0.8);
-    await s.say('Ilse', '...That\'s either Bram, or a very specific disaster.');
+    await s.say('Ilse', 'That\'s either Bram, or a very specific disaster.');
     await s.say('Wren', 'And a boy with an eyepatch who runs a gang of orphans. Talks like a pirate.');
     await s.wait(0.8);
     await s.say('Ilse', '_Pip._');
@@ -588,7 +588,7 @@ export const CH7 = {
     s.remove('ilse_s');
     s.setFlag('c7_night', false);
     s.objective('When you are ready, ask Fenna the scrap-trader in Ash Square for passage to Kiteholm.');
-    s.journal('Ilse said she wants something. For herself. She wants to find Bram and Pip — and she said it was because she wants to, not because anybody needs her to. I wrote it down, like she said.');
+    s.journal('Ilse said she wants something. For herself. She wants to find Bram and Pip — because she wants to, not because anybody needs her to. I wrote it down, like she said.');
   },
 
   // =========================================================================
@@ -653,7 +653,7 @@ export const CH7 = {
     await s.wait(0.8);
     await s.say('Old Aurel', 'Lovely, isn\'t it? I read it to the Hierophant once, when he was a boy. He cried. I thought it was the poetry.');
     await s.wait(0.8);
-    await s.think('Wren', 'A breath held forever is a drowning. He knew. He read it as a boy and he knew.');
+    await s.think('Wren', 'A breath held forever is a drowning. He knew. He heard it as a boy and he knew.');
     await s.say('Ilse', { if: 'party:ilse', text: '_(quietly)_ Wren. Breathe.' });
     await s.say('Old Aurel', 'Take this, reader. An archivist\'s workbook. Knowledge is for spending.');
     await s.give('crest_tome');
@@ -700,12 +700,12 @@ export const CH7 = {
       return;
     }
     if (s.flag('c7_seeds_done')) return s.say('Hollis', 'Little green shoots already. Don\'t tell anyone. They\'ll want to name them after the Hierophant, and I won\'t have it.');
-    return s.say('Hollis', 'Dawnmoss, from below. If you\'re ever down there and the singing doesn\'t get you.');
+    return s.say('Hollis', 'Dawnmoss, from the Undercroft. If you\'re ever down there and the singing doesn\'t get you.');
   },
 
   // ---- The Last Bell (Osric the bellringer)
   async osric(s) {
-    if (s.flag('c7_bell_rung')) return s.say('Osric', ['Did you see them? Every face in the city, turned up.', 'Ring it again tomorrow, I think. And the day after. A city needs to know what time it is, even if the answer is always "dusk".']);
+    if (s.flag('c7_bell_rung')) return s.say('Osric', ['Did you see them? Every face in the city, turned up.', 'Ring it again tomorrow, I think. And the day after. A city needs to know what time it is, even if the answer is always "dusk."']);
     if (s.has('c7_bell_clapper')) return CH7.ringBell(s);
     if (!s.flag('c7_q_bell')) {
       s.setFlag('c7_q_bell');
@@ -736,7 +736,7 @@ export const CH7 = {
     s.music('aurenne');
     await s.narrate('All over the ruins, people stop. A woman at the well. Sorrel at the gate. A child at the soup pot. Every face in Aurenne turns up toward the sound.');
     await s.follow(1.0);
-    await s.say('Osric', '...There. Now the city knows what time it is.');
+    await s.say('Osric', 'There. Now the city knows what time it is.');
     await s.say('Wren', 'What time is it?');
     await s.say('Osric', 'Time to get on with it.');
     await s.give('ember_heart');
@@ -752,9 +752,9 @@ export const CH7 = {
       if (done < 3) return s.say('Petra', `${3 - done} still to go. Sorrel at the gate, Hollis in the garden, and the one for the Cathedral — leave it at the Lantern. Somebody up there used to answer.`);
       s.setFlag('c7_letters_done');
       await s.take('c7_letters');
-      await s.say('Petra', 'All delivered? Then my route\'s done for the first time in a year. You\'ve no idea how that feels.');
+      await s.say('Petra', 'All delivered? Then my route\'s done for the first time in a year.');
       await s.say('Petra', 'There\'s one more. It\'s been in my bag since the day before. I couldn\'t deliver it. Wrong place, you see. Lanternfall.');
-      await s.say('Petra', 'It\'s addressed to a "Wren Halloway". Choir seal. Never opened.');
+      await s.say('Petra', 'It\'s addressed to a "Wren Halloway." Choir seal. Never opened.');
       await s.wait(1.0);
       await s.say('Wren', '...That\'s me.');
       await s.say('Petra', 'I thought it might be. You read like a Halloway. Sorry. It\'s a postwoman\'s instinct.');
@@ -762,7 +762,7 @@ export const CH7 = {
       await s.narrate(['_My dear restless heart —_', '_If this reaches you, the song is sung, and you are reading by a light that never moves. I hope it is a good light. I hope your father is beside you, and that he has not aged a day._', '_You will understand, now, why I could not let the good days end. One day you will thank me. Until then — I have kept a place for you._', '_— C._']);
       await s.wait(1.2);
       if (ILSE_IN(s)) {
-        await s.say('Ilse', '...Burn it.');
+        await s.say('Ilse', 'Burn it.');
         await s.say('Wren', 'No. I\'m keeping it.');
         await s.say('Ilse', 'Why?');
         await s.say('Wren', 'So I remember what it sounds like when he\'s being kind.');
@@ -789,7 +789,7 @@ export const CH7 = {
       await s.narrate(['You leave Petra\'s letter at the foot of the Grand Lantern, weighted with a stone.', 'It is addressed: "To Whoever Is Still Listening."']);
       return;
     }
-    await s.narrate(['The Grand Lantern of Aurenne. A crack runs from the lamp-room to the foundation, wide enough to put your arm in.', 'The glass up top is dark. Not dim. _Dark_ — like an eye that has seen something it cannot stop seeing.']);
+    await s.narrate(['The Grand Lantern of Aurenne. A crack runs from the lamp-room to the foundation, wide enough to put your arm in.', 'The glass up top is dark, like an eye that has seen something it cannot stop seeing.']);
     if (ILSE_IN(s) && !s.flag('c7_lantern_ilse')) {
       s.setFlag('c7_lantern_ilse');
       await s.say('Ilse', 'People come up here to spit on it. Sorrel stopped them at first. Then she stopped stopping them.');

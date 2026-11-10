@@ -64,7 +64,7 @@ export const sgLantern = {
     { id: 'tamsin', name: 'Keeper Tamsin', look: 'tamsin', x: 7, y: 4, dir: 'down', cond: (st) => st.flags.c4a_tamsin_met, run: (s) => C4A.tamsinTalk(s) },
   ],
   inspect: [
-    { x: 7, y: 2, hint: 'The Lamp', run: (s) => s.narrate(['The lamp of Saltglass burns inside a cage of saltglass panes. The light comes out of the glass in every direction at once.', 'Up close it hums — very low, like a cat that\'s pleased with itself. Or a cat that isn\'t.']) },
+    { x: 7, y: 2, hint: 'The Lamp', run: (s) => s.narrate(['The lamp of Saltglass burns inside a cage of saltglass panes. The light comes out of the glass in every direction at once.', 'Up close it hums — low, like a cat that\'s pleased with itself. Or a cat that isn\'t.']) },
     { x: 2, y: 4, text: 'A mirror of polished saltglass. Your reflection is a half-step behind you, as if it\'s thinking things over.' },
     { x: 12, y: 7, text: 'A mirror of polished saltglass. In it, the Lantern\'s light looks like dawn. In the room, it looks like noon.' },
   ],
@@ -81,7 +81,7 @@ export const sgInn = {
       run: async (s) => { await s.say('Innkeeper Yusra', 'A cool bed, a cold supper, and a jug of real water? Sixty gold. The water alone is worth forty.'); await s.inn(60, 'the Cool Well'); } },
     { id: 'ines', name: 'Velvet Ines', look: 'c4a_ines', x: 11, y: 5, dir: 'left', run: (s) => C4A.ines(s) },
     { id: 'drunk', name: 'Caravaneer', look: 'villager_28', x: 1, y: 5, dir: 'right',
-      talk: ['The Hierophant\'s men used to ride through and bless the wells.', 'Now they ride through and _count_ them. Why would you count wells? Wells don\'t go anywhere.', '...Unless you\'re planning on needing to know where they are.'] },
+      talk: ['The Hierophant\'s men used to ride through and bless the wells.', 'Now they ride through and _count_ them. Why would you count wells? Wells don\'t go anywhere.', '...Unless you expect to need every one of them.'] },
     { id: 'amal', name: 'Amal the Lutenist', look: 'villager_19', x: 9, y: 7, dir: 'up',
       talk: ['I\'m writing a ballad about the Sunscar. So far it rhymes "sand" with "sand" eleven times.', 'Critics call it "accurate."'] },
   ],
@@ -95,7 +95,7 @@ export const sgHouse = {
   npcs: [
     { id: 'asha', name: 'Asha', look: 'c4a_asha', x: 5, y: 4, dir: 'left', run: (s) => C4A.asha(s) },
     { id: 'jorah', name: 'Jorah', look: 'c4a_jorah', x: 2, y: 4, dir: 'right', cond: jorahHome,
-      talk: ['I used to run the salt road in four days. Now I walk to the well and back and call it a day\'s work.', 'Best days of my life, both of them. Just one of them\'s got Nim in it.'] },
+      talk: ['I used to run the salt road in four days. Now I walk to the well and back and call it a day\'s work.', 'Best days of my life, then and now. Only now\'s got Nim in it.'] },
     { id: 'nim_home', name: 'Nim', look: 'c4a_nim', x: 6, y: 5, dir: 'up', cond: jorahHome, wander: 1,
       talk: ['Papa came home! He was SO dirty. Mama made him take two baths.', 'I drew you a picture. It\'s you, and the big one, and the girl with black hair, and the little one with the Crest. The little one is the biggest because he asked.'] },
   ],

@@ -75,7 +75,7 @@ const gate = {
 // =====================================================================
 const dancer = (n, look, x, y) => ({ id: `dancer${n}`, name: 'Dancer', look, x, y, dir: 'down', cond: (st) => !st.flags.c12_procession_moved, run: (s) => C12.procession(s) });
 const dancerAside = (n, look, x, y, dir) => ({ id: `dancer${n}_aside`, name: 'Dancer', look, x, y, dir, cond: f('c12_procession_moved'),
-  talk: ['The dancer smiles at you. Somewhere, very faintly, a clock is ticking.'] });
+  talk: ['The dancer smiles at you. Somewhere, faintly, a clock is ticking.'] });
 
 /** @type {import('../../types/data').MapDef} */
 const streets = {

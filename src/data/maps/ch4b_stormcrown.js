@@ -39,7 +39,7 @@ const stormfoot = {
     { ...at(FOOT, 'core2'), hint: 'Storm-seam', run: (s) => C4S.core(s, 2) },
     { ...at(FOOT, 'core3'), hint: 'Storm-seam', run: (s) => C4S.core(s, 3) },
     { x: 13, y: 12, text: 'A mooring post as thick as a man, scorched black on the side that faces the mountain. Lightning loves this place.' },
-    { x: 19, y: 8, text: 'The Halcyon\'s mainmast. Someone has carved a tally of little lightning bolts into it. Forty-one. The last one is very fresh, and very deep.', cond: f('c4b_foot_arrived') },
+    { x: 19, y: 8, text: 'The Halcyon\'s mainmast. A tally of little lightning bolts is carved into it. Forty-one. The last one is very fresh, and very deep.', cond: f('c4b_foot_arrived') },
   ],
   exits: [{ x: 0, y: 28, h: 3, to: '@world' }],
   onEnter: (s) => C4S.footArrive(s),

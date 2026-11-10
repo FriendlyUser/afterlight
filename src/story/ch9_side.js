@@ -60,7 +60,7 @@ export const CH9_SIDE = {
   // ------------------------------------------------------------------ Ox's clock
   async ox(s) {
     if (s.flag('c9_q_clock_done')) {
-      return s.say('Ox', ['Listen. Hear it? Tick. Tick.', 'Folks come by just to stand here. Little ones mostly. They never heard a clock before.']);
+      return s.say('Ox', ['Listen. Hear it? Tick. Tick.', 'Folk come by just to stand here. Little ones mostly. They never heard a clock before.']);
     }
     if (s.has('c9_pilgrim_clock')) {
       s.setFlag('c9_q_clock_done');
@@ -93,7 +93,7 @@ export const CH9_SIDE = {
   },
 
   async pilgrimClock(s) {
-    if (s.flag('c9_got_clock') ) return s.narrate('An empty shelf, ringed in brass-coloured dust.');
+    if (s.flag('c9_got_clock') ) return s.narrate('An empty shelf, ringed in brass-colored dust.');
     s.setFlag('c9_got_clock');
     await s.narrate('On the shelf above the captain\'s bunk: a brass carriage clock, its glass unbroken. The hands stand at seven minutes past the end of the world.');
     await s.give('c9_pilgrim_clock');
@@ -121,12 +121,12 @@ export const CH9_SIDE = {
       s.quest('c9_q_lonnie', 'In the Stocks', 'Lonnie owes the Ledger 1,500 gold for a goat that was a dog. Bailiff Tamm, by the Ledger House door, holds his marker.');
       return;
     }
-    return s.say('Lonnie', 'Tamm. Big fellow. Ledger House door. Smells of ink and disappointment.');
+    return s.say('Lonnie', 'Tamm. Big fellow. Ledger House door. Smells of ink.');
   },
 
   async tamm(s) {
     if (s.flag('c9_q_lonnie') && !s.flag('c9_lonnie_free')) {
-      await s.say('Bailiff Tamm', 'Lonnie\'s marker? Fifteen hundred. Cash. The Ledger doesn\'t take sympathy.');
+      await s.say('Bailiff Tamm', 'Lonnie\'s marker? Fifteen hundred. Cash.');
       if (!(await s.confirm('Pay Lonnie\'s debt? (1,500 gold)'))) return;
       if (s.state.gold < 1500) return s.say('Bailiff Tamm', 'You\'re short. I can tell. I have a gift.');
       s.state.gold -= 1500;

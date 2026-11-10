@@ -13,7 +13,7 @@ export const BOUNTIES = [
   { id: 'bristleback', act: 1, name: 'Bristleback', level: 13, troop: 'side_b_bristleback', where: 'Brackenmoor, north meadow',
     desc: 'A boar the size of a hay cart. Has eaten two fences and a cart. The cart was occupied.', gold: 600, items: [['hi_tonic', 3]] },
   { id: 'lanternjaw', act: 1, name: 'Lanternjaw', level: 15, troop: 'side_b_lanternjaw', where: 'Brackenmoor, the sunk pool',
-    desc: 'Something in the moor pool dangles a light at night. Travellers follow it. Travellers stop.', gold: 900, items: [['stone_ranger', 1]] },
+    desc: 'Something in the moor pool dangles a light at night. Travelers follow it. Travelers stop.', gold: 900, items: [['stone_ranger', 1]] },
   { id: 'gravelgut', act: 1, name: 'Gravelgut', level: 17, troop: 'side_b_gravelgut', where: 'Brackenmoor, the old cairns',
     desc: 'A cairn that got up and walked. It eats the other cairns. Bring a hammer.', gold: 1200, items: [['power_band', 1]] },
   { id: 'pinch', act: 1, name: 'The Pinch', level: 19, troop: 'side_b_pinch', where: 'Drowned Observatory, the causeway',

@@ -45,7 +45,7 @@ export const CH8 = {
     s.face('pip_s', 'left');
     s.music('sad');
     await s.wait(0.8);
-    await s.narrate('He is taller. Thinner. A scarf, a scavenged coat — and a patch over his left eye. He looks at Wren for a long time with the one that\'s left.');
+    await s.narrate('He is taller. Thinner. A scarf, a scavenged coat — and a patch over his left eye. He looks at Wren for a long time with the other.');
     await s.say('Pip', 'Well. Look what the wind dragged in.');
     await s.say('Wren', 'Pip. Your eye—');
     await s.say('Pip', 'Lost it in a card game. You should see the other guy\'s eye.');
@@ -59,7 +59,7 @@ export const CH8 = {
     await s.say('Pip', 'Rules of Kiteholm. One: Kites look after Kites. Two: you ain\'t Kites. Three: the Baron owns the air, so pay your mooring fee and don\'t make trouble.');
     await s.say('Wren', 'We came to find you. You and Bram.');
     await s.say('Pip', 'Bram.');
-    await s.narrate('Pip laughs. It is not a kid\'s laugh at all.');
+    await s.narrate('Pip laughs. It is not a kid\'s laugh.');
     await s.say('Pip', 'Bram\'s at the Rusty Anchor, or the Baron\'s door, or face-down somewhere between \'em. Go find him. He won\'t want to be found. He\'s real good at that.');
     await s.move('pip_s', [[11, 19], [13, 18]], 3.5);
     s.remove('pip_s');
@@ -171,7 +171,7 @@ export const CH8 = {
       s.quest('c8_q_hide', 'Hide and Seek', 'Find the five Kites hiding around Kiteholm: Burr, Fig, Nettle, Pim and Sprocket. Report to Tansy.');
       return;
     }
-    return s.say('Tansy', 'Toll\'s paid. You\'re fine. Don\'t touch the kites; they bite.');
+    return s.say('Tansy', 'Toll\'s paid. You\'re fine. Don\'t touch the kites. They bite.');
   },
 
   async hider(s, key, name, lines) {
@@ -221,8 +221,8 @@ export const CH8 = {
     await s.say('Pip', 'Wick and Moth went into the wreck. The _Vigil_. I saw Vesper colors on the hull. Somebody\'s using it.');
     await s.say('Wren', 'Then we go in together.');
     await s.wait(1.0);
-    await s.say('Pip', '...Fine. Kites look after Kites. You\'re temporary Kites. _Very_ temporary.');
-    await s.say('Pip', 'And nobody calls me "kid". I\'m the Boss.');
+    await s.say('Pip', 'Fine. Kites look after Kites. You\'re temporary Kites. _Very_ temporary.');
+    await s.say('Pip', 'And nobody calls me "kid." I\'m the Boss.');
     s.remove('pip_s');
     await rejoin(s, 'pip', 44, 'pip_ruin');
     s.remove('ilse_s');
@@ -255,7 +255,7 @@ export const CH8 = {
   // =========================================================================
   async wreckEntry(s) {
     s.music('tension');
-    await s.narrate('Inside the hull, everything leans. And somewhere ahead, very faintly, a music box is playing a lullaby.');
+    await s.narrate('Inside the hull, everything leans. And somewhere ahead, faintly, a music box is playing a lullaby.');
     if (IN(s, 'pip')) {
       await s.say('Pip', 'That\'s not ours. Kites don\'t do lullabies.');
       await s.say('Ilse', 'What do Kites do?');
@@ -332,7 +332,7 @@ export const CH8 = {
     s.remove('cantor');
     s.music('sad');
     s.shake(0.3, 1.0);
-    await s.narrate('The drum seizes. The pins scream across the comb. The lullaby stops in the middle of a bar — and behind you, down in the brig, a child starts to cry.');
+    await s.narrate('The drum seizes. The pins scream across the comb. The lullaby stops in the middle of a bar — and behind them, down in the brig, a child starts to cry.');
     await s.say('Pip', 'That\'s Moth. Moth always cries when she wakes up. Every time. Like it\'s a surprise.');
     await s.fadeOut(1.0);
     ['ilse_s', 'pip_s', 'wick_sl', 'moth_sl'].forEach((id) => s.remove(id));
@@ -354,7 +354,7 @@ export const CH8 = {
     await s.fadeOut(1.5);
     ['ilse_s', 'pip_s', 'wick_s', 'moth_s', 'kid_sl'].forEach((id) => s.remove(id));
     s.setFlag('c8_kids_saved');
-    s.journal('There was a machine in the wreck singing children to sleep — kept dreaming their best days for "Evernoon." We broke it. Wick dreamed it was his birthday forever. He said it was so nice.');
+    s.journal('There was a machine in the wreck singing children to sleep, so they\'d keep dreaming their best days for "Evernoon." We broke it. Wick dreamed it was his birthday forever. He said it was so nice.');
     await s.teleport('c8_kite_nest', 7, 8, 'up');
   },
 
@@ -373,8 +373,8 @@ export const CH8 = {
     await s.say('Pip', 'Tansy. Quiet. All of you, quiet.');
     await s.wait(0.6);
     await s.say('Pip', 'The Vespers are coming. Here. A knight called the Penitent. For you. All of you.');
-    await s.narrate('Twenty faces go very still. Nobody cries. That is the worst part — nobody cries.');
-    await s.say('Pip', 'So here\'s what we do. We go to the Baron. He\'s got walls and guards and a big stupid gun on his roof. He keeps the air; he can keep us.');
+    await s.narrate('Twenty faces go very still. Nobody cries.');
+    await s.say('Pip', 'So here\'s what we do. We go to the Baron. He\'s got walls and guards and a big stupid gun on his roof. He keeps the air. He can keep us.');
     await s.say('Ilse', 'And if he won\'t?');
     await s.say('Pip', 'Then he\'ll learn what twenty Kites can do to a man\'s boots.');
     s.remove('ilse_s');
@@ -408,7 +408,7 @@ export const CH8 = {
     s.remove('pip_s');
     s.remove('ilse_s');
     s.objective('Prepare Kiteholm for the raid. When ready, talk to Pip at the Kite Nest to keep watch for the night.');
-    s.journal('Baron Dask won\'t help — "children are a cost." Bram knew the Penitent from his description. He went grey. He\'s "off duty at midnight."');
+    s.journal('Baron Dask won\'t help — "children are a cost." Bram knew what the Penitent looks like before anyone told him. He went gray. He\'s "off duty at midnight."');
   },
 
   async restBeforeRaid(s) {
@@ -532,7 +532,7 @@ export const CH8 = {
     s.spawn('aldous', 'c8_aldous', 23, 17, 'down');
     s.flash('#a080ff', 0.4);
     await s.wait(1.0);
-    await s.narrate('Under it is the face of a man in his fifties. Grey beard, a broken nose healed crooked — a kind face. And the eyes are empty. Not dark. _Empty_, like the windows of a house where nobody lives.');
+    await s.narrate('Under it is the face of a man in his fifties. Gray beard, a broken nose healed crooked — a kind face. And the eyes are empty. Not dark. _Empty_, like the windows of a house where nobody lives.');
     await s.say('Bram', 'Sir... Sir Aldous?');
     await s.say('The Penitent', 'Squire Kestrel. You are late for your trial.');
     await s.say('Bram', 'You died. You _died_. I saw you die. You stepped in front of—');
@@ -590,7 +590,7 @@ export const CH8 = {
     s.face('bram_s', 'down');
     await s.say('Bram', 'I froze.');
     await s.say('Wren', 'You did. Then you fought.');
-    await s.say('Bram', 'Sir Aldous used to say courage was a thing you _do_, not a thing you _have_. "You act while you\'re afraid, lad, or you never act at all." I thought he was just being nice. He was always being nice.');
+    await s.say('Bram', 'Sir Aldous used to say courage was a thing you _do_, not a thing you _have_. "You act while you\'re afraid, lad, or you never act at all." I thought he was being nice. He was always being nice.');
     await s.say('Bram', 'I spent a year making sure I never had to find out if he was right.');
     await s.wait(1.0);
     await s.say('Wren', 'I gave Cassian the Dawnstone, Bram. I\'m the reason any of this happened. I didn\'t freeze. I ran straight at it.');
@@ -606,7 +606,7 @@ export const CH8 = {
     s.remove('bram_s');
     await s.say('Bram', 'One thing. The Penitent\'s barge went west, toward the Noon Spire. If we\'re going after Evernoon, we need wings.');
     await s.say('Bram', 'The Baron\'s been dunning an airship captain for eleven thousand silver. Holed up at a place called Corvin\'s Roost.');
-    await s.say('Wren', '..._Corvin?_ Corvin\'s alive?');
+    await s.say('Wren', '_Corvin?_ Corvin\'s alive?');
     await s.say('Bram', 'And owes everybody money. So: yes. Definitely Corvin.');
     await s.wait(0.8);
     await s.say('Ilse', 'Wren.');
@@ -615,7 +615,7 @@ export const CH8 = {
     await s.say('Wren', 'I didn\'t have to. I knew you were there.');
     await s.wait(1.2);
     await s.say('Ilse', '...I was.');
-    await s.narrate('It is not forgiveness. It is something smaller than that. But it is not nothing.');
+    await s.narrate('It is not forgiveness. But it is not nothing.');
     s.remove('ilse_s');
     s.remove('pip_s');
     s.objective('Pip wants to see you at the Kite Cliffs (east of the Nest) when he\'s on his feet.');
@@ -665,7 +665,7 @@ export const CH8 = {
     await s.say('Pip', 'Tansy. When we go — and we\'re going — who minds the Kites?');
     await s.say('Tansy', 'Me. I\'m nine and three-quarters. That\'s basically ten.');
     await s.wait(0.8);
-    await s.say('Pip', '...Yeah. Yeah, okay. Basically ten.');
+    await s.say('Pip', 'Yeah. Yeah, okay. Basically ten.');
     s.remove('tansy_s');
     s.remove('pip_s');
     await rejoin(s, 'pip', 44, 'pip_ruin', true);
@@ -728,7 +728,7 @@ export const CH8 = {
   },
 
   async bramDoor(s) {
-    if (s.flag('c8_back')) return s.say('Bram', ['Midnight. I\'m off at midnight.', '...Don\'t look at me like that. Ilse\'s already looking at me like that. There\'s only so much _that_ a man can take.']);
+    if (s.flag('c8_back')) return s.say('Bram', ['Midnight. I\'m off at midnight.', 'Don\'t look at me like that. Ilse\'s already looking at me like that. There\'s only so much _that_ a man can take.']);
     return s.say('Bram', ['I\'m on duty. Can\'t talk. Very important. Guarding.', '...Guarding a door. From people who want to come in and ask the Baron for money. It\'s mostly me telling them no.', 'I\'m good at telling people no. Started with myself.']);
   },
 
@@ -748,7 +748,7 @@ export const CH8 = {
     if (!s.flag('c8_quill_on')) {
       s.setFlag('c8_quill_on');
       await s.say('Gaffer Quill', 'Kite-wright. Glider-wright. Wright of anything that wants to be in the air and shouldn\'t be.');
-      await s.say('Gaffer Quill', 'I\'m building a glider big enough to carry the Kites off this rock if it ever cracks. I need three airship cogs. The scrap-golems below have \'em in their bellies — don\'t ask how.');
+      await s.say('Gaffer Quill', 'I\'m building a glider big enough to carry the Kites off this rock if it ever cracks. I need three airship cogs. The scrap-golems down in the Underhang have \'em in their bellies — don\'t ask how.');
       s.quest('c8_q_quill', 'The Kite-Wright', 'Gaffer Quill needs 3 Scrap Gears (scrap golems in the Underhang and the Vigil carry them) for an escape glider.');
       return;
     }

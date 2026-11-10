@@ -70,7 +70,7 @@ export const vigilWreck = {
     { id: 'moth_sl', name: 'Moth', look: 'moth', x: 20, y: 26, dir: 'up', cond: (st) => st.flags.c8_brig_seen && !st.flags.c8_engine_done,
       talk: (s) => s.narrate('Moth is asleep. Her lips move: "...so many candles..."') },
     { id: 'kid_sl', name: 'Sleeping Child', look: 'c8_kite_c', x: 24, y: 25, dir: 'up', cond: (st) => st.flags.c8_brig_seen && !st.flags.c8_engine_done,
-      talk: (s) => s.narrate('A child from another shard. You don\'t know her name. In her sleep she is holding someone\'s hand that isn\'t there.') },
+      talk: (s) => s.narrate('A child from another shard. You don\'t know her name. In her sleep she is holding a hand that isn\'t there.') },
   ],
   blockers: [{ id: 'c8_brig_door', x: 20, y: 19, w: 2, h: 1, prop: 'fence' }],
   inspect: [

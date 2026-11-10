@@ -42,7 +42,7 @@ const hold = {
     { x: 4, y: 3, text: 'Corvin\'s chart table. Under the charts, a small painting of a woman in a Dawnguard sky-wing coat, laughing at whoever held the brush. On the back: "H.M. — don\'t you DARE frame this." It is framed.' },
     { x: 2, y: 2, text: 'Corvin\'s books: "Navigation for the Reluctant," "Debts and How to Outlive Them," and a much-read book of children\'s bedtime stories with the price still on it.' },
     { x: 7, y: 2, text: 'Ilse\'s stove. Something is simmering. It smells like home, if home were mostly onions.' },
-    { x: 8, y: 2, text: 'Ilse\'s shelf: bandages rolled tight, tinctures labelled in tiny exact handwriting. One jar just says: PIP. NO.' },
+    { x: 8, y: 2, text: 'Ilse\'s shelf: bandages rolled tight, tinctures labeled in tiny exact handwriting. One jar just says: PIP. NO.' },
     { x: 20, y: 2, text: 'Nell\'s forge, built into the ship\'s boiler. It runs on coal, spite and, lately, the heat of a Sun Shard on a long chain.' },
   ],
   exits: [{ x: 11, y: 10, w: 2, to: 'halcyon_deck', tx: 13, ty: 5, dir: 'down' }],

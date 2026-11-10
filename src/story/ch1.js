@@ -12,7 +12,7 @@ export const CH1 = {
     await s.pan(9, 6, 2.4);
     await s.narrate([
       'Morning. The storm has scrubbed the sky clean.',
-      'Lanternfall has been up since before dawn: bunting on every line, the Choir\'s white boats rocking in the harbour, the Lantern swept and shining.',
+      'Lanternfall has been up since before dawn: bunting on every line, the Choir\'s white boats rocking in the harbor, the Lantern swept and shining.',
       'At noon, every sixteen-year-old on the island will step into its light. Today, Wren Halloway is sixteen.',
     ]);
     await s.follow(1.4);
@@ -37,9 +37,9 @@ export const CH1 = {
     await s.say('Bram', 'Charmed. Truly.');
     await s.say('Wren', 'What\'s your name?');
     await s.wait(1.0);
-    await s.say('???', 'I don\'t have one.');
+    await s.say('???', 'I do not have one.');
     await s.say('Ilse', 'You don\'t remember it?');
-    await s.say('???', 'I don\'t think there was one to remember.');
+    await s.say('???', 'I do not think there was one to remember.');
     await s.wait(0.8);
     await s.say('Wren', 'Then... Sable. Your hair — it\'s like a sable\'s coat. There\'s a picture in my atlas.');
     await s.wait(0.6);
@@ -145,7 +145,7 @@ export const CH1 = {
     await s.wait(0.3);
     await s.say('Bram', 'Did he just call her "Lysa"?');
     await s.say('Ilse', 'Who\'s Lysa?');
-    await s.say('Sable', 'I don\'t know. But I think I have heard it before. In the water.');
+    await s.say('Sable', 'I do not know. But I think I have heard it before. In the water.');
     s.objective('Rest in your bed at home. It has been a very long day.');
     s.journal('The Kindling. I am a Vanguard. Ilse is a Mender, like she always knew. When Sable stepped into the light, the Lantern went dark — and the Hierophant called her "Lysa."');
     s.setFlag('lfDusk');
@@ -159,13 +159,13 @@ export const CH1 = {
     if (s.flag('ch1_ready') && !s.flag('ch1_dawn')) {
       s.setFlag('ch1_dawn');
       s.heal();
-      await s.narrate(['You don\'t sleep. You lie listening to the sea until the window goes grey, and then gold.', 'Down at the docks, Tobias is already loading his boat.']);
+      await s.narrate(['You don\'t sleep. You lie listening to the sea until the window goes gray, and then gold.', 'Down at the docks, Tobias is already loading his boat.']);
       await s.say('Wren', 'Aurenne. I\'m really going.');
       return;
     }
     if (s.flag('ch1_rested') && !s.flag('ch1_voices')) {
       s.setFlag('ch1_voices');
-      await s.narrate('Late in the night, voices. Down the hill, carried up from the Lantern: your mother\'s, sharp as a gull\'s — and the Hierophant\'s.');
+      await s.narrate('Late in the night, voices. They carry down the hill from the Lantern: your mother\'s, sharp as a gull\'s — and the Hierophant\'s.');
       await s.say('Wren', 'Mom? At this hour?');
       s.objective('Voices from the Lantern: Mom and the Hierophant, arguing. Go up to the Lantern and listen.');
       return;
@@ -281,10 +281,10 @@ export const CH1 = {
     await s.say('Bram', 'I\'ve been on a ship before. Several. I am not seasick. This is my normal color.');
     await s.say('Sable', 'The sea is very big.');
     await s.say('Ilse', 'You came out of it.');
-    await s.say('Sable', 'I don\'t remember it being big. I remember it being... full. Like a crowd.');
+    await s.say('Sable', 'I do not remember it being big. I remember it being... full. Like a crowd.');
     await s.wait(0.6);
     s.shake(0.3, 1.0);
-    await s.say('Fisher Tobias', 'Hold on to something! There\'s something under the hull!');
+    await s.say('Fisher Tobias', 'Hold on! There\'s something under the hull!');
     await s.say(null, 'The water rises in a green wall — and the wall has eyes.', { style: 'narration' });
     const r = await s.battle('boss_brinefang', { bg: 'deck' });
     if (r !== 'win') return;

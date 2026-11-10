@@ -10,7 +10,7 @@ const key = (name, desc) => ({ name, kind: 'key', desc, icon: '✉' });
 Object.assign(ITEMS, {
   c6_maela_soup: {
     name: 'Maela\'s Soup', kind: 'consumable', price: 0, sell: 10, icon: '◒', battle: true, field: true,
-    desc: 'Ash-potato. It is always ash-potato. Restores 700 HP and cures Poison and Burn.',
+    desc: 'Restores 700 HP and cures Poison and Burn. Ash-potato. It is always ash-potato.',
     use: { target: 'ally', heal: 700, cure: ['poison', 'burn'] },
   },
   c6_letter_jory: key('Letter: "To Mama"', 'Water-stained. "To Mama, at Port Gale. From Jory." For the Lost Wall in Keelhaven.'),
@@ -25,7 +25,7 @@ Object.assign(ITEMS, {
 EQUIPMENT.c6_fennicks_coat = {
   id: 'c6_fennicks_coat', name: 'Fennick\'s Sailcloth Coat', slot: 'body', armor: 'light', tier: 5, price: 0,
   def: 44, res: 32, mods: { evade: 4, hpPct: 8 },
-  desc: 'Three old sails and a Dawnguard cloak, terribly stitched. Light armor. Max HP +8%. It keeps the ash off.',
+  desc: 'Light armor. Max HP +8%. Three old sails and a Dawnguard cloak, terribly stitched. It keeps the ash off.',
 };
 
 // ------------------------------------------------------------------ enemies (solo-tuned)

@@ -6,7 +6,7 @@ export const CH10_SIDE = {
   // ------------------------------------------------------------------ the lemonade
   async oldWoman(s) {
     if (s.flag('c10_q_lemon_done')) return;
-    if (s.flag('c10_escape')) return s.narrate('She has stopped mid-word, still smiling. Nothing behind the smile is moving any more.');
+    if (s.flag('c10_escape')) return s.narrate('She has stopped mid-word, still smiling. Nothing behind the smile is moving anymore.');
     if (s.has('c10_lemonade')) {
       s.setFlag('c10_q_lemon_done');
       await s.take('c10_lemonade');
@@ -40,7 +40,7 @@ export const CH10_SIDE = {
     if (s.has('c10_lemonade')) return s.say('Tomas', 'Go on. She\'s on the bench by the river. She always is.');
     await s.say('Tomas', 'Two lemonades. Mint in one. I\'m going, I\'m going...');
     await s.narrate('He is mid-stride, one foot lifted, a cup in each hand. He has been mid-stride for forty years.');
-    await s.say('Tomas', '...My legs don\'t seem to want to move today. Would you take it to her? The one with the mint. Bess always has the mint.');
+    await s.say('Tomas', '...My legs don\'t seem to want to move today. Would you take it to her, on the bench by the river? The one with the mint. Bess always has the mint.');
     await s.give('c10_lemonade');
   },
 
@@ -61,7 +61,7 @@ export const CH10_SIDE = {
     if (!s.state.party.includes('pip')) return;
     s.setFlag('c10_q_ask_done');
     await s.say('Pip', 'Oh, for— *fine*.');
-    await s.narrate('Pip walks up behind Rafe and, with the deftness of a boy who has picked a thousand pockets, puts the ring box *into* his hand instead of out of it.');
+    await s.narrate('Pip walks up behind Rafe and, with the deftness of a boy who has picked a thousand pockets, lifts the ring box from his coat and puts it *into* his hand.');
     await s.say('Rafe', '...Oh.');
     await s.narrate('He looks down at the box. He goes down on one knee — it creaks, forty years of creak — and he opens it.');
     await s.say('Rafe', 'Della. Will you—');

@@ -38,12 +38,12 @@ const enemies = [
   E('bc_kell_net', 'Kell the Net', 14, { type: 'humanoid', look: 'bc_kell_net' }, {
     stats: { hp: 2.2, str: 1.45, spd: 1.05 }, weak: ['bolt', 'slash'], poise: 3,
     skills: [['e_constrict', 2], ['e_spear', 2], ['e_stun', 1]], drops: [['hi_tonic', 0.3]], steal: ['tonic', 'copper_ring'],
-    desc: 'Throws a net, then apologises. The older brother. Says the net does most of the work.',
+    desc: 'Throws a net, then apologizes. The older brother. Says the net does most of the work.',
   }),
   E('bc_kell_fist', 'Kell the Fist', 14, { type: 'humanoid', look: 'bc_kell_fist' }, {
     stats: { hp: 2.4, str: 1.6 }, weak: ['ice', 'pierce'], poise: 3,
     skills: [['e_tackle', 3], ['e_rampage', 1], ['e_buff', 1]], drops: [['hi_tonic', 0.3]], steal: ['tonic', 'power_band'],
-    desc: 'Does not throw a net. Does not apologise. The younger brother.',
+    desc: 'Does not throw a net. Does not apologize. The younger brother.',
   }),
   E('bc_grizzlemaw', 'Grizzlemaw', 15, { type: 'boar', color: '#5a3a2a', accent: '#d8c8a0', eye: '#ff6040', size: 2, seed: 102 }, {
     boss: true, stats: { hp: 10, str: 1.7, spd: 1.5, exp: 5, gold: 5, cp: 3 }, weak: ['pierce', 'fire'], resist: { blunt: 0.7 }, poise: 7,

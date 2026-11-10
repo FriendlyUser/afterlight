@@ -64,7 +64,7 @@ const BANTER = {
     await s.say('Bram', 'That was me. I am breathing heroically.');
   },
   5: async (s) => {
-    await s.say('Corvin', 'A Hearthstone. Down here. Somebody carried that down five flights of nightmare.');
+    await s.say('Corvin', 'A Hearthstone. Somebody carried that down five flights of nightmare.');
     await s.say('Sable', 'Or somebody forgot it, and it fell.');
     await s.say('Corvin', 'I like my version better, sparrow. Mine has a hero in it.');
   },
@@ -88,7 +88,7 @@ const BANTER = {
   23: async (s) => {
     await s.say('Ilse', 'It\'s... white.');
     await s.say('Wren', 'I thought the bottom would be black.');
-    await s.say('Sable', 'Black is a colour. This is from before colours.');
+    await s.say('Sable', 'Black is a color. This is from before colors.');
     await s.say('Corvin', 'I hate it. I hate it in a very specific, educated way.');
   },
   29: async (s) => {
@@ -161,7 +161,7 @@ export const PG = {
     if (pick === 1) {
       await s.say('Orrin', [
         'Thirty stairs. Gloamdeep first — the newest forgettings, still warm. Then a drowned city. Then the first winter. Then... white.',
-        'A Hearthstone every fifth stair; somebody before me was kind. And the Lantern-lift on the rim will stop anywhere you\'ve beaten the warden.',
+        'A Hearthstone every fifth stair; somebody before me was kind. And the Lantern-lift on the rim stops at any stair where you\'ve beaten the warden.',
       ]);
       if (!s.flag('gameClear')) await s.say('Orrin', 'Past the tenth stair the dark is packed solid. It\'ll take a newer light than mine.');
       return;
@@ -378,7 +378,7 @@ export const PG = {
     if (s.flag('pg_boss_10')) return;
     const L = ABYSS_LAYOUTS[10].spots;
     await s.pan(L.exitFront[0], L.exitFront[1], 1);
-    await s.narrate('A knight stands before the stair down, its armour fused with the rubble. Its shield has no crest. Its tabard has no colour.');
+    await s.narrate('A knight stands before the stair down, its armor fused with the rubble. Its shield has no crest. Its tabard has no color.');
     await s.say('Unremembered Knight', '...Halt. State your name and company.');
     await s.say('Bram', 'Bram Kestrel. Of — well. Of these people.');
     await s.say('Unremembered Knight', [
@@ -394,7 +394,7 @@ export const PG = {
     await s.say('Unremembered Knight', '...Kestrel. Say one more name. Any name. Before I go.');
     await s.say('Bram', '...Aldous Venn.');
     await s.say('Unremembered Knight', 'Good. That one is safe.');
-    await s.narrate('The armour comes apart like a held breath let go. For a moment you hear a great many people say thank you.');
+    await s.narrate('The armor comes apart like a held breath let go. For a moment you hear a great many people say thank you.');
     await s.say('Bram', 'I\'m fine. Something in my eye. A knight. A whole knight in my eye.');
     s.toast('The Lantern-lift now stops at B10.');
     if (s.flag('gameClear')) {
@@ -438,7 +438,7 @@ export const PG = {
     s.stopMusic(2);
     await s.pan(18, 9, 2.5);
     await s.narrate([
-      'The marble ends. Beyond it there is no floor, no wall, no colour. Only a white so total it has no direction.',
+      'The marble ends. Beyond it there is no floor, no wall, no color. Only a white so total it has no direction.',
       'In the middle of the white, something without any edges at all turns its attention toward you.',
     ]);
     s.shake(0.3, 2);
@@ -467,7 +467,7 @@ export const PG = {
     s.music('afterlight');
     await s.narrate([
       'The First Dark does not die. There is nothing in it that could.',
-      'It shrinks. It folds. The white around it greys, then dims, then — for the first time in all of time — becomes a colour:',
+      'It shrinks. It folds. The white around it grays, then dims, then — for the first time in all of time — becomes a color:',
       'the deep blue of the sky an hour after sunset.',
     ]);
     await s.say('The First Dark', '{purple|...what is this.}');
@@ -531,7 +531,7 @@ export const PG = {
     }
     const found = CHALK_FLOORS.filter((f) => s.flag(`pg_chalk_${f}`)).length;
     if (found >= CHALK_FLOORS.length) {
-      await s.say('Ilse', 'Where it started. The wall by the Gate — that\'s where the first drawing was.');
+      await s.say('Ilse', 'Where it started. The wall by the Abyss Gate — that\'s where the first drawing was.');
       s.objective('Lysa\'s chalk marks point back to the wall by the Abyss Gate.');
       s.quest('pg_hideseek', 'Hide and Seek', 'The last chalk mark says the door is "where it started" — the chalk wall at the Abyss Gate.');
     } else {
@@ -633,7 +633,7 @@ export const PG = {
       'That\'s how it\'s supposed to go. You look and you look, and if you can\'t find them you go home for supper. You\'re not supposed to look forever.',
     ]);
     if (inParty(s, 'sable')) {
-      await s.say('Lysa', 'Hey. Face-girl. Will you do something for me? Get really old. Get wrinkly. Get grey hair. Do ALL of it.');
+      await s.say('Lysa', 'Hey. Face-girl. Will you do something for me? Get really old. Get wrinkly. Get gray hair. Do ALL of it.');
       await s.say('Sable', 'I will. I promise. I will be very wrinkled.');
     }
     await s.say('Lysa', 'And — here. For drawing doors. In case you ever need one.');

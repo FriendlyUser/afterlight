@@ -24,7 +24,7 @@ export const REM = {
     await s.say('Pip', 'She gave me my Crest. Way too early. She said, "I\'ll catch hell for this, little thief, and it\'ll be worth every minute."');
     await s.say('Sable', 'Listen.');
     await s.wait(0.8);
-    await s.narrate('Very faintly, from the top of the glass steps: a choir, holding one note. It does not breathe. It does not stop.');
+    await s.narrate('Faintly, from the top of the glass steps: a choir, holding one note. It does not breathe. It does not stop.');
     s.objective('Climb the Glass Steps to the Lantern of Saltglass.');
   },
 
@@ -72,7 +72,7 @@ export const REM = {
     await s.pan(20, 6, 1.2);
     await s.narrate('Before the dead Lantern stand three figures with their eyes bound in white cloth. One note pours out of them. It has been pouring out for a year.');
     await s.say('???', 'Who walks in my Lantern?', { portrait: false });
-    await s.say('???', '...I know those feet. Light on the heel, heavy on the toe, always ready to run. Little thief. You\'ve grown.', { portrait: false });
+    await s.say('???', 'I know those feet. Light on the heel, heavy on the toe, always ready to run. Little thief. You\'ve grown.', { portrait: false });
     await s.say('Pip', '...Tamsin?');
     await s.say('Tamsin', 'I gave you a Crest you weren\'t old enough to carry. I heard you grow up too fast, all the way from here. Every step.');
     await s.say('Pip', 'I\'m fine. I\'m— I\'m _fine_.');
@@ -92,7 +92,7 @@ export const REM = {
     await s.say('Pip', '...I\'m here.');
     await s.say('Tamsin', 'Go be little a while longer. That is an order from a Keeper. It is the last one I have, so you had better obey it.');
     await s.say('Pip', 'I don\'t— I don\'t know how anymore.');
-    await s.say('Tamsin', 'Nobody does. Practise.');
+    await s.say('Tamsin', 'Nobody does. Practice.');
     s.flash('#fff4d0', 0.8);
     s.remove('remnant'); s.remove('husk1'); s.remove('husk2');
     await s.wait(0.8);
@@ -113,14 +113,14 @@ export const REM = {
     await s.say('Bram', 'This is where he— the avalanche. Right up there.');
     await s.say('Ilse', 'We saw him go under. He was smiling.');
     await s.say('Corvin', 'Monks. Always smiling at the worst possible moment. It\'s the vow of silence. All the jokes back up.');
-    await s.say('Sable', 'He is still up there. He is very cold, and he is apologising.');
+    await s.say('Sable', 'He is still up there. He is very cold, and he is apologizing.');
     s.objective('Climb Frosthollow\'s frozen terraces to the Lantern on the peak.');
   },
 
   async fhBrazier(s, which) {
     const flagName = `c11_fh_brazier_${which}`;
     if (s.flag(flagName)) return s.narrate('The brazier burns steadily. Somewhere below, meltwater runs.');
-    await s.narrate('A monastery brazier, packed with oil-black kindling that was never lit. Frost has grown over it like lace.');
+    await s.narrate('A monastery brazier, packed with oil-black kindling that was never lit. Frost covers it like lace.');
     if (!(await s.confirm('Light the brazier?'))) return;
     if (which === 'e' && !s.flag('c11_fh_golem')) {
       s.shake(0.4, 1.0);
@@ -186,7 +186,7 @@ export const REM = {
   // ================================================================== MIREFEN — the Mire Mother
   async mfArrive(s) {
     s.music('swamp');
-    await s.say('Ilse', 'Gloam-rot. I can smell it from here.');
+    await s.say('Ilse', 'Gloam-rot. I can smell it already.');
     await s.say('Pip', 'Smells like a sock died.');
     await s.say('Ilse', 'That is exactly what it smells like. Don\'t touch anything. Don\'t touch _me_.');
     await s.say('Sable', 'Someone is singing a lullaby. Very badly. Very tenderly.');
@@ -200,14 +200,14 @@ export const REM = {
     await s.give('c11_osk_censer');
     await s.say('Ilse', 'Bitterleaf smoke. Mirefen healers burned it to keep the rot off the wards. It doesn\'t cure anything. It buys time.');
     await s.say('Wren', 'Time\'s good.');
-    await s.say('Ilse', 'Time is the only medicine there is. Everything else is just a way of buying more of it.');
+    await s.say('Ilse', 'Time is the only medicine there is. Everything else is a way of buying more of it.');
     s.objective('Burn the rot-blooms off the boardwalks with Osk\'s Censer.');
   },
 
   async mfRot(s, id) {
     if (!s.has('c11_osk_censer')) {
       await s.narrate('Gloam-rot blooms have grown across the boardwalk in a hedge of violet crystal. They pulse, slowly, like something breathing in its sleep.');
-      return s.say('Ilse', 'Don\'t touch it. I mean it, Pip. There\'ll be something in Osk\'s hut for this — every healer keeps rot-smoke.');
+      return s.say('Ilse', 'Don\'t touch it. I mean it, Pip. There\'ll be something in Osk\'s herb-shed for this — every healer keeps rot-smoke.');
     }
     await s.narrate('Ilse lights the censer and swings it, low and steady, the way you would rock a cradle.');
     s.sfx('burst');
@@ -218,7 +218,7 @@ export const REM = {
       if (r !== 'win') return;
     }
     s.clearBlocker(id);
-    await s.narrate('The blooms curl and crumble to grey ash.');
+    await s.narrate('The blooms curl and crumble to gray ash.');
     if (id === 'rot_b') s.objective('The Lantern of Mirefen lies ahead.');
   },
 
@@ -241,7 +241,7 @@ export const REM = {
     const r = await s.battle('c11_boss_mother');
     if (r !== 'win') return;
     s.music('sad');
-    await s.narrate('The black water runs out of her like a held fever breaking. What is left is a small, stooped woman in a healer\'s hood, looking at her empty arms.');
+    await s.narrate('The black water runs out of her like a fever breaking. What is left is a small, stooped woman in a healer\'s hood, looking at her empty arms.');
     await s.say('Osk', 'Oh. Oh, they\'re sleeping. Look at them. All of them, finally sleeping.');
     await s.say('Osk', 'Thank you, child. I couldn\'t— a Mender can\'t be the one to stop. You understand.');
     await s.say('Ilse', 'I understand.');
@@ -259,7 +259,7 @@ export const REM = {
     s.setFlag('c11_ilse_offer');
     unstage(s);
     await s.follow(0.6);
-    s.journal('Mirefen. Mother Osk had kept her patients alive for a year after they should have gone. Ilse let her sleep. Osk left Ilse her staff, in the infirmary. Ilse says she\'ll think about it. (She wants it.)');
+    s.journal('Mirefen. Mother Osk had kept her patients alive for a year after they should have gone. Ilse let her sleep. Osk left Ilse her staff, in the infirmary on the east island. Ilse says she\'ll think about it. (She wants it.)');
     s.music('swamp');
     await returnToShip(s);
   },
@@ -311,7 +311,7 @@ export const REM = {
     stageParty(s, 20, 10, 'up');
     s.stopMusic(1);
     await s.pan(20, 6, 1.2);
-    await s.narrate('In the Lantern court grows a flower the size of a house, petals the colour of an old bruise. At its heart stands a tall woman with leaves for hair. The flower turns toward you, the way a face turns toward the sun.');
+    await s.narrate('In the Lantern court grows a flower the size of a house, petals the color of an old bruise. At its heart stands a tall woman with leaves for hair. The flower turns toward you, the way a face turns toward the sun.');
     await s.say('Elowen', 'Child. Lysa\'s face.');
     await s.wait(0.8);
     await s.say('Elowen', 'No. Not Lysa. You stand differently. Like someone who means to keep standing.');
@@ -411,7 +411,7 @@ export const REM = {
     await s.narrate('The storm lets go of her all at once, and she sits down on the wet marble like someone who has been standing for a year.');
     await s.say('Vasha', 'I gave it to him. He held my hands and thanked me, and I have never been so certain of anything in my life.');
     await s.say('Wren', 'So did I. I gave him ours. I took it out of my mother\'s Lantern with my own hands.');
-    await s.say('Vasha', '...Then we are a pair of fools, girl. Better a fool who stops than a fool who keeps shouting.');
+    await s.say('Vasha', 'Then we are a pair of fools, girl. Better a fool who stops than a fool who keeps shouting.');
     s.face('remnant', 'right');
     await s.say('Vasha', 'Ashe. Hal Merrow\'s ship is still up there. In the Stormwall, where you left her. No one has dared fly the wall since.');
     await s.say('Corvin', 'Least of all me.');
@@ -480,7 +480,7 @@ export const REM = {
     await s.say('Garrick', 'Don\'t look so wounded. I\'d have done the same at sixteen, if a saint asked me nicely.');
     await s.say('Bram', 'Stand aside, Garrick.');
     await s.say('Garrick', 'Lord-Commander.');
-    await s.say('Bram', 'There\'s no Dawnguard any more. There\'s no _dawn_.');
+    await s.say('Bram', 'There\'s no Dawnguard anymore. There\'s no _dawn_.');
     await s.say('Garrick', 'There will be a noon. Forever. Cassian will freeze this world, and frozen is better than broken. I have seen broken, boy. I\'m standing in it.');
     await s.say('Wren', 'You don\'t believe in Evernoon.');
     await s.say('Garrick', 'I believe in holding a line. Somebody has to, while the rest of you have feelings about it.');
@@ -547,7 +547,7 @@ export const REM = {
         'Bram: Knight. Sir Bram Kestrel.',
         'Garrick: Hm. And who dubbed you?',
         'Bram: A deserter.',
-        'Garrick: ...Ha. Of course he did.',
+        'Garrick: Ha. Of course he did.',
       ] },
       { text: 'Bram: Then walk.' },
     ] });
@@ -558,7 +558,7 @@ export const REM = {
   },
 
   async glDrawing(s) {
-    await s.narrate('Pressed between two volumes of liturgy: a child\'s drawing. Two stick figures under an enormous yellow sun. The tall one is labelled CASS. The small one is labelled ME.');
+    await s.narrate('Pressed between two volumes of liturgy: a child\'s drawing. Two stick figures under an enormous yellow sun. The tall one is labeled CASS. The small one is labeled ME.');
     await s.narrate('Underneath, in a grown man\'s careful hand: _Lysa, age 7._');
     await s.say('Sable', '...She drew the sun too big.');
     await s.say('Wren', 'Everybody draws the sun too big when they\'re seven.');
@@ -692,7 +692,7 @@ export const REM = {
     await s.say('Ysolde', 'If I let go, the dark comes in.');
     await s.say('Ysolde', 'If I let go, you\'ll leave. You always wanted to leave. You used to toddle to the end of the dock and just _look_.');
     if (s.has('ysolde_lantern')) {
-      await s.narrate('In Wren\'s pack, the little brass lantern her mother gave her flares, as if it has recognised someone.');
+      await s.narrate('In Wren\'s pack, the little brass lantern her mother gave her flares, as if it has recognized someone.');
     }
     await s.say('Ysolde', 'Stay. I\'ll keep the light on. Nothing will take you. Not the sea. Not the Hierophant. Not _time_. You\'ll be sixteen forever, and I will never have to watch you go.');
     await s.wait(0.8);

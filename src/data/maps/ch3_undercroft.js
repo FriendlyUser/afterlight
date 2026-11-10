@@ -51,13 +51,13 @@ export const c3Sewers = {
     } },
     { x: 3, y: 10, run: async (s) => {
       await s.narrate('Scratched into the brick in chalk, at about the height of an eleven-year-old: PIP WAS ERE.');
-      if (pipIn(s)) await s.say('Pip', '...That\'s from last year. I was _exploring._ It\'s different.');
+      if (pipIn(s)) await s.say('Pip', '...That\'s from last year. I was _exploring._');
     } },
     { x: 16, y: 12, run: async (s) => {
       await s.narrate('A child\'s shoe, much too small for anyone who should be down here. The laces are still tied — in a double knot.');
       if (pipIn(s)) await s.say('Pip', 'That\'s Wick\'s. He does double knots because he can\'t do bows. I keep telling him. I keep _telling_ him.');
     } },
-    { x: 36, y: 5, text: 'A grey hooded lantern, dropped and cracked. The Sisters of Small Mercies carry ones just like it.' },
+    { x: 36, y: 5, text: 'A gray hooded lantern, dropped and cracked. The Sisters of Small Mercies carry ones just like it.' },
     { x: 16, y: 24, run: async (s) => {
       await s.narrate('A sheet of music, soaked through. The notes run from right to left.');
       if (s.state.party.includes('sable')) {

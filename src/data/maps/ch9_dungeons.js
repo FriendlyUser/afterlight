@@ -84,7 +84,7 @@ export const benediction = {
     { x: 38, y: 16, hint: 'Censer', run: (s) => CH9.censer(s, 'hold') },
     { x: 19, y: 21, text: ['Luggage, still strapped to the rail. A name-tag: TILDE, AGED 9, TO AURENNE. PLEASE RETURN IF LOST.', 'Nobody did.'] },
     { x: 27, y: 20, text: 'A barrel of hymnals, swollen with rain into a single block of paper. The top one is open to "Rest Ye, Dawn-Bound."' },
-    { x: 23, y: 17, text: 'A ward of crystallised light hums around the mainmast. Up close you can hear it: the hymn, over and over, the same eight bars.', cond: (st) => !st.flags['blocker:c9_benediction:ward'] },
+    { x: 23, y: 17, text: 'A ward of crystallized light hums around the mainmast. Up close you can hear it: the hymn, over and over, the same eight bars.', cond: (st) => !st.flags['blocker:c9_benediction:ward'] },
     { x: 5, y: 12, hint: 'Crow\'s nest', run: (s) => CH9_SIDE.vantage(s, 'benediction', [
       'The crow\'s nest has snapped off and rolled to this islet. You climb into it. From up here, through the rain, the shards wheel slowly around a single point of light.',
       'The point of light does not wheel. It sits in the middle of everything, perfectly still.',

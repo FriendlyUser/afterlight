@@ -44,8 +44,8 @@ export const roost = {
       } },
     { id: 'amsel', name: 'Brother Amsel', look: 'c9_amsel', x: 17, y: 22, dir: 'down',
       talk: async (s) => {
-        if (s.flag('c9_long_bell')) return s.say('Brother Amsel', ['The Noon Spire. Of course it was the Spire.', 'I sang in the Choir for twenty years. If you see the Hierophant... no. There\'s nothing I want to say to him that a hymn would carry.']);
-        return s.say('Brother Amsel', ['I was a Cantor of the Choir, once. I took off the robe the night the sun broke. Kept the hood. It\'s cold.', 'Pilgrims still fly north, you know. To a white tower on the brightest shard. They say inside it is always the afternoon of a summer festival, and the dead are there, waiting.', 'They say a great many things. The pilgrims don\'t come back to say otherwise.']);
+        if (s.flag('c9_long_bell')) return s.say('Brother Amsel', ['The Noon Spire. Of course it was the Spire.', 'I sang in the Choir for twenty years. There is nothing I want to say to the Hierophant that a hymn would carry.']);
+        return s.say('Brother Amsel', ['I was a Cantor of the Choir. I took off the robe the night the sun broke. Kept the hood. It\'s cold.', 'Pilgrims still fly north, you know. To a white tower on the brightest shard. They say inside it is always the afternoon of a summer festival, and the dead are there, waiting.', 'They say a great many things. The pilgrims don\'t come back to say otherwise.']);
       } },
     { id: 'lonnie', name: 'Lonnie', look: 'c9_lonnie', x: 27, y: 24, dir: 'down', cond: notYet('c9_lonnie_free'), run: (s) => CH9_SIDE.lonnie(s) },
     { id: 'lonnie_free', name: 'Lonnie', look: 'c9_lonnie', x: 6, y: 20, dir: 'down', cond: f('c9_lonnie_free'), run: (s) => CH9_SIDE.lonnie(s) },
@@ -132,8 +132,8 @@ export const lastCall = {
   ],
   inspect: [
     { x: 3, y: 3, run: async (s) => s.narrate(s.flag('c9_corvin_joined')
-      ? 'Bottles, labelled in Tuck\'s square hand: NOT FOR CORVIN. One new label, the ink still wet: STILL NOT FOR CORVIN. GOOD.'
-      : 'Bottles, mostly empty, all labelled in Tuck\'s square hand: NOT FOR CORVIN.') },
+      ? 'Bottles, labeled in Tuck\'s square hand: NOT FOR CORVIN. One new label, the ink still wet: STILL NOT FOR CORVIN. GOOD.'
+      : 'Bottles, mostly empty, all labeled in Tuck\'s square hand: NOT FOR CORVIN.') },
     { x: 10, y: 6, text: 'A card table. The felt is worn through in exactly one place: where the dealer\'s left hand rests.' },
   ],
   exits: [{ x: 5, y: 9, w: 3, to: 'corvins_roost', tx: 12, ty: 16, dir: 'down' }],
@@ -150,7 +150,7 @@ export const ledgerHouse = {
       talk: ['Debits on the left, credits on the right. Debtors on the carpet.', 'Madam Quill has never once been wrong about a number. She\'s been wrong about people. Twice. She keeps a ledger of that too.'] },
   ],
   inspect: [
-    { x: 1, y: 2, text: 'Ledgers to the ceiling, each spine labelled with a year. The newest are labelled only: AFTER.' },
+    { x: 1, y: 2, text: 'Ledgers to the ceiling, each spine labeled with a year. The newest are labeled only: AFTER.' },
     { x: 9, y: 2, run: async (s) => s.narrate(s.flag('c9_long_bell')
       ? 'A ledger lies open to a page near the back. There is a tidy gap where one page was torn out.'
       : 'A ledger lies open to a page near the back, worn soft with handling. ASHE, C. The column of figures runs to the bottom and over the page.') },

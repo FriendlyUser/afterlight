@@ -19,7 +19,7 @@ export const C4A = {
     s.music('desert');
     crew(s, [['ilse', 2, 19, 'right'], ['bram', 2, 21, 'right'], ['sable', 3, 20, 'right'], ['pip', 1, 20, 'right']]);
     await s.wait(0.6);
-    await s.narrate(['East of Aurenne, the Pilgrim Road leaves the green behind.', 'The grass goes yellow, then grey, then gives up altogether.']);
+    await s.narrate(['South of Aurenne, the Pilgrim Road leaves the green behind.', 'The grass goes yellow, then gray, then gives up altogether.']);
     await s.say('Pip', 'It\'s hot.');
     await s.say('Bram', 'It is a _dry_ heat.');
     await s.say('Pip', 'It\'s a _hot_ heat. My eyebrows are sweating. I didn\'t know eyebrows could _do_ that.');
@@ -29,12 +29,12 @@ export const C4A = {
     await s.say('Ilse', 'It moves. Dunes walk a few feet every year.');
     await s.wait(0.5);
     await s.say('Sable', '...I will watch one.');
-    await s.say('Ilse', 'Three things. One: everyone drinks every hour whether they want to or not. Two: nobody takes their boots off. Scorpions. Three: Bram, take off that cape before you cook in it.');
+    await s.say('Ilse', 'Desert rules. One: everyone drinks every hour whether they want to or not. Two: nobody takes their boots off. Scorpions. Three: Bram, take off that cape before you cook in it.');
     await s.say('Bram', 'A Dawnguard never removes his cape.');
     await s.say('Ilse', 'You were exiled.');
     await s.say('Bram', 'A Dawnguard never removes his cape _emotionally_.');
     s.face('player', 'left');
-    await s.narrate('Wren checks the case at her hip for the hundredth time. Five silver tuning forks in velvet, sealed with the Choir\'s sunburst.');
+    await s.narrate('Wren checks the case at her hip for the hundredth time. Six silver tuning forks in velvet, sealed with the Choir\'s sunburst.');
     await s.say('Wren', 'Saltglass first. Keeper Tamsin. Then north to Frosthollow, then east. One fork for every Lantern.');
     await s.say('Pip', '"To harmonize the Lanterns against the rising Gloam." Fancy words for _delivery job_.');
     await s.say('Wren', 'It\'s not a delivery job. The Hierophant asked _us_, Pip. Out of everyone in Aurenne.');
@@ -43,7 +43,7 @@ export const C4A = {
     await s.think('Wren', '"A restless heart, like mine." That\'s what he wrote to me, once. I\'m not going to let him down.');
     dismiss(s, PARTY);
     s.objective('Follow the Pilgrim Road east across the Sunscar to Saltglass.');
-    s.journal('We left the green behind. Five forks in the case, one for every Keeper who still has a Lantern. Saltglass first. Pip says it\'s a delivery job. It is NOT a delivery job.');
+    s.journal('We left the green behind. Six forks in the case: one for each of five Keepers, and a spare. Saltglass first. Pip says it\'s a delivery job. It is NOT a delivery job.');
   },
 
   async ysmay(s) {
@@ -136,7 +136,7 @@ export const C4A = {
     s.setFlag('c4a_sef_gift');
     await s.say('Old Sef', ['Visitors! Sit, sit. The palms don\'t mind.', 'Thirty years I\'ve lived by this water. Do you know what a desert is for?']);
     await s.say('Wren', 'Being... hot?');
-    await s.say('Old Sef', 'Wanting things. Out there, every mirage is the thing you want most. The desert shows it to you. Then you decide whether to keep walking toward it.');
+    await s.say('Old Sef', 'Wanting things. Out there, every mirage is the thing you want most. Then you decide whether to keep walking toward it.');
     const c = await s.choice(['"Have you ever seen one?"', '"That sounds lonely."']);
     if (c === 0) {
       await s.say('Old Sef', ['Every morning. A girl in a blue dress, at a well in Aurenne. I was going to ask her to dance.', 'I came out here to make enough money to deserve her. She married a baker. Forty years ago.']);
@@ -188,14 +188,14 @@ export const C4A = {
     s.sfx('gun');
     await s.say('???', 'Not the ship! Anything but the ship!', { portrait: false });
     s.shake(0.3, 1.2);
-    await s.narrate('Between the ship and the party, the sand bulges — and something vast and pale turns over beneath it, like a fish under ice.');
+    await s.narrate('Between them and the ship, the sand bulges — and something vast and pale turns over beneath it, like a fish under ice.');
     s.sfx('gun');
     await s.say('???', 'Eat the cargo! Eat the— no, not the cargo either, that\'s _paid for_—', { portrait: false });
     await s.follow(0.6);
     await s.move('player', [[18, 24]]);
     await s.say('Wren', 'Hey! Up there! Are you all right?');
     s.face('corvin_n', 'player');
-    await s.say('Corvin', '...Civilians! Wonderful! Run away, quickly, it\'s very hungry!');
+    await s.say('Corvin', 'Civilians! Wonderful! Run away, quickly, it\'s very hungry!');
     await s.say('Bram', 'We\'re here to help!');
     await s.say('Corvin', 'Then help by being slower than me!');
     await s.move('corvin_n', [[19, 15], [19, 17], [19, 21]], 5);
@@ -272,7 +272,7 @@ export const C4A = {
     s.sfx('holy');
     s.flash('#e8fbff', 0.6);
     s.shake(0.15, 1.5);
-    await s.narrate(['The glass begins to sing — a low, clean note you feel in your teeth. The deck shivers.', 'For one long breath, the Halcyon lifts a finger\'s width off the sand.', '...And settles back with a groan.']);
+    await s.narrate(['The glass sings — a low, clean note you feel in your teeth. The deck shivers.', 'For one long breath, the Halcyon lifts a finger\'s width off the sand.', '...And settles back with a groan.']);
     if (has(s, 'pip')) await s.say('Pip', 'It didn\'t fly.');
     await s.say('Corvin', 'She _floated_. Briefly. With dignity. The rest is only engines, rigging, a new rudder and roughly nine thousand gold.');
     await s.say('Corvin', 'But she remembers how. That\'s the hard part.');
@@ -283,7 +283,7 @@ export const C4A = {
     await s.give('haste_anklet');
     s.remove('corvin_l');
     s.quest('c4a_lift_glass', null, null, 'done');
-    s.journal('We set the singing glass in the Halcyon. She lifted — just a little. Corvin says she remembers how. I don\'t think he was only talking about the ship.');
+    s.journal('We set the singing glass in the Halcyon. She lifted — just a little. Corvin says she remembers how.');
   },
 
   // =================================================================== Saltglass
@@ -292,7 +292,7 @@ export const C4A = {
     s.setFlag('c4a_saltglass_arrived');
     crew(s, [['ilse', 3, 18, 'right'], ['bram', 2, 20, 'right'], ['sable', 4, 20, 'right'], ['corvin', 1, 19, 'right'], ['pip', 4, 18, 'right']]);
     await s.wait(0.4);
-    await s.narrate('Saltglass rises out of the flats like something grown rather than built: white walls, blue doors, and glass everywhere — in the windows, in the streets, hung from every eave on strings, chiming in the hot wind.');
+    await s.narrate('Saltglass rises out of the flats like something grown, not built: white walls, blue doors, and glass everywhere — in the windows, in the streets, strung from every eave, chiming in the hot wind.');
     await s.pan(24, 6, 1.6);
     await s.narrate('Above it all stands the Lantern, its lamp-room walled in saltglass panes. Even at noon you can see it burning.');
     await s.follow(1);
@@ -319,7 +319,7 @@ export const C4A = {
   },
 
   async leyla(s) {
-    await s.say('Leyla', ['Saffron, salt-pepper, dried sunfruit! Nothing fresh, everything delicious.', 'You came up the Pilgrim Road? Then you missed the soldiers. Grey cloaks, forty of them, riding north last week.', 'Didn\'t buy a thing. Didn\'t even _haggle_. That\'s how you know someone\'s dangerous.']);
+    await s.say('Leyla', ['Saffron, salt-pepper, dried sunfruit! Nothing fresh, everything delicious.', 'You came up the Pilgrim Road? Then you missed the soldiers. Gray cloaks, forty of them, riding north last week.', 'Didn\'t buy a thing. Didn\'t even _haggle_. That\'s how you know someone\'s dangerous.']);
   },
 
   async dima(s) {
@@ -364,9 +364,9 @@ export const C4A = {
       s.quest('c4a_sarn', null, null, 'done');
       return;
     }
-    if (s.flag('c4a_sarn_taken')) return s.say('Captain Idris', 'Sarn\'s camp is in the south-east flats, past the glass. Red tents. Mind his slingers — they aim for the eyes.');
+    if (s.flag('c4a_sarn_taken')) return s.say('Captain Idris', 'Sarn\'s camp is in the Sunscar\'s south-east flats, past the glass. Red tents. Mind his slingers — they aim for the eyes.');
     s.setFlag('c4a_sarn_taken');
-    await s.say('Captain Idris', ['Pilgrims with swords. Good. I\'ve a job, if you want it.', 'Sarn the Jackal: raider-king of the southern dunes. Camp\'s in the south-east flats. He takes a tithe from every caravan — water, coin, sometimes people.', 'My men can\'t touch him; they\'re needed on the walls. The town council has put up two thousand gold to see him gone.']);
+    await s.say('Captain Idris', ['Pilgrims with swords. Good. I\'ve a job, if you want it.', 'Sarn the Jackal: raider-king of the southern dunes. Camp\'s in the Sunscar\'s south-east flats. He takes a tithe from every caravan — water, coin, sometimes people.', 'My men can\'t touch him; they\'re needed on the walls. The town council has put up two thousand gold to see him gone.']);
     s.quest('c4a_sarn', 'The Jackal\'s Tithe', 'Captain Idris will pay 2,000 gold to see Sarn the Jackal driven from his camp in the south-east of the Sunscar (west of Saltglass).');
   },
 
@@ -442,7 +442,7 @@ export const C4A = {
     await s.say('Tamsin', 'Ysolde\'s girl. I knew your grandmother\'s step, and your mother\'s. You have both. Your mother hated being told that.');
     await s.say('Wren', '...She still does.');
     await s.say('Tamsin', 'Good. Now. What has Cassian sent me?');
-    await s.narrate('Wren opens the case. Tamsin\'s fingers find a fork without searching, the way you find a light switch in your own house.');
+    await s.narrate('Wren opens the case. Tamsin\'s fingers find a fork without searching, the way you find the latch of your own door in the dark.');
     s.sfx('holy');
     await s.narrate('She strikes it once against her cane and holds it to her ear. The note is pure and thin, and it goes on much longer than it should.');
     await s.wait(1.2);
@@ -469,7 +469,7 @@ export const C4A = {
 
   async pipKindling(s) {
     await s.wait(0.6);
-    await s.narrate('Pip has drifted up the dais steps, very casually, toward the little silver bell on Tamsin\'s belt.');
+    await s.narrate('Pip has wandered up the dais steps, very casually, toward the little silver bell on Tamsin\'s belt.');
     s.sfx('steal');
     await s.move('pip_c', [[8, 6], [8, 5]], 2.5);
     s.face('tamsin_s', 'pip_c');
@@ -499,7 +499,7 @@ export const C4A = {
     await s.say('Bram', 'Is it... safe? For him?');
     await s.say('Tamsin', 'Nothing worth doing is safe, squire. You of all people know that.');
     await s.wait(0.6);
-    await s.say('Bram', '...Yes, ma\'am.');
+    await s.say('Bram', 'Yes, ma\'am.');
     await s.say('Tamsin', 'Well, Pipkin Tallow? Will you step into my light?');
     await s.say('Pip', 'How do you know my— nobody calls me—', { speed: 0.8 });
     await s.wait(0.8);
@@ -515,7 +515,7 @@ export const C4A = {
     await s.narrate('The light goes all the way through him, warm as fresh bread — and for the first time anyone can remember, Pip forgets to look for the exits.');
     await s.say('Tamsin', 'Rogue.');
     await s.wait(1.0);
-    await s.say('Pip', '...ROGUE?! The light called me a _THIEF?!_');
+    await s.say('Pip', 'ROGUE?! The light called me a _THIEF?!_');
     await s.wait(0.8);
     await s.say('Pip', '...I mean. Fair.');
     s.awaken('pip');
@@ -606,7 +606,7 @@ export const C4A = {
     await s.say('Asha', 'We owe you everything. We don\'t have everything. We have these.');
     await s.say('Asha', 'His running boots. Fastest scout on the salt road. He says he\'s finished running.');
     await s.give('swift_boots');
-    await s.say('Jorah', 'I\'m finished running. Nine days in a glass box teaches you where you want to be standing.');
+    await s.say('Jorah', 'Nine days in a glass box teaches you where you want to be standing.');
     if (has(s, 'pip')) {
       await s.say('Nim', 'You\'re the boy with the Crest! The little one!');
       await s.say('Pip', 'I\'m not little.');
@@ -650,7 +650,7 @@ export const C4A = {
   },
 
   async queenDoor(s) {
-    await s.narrate(['A wall of saltglass seals the gallery, thick as a castle gate. Through it, blurred and huge, something pale slides past and is gone.', 'The glass hums three faint, different notes, as if waiting for an answer from somewhere else in the caverns.']);
+    await s.narrate(['A wall of saltglass seals the gallery, thick as a castle gate. Through it, blurred and huge, something pale slides past and is gone.', 'The glass hums three faint, different notes, as if waiting for three answers from elsewhere in the caverns.']);
   },
 
   async jorahWall(s) {
@@ -659,7 +659,7 @@ export const C4A = {
     if (!(await s.confirm('Strike a tuning fork against the glass?'))) return;
     s.sfx('holy');
     s.flash('#ffffff', 0.5);
-    await s.narrate('The note goes into the glass like a key into a lock. The wall goes white with cracks — and falls apart like sugar.');
+    await s.narrate('The note slides into the glass like a key into a lock. The wall goes white with cracks — and falls apart like sugar.');
     s.clearBlocker('jorah_wall');
     s.setFlag('c4a_jorah_freed');
     await s.say('Jorah', 'Nine days. _Nine days!_ I\'ve been drinking off the walls and eating— you don\'t want to know what I\'ve been eating.');
@@ -676,7 +676,7 @@ export const C4A = {
 
   async queen(s) {
     if (s.flag('c4a_queen_dead')) return;
-    await s.narrate('The cavern opens into a bowl of glass a hundred feet across, smooth as the inside of a bell. Bones lie in drifts against the walls: oxen, wagons, a caravan\'s worth of copper pots.');
+    await s.narrate('The cavern opens into a bowl of glass a hundred feet across, smooth as the inside of a bell. Bones and wreckage lie in drifts against the walls: oxen, wagons, a caravan\'s worth of copper pots.');
     s.shake(0.4, 1.4);
     await s.narrate('In the center, the glass floor bulges. Then it _moves_.');
     if (has(s, 'corvin')) {

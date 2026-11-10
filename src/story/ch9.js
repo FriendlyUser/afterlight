@@ -128,7 +128,7 @@ export const CH9 = {
     await s.say('Wren', 'Then we\'ll make her fly. And you\'ll get your money.');
     await s.wait(0.8);
     s.face('odessa_b', 'player');
-    await s.say('Odessa', '...Red hair. Lanternfall vowels. Halloway, isn\'t it? The Keeper\'s girl.');
+    await s.say('Odessa', 'Red hair. Lanternfall vowels. Halloway, isn\'t it? The Keeper\'s girl.');
     await s.emote('player', '…');
     await s.say('Odessa', 'There\'s a song about you. They sing it on the eastern shards. It isn\'t a nice one.');
     await s.say('Ilse', 'She\'s heard it.');
@@ -188,10 +188,10 @@ export const CH9 = {
     }
     if (!s.flag('c9_met_mags')) return CH9.magsBriefing(s);
     if (s.flag('c9_part_heart')) return s.say('Mags', 'All three? Then what are you standing there for? Bring \'em to the plank and let me work.');
-    if (s.flag('c9_part_sail')) return s.say('Mags', ['Coil and sail. Two out of three.', 'Last one\'s the heart, and the heart\'s in Odessa\'s pocket. Go and charm her. Or let the redhead do it — the Captain\'s charm is mortgaged.']);
-    if (s.flag('c9_corvin_joined')) return s.say('Mags', ['Ruddock\'s barge will take you to the Benediction. West, at the Lip.', 'Bring me stormsilk. And bring *him* back. I\'ve only just got him up the plank.']);
+    if (s.flag('c9_part_sail')) return s.say('Mags', ['Coil and sail. Two out of three.', 'Last one\'s the heart, and the heart\'s in Odessa\'s pocket. Go and charm her at the Ledger House. Or let the redhead do it — the Captain\'s charm is mortgaged.']);
+    if (s.flag('c9_corvin_joined')) return s.say('Mags', ['Ruddock\'s barge will take you to the Benediction. You\'ll find him west, at the Lip.', 'Bring me stormsilk. And bring *him* back. I\'ve only just got him up the plank.']);
     if (s.flag('c9_part_coil')) return s.say('Mags', 'Hold on to that coil. I\'m not bolting anything in until I\'ve got all three — she\'ll tear herself apart if she lifts half-healed.');
-    return s.say('Mags', ['The lift\'s on the east wall. Key\'s in your pocket.', 'Something down there\'s been dragging the good scrap into a pile. Miners call it the Foreman.']);
+    return s.say('Mags', ['The lift\'s on the east wall. Key\'s in your pocket.', 'Something down there\'s been dragging the good scrap into a pile. Scrappers call it the Foreman.']);
   },
 
   async magsBriefing(s) {
@@ -201,7 +201,7 @@ export const CH9 = {
     await s.say('Mags', 'Can she— ha! Girl, she\'s the Halcyon. She was built to fly by people who hated the ground. She *wants* to fly. It\'s the parts that object.');
     await s.say('Mags', 'Here\'s the butcher\'s bill.');
     await s.say('Mags', 'One. Her lift-coil\'s slag — cracked clean through when we came down. There\'s a dozen wrecks in the Boneyard below the canyon. Sky fell, ships fell with it. Find me a coil that isn\'t cracked.');
-    await s.say('Mags', 'Two. Her lift-sail\'s rags. I need stormsilk, and the only stormsilk this side of the abyss is on the *Benediction* — a Choir pilgrim galleon stuck in the Squall east of here. Been stuck a year. The lightning never stops.');
+    await s.say('Mags', 'Two. Her lift-sail\'s rags. I need stormsilk, and the only stormsilk this side of the abyss is on the *Benediction* — a Choir pilgrim galleon stuck in the Squall east of here. The lightning never stops.');
     await s.say('Mags', 'Three. Her heart. Sun-ember core, cracked the day the sun did. The only embers big enough are in the Cinderdeep. Odessa\'s mine. Odessa\'s embers. Odessa\'s terms.');
     await s.say('Bram', 'So: a graveyard, a haunted ship, and a mine owned by a woman who wants to sell our friend for parts.');
     await s.say('Mags', 'The *charming* parts? She told you that one. She\'s proud of that one.');
@@ -215,7 +215,7 @@ export const CH9 = {
     await s.say('Mags', 'Go on. Bring me a coil.');
     s.setFlag('c9_boneyard_open');
     s.objective('Take the lift on the east wall down to the Boneyard. Find a lift-coil that isn\'t cracked.');
-    s.journal('Mags needs three things: a lift-coil from the Boneyard, stormsilk from a wrecked galleon, and a sun-ember heart from Odessa\'s mine. A graveyard, a ghost ship and a debt.');
+    s.journal('Mags needs three things: a lift-coil from the Boneyard, stormsilk from the Benediction, and a sun-ember heart from Odessa\'s mine. A graveyard, a ghost ship and a debt.');
   },
 
   // ------------------------------------------------------------------ the Boneyard
@@ -231,7 +231,7 @@ export const CH9 = {
   async winch(s, which) {
     const key = `c9_winch_${which}`;
     if (s.flag(key)) return s.narrate('The winch is thrown. Its chain hangs slack and ticking.');
-    await s.narrate('A rusted crane winch, still chained to a magnet crane that hangs out over the yard like a fishing rod.');
+    await s.narrate('A rusted winch, still chained to a magnet crane that hangs out over the yard like a fishing rod.');
     if (!(await s.confirm('Throw the winch?'))) return;
     s.setFlag(key);
     s.sfx('rumble');
@@ -312,7 +312,7 @@ export const CH9 = {
     await s.say('Ilse', '_(to Wren, quietly)_ That\'s almost word for word what I said to you. In the Ward.');
     await s.say('Wren', '_(quietly)_ I know. I\'m trying very hard not to smile.');
     await s.say('Mags', 'Captain. Catch.');
-    await s.narrate('Something heavy sails down from the deck. Corvin catches it without looking: a long-barrelled hand-cannon, oiled, gleaming.');
+    await s.narrate('Something heavy sails down from the deck. Corvin catches it without looking: a long-barreled hand-cannon, oiled, gleaming.');
     await s.say('Mags', 'Cleaned it every week. Didn\'t know who for.');
     await s.say('Corvin', 'Mags. You beautiful wrench.');
     await s.say('Pip', 'You\'re not staying.');
@@ -450,7 +450,7 @@ export const CH9 = {
     await s.narrate([
       'Squallmaw falls into the rigging and is still. The wind lets go of the ship.',
       'For the first time in a year, the rain falls _down_.',
-      'Tangled in the mainmast hangs a lift-sail of grey stormsilk, scorched at one corner and otherwise whole.',
+      'Tangled in the mainmast hangs a lift-sail of gray stormsilk, scorched at one corner and otherwise whole.',
     ]);
     await s.give('airship_part');
     await s.narrate('And through a tear in the clouds — far to the north, on a shard brighter than anything left in the sky — stands a needle of white light.');
@@ -467,7 +467,7 @@ export const CH9 = {
     await s.narrate([
       'The captain\'s log, swollen with rain. The last pages are legible.',
       '"Day of the Vespersong. Pilgrims in high spirits. The Hierophant will sing the sun to sleep tonight, and it will never set on us again. The Abbess asks if we may circle the Cathedral twice for the view."',
-      '"Later. The sun is wrong. The sun is —"',
+      '"Later. The sun is wrong. The sun is—"',
       'The rest is water.',
     ]);
   },
@@ -491,7 +491,7 @@ export const CH9 = {
     s.place('player', 6, 5, 'up');
     await s.say('Odessa', 'The Keeper\'s girl and her keeper. Sit. Don\'t touch the ledgers; they bite.');
     await s.say('Odessa', 'You want into my mine. Everyone wants into my mine. It\'s the only warm place left in the world.');
-    await s.say('Odessa', 'My miners stopped coming up two Bells ago. The ones who did talk about a worm made of light, coiled round the biggest ember we ever dug. It\'s eating my embers. And three of my debtors.');
+    await s.say('Odessa', 'My miners stopped coming up two Bells ago. The ones who did come up talk about a worm made of light, coiled round the biggest ember we ever dug. It\'s eating my embers. And three of my debtors.');
     await s.say('Wren', 'We\'ll kill it.');
     await s.say('Odessa', 'I adore a girl who skips the negotiation.');
     await s.say('Odessa', 'Kill it, and take one heart-ember for your ship. Bring my three debtors out alive, and I shall be... grateful. I\'m told it\'s a pleasant feeling.');
@@ -514,10 +514,10 @@ export const CH9 = {
     await s.say('Odessa', 'I said I\'d think about it. I\'m thinking about it, darling. Are you?');
     await s.wait(1.2);
     await s.say('Corvin', '...I\'m always thinking. It\'s the doing I\'m bad at.');
-    await s.say('Odessa', 'Your little skiff\'s still fuelled, I notice. Moored at the Lip. Pointed at open sky.');
+    await s.say('Odessa', 'Your little skiff\'s still fueled, I notice. Moored at the Lip. Pointed at open sky.');
     await s.say('Odessa', 'You always keep a door open, Corvin. It\'s the most honest thing about you.');
     await s.wait(1.5);
-    await s.say('Corvin', '...Is that all?');
+    await s.say('Corvin', 'Is that all?');
     await s.say('Odessa', 'That\'s all. Mind the step on your way out. People trip on it. It\'s how I like them.');
     await s.fadeOut(0.8);
     s.remove('corvin_o');
@@ -546,7 +546,7 @@ export const CH9 = {
 
   // ------------------------------------------------------------------ the Cinderdeep
   async cinderEntry(s) {
-    await s.narrate('Heat rolls up the shaft like breath. Somewhere far below, something enormous breathes back.');
+    await s.narrate('Heat rolls up the shaft like breath. Somewhere far below, something breathes back.');
     await s.say('Bram', 'Why is it always *down*? Why is the worst thing never at the top of a nice hill?');
     await s.say('Corvin', 'Because people who build on hills charge rent.');
     await s.say('Ilse', 'Odessa\'s miners will be in the side-galleries if they\'re anywhere. Keep your eyes open.');
@@ -566,7 +566,7 @@ export const CH9 = {
       await s.narrate('Steam screams through the pipes. Far to the east, a river of slag hisses, cools, and cracks into rubble.');
     } else {
       s.clearBlocker('slag_b');
-      await s.narrate('Steam roars up a shaft to the north. Somewhere above, molten slag goes grey and breaks apart.');
+      await s.narrate('Steam roars up a shaft to the north. Somewhere above, molten slag goes gray and breaks apart.');
     }
   },
 
@@ -671,7 +671,7 @@ export const CH9 = {
     s.shake(0.45, 2.2);
     s.flash('#ffffff', 0.5);
     await s.wait(1.0);
-    await s.narrate('A shadow falls across the canyon. Something white and enormous blots out the bruised sky — a warship, its hull painted with the Choir\'s golden sunburst, lowering itself between the canyon walls on singing engines.');
+    await s.narrate('A shadow falls across the canyon. Something white and enormous blots out the sky — a warship, its hull painted with the Choir\'s golden sunburst, lowering itself between the walls on singing engines.');
     await s.say('Bram', 'That\'s the *Steadfast*. They used to show it to the squires. To make us proud.');
     s.spawn('sev', 'severine', 23, 11, 'down');
     s.spawn('mar1', 'c9_sky_marine', 21, 12, 'down');
@@ -691,7 +691,7 @@ export const CH9 = {
     await s.say('Severine', 'We\'ll see.');
     await s.move('odessa_l', [[26, 17]], 1.6);
     s.face('odessa_l', 'corvin_c9');
-    await s.say('Odessa', '_(quietly)_ Your skiff\'s at the Lip, darling. Fuelled. Pointed at open sky.');
+    await s.say('Odessa', '_(quietly)_ Your skiff\'s at the Lip, darling. Fueled. Pointed at open sky.');
     await s.say('Odessa', '_(quietly)_ Go now, and I\'ll burn your marker myself. Nobody would blame you. Nobody ever expected anything else.');
     await s.pan(3, 22, 1.6);
     await s.narrate('At the canyon\'s lip, Corvin\'s skiff rocks on its mooring line. Small. Fast. Pointed at nothing at all.');
@@ -717,7 +717,7 @@ export const CH9 = {
     s.face('corvin_c9', 'up');
     await s.say('Corvin', 'Huh.');
     await s.say('Corvin', 'Always wondered what that would feel like.');
-    await s.say('Pip', '...How\'s it feel?');
+    await s.say('Pip', 'How\'s it feel?');
     await s.say('Corvin', 'Terrible. Get behind me, kid.');
     s.flash('#f0f0ff', 0.5);
     await s.system('Something in Corvin\'s Crest turns over, like a card laid face-up on the table.');

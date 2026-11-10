@@ -38,7 +38,7 @@ export const lfTideCaves = {
     { id: 'brooch', x: 34, y: 22, w: 5, h: 4, once: false, cond: (st) => !st.flags.p_brooch_got, run: (s) => PRO.brooch(s) },
     { id: 'entry_talk', x: 2, y: 14, w: 2, h: 5, run: async (s) => {
       await s.say('Ilse', 'It smells like low tide and bad decisions.');
-      await s.say('Wren', 'It smells like *adventure*.');
+      await s.say('Wren', 'It smells like _adventure_.');
       await s.say('Ilse', 'That\'s what I said.');
       // The first place monsters roam: how to stay alive in a dungeon.
       await s.system('Tip — Monsters roam the caves, and HP doesn\'t recover between battles. Use *Tonics* from the menu, and rest at the golden *Hearthstone* deeper in. If a fight turns against you, *Flee* (each try is likelier to work). Entering a new area autosaves.');

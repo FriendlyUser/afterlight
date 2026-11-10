@@ -30,7 +30,7 @@ export const greyspinePass = {
   ],
   npcs: [
     { id: 'mae', name: 'Pilgrim Mae', look: 'c4a_davit', x: 8, y: 29, dir: 'down',
-      talk: ['Resting my knees. They\'re older than the rest of me.', 'Grey cloaks passed me on the lower trail two days ago. Forty of them, with a big man in front who never once looked at the view.', 'Who climbs a mountain and doesn\'t look at the view?'] },
+      talk: ['Resting my knees. They\'re older than the rest of me.', 'Gray cloaks passed me on the lower trail two days ago. Forty of them, with a big man in front who never looked at the view.', 'Who climbs a mountain and doesn\'t look at the view?'] },
   ],
   chests: [
     { id: 'c4a_gp_1', x: 4, y: 2, item: 'silversteel_helm' },
@@ -99,7 +99,7 @@ export const frosthollow = {
   ],
   exits: [
     { x: 20, y: 35, w: 3, to: 'c4a_greyspine_pass', tx: 19, ty: 1, dir: 'down', cond: (st) => !night(st),
-      blocked: async (s) => { await s.say('Corvin', 'Gate road\'s crawling with grey cloaks, sparrow. Wrong way.'); await s.step('player', 0, -1); } },
+      blocked: async (s) => { await s.say('Corvin', 'Gate road\'s crawling with gray cloaks, sparrow. Wrong way.'); await s.step('player', 0, -1); } },
     { x: 39, y: 1, w: 3, to: 'c4a_frost_caves', tx: 1, ty: 15, dir: 'right', cond: (st) => night(st) && st.flags.c4a_gate_done,
       blocked: async (s) => { await C4M.stairLocked(s); await s.step('player', 0, 1); } },
   ],
@@ -150,8 +150,8 @@ export const frostCaves = {
     { id: 'c4a_fc_5', x: 37, y: 26, item: 'tonic_mist', count: 2 },
   ],
   inspect: [
-    { x: 15, y: 6, text: 'Steps cut into the ice by hand, worn into shallow bowls by centuries of monks\' feet. Each step has a number carved beside it. You are on step four hundred and twelve.' },
-    { x: 38, y: 22, text: 'Someone has carved a little bell into the wall by the Hearthstone, and under it: FOR THE ONES WHO HAD TO LEAVE IN A HURRY.' },
+    { x: 15, y: 6, text: 'Steps cut into the ice by hand, worn down in the middle by centuries of monks\' feet. Each step has a number carved beside it. You are on step four hundred and twelve.' },
+    { x: 38, y: 22, text: 'A little bell is carved into the wall by the Hearthstone, and under it: FOR THE ONES WHO HAD TO LEAVE IN A HURRY.' },
   ],
   triggers: [
     { id: 'stair_in', x: 1, y: 14, w: 3, h: 3, run: (s) => C4M.stairEntry(s) },

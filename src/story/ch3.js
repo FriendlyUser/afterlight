@@ -80,7 +80,7 @@ export const CH3 = {
     await s.system('*Edrin\'s Compass* was stolen!');
     await s.say('Ilse', 'What did I say. What was three.');
     await s.say('Bram', 'Stop, thief! In the name of the Dawn— he\'s very fast, isn\'t he.');
-    await s.say('Sable', 'He went into the market. The one with the tents.');
+    await s.say('Sable', 'He went west, into the market. The one with the tents.');
     disperse(s);
     s.setFlag('c3_thief');
     s.objective('Catch the boy who stole Dad\'s compass! He ran into the Bell Market (west).');
@@ -105,7 +105,7 @@ export const CH3 = {
     await s.narrate('He goes up the stacked crates like a squirrel up a tree, and over the gutter.');
     await s.say('???', 'Catch me on the roofs, Fish-Girl!', { portrait: false });
     await s.say('Wren', 'Did he just call me _Fish-Girl?_');
-    await s.say('Ilse', 'You do smell a little bit like—');
+    await s.say('Ilse', 'You do smell a little like—');
     await s.say('Wren', 'Don\'t.');
     s.objective('Climb the crates behind the market (by the brick warehouse) and chase the thief across the rooftops!');
   },
@@ -179,11 +179,11 @@ export const CH3 = {
     await s.say('Bram', 'Squire Bram Kestrel of the Dawnguard. You\'re under— uh. Citizen\'s arrest? Is that a thing?');
     await s.say('Pip', 'You\'re a squire? Bit old for a squire, aren\'t you?');
     await s.wait(0.5);
-    await s.say('Bram', '...That is a very rude question.');
+    await s.say('Bram', 'That is a very rude question.');
     await s.say('Wren', 'Give it back.');
     await s.say('Pip', 'This? It\'s broken. Points the wrong way. North\'s _that_ way. Everybody knows that.');
     await s.say('Wren', 'It points west. It always points west. It was my dad\'s.');
-    await s.say('Pip', '...Your dad\'s a sailor?');
+    await s.say('Pip', 'Your dad\'s a sailor?');
     await s.wait(0.8);
     await s.say('Wren', 'He was.');
     await s.wait(1.2);
@@ -194,7 +194,7 @@ export const CH3 = {
     s.face(who(s, 'sable'), 'right');
     await s.say('Sable', 'Why do you steal?');
     await s.say('Pip', 'Why do you breathe?');
-    await s.say('Sable', 'I don\'t know. I didn\'t ask to.');
+    await s.say('Sable', 'I do not know. I did not ask to.');
     await s.wait(0.6);
     await s.say('Pip', '...You\'re weird.');
     await s.say('Sable', 'Yes.');
@@ -209,10 +209,10 @@ export const CH3 = {
     await s.wait(0.6);
     await s.say('Pip', 'Hey. Big one. That sash. You\'re Dawnguard? A real one?');
     await s.say('Bram', '...More or less.');
-    await s.say('Pip', 'Then you have to help me. It\'s the oath. Or the law. Or whatever it is you lot swear on.');
+    await s.say('Pip', 'Then you have to help me. It\'s the oath. Or the law. Whichever one you lot swear on.');
     await s.say('Pip', 'My crew\'s been going missing. Low Town kids. Tuck, two weeks back. Wick, last week. They go to sleep in the drain-house and in the morning they\'re just... not.');
     await s.say('Pip', 'No blood. No nothing. And the Watch won\'t come down to Low Town for anything smaller than a fire.');
-    await s.say('Wren', 'Vanishing...?');
+    await s.say('Wren', 'Gone where?');
     await s.say('Ilse', 'Wren. We have a letter to deliver. To the Cathedral. _Today._');
     await s.say('Pip', 'The Cathedral! Even better. You\'ve got friends up there? White-robes listen to people with letters.');
     await s.move('pip_nook', [[40, 8], [39, 9]], 4);
@@ -228,13 +228,13 @@ export const CH3 = {
     await s.say('Sable', 'I like him.');
     await s.say('Ilse', 'Of course you do.');
     await s.wait(0.6);
-    await s.say('Wren', '...Fine. Until we find your friends.');
+    await s.say('Wren', 'Fine. Until we find your friends.');
     await s.say('Pip', 'Pipkin Tallow. Prince of the Gutters. At your service.');
-    await s.narrate('He bows, very low and very elaborately. When he straightens up, Wren\'s purse is in his hand.');
+    await s.narrate('He bows, low and elaborate. When he straightens up, Wren\'s purse is in his hand.');
     await s.say('Pip', '...Force of habit.');
     s.sfx('steal');
     await s.say('Wren', '_Pip._');
-    await s.say('Pip', 'Giving it back! See? Giving it back. Character growth.');
+    await s.say('Pip', 'Giving it back! See? Giving it back. Changed man.');
     s.remove('pip_nook');
     const pip = s.state.addCharacter('pip');
     pip.setLevel(Math.max(12, s.state.leader().level));
@@ -312,7 +312,7 @@ export const CH3 = {
     gather(s, { ilse: [5, 8], bram: [7, 8], sable: [4, 7], pip: [8, 8] });
     s.spawn('cassian', 'cassian', 6, 2, 'up');
     await s.wait(0.8);
-    await s.narrate('The Hierophant stands at the back of the room, facing a painting hung beneath a white sheet. For a moment he doesn\'t move at all.');
+    await s.narrate('The Hierophant stands at the back of the room, facing a painting hung beneath a white sheet. For a moment he doesn\'t move.');
     s.face('cassian', 'down');
     await s.say('Cassian', 'Wren Halloway. You came.');
     await s.move('cassian', [[8, 3], [8, 5], [6, 5]], 2);
@@ -341,7 +341,7 @@ export const CH3 = {
       await s.wait(0.6);
       await s.say('Cassian', 'Missing?');
       await s.say('Pip', 'Three of mine. Gone in the night. No blood, no nothing.');
-      await s.say('Cassian', '...I will speak to the Dawnguard tonight. And to Sister Mercy at the almshouse — no one knows Low Town\'s children better.');
+      await s.say('Cassian', 'I will speak to the Dawnguard tonight. And to Sister Mercy at the almshouse — no one knows Low Town\'s children better.');
       await s.say('Pip', '...');
     }
     s.face('cassian', 'player');
@@ -393,7 +393,7 @@ export const CH3 = {
     await s.say('Bram', '...I don\'t actually know.');
     await s.say('Sable', 'He said "not yet."');
     await s.say('Wren', 'What?');
-    await s.say('Sable', 'When I asked if he found her. People don\'t say "not yet" about the dead.');
+    await s.say('Sable', 'When I asked if he found her. People do not say "not yet" about the dead.');
     if (hasPip(s)) {
       await s.say('Pip', 'Can we talk about _my_ people now? The ones who are actually missing?');
       await s.say('Wren', 'Tomorrow. First thing. Cassian said he\'d talk to the Dawnguard tonight.');
@@ -413,7 +413,7 @@ export const CH3 = {
     await s.fadeOut(1.2);
     s.stopMusic(1);
     ringBells(s, 12, 150, 0.5);
-    await s.narrate(['That night, the bells of Aurenne rang twelve times.', 'And then they were quiet.']);
+    await s.narrate(['That night, the bells of Aurenne ring twelve times.', 'And then they are quiet.']);
     s.heal();
     await s.say('Wren', '_(whispering)_ Ilse? You awake?');
     await s.say('Ilse', 'No.');
@@ -491,7 +491,7 @@ export const CH3 = {
     await s.say('Sable', 'Then the light went out.');
     await s.wait(0.8);
     await s.say('Bram', 'Lysa. That\'s what the Hierophant called you. At the Kindling.');
-    await s.say('Sable', 'He had grey eyes. Like the Hierophant\'s.');
+    await s.say('Sable', 'He had gray eyes. Like the Hierophant\'s.');
     await s.say('Wren', 'It\'s just a dream. You heard the name, and dreams— they take things and stir them up.');
     await s.say('Sable', 'Do dreams smell like summer?');
     await s.wait(1.0);
@@ -505,7 +505,7 @@ export const CH3 = {
     await s.wait(0.8);
     await s.say('Pip', 'You said tomorrow.');
     await s.say('Wren', 'Pip, I—');
-    await s.say('Pip', 'Doesn\'t matter. Old Mag sleeps by the river. She saw something, she won\'t say it to me. She might to you.');
+    await s.say('Pip', 'Doesn\'t matter. Old Mag sleeps by the river in Low Town. She saw something, she won\'t say it to me. She might to you.');
     await s.say('Pip', 'Come on. Or don\'t.');
     await s.move('c_pip', [[7, 6], [7, 9]], 6.5);
     disperse(s);
@@ -521,7 +521,7 @@ export const CH3 = {
     if (s.flag('c3_mag')) return s.say('Old Mag', ['Behind the almshouse. The old stair. Mind the singing.']);
     s.setFlag('c3_mag');
     await s.say('Old Mag', 'Pip\'s new friends. Fancy boots. You\'ll want to know about last night.');
-    await s.say('Old Mag', 'Singing. I heard singing. Sisters in grey with little lanterns, walking slow and pretty.');
+    await s.say('Old Mag', 'Singing. I heard singing. Sisters in gray with little lanterns, walking slow and pretty.');
     await s.say('Old Mag', 'They led the young ones out of the drain-house like ducklings. And the young ones went _smiling_.');
     await s.say('Pip', 'Nell went with them? _Smiling?_');
     await s.say('Old Mag', 'Smiling like they\'d been promised supper. Round the back of the almshouse they went. Down the old stair, where the Undercroft starts.');
@@ -529,7 +529,7 @@ export const CH3 = {
     await s.say('Ilse', 'Someone who wants to be sure of who comes out.');
     await s.say('Old Mag', 'Sister Constance keeps the keys on her belt. Rattles like a jailer\'s.');
     s.objective('The Undercroft grate behind the almshouse is locked. Sister Constance at the almshouse keeps the keys.');
-    s.journal('Old Mag saw grey Sisters lead the children down the old stair behind the almshouse — singing. The children were smiling.');
+    s.journal('Old Mag saw gray Sisters lead the children down the old stair behind the almshouse — singing. The children were smiling.');
   },
 
   /** The almshouse: keep Sister Constance talking while Pip lifts her keys. */
@@ -554,7 +554,7 @@ export const CH3 = {
       await s.say('Wren', 'Thyme! My mother grows thyme. Well, she grows _at_ it. It mostly refuses.');
     } else if (pick === 1) {
       await s.say('Wren', 'Sister Mercy seems so... devoted. How long have you known her?');
-      await s.say('Constance', 'Eleven years. She found me on the cathedral steps. She found all of us, one way or another.');
+      await s.say('Constance', 'Eleven years. She found me on the Cathedral steps. She found all of us, one way or another.');
       await s.say('Constance', 'She says the sun should never have to set on anyone. Isn\'t that lovely?');
     } else {
       await s.say('Bram', 'Sister! As a knight of— as a squire of the Dawnguard, I must ask about the, ah. The beds. Their... softness. Specifically.');
@@ -573,7 +573,7 @@ export const CH3 = {
     await s.say('Pip', '_(whispering)_ It\'s borrowing with confidence.');
     disperse(s);
     s.objective('Open the old Undercroft grate behind the almshouse (east end of Low Town).');
-    s.journal('Pip lifted Sister Constance\'s keys while Bram interrogated her about beds. Ilse is appalled. I\'m a little impressed.');
+    s.journal('Pip lifted Sister Constance\'s keys while we kept her talking. Ilse is appalled. I\'m a little impressed.');
   },
 
   async undercroftGate(s) {
@@ -619,7 +619,7 @@ export const CH3 = {
       await s.say('Bram', 'Was that us? I think that was us.');
       s.objective('The sluice gate is open. Press on east, deeper into the Undercroft.');
     } else {
-      await s.say('Ilse', 'One more, I think. These gates always come in pairs. Like shoes. Or bad ideas.');
+      await s.say('Ilse', 'One more wheel, I think. These valves always come in pairs. Like shoes. Or bad ideas.');
       s.objective('Turn the second valve wheel to raise the sluice gate.');
     }
   },
@@ -643,7 +643,7 @@ export const CH3 = {
     await s.narrate([
       'A small niche, set apart from the others. A child\'s name is carved over it:',
       '*LYSA LORNE · TEN YEARS · NOT LOST, ONLY WAITING*',
-      'A candle burns in the niche. It is fresh. Someone has lit it in the last day or two.',
+      'A candle burns in the niche. It is fresh, lit in the last day or two.',
     ]);
     if (s.flag('c3_niche_seen')) return;
     s.setFlag('c3_niche_seen');
@@ -676,7 +676,7 @@ export const CH3 = {
     await s.give('c3_bell_hammer');
     SIDE.hammerFound(s);
     await s.say('Bram', 'GLORIA, it says on the handle. Who names a hammer?');
-    await s.say('Pip', 'Old Tolliver does. The bell-ringer up in the market. He\'s been crying about it for a week. Says the noon bell won\'t ring true without her.');
+    await s.say('Pip', 'Old Tolliver does. The bell-ringer up in the Bell Market. He\'s been crying about it for a week. Says the noon bell won\'t ring true without her.');
     s.objective('Press on toward the stair at the far end of the ossuary.');
   },
 
@@ -692,7 +692,7 @@ export const CH3 = {
     await s.say('Pip', 'NELL! _NELL!_');
     await s.say('Sable', 'This place is made of the same thing I am made of.');
     await s.say('Wren', 'What?');
-    await s.say('Sable', 'I don\'t know why I said that.');
+    await s.say('Sable', 'I do not know why I said that.');
     s.objective('Find Nell and the missing — and whoever is doing this.');
   },
 
@@ -745,7 +745,7 @@ export const CH3 = {
     await s.say('Pip', 'She— where\'d she _go?_');
     await s.say('Sable', 'Into the dark. The dark has back doors.');
     await s.say('Bram', 'Noon? It\'s barely morning.');
-    await s.say('Sable', 'She didn\'t mean the time.');
+    await s.say('Sable', 'She did not mean the time.');
     s.sfx('burst');
     await s.narrate('Somewhere behind them, every cell door in the laboratory unlocks at once.');
     await CH3.rescue(s);
@@ -770,7 +770,7 @@ export const CH3 = {
     await s.say('Bram', 'Carrying. Yes. I am good at carrying.');
     s.remove('nell_r');
     disperse(s);
-    s.journal('Sister Mercy was making Gloam beasts out of the poor of Low Town. We beat her, but she walked into her own shadow and was gone. "Noon is coming," she said. We got Nell, Tuck and Wick out — and Rowan the baker, and eleven others.');
+    s.journal('Sister Mercy was making Gloam beasts out of the poor of Low Town. We beat her, but she walked into her own shadow and was gone. "Noon is coming," she said. We got Nell, Tuck and Wick out — and Rowan the baker, and ten others.');
     await s.fadeOut(1.5);
     await s.narrate(['They bring fourteen people up out of the dark that morning.', 'By noon, all of Aurenne knows.']);
     await s.teleport('aurenne', 21, 13, 'up');
@@ -896,7 +896,7 @@ export const CH3 = {
     await s.say('Wren', 'Cassian _condemned_ her. In front of the whole city. What more do you want?');
     await s.say('Ilse', 'I want to know how the Hierophant of the whole world didn\'t notice what was under his own feet.');
     await s.wait(0.8);
-    await s.say('Sable', 'The note in the forks. I don\'t like it.');
+    await s.say('Sable', 'The note in the forks. I do not like it.');
     if (hasPip(s)) {
       await s.say('Pip', 'So we\'re going to the desert? I\'ve never seen a desert. Is it just a really big beach?');
       await s.say('Bram', '...Yes. Essentially.');

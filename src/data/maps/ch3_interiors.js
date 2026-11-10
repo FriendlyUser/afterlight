@@ -44,7 +44,7 @@ export const c3Inn = {
       talk: async (s) => {
         await s.say('Corporal Nim', ['Off duty. Which means I\'m not here, and you didn\'t see me.', 'If the Lord-Commander asks, I\'m on patrol. This tankard is the patrol.']);
         if (s.state.party.includes('bram')) {
-          await s.say('Corporal Nim', '...Wait. Kestrel? Venn\'s squire? Dawn, man, everyone said you went soft on some island.');
+          await s.say('Corporal Nim', 'Wait. Kestrel? Venn\'s squire? Dawn, man, everyone said you went soft on some island.');
           await s.say('Bram', 'I went _salty._ It\'s different.');
         }
       } },
@@ -134,14 +134,14 @@ export const c3Study = {
   id: 'c3_study', name: 'The Hierophant\'s Study', music: 'cassian',
   inspect: [
     { x: 6, y: 1, run: async (s) => {
-      await s.narrate('A painting hangs on the wall beneath a white sheet. The sheet is spotless — not a speck of dust. Someone uncovers it often.');
+      await s.narrate('A painting hangs on the wall beneath a white sheet. Not a speck of dust on it. Someone uncovers it often.');
       await s.say('Wren', '...It\'s not ours to lift.');
     } },
     { x: 6, y: 4, run: async (s) => {
       await s.narrate('Letters, stacked neatly on the desk. The one on top is in your own handwriting: your letter about the stars, from two winters ago.');
       await s.say('Wren', 'He kept it.');
     } },
-    { x: 11, y: 5, text: 'An armillary sphere of brass rings. The little golden sun that should sit at its center is missing. There is only an empty socket.' },
+    { x: 11, y: 5, text: 'An armillary sphere of brass rings. Where the little golden sun should sit at its center, there is only an empty socket.' },
     { x: 2, y: 2, text: 'Treatises on the Dawnsong, scored and annotated in a fine hand. One spine has been read until it broke: *On the Inversion of Hymns.*' },
     { x: 10, y: 2, text: 'Correspondence with the Keepers, filed by Lantern. The Lanternfall folder is very thin. On top, in Ysolde\'s hand, one word: NO.' },
   ],
@@ -210,7 +210,7 @@ export const c3Venn = {
   npcs: [{ id: 'orsolya', name: 'Dame Orsolya Venn', look: 'orsolya', x: 6, y: 3, dir: 'down', run: (s) => SIDE.orsolya(s) }],
   inspect: [
     { x: 8, y: 4, text: 'A suit of Dawnguard plate on a stand, polished to a mirror. There is a notch in the breastplate, over the heart, that has never been hammered out.' },
-    { x: 4, y: 1, text: 'A portrait: a broad, laughing knight with a ridiculous moustache, and a young woman trying very hard not to laugh with him.' },
+    { x: 4, y: 1, text: 'A portrait: a broad, laughing knight with a ridiculous mustache, and a young woman trying very hard not to laugh with him.' },
   ],
   exits: [toTown(4, 7, 3, 43, 19)],
 };

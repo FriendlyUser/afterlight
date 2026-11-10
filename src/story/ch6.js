@@ -40,7 +40,7 @@ export const CH6 = {
     await s.say('Fennick', 'Sit. No — sit. You stand up too fast every morning, and every morning you fall over, and every morning I pick you up. My back\'s tired, girl.');
     await s.say('Wren', 'Every morning?');
     await s.say('Fennick', 'Three hundred and some. Hard to count. There aren\'t days anymore. Just the light changing color.');
-    await s.say('Wren', '...Who are you?');
+    await s.say('Wren', 'Who are you?');
     await s.say('Fennick', 'Ha!');
     await s.say('Fennick', 'Now that\'s new. Three hundred mornings you\'ve sat at my table, and that\'s the first question you\'ve ever asked me.');
     await s.say('Fennick', 'Fennick. Old Fennick, the children used to say, up on the north cliffs. Dared each other to knock on my door.');
@@ -57,7 +57,7 @@ export const CH6 = {
     await s.wait(1.2);
     await s.say('Wren', 'It was me. I gave him the stone. It was me.');
     await s.wait(1.4);
-    await s.say('Fennick', '...I know that too, girl. You told me. Every night for three months, in your sleep.');
+    await s.say('Fennick', 'I know that too, girl. You told me. Every night for three months, in your sleep.');
     await s.wait(1.0);
     await s.say('Fennick', 'Eat your soup.');
     await s.say('Wren', 'How can you— I broke the SUN, and you want me to eat soup?');
@@ -82,7 +82,7 @@ export const CH6 = {
 
   async books(s) {
     if (s.flag('c6_cairns')) return s.narrate('Fennick\'s books. Every one of them has a twin on a shelf in a house that is gone now. He bought two of everything, for years, so he would know which ones you had already read.');
-    return s.narrate('Books. Hundreds of them, swollen with salt. Some of the titles are strangely familiar. _The Pirate Queen of Gale_. _A Child\'s Book of Stars_. _Tides, and How They Lie_.');
+    return s.narrate('Books. Hundreds of them, swollen with salt. You know some of the titles. _The Pirate Queen of Gale_. _A Child\'s Book of Stars_. _Tides, and How They Lie_.');
   },
 
   // ================================================================== the shard
@@ -143,7 +143,7 @@ export const CH6 = {
     await s.say('Wren', 'My books?');
     await s.say('Fennick', 'The ones that washed up on your step. Every month, since you were five.');
     await s.wait(1.0);
-    await s.say('Wren', '...That was you?');
+    await s.say('Wren', 'That was you?');
     await s.say('Fennick', 'Your father paid me in fish to leave \'em. Said you\'d read them faster if you thought the sea sent them. After he was gone, I kept on.');
     await s.say('Fennick', 'It was the only part of being sorry that was any use to anybody.');
     await s.wait(1.4);
@@ -170,9 +170,9 @@ export const CH6 = {
   async spar(s) {
     if (s.flag('c6_spar')) return CH6.fennickTalk(s);
     await s.say('Fennick', 'Right. You and me. Don\'t hold back — I won\'t.');
-    await s.say('Fennick', 'Three things your father never learned and I did. One: when something winds up for a big swing, _Guard._ Halves the blow and gets your turn back quicker.');
-    await s.say('Fennick', 'Two: hit what they hate. Every beast has a weakness. Find it, keep hitting it, and they Break.');
-    await s.say('Fennick', 'Three: you\'re alone now. Nobody\'s going to heal you. If you\'ve a Crest that can mend, put it to work. If you don\'t — carry tonics. Lots of tonics.');
+    await s.say('Fennick', 'Things your father never learned and I did. First: when something winds up for a big swing, _Guard._ Halves the blow and gets your turn back quicker.');
+    await s.say('Fennick', 'Second: hit what they hate. Every beast has a weakness. Find it, keep hitting it, and they Break.');
+    await s.say('Fennick', 'Last: you\'re alone now. Nobody\'s going to heal you. If you\'ve a Crest that can mend, put it to work. If you don\'t — carry tonics. Lots of tonics.');
     if (!(await s.confirm('Spar with Fennick?', 'Ready', 'Not yet'))) return;
     const r = await s.battle('c6_spar_fennick', { bg: 'ruin', music: 'battle', loseOk: true, canFlee: false });
     s.setFlag('c6_spar');
@@ -204,7 +204,7 @@ export const CH6 = {
     await s.say('Linnet', 'Run by a Mender girl about your age. Dark hair, spectacles, never smiles. They say she hasn\'t slept since the sky broke.');
     await s.wait(1.2);
     await s.say('Wren', '...Ilse.', { speed: 0.6 });
-    await s.say('Linnet', 'Oh, and — heralds came through Keelhaven, all in white. Said the Hierophant lives. Said he\'s building something up on the biggest sun-shard. Said—');
+    await s.say('Linnet', 'Oh, and — heralds came through Keelhaven, all in white. Said the Hierophant lives. Said he\'s building something up on the biggest Sun Shard. Said—');
     await s.say('Linnet', 'Said the last Dawnstone was given freely. By the Keeper\'s daughter of Lanternfall.');
     await s.wait(1.4);
     await s.say('Linnet', 'Folk in Keelhaven would like a word with her, I\'ll tell you that much.');
@@ -251,12 +251,12 @@ export const CH6 = {
     await s.say('Fennick', 'That\'s the Ashmaw. It\'s been taking my chickens all winter.');
     await s.say('Wren', 'You have chickens?');
     await s.say('Fennick', 'Had.');
-    await s.say('Fennick', 'Go on, Lark. Remember: watch the shoulders. Guard the big one.');
+    await s.say('Fennick', 'Go on, Lark. Remember: watch the shoulders. When it winds up, Guard.');
     const r = await s.battle('c6_boss_ashmaw', { bg: 'ruin' });
     if (r !== 'win') return;
     s.setFlag('c6_ashmaw');
     s.setFlag('c6_left_shard');
-    await s.narrate('The Ashmaw comes apart in a long grey sigh, and the wind takes it over the edge.');
+    await s.narrate('The Ashmaw comes apart in a long gray sigh, and the wind takes it over the edge.');
     await s.say('Wren', 'I— okay. I\'m okay.');
     await s.say('Fennick', 'You\'re not. But you\'re standing.');
     await s.say('Fennick', '...There she is.');
@@ -271,7 +271,7 @@ export const CH6 = {
     if (s.flag('c6_drift_in')) return;
     s.setFlag('c6_drift_in');
     await s.wait(0.6);
-    await s.narrate('Islands drift past in the dusk — and some of them, you realize slowly, have cobblestones on them. Lamp posts. Fences you used to climb.');
+    await s.narrate('Islands drift past in the dusk — and some of them have cobblestones on them. Lamp posts. Fences you used to climb.');
     await s.think('Wren', 'These are... these are pieces of home.');
     s.objective('Cross the Drift to Keelhaven, in the east.');
   },
@@ -282,7 +282,7 @@ export const CH6 = {
       s.setFlag('c6_lantern_seen');
       await s.think('Wren', '...The Lantern. It\'s still lit.');
       await s.think('Wren', 'Not yet. I can\'t. Not yet.');
-      s.journal('From the Drift you can see the Lantern on its own shard far to the west. It is still burning. I couldn\'t go. Not yet.');
+      s.journal('From the Drift I could see the Lantern on its own shard, far to the west. It is still burning. I couldn\'t go. Not yet.');
     }
   },
 
@@ -291,7 +291,7 @@ export const CH6 = {
     s.setFlag('c6_house');
     s.music('sad');
     await s.wait(0.4);
-    await s.narrate('Half a room, hanging in the sky. Two walls, a floor, a bed, a table. The rest of the house is just... gone, sheared off as clean as bread.');
+    await s.narrate('Half a room, hanging in the sky. Two walls, a floor, a bed, a table. The rest of the house is gone, sheared off as clean as bread.');
     await s.think('Wren', 'That\'s my bed.');
     await s.think('Wren', 'That\'s our table.');
   },
@@ -367,7 +367,7 @@ export const CH6 = {
     await s.wait(0.8);
     await s.say('Wren', 'I\'m used to alone.');
     await s.wait(1.0);
-    await s.say('Warden Hale', '...The salvagers winched the strait bridge up and chained it, after the last raft went down. Two winches — one out on the north spoke, one on the wreck of the _Gilded Psalm_ on the south spoke. Turn both, and the bridge comes down.');
+    await s.say('Warden Hale', 'The salvagers winched the strait bridge up and chained it. Two winches: one on the north spoke, one on the wreck of the _Gilded Psalm_ on the south spoke. Turn both, and the bridge comes down.');
     await s.say('Warden Hale', 'I\'ll have Rook open the east gate. I won\'t stop you. I won\'t come and pull you out, either.');
     await s.say('Warden Hale', 'And — if you\'re going out there anyway. Two bounties on the board. Glassback, the golem that\'s been smashing the salvage quarry. And the Lidless, up on its perch. Proof brings coin.');
     s.setFlag('c6_gate_open');
@@ -407,7 +407,7 @@ export const CH6 = {
     }
     s.setFlag('c6_maela');
     s.music('sad');
-    await s.narrate('A woman at a huge iron kettle, ladling grey soup into a line of tin cups. She looks up to hand you one — and stops.');
+    await s.narrate('A woman at a huge iron kettle, ladling gray soup into a line of tin cups. She looks up to hand you one — and stops.');
     await s.say('Maela', '...');
     s.spawn('pell_k', 'pell', 12, 14, 'up');
     await s.say('Pell', 'WREN!');
@@ -482,7 +482,7 @@ export const CH6 = {
     }
     if (!letters.length) {
       if (CH6.lettersDone(s)) return CH6.ownLetter(s);
-      return s.say('Orla', 'No letters today? That\'s all right. Neither does anyone else, most days.');
+      return s.say('Orla', 'No letters today? That\'s all right. Neither has anyone else, most days.');
     }
     for (const id of letters) await CH6.deliver(s, id);
     if (CH6.lettersDone(s)) await CH6.ownLetter(s);
@@ -514,7 +514,7 @@ export const CH6 = {
     } else if (id === 'c6_letter_aldo') {
       s.setFlag('c6_aldo_shown');
       await s.say('Orla', '"To Aldo Brannock." Aldo...');
-      await s.say('Orla', '...You\'ll know him as Brother Cinder. The one at the pulpit, shouting about the Keeper\'s girl. Aldo had a wife called Bett. She never made it to the big rock.');
+      await s.say('Orla', 'You\'ll know him as Brother Cinder. The one at the pulpit, shouting about the Keeper\'s girl. Aldo had a wife called Bett. She never made it to the big rock.');
       await s.say('Orla', 'You should give this one to him yourself, love. I don\'t think I could.');
     }
   },
@@ -556,7 +556,7 @@ export const CH6 = {
     s.setFlag('c6_letter_aldo_done');
     await s.say('Wren', 'Brother Cinder. Aldo. This is for you. It was out in the wreckage.');
     await s.say('Brother Cinder', 'What is— that\'s Bett\'s hand.', { speed: 0.6 });
-    await s.narrate('He reads it standing up. Then he sits down on the step of his own pulpit, very suddenly, like his strings have been cut.');
+    await s.narrate('He reads it standing up. Then he sits down on the step of his own pulpit, like his strings have been cut.');
     await s.say('Bett', [
       '_Aldo. If I don\'t make it to the big rock, don\'t you dare turn this into anybody\'s fault._',
       '_Not the Keepers\'. Not the Choir\'s. Not God\'s. Not yours._',
@@ -606,7 +606,7 @@ export const CH6 = {
     s.face('maela_g', 'player');
     await s.say('Maela', 'I don\'t know what you did up there.');
     await s.say('Maela', 'I know what they say. And I know Tobias went back for more boats and didn\'t come back, and I am not losing anybody else from Lanternfall to a lot of shouting.');
-    await s.say('Wren', '...Thank you, Maela.');
+    await s.say('Wren', 'Thank you, Maela.');
     await s.say('Maela', 'Don\'t. Just come back.');
     await s.move('maela_g', [[36, 16]], 3);
     s.remove('maela_g');
@@ -617,7 +617,7 @@ export const CH6 = {
   async ottilie(s) {
     if (s.flag('c6_ottilie')) return s.say('Sister Ottilie', ['Wash your hands, Lark. Then wash them again.', 'The Ember Ward\'s girl says the rot spreads through dirty hands faster than through bad luck.']);
     s.setFlag('c6_ottilie');
-    await s.say('Sister Ottilie', 'Careful — don\'t touch the cots. Gloam-rot. It starts as a grey patch on the skin and it doesn\'t stop.');
+    await s.say('Sister Ottilie', 'Careful — don\'t touch the cots. Gloam-rot. It starts as a gray patch on the skin and it doesn\'t stop.');
     await s.say('Sister Ottilie', 'I wore the Choir\'s white for eleven years. I sang the Dawnsong every morning of my life. I don\'t sing anymore.');
     await s.say('Sister Ottilie', 'The only one who\'s ever beaten the rot is a Mender in Aurenne. The Ember Ward. She wrote me, once, by kite. Told me how to keep them alive longer.');
     await s.say('Sister Ottilie', 'Her letter began: "Three things. One: wash your hands. Two: wash them again. Three: nobody is beyond help until they\'re dead, and then they\'re beyond help, so stop crying and go to the next bed."');
@@ -630,7 +630,7 @@ export const CH6 = {
 
   async board(s) {
     await s.narrate([
-      'A plank nailed to two oars. Notices pinned three deep. MISSING: GOAT, ANSWERS TO "COUNCILLOR". WANTED: ANYONE WHO CAN FIX A KITE-WINCH.',
+      'A plank nailed to two oars. Notices pinned three deep. MISSING: GOAT, ANSWERS TO "COUNCILOR". WANTED: ANYONE WHO CAN FIX A KITE-WINCH.',
       'And, in Warden Hale\'s blocky capitals:',
       '_BOUNTY — "GLASSBACK." GLASS GOLEM, SALVAGE QUARRY, WEST OF THE NORTH SPOKE. 1,500 GOLD._',
       '_BOUNTY — "THE LIDLESS." ON THE PERCH NORTH OF THE LAST HEARTH. DO NOT LOOK AT IT. 2,000 GOLD._',
@@ -681,11 +681,11 @@ export const CH6 = {
   },
 
   async hymnal(s) {
-    await s.narrate('A Choir hymnal, swollen with damp, wedged under a crate. It falls open by itself at a page that has been opened many times. The song is called _The Vespersong — Draft Thirty-One._');
+    await s.narrate('A Choir hymnal, warped with damp, wedged under a crate. It falls open by itself at a page that has been opened many times. The song is called _The Vespersong — Draft Thirty-One._');
     await s.narrate('In the margin, in a small, careful hand: _Not yet. The measure is wrong. Lysa would laugh at this line._');
     if (!s.flag('c6_hymnal')) {
       s.setFlag('c6_hymnal');
-      await s.think('Wren', '...I know that handwriting. I have forty letters in that handwriting.');
+      await s.think('Wren', 'I know that handwriting. I have forty letters in that handwriting.');
       await s.think('Wren', '"The measure is wrong." He knew. Some part of him knew it was wrong, and he sang it anyway.');
       await s.think('Wren', '...So did I.');
     }
@@ -701,18 +701,18 @@ export const CH6 = {
   async glassback(s) {
     if (s.flag('c6_glassback')) return;
     s.shake(0.3, 1.0);
-    await s.narrate('The quarry floor heaves. A shape unfolds out of the glass — man-shaped, almost, twice as tall as a man, and so clear you can see the seven wounds of the sky bent through its body.');
+    await s.narrate('The quarry floor heaves. A shape unfolds out of the glass — like a man, almost, but twice as tall, and so clear you can see the seven wounds of the sky bent through its body.');
     const r = await s.battle('c6_bounty_glassback', { bg: 'ruin' });
     if (r !== 'win') return;
     s.setFlag('c6_glassback');
-    await s.narrate('Glassback shatters into a million pieces. In the middle of the heap, something still glows: a fist-sized core, warm as a hearthstone.');
+    await s.narrate('Glassback shatters. In the middle of the heap, something still glows: a fist-sized core, warm as a hearthstone.');
     await s.give('c6_glass_core');
   },
 
   async lidless(s) {
     if (s.flag('c6_lidless')) return;
     s.music('gloam');
-    await s.narrate('The perch is quiet. Too quiet. Then the dark at the edge of the island opens, and keeps opening, and is an eye.');
+    await s.narrate('The perch is quiet. Then the dark at the edge of the island opens, and keeps opening, and is an eye.');
     const r = await s.battle('c6_bounty_lidless', { bg: 'gloam' });
     if (r !== 'win') return;
     s.setFlag('c6_lidless');
@@ -725,7 +725,7 @@ export const CH6 = {
     if (s.flag('c6_hearth')) return;
     s.setFlag('c6_hearth');
     s.music('sad');
-    await s.narrate('Someone made a camp here once — a ring of stones, a cold firepit, a Hearthstone humming quietly to itself. Beyond the next bridge, the ash in the air goes thick and dark, and something very large is moving through it.');
+    await s.narrate('Someone made a camp here once — a ring of stones, a cold firepit, a Hearthstone humming to itself. Beyond the next bridge, the ash in the air goes thick and dark, and something very large is moving through it.');
     await s.narrate('You take out your mother\'s lamp and set it on a stone beside you.');
     await s.say('Wren', 'Mom. I\'m going to find them. All of them.');
     await s.say('Wren', 'And then I\'m going to— I don\'t know yet. Something. I\'m going to fix something.');

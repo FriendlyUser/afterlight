@@ -137,7 +137,7 @@ const enemies = [
   E('c11_frozen_penitence', 'The Frozen Penitence', 61, { type: 'humanoid', look: 'c11_penitence', size: 3 }, {
     boss: true, stats: { hp: 13, mag: 1.25, def: 1.3, exp: 8, gold: 8, cp: 4 }, weak: ['fire', 'blunt'], resist: { ice: 0, light: 0.5 }, poise: 7,
     ai: 'c11_frozen_penitence', drops: [['frost_ring', 1], ['guard_fruit', 1]], steal: ['x_ether', 'frost_ring'],
-    desc: 'Brother Halvard, kneeling in the snow, apologising to a mountain. He has been at it for a year.',
+    desc: 'Brother Halvard, kneeling in the snow, apologizing to a mountain. He has been at it for a year.',
   }),
 
   // ============================================ Mirefen (Lv 59–62)
@@ -213,7 +213,7 @@ const enemies = [
   E('c11_sky_sentinel', 'Skyreach Sentinel', 64, { type: 'knight', color: '#8a9ab0', accent: '#3a5a8a', weapon: 'spear', seed: 63 }, {
     stats: { hp: 1.4, str: 1.2, def: 1.5 }, weak: ['bolt', 'blunt'], resist: { pierce: 0.5, wind: 0.5 }, poise: 5,
     skills: [['e_spear', 3], ['e_shell', 1], ['e_cleave', 1]], drops: [['skypiercer', 0.03], ['mega_tonic', 0.1]], steal: ['x_tonic', 'skypiercer'],
-    desc: 'Vasha\'s honour guard. The armour stands its watch with nothing inside.',
+    desc: 'Vasha\'s honor guard. The armor stands its watch with nothing inside.',
   }),
   E('c11_static_wisp', 'Static Wisp', 62, { type: 'wisp', color: '#a0c8ff', eye: '#ffffff', seed: 64 }, {
     stats: { hp: 0.7, mag: 1.3, def: 2, evade: 12 }, weak: ['ice', 'wind'], resist: { bolt: -1, slash: 0.5 }, poise: 2,
@@ -324,7 +324,7 @@ const enemies = [
   E('c11_undertow', 'The Undertow', 67, { type: 'serpent', color: '#1a3a5a', accent: '#8ac0ff', eye: '#ffffff', size: 4, seed: 94 }, {
     boss: true, stats: { hp: 14, str: 1.2, mag: 1.3, exp: 9, gold: 9, cp: 4 }, weak: ['bolt', 'slash'], resist: { ice: 0, fire: 0.5 }, poise: 8,
     ai: 'c11_undertow', drops: [['power_fruit', 2]], steal: ['megalixir', 'sea_charm'],
-    desc: 'The storm that took Edrin Halloway, remembered by the sea that it happened in.',
+    desc: 'The storm that took Edrin Halloway, remembered by the sea it happened in.',
   }),
 
   // ============================================ Rite: the Drowned Infirmary (Ilse, Lv 61–63)

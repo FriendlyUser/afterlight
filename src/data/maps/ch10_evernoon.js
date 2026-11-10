@@ -79,7 +79,7 @@ export const evernoon = {
     { x: 23, y: 23, text: 'The fountain. Its water arcs up and hangs at the top of the arc, glittering, and does not come down.' },
     { x: 15, y: 19, text: ['Trays of honey-buns, glazed and golden. They are warm. They have been warm for forty years.', 'Nobody has ever eaten one.'] },
     { x: 23, y: 5, text: 'The Cathedral doors are painted on. There is no inside. He never went in that day.' },
-    { x: 10, y: 8, text: 'The Grand Lantern, humming oddly in the heat. Its light is the colour of honey. It will fail tonight. It never gets to.' },
+    { x: 10, y: 8, text: 'The Grand Lantern, humming oddly in the heat. Its light is the color of honey. It will fail tonight. It never gets to.' },
     { x: 14, y: 10, text: 'A cherry tree in full bloom. Petals fall from it constantly, turning in the air — and never land.' },
     { x: 7, y: 16, text: 'The river doesn\'t flow. It glitters in place, every ripple exactly where it was.' },
   ],

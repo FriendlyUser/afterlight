@@ -14,7 +14,7 @@ Object.assign(ITEMS, {
 });
 const gear = (id, def) => { EQUIPMENT[id] = { id, price: 0, ...def }; };
 gear('c8_kite_tail', { name: 'Kite-Tail Ribbon', slot: 'accessory', tier: 0, spd: 4, mods: { evade: 6 }, desc: 'SPD +4, evasion +6%. The tail of the first kite Pip ever built. Lucky. That\'s science.' });
-gear('c8_old_shield', { name: 'Bram\'s Old Shield', slot: 'offhand', armor: 'shield', tier: 6, def: 40, res: 22, mods: { evade: 9, hpPct: 5 }, desc: 'Dented Dawnguard steel, redeemed from the Baron. Max HP +5%. Heavy as an apology.' });
+gear('c8_old_shield', { name: 'Bram\'s Old Shield', slot: 'offhand', armor: 'shield', tier: 6, def: 40, res: 22, mods: { evade: 9, hpPct: 5 }, desc: 'Max HP +5%. Dented Dawnguard steel, redeemed from the Baron. Heavy as an apology.' });
 gear('c8_venn_signet', { name: 'Venn\'s Signet', slot: 'accessory', tier: 0, def: 12, res: 8, mods: { hpPct: 8 }, desc: 'DEF +12, RES +8, max HP +8%. Sir Aldous Venn\'s ring, left behind when the armor emptied. "Good lad."' });
 
 const SKIN = { pale: '#f4ddd0', fair: '#f2cba5', warm: '#e9c09a', tan: '#d9a57c', brown: '#b07a52', deep: '#7a4e34' };

@@ -48,7 +48,7 @@ const mirefenRoad = {
   ],
   inspect: [
     { ...at(ROAD, 'poster'), hint: 'Read', run: (s) => C4M.poster(s) },
-    { x: 8, y: 26, text: 'A statue of a woman with a lantern, up to her knees in the fen. Someone has hung a string of dried frogs around her neck. As an offering, or a joke. In Mirefen it is hard to tell.' },
+    { x: 8, y: 26, text: 'A statue of a woman with a lantern, up to her knees in the fen. A string of dried frogs hangs around her neck. An offering, or a joke. In Mirefen it is hard to tell.' },
     { x: 23, y: 12, text: 'Gaspar\'s punt. The pole is worn smooth as bone where his hands go.' },
   ],
   exits: [
@@ -97,7 +97,7 @@ const village = {
     { id: 'benet', name: 'Benet', look: 'villager_17', ...at(VILLAGE, 'benet'), dir: 'right',
       talk: (s) => s.say('Benet', s.flag('c4b_osk_saved')
         ? ['Corla\'s telling everyone about the two-headed eel, isn\'t she.', 'It had one head. The other one was a stick. I didn\'t have the heart.']
-        : ['Don\'t listen to Corla. The Choir are holy folk.', '...Mind you, holy folk don\'t usually take the light with them when they leave.']) },
+        : ['Don\'t listen to Corla. The Choir are holy folk.', 'Mind you, holy folk don\'t usually take the light with them when they leave.']) },
     { id: 'sedge', name: 'Sedge', look: 'villager_9', ...at(VILLAGE, 'sedge'), dir: 'down', wander: 1, run: (s) => C4M.sedge(s) },
     { id: 'wisk', name: 'Granny Wisk', look: 'villager_51', ...at(VILLAGE, 'weaver'), dir: 'down',
       talk: (s) => s.say('Granny Wisk', s.flag('c4b_osk_saved')
@@ -108,7 +108,7 @@ const village = {
       talk: ['I\'m playing Keepers and Gloam! I\'m the Gloam. Rarrr.', 'Nettie\'s the Keeper. She\'s better now. She keeps winning.'] },
     { id: 'guard_s', name: 'Jetty Warden', look: 'villager_28', x: 21, y: 30, dir: 'right', cond: ill,
       talk: (s) => s.say('Jetty Warden', s.flag('c4b_cure_quest')
-        ? ['The Drownmere\'s through there. Take the punt. Bring it back — it\'s the only one that doesn\'t leak.', 'And if you see my brother in the water... don\'t talk to him. He\'s been dead nine years.']
+        ? ['The Drownmere\'s due south, straight past me. Take the punt. Bring it back — it\'s the only one that doesn\'t leak.', 'And if you see my brother in the water... don\'t talk to him. He\'s been dead nine years.']
         : ['Nobody goes into the Drownmere. Not since the light went out. Doctor\'s orders.']) },
   ],
   chests: [
@@ -117,7 +117,7 @@ const village = {
   ],
   inspect: [
     { x: 30, y: 16, text: 'A sack of willow bark, half-boiled. Doctor Vey\'s handwriting on the label: _does nothing. try anyway._' },
-    { x: 38, y: 16, text: 'A cauldron of something grey. It smells like hope, if hope had been left out overnight.' },
+    { x: 38, y: 16, text: 'A cauldron of something gray. It smells like hope, if hope had been left out overnight.' },
     { x: 18, y: 20, text: 'Mag Tiller\'s stall: eel-skin boots, reed charms, a jar labeled ROT CURE (GENUINE). The jar is empty. The label is very confident.' },
     { x: 27, y: 14, text: 'A rain barrel, carefully covered. Everyone in Mirefen drinks rainwater now. Nobody trusts the fen.' },
   ],

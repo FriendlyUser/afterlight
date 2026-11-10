@@ -45,7 +45,7 @@ export const CH5 = {
     await s.narrate('On the bluff, the Lantern is lit. And it is humming — a low, steady note you feel in your teeth more than hear.');
     await s.say('Wren', 'That sound. I know that sound.');
     await s.say('Sable', 'The forks.');
-    await s.say('Wren', '...The ones we carried. To every Lantern in the world.');
+    await s.say('Wren', 'The ones we carried. To every Lantern in the world.');
     await s.follow(0.8);
     s.spawn('tobias_a', 'tobias', 23, 24, 'down');
     await s.move('tobias_a', [[23, 28]], 3.2);
@@ -107,7 +107,7 @@ export const CH5 = {
     await s.say('Corvin', 'Privateer.');
     await s.say('Vesper Sergeant', 'He said you\'d say something like that, Kestrel. He said to tell you: "Go home."');
     await s.wait(0.6);
-    await s.say('Bram', '_(quietly)_ ...I\'m trying.');
+    await s.say('Bram', '_(quietly)_ I\'m trying.');
     await s.say('Ilse', 'Wren. Three things. One: there are at least twenty of them on that hill. Two: they\'re rested and we aren\'t. Three: your mother is at the top, and a fight would bring the whole Dawnguard down on her.');
     await s.say('Wren', 'Then we don\'t fight our way up. There\'s always another way. There has to be.');
     await s.say('Pip', 'Every rich man\'s house has a back door. Every single one. That\'s, like, the first thing they teach you.');
@@ -120,7 +120,7 @@ export const CH5 = {
 
   async soldierTalk(s) {
     if (s.flag('c5_bluff')) {
-      await s.say('Vesper Sergeant', '...How did you get up THERE?');
+      await s.say('Vesper Sergeant', 'How did you get up THERE?');
       await s.say('Pip', 'Magic. Also stairs.');
       return;
     }
@@ -176,7 +176,7 @@ export const CH5 = {
   async nana(s) {
     if (!s.flag('c5_nana')) return CH5.nanaReunion(s);
     if (s.flag('c5_tea_done')) {
-      return s.say('Nana Brisa', ['Go on, my darlings. Go and bring Ysolde down off that hill.', 'And Ilse — keep your scarf on. Whatever the sky is doing, it\'s doing it in a draught.']);
+      return s.say('Nana Brisa', ['Go on, my darlings. Go and bring Ysolde down off that hill.', 'And Ilse — keep your scarf on. Whatever the sky is doing, it\'s doing it in a draft.']);
     }
     if (s.has('sea_lavender')) return CH5.teaScene(s);
     return s.say('Nana Brisa', ['Sea lavender, love. Just one sprig. It grows in the tide-cave pools — or there\'s the one in Ysolde\'s garden, if it ever deigned to flower.']);
@@ -204,7 +204,7 @@ export const CH5 = {
     await s.say('Ilse', 'Nana. The sun—');
     await s.say('Nana Brisa', 'I know, dear. I\'ve been watching it from the step since yesterday noon. It isn\'t right.');
     await s.say('Nana Brisa', 'So I\'ve done the only thing I know how to do when things aren\'t right. I\'m making tea.');
-    await s.say('Ilse', '...Of course you are.');
+    await s.say('Ilse', 'Of course you are.');
     await s.say('Nana Brisa', 'Kindling tea. Your great-grandmother brewed it the night before every hard thing. Only I\'m short the sea lavender.');
     await s.say('Nana Brisa', 'It grows in the tide-cave pools, and those are full of nasty things this week. The only other sprig on the island is in Ysolde\'s garden, and that plant has never once flowered.');
     await s.say('Ilse', 'We\'ll find you some, Nana.');
@@ -327,7 +327,7 @@ export const CH5 = {
     await s.say('Ilse', 'It smells like low tide and bad decisions.');
     await s.say('Wren', 'It smells like—');
     await s.wait(0.8);
-    await s.say('Wren', '...It doesn\'t smell like adventure anymore.');
+    await s.say('Wren', 'It doesn\'t smell like adventure anymore.');
     await s.narrate('Violet light seeps out of the rock. Somewhere deep in the caves, something is humming. Low. Like a man in the next room, singing to himself.');
     await s.say('Sable', 'The Gloam is close here. Closer than it was. It is coming up through the stone like water through a boat.');
     removeParty(s);
@@ -345,7 +345,7 @@ export const CH5 = {
     await s.wait(0.8);
     await s.say('???', '_...Wren? Little bird?_', { speed: 0.6, portrait: false });
     await s.emote('player', '!');
-    await s.say('???', '_...is the tide in? I can\'t... I can\'t see the light from here...._', { speed: 0.6, portrait: false });
+    await s.say('???', '_...is the tide in? I can\'t... I can\'t see the light from here..._', { speed: 0.6, portrait: false });
     await s.say('Wren', '...Dad?');
     await s.say('Ilse', 'Wren. That isn\'t— Wren, that isn\'t him.');
     await s.say('???', '_Sing me the gull one, little bird. I forgot how it ends._', { speed: 0.6, portrait: false });
@@ -357,7 +357,7 @@ export const CH5 = {
     s.shake(0.4, 1.2);
     s.sfx('dark');
     await s.narrate('The crystal cracks down the middle like ice on a pond. And out of the crack pours everything the sea has ever taken from Lanternfall — oilskins and nets and drowned lanterns and hands, so many hands — knotted together into something that wears them like a coat.');
-    await s.say('Sable', 'It\'s not him. It\'s a memory of a memory. The Gloam remembers everything — it just remembers it wrong.');
+    await s.say('Sable', 'It is not him. It is a memory of a memory. The Gloam remembers everything — it just remembers it wrong.');
     await s.say('Bram', 'Behind me! Everyone behind me!');
     const r = await s.battle('c5_boss_tidemourner', { bg: 'tidecave' });
     if (r !== 'win') return;
@@ -407,7 +407,7 @@ export const CH5 = {
       s.setFlag('c5_gate_open');
       s.clearBlocker('c5_gate');
       s.flash('#ffe8b0', 0.5);
-      await s.narrate('All three lamps flare together. With a long groan of old bronze, the gate at the head of the hall swings open.');
+      await s.narrate('All three lamps flare together. With a groan of old bronze, the gate at the head of the hall swings open.');
     }
   },
 
@@ -418,7 +418,7 @@ export const CH5 = {
       '_THEN THE STONE THAT KEEPS THEM._',
       '_LAST THE SKY THAT CALLS THEM HOME._',
     ]);
-    if (!s.flag('c5_gate_open')) await s.think('Wren', 'The sun. It\'s about the sun. The sea takes it every night, the Lantern\'s stone keeps it, and every morning the sky calls it home.');
+    if (!s.flag('c5_gate_open')) await s.think('Wren', 'The sun. It\'s about the sun. The sea takes it every night, the Lantern\'s stone keeps it, and every morning the sky calls it home. Three lines. Three lamps.');
   },
 
   async carving(s) {
@@ -444,7 +444,7 @@ export const CH5 = {
     await s.narrate('You come up out of the rock into red light. The bluff. The Lantern, huge and close, humming so loudly now that the grass shivers with it.');
     await s.narrate('Far below, the whole Western Sea lies still as a plate. Not a ripple. And on its edge, the sun, waiting.');
     await s.say('Corvin', 'Whatever he\'s doing, he\'s nearly done. You can feel it. Like the air before a bell.');
-    await s.say('Bram', 'Whatever happens in there — I\'m first through the door. That\'s the job.');
+    await s.say('Bram', 'When we go in — I\'m first through the door. That\'s the job.');
     await s.say('Pip', 'Since when?');
     await s.say('Bram', 'Since just now. I\'ve decided.');
     await s.say('Sable', 'Wren. If he sings, I think I will hear it. I think I have heard it before.');
@@ -503,7 +503,7 @@ export const CH5 = {
     s.music('cassian');
     await s.narrate('Garrick goes down on one knee, breathing hard, his greatsword ringing on the stones.');
     await s.say('Garrick', '...Kestrel. You didn\'t freeze.');
-    await s.say('Bram', '...No. Huh. I didn\'t.');
+    await s.say('Bram', 'No. Huh. I didn\'t.');
     await s.wait(0.6);
     await s.say('Cassian', 'Enough. Please.');
     await s.narrate('Cassian lifts a slender silver tuning fork — the same make as the ones you carried across the whole of Solmere — and touches it, very gently, to the brass of the great lamp.');
@@ -514,7 +514,7 @@ export const CH5 = {
     await s.narrate('And the chord holds everyone still.');
     for (const id of CAST) await s.emote(`c_${id}`, '…', 0.25);
     await s.say('Corvin', 'Can\'t... move... that\'s new...');
-    await s.say('Sable', 'It\'s— it\'s the song. The one from the water. The one I came out of—');
+    await s.say('Sable', 'It is— it is the song. The one from the water. The one I came out of—');
     await s.move('knight1', [[6, 10]], 2);
     await s.move('knight2', [[8, 10]], 2);
     await s.say('Cassian', 'Not you, Wren. Never you. Lanternfall\'s light knows its own.');
@@ -533,7 +533,7 @@ export const CH5 = {
     await s.say('Cassian', 'And in Evernoon, no one is lost. The Gloam keeps every memory of every soul it ever took. I have heard them, Wren. I have heard Lysa singing in the dark.');
     await s.say('Cassian', 'The Vespersong pulls them back out. Whole. Not echoes. Not that poor drowned thing in your tide caves. _Whole._');
     await s.say('Cassian', 'Lysa. Brother Halvard. Sir Aldous.');
-    await s.say('Bram', '_(through his teeth)_ ...Don\'t.');
+    await s.say('Bram', '_(through his teeth)_ Don\'t.');
     await s.say('Cassian', 'Your father.');
     await s.wait(1.0);
     await s.say('Wren', '...Dad?');
@@ -602,11 +602,11 @@ export const CH5 = {
     s.stopMusic(0.3);
     await s.narrate('The Lantern goes dark.');
     await s.say('Sable', 'NO—!', { speed: 1.4 });
-    await s.say('Sable', 'It isn\'t a dawn— it isn\'t a DAWN— I was inside it, I was INSIDE the song, it\'s a stopping, it\'s a STOPPING—');
+    await s.say('Sable', 'It is not a dawn— it is not a DAWN— I was inside it, I was INSIDE the song, it is a stopping, it is a STOPPING—');
     await s.say('Ilse', 'Wren. Wren, please. Please put it back. Please.');
     await s.say('Pip', 'Wren, c\'mon— this is a con, I know a con, I practically invented cons—');
     await s.say('Bram', 'Wren!');
-    await s.say('Corvin', '_(quietly)_ ...Ah, sparrow.');
+    await s.say('Corvin', '_(quietly)_ Ah, sparrow.');
     await s.move('player', [[7, 4], [7, 5]], 1.2);
     s.face('player', 'right');
     await s.move('cassian', [[8, 5]], 1.2);
@@ -657,7 +657,7 @@ export const CH5 = {
     await s.say('Cassian', 'So is a wound, Ysolde.');
     await s.wait(0.8);
     s.music('evernoon');
-    await s.narrate('He lifts the Dawnstone toward the sun. And he begins to sing.');
+    await s.narrate('He lifts the Dawnstone toward the sun. And he sings.');
     await s.say('Cassian', [
       '_Morning, morning, do not wake—_',
       '_Stay the hour and stay the light—_',
@@ -685,7 +685,7 @@ export const CH5 = {
     await s.narrate('A line of white fire runs across its face. Then another. Then seven.');
     s.flash('#ffd0a0', 0.8);
     s.sfx('burst');
-    await s.narrate('The sun comes apart like a plate dropped on a stone floor — slowly, then all at once — seven burning pieces wheeling away into a sky that is suddenly the wrong color.');
+    await s.narrate('The sun comes apart like a plate dropped on a stone floor — seven burning pieces wheeling away into a sky that is the wrong color.');
     s.shake(0.6, 2.4);
     await s.narrate('And the Western Sea, which had been holding its breath since noon yesterday, lets go.');
     await s.narrate('Upward.');
@@ -723,7 +723,7 @@ export const CH5 = {
     ]);
     s.shake(0.3, 1.5);
     await s.say('Bram', 'The sea. Where\'s the sea?!');
-    await s.say('Corvin', '_(looking up)_ ...Going up there, big man. Most of it.');
+    await s.say('Corvin', '_(looking up)_ Going up there, big man. Most of it.');
     await s.say('Pip', 'Oh, that\'s— no. No no no. That\'s not allowed. That\'s not ALLOWED.');
     s.music('tension');
     await s.say('Ysolde', 'Listen to me. All of you.');

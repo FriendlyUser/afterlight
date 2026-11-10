@@ -40,7 +40,7 @@ export const thistledown = {
     { id: 'hester', name: 'Goodwife Hester', look: 'villager_38', x: 28, y: 15, wander: 1,
       talk: (s) => s.say('Goodwife Hester', s.flag('c2_tam_done')
         ? ['I always said Tam would come to a bad end. I said it about everyone, so I was bound to be right eventually.']
-        : ['Two of those black-armored soldiers rode up to the old quarry last week. Bold as brass.', 'And they came back down again without a single bandit in chains. You tell me what that means. I know what it means. I want to hear you say it.']) },
+        : ['Two of those black-armored soldiers rode up to the old quarry a fortnight back. Bold as brass.', 'And they came back down again without a single bandit in chains. You tell me what that means. I know what it means. I want to hear you say it.']) },
     { id: 'poppy', name: 'Poppy', look: 'villager_45', x: 24, y: 13, wander: 2,
       talk: async (s) => {
         await s.say('Poppy', 'Are you a knight? You look like a knight.');

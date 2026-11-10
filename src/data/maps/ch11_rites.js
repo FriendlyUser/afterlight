@@ -75,7 +75,7 @@ const vigil = {
   ],
   inspect: [
     { ...at(VIG, 'vigil_stone'), hint: 'Vigil stone', run: (s) => RITES.vigilStone(s) },
-    { x: 12, y: 3, text: 'A cairn of grey stones. On the largest, chiselled by someone who was not a mason: SIR ALDOUS VENN. HE STOOD BETWEEN.' },
+    { x: 12, y: 3, text: 'A cairn of gray stones. On the largest, chiseled by someone who was not a mason: SIR ALDOUS VENN. HE STOOD BETWEEN.' },
     { x: 6, y: 6, text: 'A stone knight, sword point-down, head bowed. The plinth reads: DAME ORSOLA OF THE WESTMARCH. SHE WAS AFRAID OF HORSES.' },
     { x: 19, y: 9, text: 'A stone knight with a cracked shield. The plinth reads: SIR TEODOR BRAND. HE WEPT AT EVERY KNIGHTING, INCLUDING HIS OWN.' },
     { x: 6, y: 12, text: 'A stone knight, very young, very serious. The plinth reads: SIR ALDOUS VENN, AGE NINETEEN. Somebody has scratched underneath, much later: STILL AN IDIOT. — G.T.' },
@@ -118,7 +118,7 @@ const stormwall = {
   camera: { dist: 18, pitch: 0.7 },
   inspect: [
     { x: 5, y: 10, hint: 'Hal\'s cabin', run: (s) => RITES.wreckCabin(s) },
-    { x: 9, y: 11, text: 'The Kingfisher\'s mainmast, snapped. Her colours still fly from the stump: Dawnguard blue, with a kingfisher stitched over the sunburst by someone who could not sew.' },
+    { x: 9, y: 11, text: 'The Kingfisher\'s mainmast, snapped. Her colors still fly from the stump: Dawnguard blue, with a kingfisher stitched over the sunburst by someone who could not sew.' },
     { x: 25, y: 13, text: 'A bow gun, still loaded. The gunner\'s gloves are on the breech, laid down neatly side by side, as if he meant to come back for them.' },
   ],
   exits: [{ x: 14, y: 27, w: 2, to: 'halcyon_deck', tx: 12, ty: 8, dir: 'down' }],

@@ -35,10 +35,10 @@ export const PRO = {
     await s.say('Ysolde', 'There you are. I was starting to think the gulls had carried you off.');
     await s.say('Wren', 'I was reading.');
     await s.say('Ysolde', 'Until dawn. _Again._ Tomorrow you stand in the Lantern\'s light. You could at least do it with your eyes open.');
-    await s.say('Wren', 'The Hierophant\'s ship comes in today, doesn\'t it? Ilse says he\'s coming himself. For *our* Kindling.');
+    await s.say('Wren', 'The Hierophant\'s ship comes in today, doesn\'t it? Ilse says he\'s coming himself. For _our_ Kindling.');
     await s.wait(0.5);
     await s.say('Ysolde', '...He is.');
-    await s.say('Wren', 'Mom. He\'s the *Hierophant*. He wrote back to me. Twice.');
+    await s.say('Wren', 'Mom. He\'s the _Hierophant_. He wrote back to me. Twice.');
     await s.say('Ysolde', 'I know. I read them.');
     await s.hop('player');
     await s.say('Wren', 'You read my—');
@@ -67,14 +67,14 @@ export const PRO = {
     if (!s.flag('p_net_got')) {
       s.setFlag('p_net_got');
       await s.say('Ilse', 'You\'re late.');
-      await s.say('Wren', 'I\'m *exactly* on time for someone who was reading.');
+      await s.say('Wren', 'I\'m _exactly_ on time for someone who was reading.');
       await s.say('Nana Brisa', ['Wren, dear! Tobias\'s net is by the fire. Mended with my best knots — tell him that.']);
       await s.give('fishing_net');
       await s.say('Nana Brisa', 'If only everything mended so easily...');
       await s.say('Ilse', 'Nana lost her brooch. The silver gull Grandpa gave her.');
       await s.say('Nana Brisa', 'In the tide caves, years ago. I was gathering sea lavender and it simply... went into the water. I\'ve made my peace with it.');
       await s.say('Wren', 'The tide caves? I could get it back.');
-      await s.say('Ilse', 'The tide caves are *full of things that bite*.');
+      await s.say('Ilse', 'The tide caves are _full of things that bite_.');
       await s.say('Wren', 'Then you\'d better come with me. Bring your bandages.');
       s.face('ilse', 'down');
       await s.wait(0.4);
@@ -106,9 +106,9 @@ export const PRO = {
     await s.give('sea_charm');
     await s.give('tonic', 3);
     await s.say('Ilse', 'She\'s going to cry.');
-    await s.say('Nana Brisa', 'I am *not*. Off with you. Supper\'s at your mother\'s tonight, Wren, isn\'t it?');
+    await s.say('Nana Brisa', 'I am _not_. Off with you. Supper\'s at your mother\'s tonight, Wren, isn\'t it?');
     s.objective('Go home for supper.');
-    s.journal('We found the brooch. Nana cried. (Ilse says she didn\'t.)');
+    s.journal('We found the brooch. Nana cried. (Nana says she didn\'t.)');
   },
 
   // ------------------------------------------------------------------ Tobias
@@ -150,7 +150,7 @@ export const PRO = {
     await s.say('Wren', 'Ilse... look at the back of the cave.');
     await s.pan(39, 27, 1.2);
     await s.wait(0.5);
-    await s.say('Ilse', 'Is that... a crystal? It\'s *purple*. Crystals in these caves are blue.');
+    await s.say('Ilse', 'Is that... a crystal? It\'s _purple_. Crystals in these caves are blue.');
     await s.say('Wren', 'It\'s cold. Colder than the water. Like it\'s breathing.');
     await s.say('Ilse', 'Don\'t touch it. Wren. _Wren._ Don\'t touch it.');
     await s.follow(0.8);
@@ -194,7 +194,7 @@ export const PRO = {
     await s.say(null, 'Received *The Sunward Atlas*.', { style: 'system', portrait: false });
     s.sfx('item');
     await s.say('Ilse', '_(whispering)_ You\'re glowing.');
-    await s.say('Wren', '_(whispering)_ I am *not*.');
+    await s.say('Wren', '_(whispering)_ I am _not_.');
     s.face('cassian', 'ysolde_d');
     await s.say('Cassian', 'May we speak tonight, Ysolde? At the Lantern.');
     await s.wait(0.4);
@@ -207,14 +207,14 @@ export const PRO = {
     s.face('cassian', 'up');
     await s.say('Cassian', 'Squire Kestrel. Sir Aldous spoke of you.');
     await s.wait(0.6);
-    await s.say('Bram', '...Did he.');
+    await s.say('Bram', 'Did he.');
     await s.say('Cassian', 'He spoke well of you. Often.');
     await s.wait(0.6);
     await s.say('Bram', '...He would.');
     await Promise.all([s.move('cassian', [[23, 21], [23, 16], [30, 16]], 2.2), s.move('ysolde_d', [[25, 21], [24, 16], [30, 15]], 2.2), s.move('acolyte1', [[22, 21], [22, 17]], 2.2), s.move('acolyte2', [[24, 21], [24, 17]], 2.2)]);
     ['cassian', 'ysolde_d', 'acolyte1', 'acolyte2', 'crowd1', 'crowd2', 'crowd3', 'crowd4'].forEach((id) => s.remove(id));
     s.face('bram_late', 'down');
-    await s.say('Bram', 'Wren! Ilse! You saw that? He knew my name. The *Hierophant* knew my name.');
+    await s.say('Bram', 'Wren! Ilse! You saw that? He knew my name. The _Hierophant_ knew my name.');
     await s.say('Ilse', 'You smell like the inn, Bram.');
     await s.say('Bram', 'Cider is a breakfast drink on islands. Everyone knows that.');
     await s.move('bram_late', [[23, 17], [31, 17], [31, 15]], 4);
@@ -237,9 +237,9 @@ export const PRO = {
     await s.say('Ysolde', 'He gave you a book.');
     await s.say('Wren', 'An atlas. Of the sun. Did you know there are cities in the east where it never quite gets dark in summer—');
     await s.say('Ysolde', 'Wren. What did he say to you?');
-    await s.say('Wren', 'Nothing! He was *nice*. Is that so strange? That somebody important would be nice to me?');
+    await s.say('Wren', 'Nothing! He was _nice_. Is that so strange? That somebody important would be nice to me?');
     await s.say('Ysolde', 'Important people are nice when they want something.');
-    await s.say('Wren', 'And what could he possibly want from *me*?');
+    await s.say('Wren', 'And what could he possibly want from _me_?');
     await s.wait(1.2);
     await s.say('Wren', 'After the Kindling... I want to go to Aurenne. Study at the Cathedral. He\'d sponsor me, I know he would—');
     await s.say('Ysolde', 'No.');
@@ -258,7 +258,7 @@ export const PRO = {
     s.setFlag('lfNight');
     s.stopMusic(1.5);
     await s.wait(1.0);
-    await s.narrate(['That night, a storm came in off the Western Sea.', 'Wren did not sleep.']);
+    await s.narrate(['That night, a storm comes in off the Western Sea.', 'Wren does not sleep.']);
     s.place('player', 2, 3, 'down');
     s.show('ysolde', false);
     await s.fadeIn(1.0);
@@ -281,7 +281,7 @@ export const PRO = {
     s.spawn('pup1', { id: 'pup_field', skin: '#3a3050', hair: { style: 'none' }, outfit: { style: 'robe', main: '#2a2040', accent: '#8a6aff' }, acc: ['horns'] }, 37, 24, 'right');
     s.spawn('pup2', { id: 'pup_field2', skin: '#3a3050', hair: { style: 'none' }, outfit: { style: 'robe', main: '#2a2040', accent: '#8a6aff' }, acc: ['horns'] }, 41, 25, 'left');
     await s.pan(39, 25, 1);
-    await s.say('Wren', 'A girl! And those— are those *dogs*?');
+    await s.say('Wren', 'A girl! And those— are those _dogs_?');
     await s.say(null, 'They are shaped like dogs the way smoke is shaped like a fire.', { style: 'narration' });
     await s.follow(0.6);
     // Ilse arrives
@@ -299,7 +299,7 @@ export const PRO = {
     s.shake(0.3, 1.2);
     await s.say('Ilse', 'They\'re gone. Like smoke. Wren, what _were_ those?');
     await s.wait(0.4);
-    await s.say(null, 'Something rose out of the surf. Something that had been a dog once, long ago, and had been at the bottom of the sea ever since.', { style: 'narration' });
+    await s.say(null, 'Something rises out of the surf. Something that was a dog once, long ago, and has been at the bottom of the sea ever since.', { style: 'narration' });
     await s.say('Wren', '...Ilse. Run.');
     await s.say('Ilse', 'We are _not_ leaving her.');
     // Bram arrives in heroic fashion.
@@ -329,7 +329,7 @@ export const PRO = {
     s.remove('girl');
     // The night winds down before the chapter turns.
     await s.narrate([
-      'They carry her up the beach between them. Behind them the storm is already blowing itself out, grumbling away east over the strait.',
+      'They carry her up the beach between them. The storm is already blowing itself out, grumbling away east over the strait.',
       'Out past the black rocks the sea goes flat and quiet, as if nothing had ever come out of it at all.',
     ]);
     await s.say('Ilse', 'It\'s past midnight, Wren. Happy birthday.');

@@ -126,7 +126,7 @@ const ENEMIES = [
   E('c4a_raider_slinger', 'Raider Slinger', 17, { type: 'humanoid', look: 'c4a_raider_slinger' }, {
     stats: { hp: 0.9, spd: 1.1 }, weak: ['slash', 'wind'], poise: 2,
     skills: [['e_arrow', 3], ['e_volley', 1], ['c4a_sandblast', 1]], drops: [['eye_drops', 0.25]], steal: ['eye_drops', 'sun_goggles'],
-    desc: 'Throws sand, then stones, then insults. All with remarkable accuracy.',
+    desc: 'Throws sand, stones and insults, all with remarkable accuracy.',
   }),
   E('c4a_mirage', 'Mirage', 18, { type: 'ghost', color: '#a8d8f0', eye: '#ffffff', seed: 18 }, {
     stats: { hp: 0.8, mag: 1.2, def: 2.2, res: 0.8, evade: 15 }, weak: ['light', 'wind'], resist: { slash: 0.3, pierce: 0.3, blunt: 0.5, fire: 0.5 }, poise: 2,
@@ -136,7 +136,7 @@ const ENEMIES = [
   E('c4a_sandmaw', 'Sandmaw', 18, { type: 'serpent', color: '#c89a5a', accent: '#f8e8c0', eye: '#ff3020', size: 3, seed: 22 }, {
     boss: true, stats: { hp: 9, str: 1.15, exp: 7, gold: 7, cp: 4 }, weak: ['ice', 'pierce'], resist: { fire: 0.5, wind: 0.5 }, poise: 6,
     ai: 'c4a_sandmaw', summons: ['c4a_wyrmling'], drops: [['hi_tonic', 1], ['saltglass', 1]], steal: ['hi_tonic', 'vigor_seed'],
-    desc: 'A sand wyrm in its prime: forty feet of hunger that swims through the dunes like a fish through water.',
+    desc: 'A sand wyrm in its prime: forty feet of hunger that swims the dunes like open sea.',
   }),
   E('c4a_jackal_sarn', 'Sarn the Jackal', 20, { type: 'humanoid', look: 'c4a_sarn', size: 2 }, {
     boss: true, stats: { hp: 8, str: 1.2, spd: 1.15, exp: 6, gold: 10, cp: 3 }, weak: ['blunt', 'ice'], poise: 6,
@@ -212,7 +212,7 @@ const ENEMIES = [
   E('c4a_vesper_soldier', 'Vesper Soldier', 23, { type: 'humanoid', look: 'vesper_soldier' }, {
     stats: { hp: 1.2, str: 1.1, def: 1.2 }, weak: ['bolt', 'blunt'], poise: 3,
     skills: [['e_spear', 3], ['attack', 1], ['e_buff', 1]], drops: [['hi_tonic', 0.25]], steal: ['hi_tonic', 'silversteel_lance'],
-    desc: 'Grey cloaks over Dawnguard steel. They used to guard the dawn. Now they guard something else.',
+    desc: 'Gray cloaks over Dawnguard steel. They used to guard the dawn. Now they guard something else.',
   }),
   E('c4a_vesper_arbalist', 'Vesper Arbalist', 23, { type: 'humanoid', look: 'c4a_arbalist' }, {
     stats: { hp: 0.95, spd: 1.1 }, weak: ['slash', 'bolt'], poise: 2,
@@ -232,7 +232,7 @@ const ENEMIES = [
   E('c4a_garrick', 'Lord-Commander Garrick', 25, { type: 'humanoid', look: 'garrick', size: 2 }, {
     boss: true, stats: { hp: 13, str: 1.3, def: 1.3, res: 1.1, exp: 10, gold: 9, cp: 5 }, weak: ['bolt', 'pierce'], resist: { dark: 0.5, slash: 0.8 }, poise: 9,
     ai: 'c4a_garrick', summons: ['c4a_vesper_guard'], drops: [['starsteel_claymore', 1], ['guard_fruit', 1]], steal: ['hi_ether', 'starsteel_helm'],
-    desc: 'Lord-Commander of the Dawnguard and the Hierophant\'s sword. He has never once been asked to explain himself.',
+    desc: 'Lord-Commander of the Dawnguard and the Hierophant\'s sword. Nobody has ever asked him to explain himself.',
   }),
 ];
 

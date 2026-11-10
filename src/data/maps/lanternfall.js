@@ -25,7 +25,7 @@ export default {
   npcs: [
     { id: 'tobias', name: 'Fisher Tobias', look: 'tobias', x: 33, y: 19, dir: 'left', cond: (st) => day(st) && !st.flags.ch1_ready, run: (s) => PRO.tobias(s) },
     { id: 'gossip1', name: 'Hanna', look: 'villager_3', x: 21, y: 15, wander: 2, cond: beforeKindling,
-      talk: ['They say the Hierophant hasn\'t left Aurenne in eleven years. And he\'s coming *here*. For *our* children.', 'I\'ve swept my step four times.'] },
+      talk: ['They say the Hierophant hasn\'t left Aurenne in eleven years. And he\'s coming _here_. For _our_ children.', 'I\'ve swept my step four times.'] },
     { id: 'kid1', name: 'Pell', look: 'villager_9', x: 25, y: 18, wander: 3, cond: day,
       talk: (s) => s.flag('kindled') ? s.say('Pell', ['You got VANGUARD? That\'s the best one! Can I hold your sword? Can I? Just the handle?']) : s.say('Pell', ['Are you getting your Crest tomorrow? I hope I get Vanguard when I\'m sixteen. Or Arcanist. Something with explosions.']) },
     { id: 'oldman', name: 'Old Corrin', look: 'villager_17', x: 12, y: 17, dir: 'right', cond: day,

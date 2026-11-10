@@ -17,7 +17,7 @@ Object.assign(ITEMS, {
   c12_mothers_token: { name: 'Tin Sun Token', kind: 'key', icon: '✪',
     desc: 'A cheap festival token, stamped with a sunburst. Someone has scratched "COME HOME SAFE — MUM" on the back.' },
   c12_festival_ribbon: { name: 'Festival Ribbon', kind: 'key', icon: '✪',
-    desc: 'A length of gold ribbon from the haberdasher\'s stall. It has never once frayed.' },
+    desc: 'A length of gold ribbon from the haberdasher\'s stall. It has never frayed.' },
 });
 
 const ACCESSORY = (id, def) => { EQUIPMENT[id] = { id, slot: 'accessory', tier: 0, price: 0, ...def }; };
@@ -28,7 +28,7 @@ ACCESSORY('c12_sunburst', { name: 'Hierophant\'s Sunburst', mag: 22, res: 22, im
 ACCESSORY('c12_broken_halo', { name: 'Broken Halo', mods: { hpPct: 12, mpPct: 12 }, resist: { light: 0.5, fire: 0.5 },
   desc: 'HP/MP +12%. Halves light and fire damage. A crown of a single afternoon.' });
 ACCESSORY('c12_stopped_hand', { name: 'The Stopped Hand', spd: 10, mods: { crit: 15 }, immune: ['slow', 'stun', 'doom'],
-  desc: 'SPD +10, crit +15%. Immune to Slow, Stun and Doom. A clock hand that will never turn again.' });
+  desc: 'SPD +10, critical rate +15%. Immune to Slow, Stun and Doom. A clock hand that will never turn again.' });
 
 // ---------------------------------------------------------------- skills used by this chapter's foes
 Object.assign(SKILLS, {
@@ -146,7 +146,7 @@ const enemies = [
   E('c12_confetti_sprite', 'Confetti Sprite', 72, { type: 'wisp', color: '#ff90c0', accent: '#90e0ff', eye: '#ffffff', seed: 3 }, {
     stats: { hp: 0.7, mag: 1.2, spd: 1.4, evade: 12 }, weak: ['wind', 'dark'], resist: { light: 0.5 }, poise: 2,
     skills: [['e_spark', 2], ['e_sleep', 1], ['e_blind', 1]], drops: [['panacea', 0.25]], steal: ['panacea', 'swift_fruit'],
-    desc: 'Bright paper, endlessly falling. It has been falling since before you were born.',
+    desc: 'Bright paper, falling. It has been falling since before you were born.',
   }),
   E('c12_noon_sentinel', 'Noon Sentinel', 73, { type: 'knight', color: '#f0e8d8', accent: '#d0a040', weapon: 'spear', seed: 5 }, {
     stats: { hp: 1.4, str: 1.1, def: 1.5 }, weak: ['bolt', 'blunt'], resist: { light: 0.5, slash: 0.7, pierce: 0.7 }, poise: 5,
@@ -156,7 +156,7 @@ const enemies = [
   E('c12_carousel_drake', 'Carousel Drake', 73, { type: 'drake', color: '#f0a0c0', accent: '#a0e0f0', eye: '#ffe060', seed: 8 }, {
     stats: { hp: 1.3, str: 1.1 }, weak: ['pierce', 'ice'], resist: { fire: 0.5 }, poise: 4,
     skills: [['e_firebreath', 1], ['e_claw', 2], ['e_tackle', 2]], drops: [['mega_tonic', 0.2], ['power_fruit', 0.05]], steal: ['mega_tonic', 'ember_ring'],
-    desc: 'A painted carousel beast. It goes round and round. It has never once stopped.',
+    desc: 'A painted carousel beast. It goes round and round. It has never stopped.',
   }),
   E('c12_gift_mimic', 'Birthday Mimic', 74, { type: 'mimic', color: '#e05050', accent: '#ffe080', eye: '#ffffff', seed: 4 }, {
     stats: { hp: 1.2, str: 1.3, def: 1.3, gold: 5, exp: 1.5 }, weak: ['fire', 'pierce'], poise: 4,

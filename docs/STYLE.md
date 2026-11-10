@@ -44,6 +44,19 @@ anyone writing new scenes, and for an editing pass over the old ones
   pause.
 - A line of dialogue fits the box: aim for under 200 characters, never over 300.
 - Stage directions are rare and go in italics in parentheses: `_(quietly)_`.
+- Compass points are hyphenated: north-east, south-west.
+- "saltglass" the material is lower case; Saltglass the town is capitalized.
+- Wren says "Mom". Other children say "Mum"; that is the mainland's word, not a typo.
+- Description wording, so one mechanic always reads the same way:
+  - Targets: "one foe", "all foes", "random foes", "the party" (not "every foe",
+    "everyone", "the whole party").
+  - A status as a verb is lower case ("may slow", "may burn", "may stun"); as a noun it
+    is capitalized ("may inflict Doom", "Immune to Slow").
+  - Turn order: "act again soon" / "act again later"; "pushes the foe's turn back".
+  - "heal for N% of the damage"; "pierces N% of DEF"; "STR up", "DEF down", and "up
+    sharply" / "down sharply" for two stages; "strips its buffs"; "critical rate +N%";
+    "(scales with item power)".
+  - Status descriptions are in the third person: "Loses 8% HP each turn."
 
 ## The line-edit brief
 

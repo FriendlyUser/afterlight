@@ -22,7 +22,7 @@ gear('pg_echo_laurel', { name: 'Echo Laurel', slot: 'accessory', mods: { strPct:
 gear('pg_before_blade', { name: 'Blade of Before', slot: 'weapon', wtype: 'greatsword', atk: 228, spd: -2, elem: 'light', mods: { crit: 8 }, desc: 'Greatsword. Light-aligned. Forged from an edge the First Dark never had.' });
 gear('pg_unwritten', { name: 'The Unwritten', slot: 'weapon', wtype: 'tome', atk: 70, mag: 212, mods: { mpCost: -15 }, desc: 'Tome. MP costs -15%. Every page is blank until you need it.' });
 gear('pg_last_lamplight', { name: 'Last Lamplight', slot: 'weapon', wtype: 'staff', atk: 110, mag: 190, mods: { healPct: 25 }, desc: 'Staff. Healing +25%. The Ashen Lamplighter\'s pole, finally put to use.' });
-gear('pg_dusk_mantle', { name: 'Dusk Mantle', slot: 'body', armor: 'light', def: 96, res: 88, resist: { dark: 0.5 }, mods: { evade: 6 }, desc: 'Light armour. Halves dark damage. The colour of the sky an hour after sunset.' });
+gear('pg_dusk_mantle', { name: 'Dusk Mantle', slot: 'body', armor: 'light', def: 96, res: 88, resist: { dark: 0.5 }, mods: { evade: 6 }, desc: 'Light armor. Halves dark damage. The color of the sky an hour after sunset.' });
 gear('pg_first_crown', { name: 'Crown of the First Winter', slot: 'head', armor: 'robe', def: 40, res: 72, mag: 28, immune: ['silence'], desc: 'Robe headgear. Immune to Silence. The Rime Sovereign wore it for a kingdom of no one.' });
 
 // ------------------------------------------------------------------ looks

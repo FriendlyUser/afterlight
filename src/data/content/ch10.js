@@ -101,7 +101,7 @@ const enemies = [
   E('c10_hour_knight', 'Hour Knight', 53, { type: 'knight', color: '#e8dcb8', accent: '#c9a24a', weapon: 'greatsword', seed: 105 }, {
     stats: { hp: 1.4, str: 1.1, def: 1.5, spd: 0.85 }, weak: ['bolt', 'dark'], resist: { light: 0.5, slash: 0.7 }, poise: 5,
     skills: [['e_slash', 2], ['e_stun', 1], ['e_stillness', 0.3]], drops: [['mega_tonic', 0.15]], steal: ['hi_ether', 'sunshard_helm'],
-    desc: 'Armour wound like a clock. It stops when it is struck — and so, for a moment, do you.',
+    desc: 'Armor wound like a clock. It stops when it is struck — and so, for a moment, do you.',
   }),
   E('c10_stillwisp', 'Stillwisp', 52, { type: 'wisp', color: '#e8f0ff', eye: '#a0c0ff', seed: 106 }, {
     stats: { hp: 0.8, mag: 1.3, def: 2, res: 0.8, evade: 10 }, weak: ['fire', 'wind'], resist: { slash: 0.5, pierce: 0.5, blunt: 0.5 }, poise: 2,
@@ -116,7 +116,7 @@ const enemies = [
   E('c10_vesper_cantor', 'Vesper Cantor', 53, { type: 'humanoid', look: 'acolyte' }, {
     stats: { hp: 1.0, mag: 1.3 }, weak: ['dark', 'slash'], resist: { light: 0.5 }, poise: 3,
     skills: [['e_holy', 2], ['e_heal', 1], ['e_silence', 1], ['e_vesper', 0.4]], drops: [['hi_ether', 0.3]], steal: ['hi_ether', 'bell_earring'],
-    desc: 'They practise the Vespersong in shifts. Somebody, somewhere in the Spire, is always singing it.',
+    desc: 'They practice the Vespersong in shifts. Somebody, somewhere in the Spire, is always singing it.',
   }),
   E('c10_hour_warden', 'The Hour-Warden', 53, { type: 'angel', color: '#ffe8a0', accent: '#ffffff', eye: '#ffffff', size: 3, seed: 108 }, {
     boss: true, stats: { hp: 15, mag: 1.25, str: 1.1, def: 1.2, exp: 8, gold: 8, cp: 4 }, weak: ['dark', 'bolt'], resist: { light: -1, pierce: 0.7 }, poise: 8,

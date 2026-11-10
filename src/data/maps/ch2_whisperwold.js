@@ -92,7 +92,7 @@ export const woldHeart = {
     { x: 9, y: 24, hint: 'Listen', run: (s) => WOLD.stone(s, 'grave') },
     { x: 22, y: 13, text: 'A wall of roots, twisted together like clasped hands. Behind it, violet light pulses slowly, like breathing.', cond: (st) => !st.flags.c2_roots_open },
     { x: 35, y: 6, hint: 'The Mother', cond: (st) => !!st.flags.c2_mother_done,
-      run: async (s) => s.narrate('An old tree with a split trunk, hollow and empty and quiet. Fireflies drift in and out of it as if they are visiting.') },
+      run: async (s) => s.narrate('An old tree with a split trunk, hollow and quiet. Fireflies drift in and out of it as if they are visiting.') },
   ],
   exits: [
     { x: 0, y: 32, h: 3, to: 'c2_wold_outer', tx: 50, ty: 9, dir: 'left' },

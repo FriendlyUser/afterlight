@@ -74,7 +74,7 @@ const ENEMIES = [
   E('c4b_rotcap', 'Rotcap', 25, { type: 'mushroom', color: '#7a5a8a', accent: '#c8e070' }, {
     stats: { hp: 1.2, mag: 1.1, spd: 0.7 }, weak: ['fire', 'wind'], poise: 3,
     skills: [['attack', 1], ['e_spore', 2], ['e_poison', 1]], drops: [['echo_herb', 0.2], ['panacea', 0.08]], steal: ['smelling_salts', 'panacea'],
-    desc: 'The gloam-rot, grown a body. Its spores are the sickness in the village.',
+    desc: 'The Gloam-rot, grown a body. Its spores are the sickness in the village.',
   }),
   E('c4b_drowned', 'The Drowned', 26, { type: 'skeleton', color: '#8aa098', accent: '#3a5a5a', eye: '#80ffc0', seed: 26 }, {
     stats: { hp: 1.2, def: 1.1 }, weak: ['light', 'blunt', 'fire'], resist: { pierce: 0.5, ice: 0.5, dark: 0 }, immune: ['poison', 'sleep'], poise: 3,
@@ -136,7 +136,7 @@ const ENEMIES = [
   E('c4b_thornweaver', 'Thornweaver', 29, { type: 'spider', color: '#3a3a2a', accent: '#a03a3a', seed: 9 }, {
     stats: { hp: 1.1, str: 1.1 }, weak: ['fire', 'light'], poise: 3,
     skills: [['e_bite', 2], ['e_poison', 1], ['e_stun', 1]], drops: [['antidote', 0.3], ['panacea', 0.1]], steal: ['antidote', 'panacea'],
-    desc: 'Weaves its webs from thorns. Has never once considered silk.',
+    desc: 'Weaves its webs from thorns. Silk has never occurred to it.',
   }),
   E('c4b_rootlurker', 'Rootlurker', 30, { type: 'treant', color: '#4a3a2a', accent: '#6a8a3a', eye: '#ffb040', size: 1.5, seed: 30 }, {
     stats: { hp: 1.6, str: 1.15, def: 1.3, spd: 0.75 }, weak: ['fire', 'slash'], resist: { blunt: 0.5, ice: 0.5 }, poise: 4,

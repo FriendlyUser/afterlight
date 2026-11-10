@@ -110,7 +110,7 @@ export const c5WrenHouse = {
   inspect: [
     { x: 4, y: 4, hint: 'Letter', run: (s) => CH5.letter(s) },
     { x: 7, y: 2, run: (s) => CH5.cassianLetters(s) },
-    { x: 8, y: 2, text: 'Your own shelf. Every book on it washed up on the beach at some point. You used to think the sea liked you.' },
+    { x: 8, y: 2, text: 'Your own shelf. Every book on it washed up on the beach. You used to think the sea liked you.' },
     { x: 1, y: 2, text: 'Your bed. Made. Mom made your bed. She never makes your bed.' },
     { x: 8, y: 4, hint: 'Bread box', run: (s) => CH5.breadBox(s) },
   ],
@@ -161,7 +161,7 @@ export const c5Tobias = {
   id: 'c5_tobias', name: 'Tobias\'s Shack',
   inspect: [
     { x: 5, y: 3, text: 'A crate of salted fish and a note: "MAELA — DON\'T." Below it: "I DID." Below that, newer: "TOBY — THE BOAT\'S FINE. COME IN FOR SUPPER."' },
-    { x: 3, y: 2, text: 'A charcoal sketch pinned over the stove: three skinny boys in a rowboat, grinning. Someone has labeled them: EDRIN. TOBY. FEN.' },
+    { x: 3, y: 2, text: 'A charcoal sketch pinned over the stove: three skinny boys in a rowboat, grinning. Under each, a name: EDRIN. TOBY. FEN.' },
   ],
   chests: [{ id: 'c5_tobias_chest', x: 1, y: 3, item: 'mega_tonic', count: 1 }],
   exits: [out(3, 5, 37, 21)],

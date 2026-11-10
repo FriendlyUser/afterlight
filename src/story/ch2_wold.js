@@ -32,7 +32,7 @@ export const WOLD = {
     spawnParty(s, { ilse: [2, 19, 'right'], bram: [2, 21, 'right'], sable: [1, 20, 'right'] });
     s.place('player', 3, 20, 'right');
     await s.wait(0.6);
-    await s.narrate('The wind drops. The birds stop. In the hush beneath the old trees, something begins to whisper.');
+    await s.narrate('The wind drops. The birds stop. In the hush beneath the old trees, something whispers.');
     await whisper(s, '...is anyone there...');
     await whisper(s, '...so cold... why is it so cold...');
     await whisper(s, '...tell her I\'m sorry... tell her...');
@@ -80,7 +80,7 @@ export const WOLD = {
 
   // ------------------------------------------------------------------ Trees that remember
   async cradleTree(s) {
-    await s.narrate('A tree of violet glass and old bark. It hums, very softly, the way a mother hums with her mouth closed.');
+    await s.narrate('A tree of violet glass and old bark. It hums, softly, the way a mother hums with her mouth closed.');
     await whisper(s, 'Hush now, little one, the lantern\'s lit... the sea\'s asleep, and so must you...');
     if (s.flag('c2_cradle_heard')) return;
     s.setFlag('c2_cradle_heard');
@@ -132,7 +132,7 @@ export const WOLD = {
     if (s.flag('c2_lysa_heard')) return;
     s.setFlag('c2_lysa_heard');
     await s.wait(0.8);
-    await s.say('Sable', '...That one is looking for someone.');
+    await s.say('Sable', 'That one is looking for someone.');
     await s.say('Wren', 'Who?');
     await s.say('Sable', 'I do not know. But I wanted to answer her.');
     await s.say('Ilse', 'Answer what?');
@@ -329,7 +329,7 @@ export const WOLD = {
     s.place('player', 30, 8, 'right');
     await s.pan(35, 7, 1.0);
     s.flash('#d8b0ff', 0.8);
-    await s.narrate('The lights rise out of the split trunk — tens, then hundreds — and drift upward through the branches like sparks from a fire. Like fireflies, leaving a jar.');
+    await s.narrate('The lights rise out of the split trunk — tens, then hundreds — and drift upward through the branches like fireflies leaving a jar.');
     await s.say('The Hollow Mother', '...so many... so many mornings I kept from them...', { speed: 0.7 });
     await s.say('The Hollow Mother', '...is it morning... out there?', { speed: 0.6 });
     await s.say('Sable', 'Yes.');

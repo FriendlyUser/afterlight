@@ -16,8 +16,8 @@ export const C4M = {
     });
     await s.wait(0.6);
     await s.narrate([
-      'Three days down out of the Greyspine. The snow became rain, the rain became fen,',
-      'and nobody said very much at all.',
+      'Three days down out of the Greyspine. The snow becomes rain, the rain becomes fen,',
+      'and nobody says very much at all.',
     ]);
     await s.say('Pip', 'So. Swamp.');
     await s.say('Corvin', 'Fen, kid. A swamp is a fen that\'s let itself go.');
@@ -35,7 +35,7 @@ export const C4M = {
     await s.say('Wren', 'I did _not_—');
     await s.say('Wren', '...Okay. A little.');
     await s.wait(0.5);
-    await s.narrate('Wren takes the case of tuning forks out of her pack. Seven silver forks in blue velvet, humming faintly in the rain.');
+    await s.narrate('Wren takes the case of tuning forks out of her pack. Five silver forks in blue velvet, humming faintly in the rain.');
     await s.say('Wren', 'Halvard said they\'re not tuned to the Dawnsong. They\'re tuned to its _reflection_.');
     s.face(P.ilse, P.wren);
     await s.say('Ilse', 'Three things. One: the Hierophant gave you those. Two: Garrick\'s soldiers have been a day behind us since Saltglass. Three: Halvard is dead because of whatever they\'re for.');
@@ -66,7 +66,7 @@ export const C4M = {
 
   async poster(s) {
     await s.narrate('A notice, nailed to the post. The rain has run the ink — but not enough.');
-    await s.system('*WANTED* by order of the Lord-Commander of the Dawnguard:\nA GIRL, black hair, pale, about sixteen, answers to "Sable."\nTravelling with a red-haired Vanguard; a Mender; a disgraced squire; a street child; and a man who owes money.\n*5,000 gold — ALIVE.*');
+    await s.system('*WANTED* by order of the Lord-Commander of the Dawnguard:\nA GIRL, black hair, pale, about sixteen, answers to "Sable."\nTraveling with a red-haired Vanguard; a Mender; a disgraced squire; a street child; and a man who owes money.\n*5,000 gold — ALIVE.*');
     if (s.flag('c4b_poster_read')) return;
     s.setFlag('c4b_poster_read');
     await s.say('Pip', '"A street child." I\'ve got a _name_.');
@@ -75,7 +75,7 @@ export const C4M = {
     await s.say('Bram', '"Disgraced squire." They didn\'t even spell it wrong. I\'d have preferred they spelled it wrong.');
     await s.say('Sable', '"Alive." He wants me alive.');
     await s.say('Ilse', 'That\'s... good?');
-    await s.say('Sable', 'I don\'t know. I don\'t know what he wants me alive _for_.');
+    await s.say('Sable', 'I do not know. I do not know what he wants me alive _for_.');
     await s.say('Pip', 'Five thousand gold. We could turn you in and steal you back.');
     await s.say('Corvin', 'I like how the kid thinks.');
     await s.say('Ilse', 'No.');
@@ -87,12 +87,12 @@ export const C4M = {
     s.spawn('dg1', 'dawnguard', 34, 18, 'left');
     s.spawn('dg2', 'c4b_dg_crossbow', 35, 20, 'left');
     s.spawn('dg3', 'dawnguard', 34, 20, 'left');
-    await s.say('Dawnguard Sergeant', 'Halt! By order of the Lord-Commander, every traveller on this causeway is to be searched for—');
+    await s.say('Dawnguard Sergeant', 'Halt! By order of the Lord-Commander, every traveler on this causeway is to be searched for—');
     await s.emote('dg1', '!');
     await s.say('Dawnguard Sergeant', 'Black hair. Pale. That\'s _her_. That\'s the—');
-    await s.say('Bram', 'Sergeant! Is it Sergeant? I can\'t tell with the helmet. Hello. We are a travelling theatre troupe.');
-    await s.say('Dawnguard Sergeant', '...Kestrel? Bram _Kestrel_?');
-    await s.say('Bram', 'Not a very _good_ theatre troupe.');
+    await s.say('Bram', 'Sergeant! Is it Sergeant? I can\'t tell with the helmet. Hello. We are a traveling theater troupe.');
+    await s.say('Dawnguard Sergeant', 'Kestrel? Bram _Kestrel_?');
+    await s.say('Bram', 'Not a very _good_ theater troupe.');
     await s.say('Dawnguard Sergeant', 'Take the girl! The rest are worth nothing!');
     const r = await s.battle('c4b_dg_patrol', { bg: 'swamp' });
     if (r !== 'win') return;
@@ -149,7 +149,7 @@ export const C4M = {
     await s.say('Corvin', 'I know. I know. Jokes are a reflex. Like flinching.');
     unstage(s, P, [4, 18, 'right']);
     s.objective('Go to Mother Osk in the Mirefen Lantern, north-east of the village.');
-    s.journal('Mirefen. Mother Osk is dying of the gloam-rot, and her Lantern is dark. Ilse didn\'t even wait to be asked.');
+    s.journal('Mirefen. Mother Osk is dying of the Gloam-rot, and her Lantern is dark. Ilse didn\'t even wait to be asked.');
   },
 
   async lanternEnter(s) {
@@ -178,10 +178,10 @@ export const C4M = {
     await s.say('Mother Osk', '...Ysolde?');
     await s.say('Mother Osk', 'Ysolde Halloway, you\'ve got _old_. Where are your manners? Where\'s my tea?');
     s.face(P.wren, 'left');
-    await s.say('Wren', '...That\'s my mother.');
+    await s.say('Wren', 'That\'s my mother.');
     await s.say('Mother Osk', 'Course it is. Same chin. Stubborn chin. I told your mother no too, didn\'t I. No, no—', { speed: 0.7 });
     await s.wait(0.6);
-    await s.say('Ilse', 'Three things. Black veins to the elbow. Fever — very high. And her breath—');
+    await s.say('Ilse', 'Black veins to the shoulder. Fever — very high. And her breath—');
     await s.wait(0.5);
     await s.say('Ilse', 'It rattles. It\'s in her lungs.');
     s.face('vey_l', P.ilse);
@@ -303,7 +303,7 @@ export const C4M = {
     if (s.flag('c4b_lisette_sable')) return;
     s.setFlag('c4b_lisette_sable');
     await s.say('Cantor Lisette', '...You. The girl with the black hair. Have we met?');
-    await s.say('Sable', 'I don\'t think so.');
+    await s.say('Sable', 'I do not think so.');
     await s.say('Cantor Lisette', 'I know your face. From a painting, I think. In the Cathedral — above the door of His Grace\'s private chapel.');
     await s.say('Cantor Lisette', 'A little girl, holding a lantern. The Hierophant lights a candle under it every morning.');
     await s.wait(0.8);
@@ -329,10 +329,10 @@ export const C4M = {
     await s.say('Nettie', 'Is it scary?');
     await s.say('Sable', 'It is cold. Sometimes it is lonely.');
     await s.say('Nettie', 'Mine\'s going to be Mender, I think. Like Mother Osk. Or the one that gets to ride the boats.');
-    await s.say('Sable', 'I don\'t know which one that is. I have only had one Crest, and nobody gave it to me.');
+    await s.say('Sable', 'I do not know which one that is. I have only had one Crest, and nobody gave it to me.');
     await s.say('Nettie', 'Do you know the counting rhyme? The Mirefen one?');
     await s.say('Sable', 'No.');
-    await s.say('Nettie', '"One for the lantern, two for the light, three for the heron that fishes at night—"');
+    await s.say('Nettie', '"One for the Lantern, two for the light, three for the heron that fishes at night—"');
     await s.say('Nettie', '...I can\'t do the rest. It makes me cough.');
     await s.say('Sable', 'Then I will wait, and you will tell me the rest when you can.');
   },
@@ -346,7 +346,7 @@ export const C4M = {
       await s.say('Corporal Dace', 'And he\'s left pickets on every road between here and there, looking for your black-haired friend.');
       await s.say('Corporal Dace', 'Take this. Dawnguard issue. It\'s supposed to keep the dark off you.');
       await s.give('star_pendant');
-      await s.say('Corporal Dace', 'Didn\'t work for me. Maybe you\'ll have better luck.');
+      await s.say('Corporal Dace', 'Didn\'t work for me. Might for you.');
       await s.say('Bram', 'Will you go back? To them?');
       await s.say('Corporal Dace', 'Don\'t know. Sir Aldous used to say a Dawnguard serves the light, not the man holding the lamp.');
       await s.say('Corporal Dace', 'Seems to me the man holding the lamp has forgotten that.');
@@ -358,7 +358,7 @@ export const C4M = {
     await s.say('Corporal Dace', 'Don\'t — don\'t come closer. I\'ve got the rot.');
     await s.wait(0.5);
     await s.say('Corporal Dace', '...Kestrel? Bram Kestrel? The squire who froze at the Trial?');
-    await s.say('Bram', '...That\'s me.');
+    await s.say('Bram', 'That\'s me.');
     await s.say('Corporal Dace', 'I was in the stands. Third row. You were very... still.');
     await s.say('Bram', 'Yes. I\'ve had notes.');
     await s.say('Corporal Dace', 'The Lord-Commander\'s column came through two days ago, limping down off the Greyspine like whipped dogs. I\'d caught the fever on the march. They left me where I fell.');
@@ -460,8 +460,8 @@ export const C4M = {
       await s.say('Ilse', 'It\'s the rot. Grown solid.');
       await s.say('Sable', 'It flinches from light. I can feel it flinch.');
       await s.say('Ilse', s.flag('c4b_got_moss')
-        ? 'The lanternmoss would burn it, but it\'ll gutter out in a breath. I need the weepcap\'s sap to make it last. Lily first.'
-        : 'We need something brighter than a torch. Something it remembers.');
+        ? 'The lanternmoss would burn it, but it\'ll gutter out in a breath. I need the weepcap\'s sap to make it last. Lily first — the Root Grotto.'
+        : 'We need something brighter than a torch. Something it remembers. Lanternmoss, from the Sunken Shrine.');
       return;
     }
     await s.narrate('Ilse crushes a pinch of lanternmoss into a drop of weepcap sap and blows on it. It catches like a coal — a small, fierce, golden light.');
@@ -521,9 +521,9 @@ export const C4M = {
     s.spawn('vey_l', 'c4b_vey', 4, 6, 'left');
     s.spawn('hesk_l', 'c4b_hesk', 3, 6, 'up');
     await s.wait(0.5);
-    await s.narrate('Ilse works for an hour without speaking. Moss, sap, gall — ground, steeped, strained. The Lantern fills with a smell like a boot that drowned and came back angry.');
+    await s.narrate('Ilse works for an hour without speaking. Moss, sap, gall — ground, steeped, strained. The Lantern fills with the smell of it.');
     await s.say('Pip', 'Smells like a boot.');
-    await s.say('Corvin', 'Like a boot that drowned.');
+    await s.say('Corvin', 'Like a boot that drowned and came back angry.');
     await s.say('Ilse', 'Thank you both. Hold her head, Doctor.');
     await s.move(P.ilse, [[9, 6], [5, 5], [3, 5]], 2.6);
     s.face(P.ilse, 'up');

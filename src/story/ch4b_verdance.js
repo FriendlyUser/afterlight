@@ -19,11 +19,11 @@ export const C4V = {
     await s.narrate('Verdance. The oldest forest in Solmere. The trees here were old when the Lanterns were new.');
     await s.say('Pip', 'Trees. Lots of trees. Do these ones talk? The Whisperwold ones talked.');
     await s.say('Corvin', 'These ones just judge you silently.');
-    await s.say('Sable', 'The leaves are turning. It isn\'t autumn.');
+    await s.say('Sable', 'The leaves are turning. It is not autumn.');
     await s.say('Ilse', 'She\'s right. Look — half that oak is brown. In early summer.');
     s.spawn('bracken_a', 'c4b_bracken', 18, 20, 'left');
     await s.move('bracken_a', [[14, 23], [10, 26]], 1.8);
-    await s.say('Elder Bracken', 'Travellers. In Rootholm we say: may your roots find water.');
+    await s.say('Elder Bracken', 'Travelers. In Rootholm we say: may your roots find water.');
     await s.say('Bram', 'And, ah — may yours?');
     await s.say('Elder Bracken', 'Close enough.');
     await s.say('Elder Bracken', 'You\'ve come for the Keeper. Everyone who comes to Rootholm has come for the Keeper. Lately, they come with swords.');
@@ -93,13 +93,13 @@ export const C4V = {
 
   async memoryTree(s) {
     if (s.flag('c4b_ribbon')) {
-      return s.narrate('Hundreds of ribbons stir in the blossoming branches. Near the bottom, tied in a careful double knot, a grey one reads: _BROTHER HALVARD. FROSTHOLLOW._');
+      return s.narrate('Hundreds of ribbons stir in the blossoming branches. Near the bottom, tied in a careful double knot, a gray one reads: _BROTHER HALVARD. FROSTHOLLOW._');
     }
     s.setFlag('c4b_ribbon');
     await s.narrate('Hundreds of ribbons hang from the blossoming tree, each one knotted around a name. They stir in a wind you can\'t feel.');
     await s.say('Bram', '...Could we? For Halvard?');
     await s.say('Wren', 'Yeah. Yeah, Bram. We should.');
-    await s.narrate('Bram picks a grey ribbon from the basket. His hands are too big for the knot. He does it anyway, twice, until it holds.');
+    await s.narrate('Bram picks a gray ribbon from the basket. His hands are too big for the knot. He does it anyway, twice, until it holds.');
     await s.say('Bram', 'Brother Halvard. Frosthollow. He made terrible tea, and he was the bravest man I ever met.');
     await s.say('Wren', 'You\'re the bravest man I ever met.');
     await s.say('Bram', 'I\'m not. That\'s the point. He was, and he\'s — and I\'m still here.');
@@ -108,7 +108,7 @@ export const C4V = {
     await s.say('Bram', '...Yes. I suppose that\'s right.');
     await s.say('Corvin', 'Then you\'d better make it worth his while, big man.');
     await s.say('Bram', 'I\'ll try. I\'ll — I\'ll try.');
-    s.journal('We tied a ribbon for Halvard on Rootholm\'s Memory Tree. Bram did the knot. It took him three tries. Nobody helped, because he needed to do it himself.');
+    s.journal('We tied a ribbon for Halvard on Rootholm\'s Memory Tree. Bram did the knot. It took him two tries. Nobody helped.');
   },
 
   // ================================================================ the Tangle
@@ -143,11 +143,11 @@ export const C4V = {
       return;
     }
     if (which === 'thornB') {
-      await s.narrate('More thorns. Sable stands in front of them for a long moment without lifting her hand.');
+      await s.narrate('More thorns. Sable stands in front of them and does not lift her hand.');
       await s.say('Sable', 'When I touch them, they go quiet. Like a dog that knows its master.');
       await s.say('Sable', 'Wren. What if I _am_ the master?');
       await s.say('Wren', 'Then you\'re a master who tells them to get out of the way. That\'s a good master.');
-      await s.say('Sable', '...That is a very Wren answer.');
+      await s.say('Sable', 'That is a very Wren answer.');
       await s.say('Wren', 'Thank you?');
       s.sfx('dark');
       s.clearBlocker('thornB');
@@ -155,8 +155,8 @@ export const C4V = {
       return;
     }
     await s.narrate('The last of the thorns. Beyond them, something enormous creaks, like a ship at anchor.');
-    await s.say('Sable', 'I am not afraid of them any more. I think they are afraid of me.');
-    await s.say('Sable', 'I would rather they weren\'t. But I will use it.');
+    await s.say('Sable', 'I am not afraid of them anymore. I think they are afraid of me.');
+    await s.say('Sable', 'I would rather they were not. But I will use it.');
     s.sfx('dark');
     s.clearBlocker('thornC');
     await s.say('Ilse', 'Whatever\'s behind that — it\'s big. Let\'s rest at the Hearthstone first.');
@@ -300,7 +300,7 @@ export const C4V = {
     await s.say('Elowen', 'I was going to say "hurry." Your mother was always in a hurry too.');
     await s.wait(0.6);
     await s.say('Ilse', 'Keeper — your stone. Rootholm says soldiers took it.');
-    await s.say('Elowen', 'A month ago. White and gold, the Hierophant\'s sun on their shields. They were very polite, and very many.');
+    await s.say('Elowen', 'A month ago. The Hierophant\'s sun on every shield. They were very polite, and very many.');
     await s.say('Elowen', 'I told them no. I stood in front of my light, and a young man in armor picked me up like a bundle of kindling and set me down on that root, there. Gently. He apologized.');
     await s.say('Elowen', 'Then they went into my Lantern, and came out carrying the morning in a box.');
     await s.say('Bram', 'Garrick\'s men.');
@@ -329,7 +329,7 @@ export const C4V = {
     await s.say('Elowen', 'That night, after the sun went down, the Grand Lantern failed.');
     await s.say('Elowen', 'Not dimmed. _Failed._ For the first time in a thousand years. Nobody has ever known why.');
     s.flash('#1a1030', 1.2);
-    await s.say('Elowen', 'And the Gloam came into Aurenne the way the tide comes into a cave. Through the streets. Up the stairs. Into the houses. Cold, and grey, and full of whispering.');
+    await s.say('Elowen', 'And the Gloam came into Aurenne the way the tide comes into a cave. Through the streets. Up the stairs. Into the houses. Cold, and gray, and full of whispering.');
     await s.say('Elowen', 'Everything it touched, it _remembered_ — and took into itself.');
     await s.wait(0.8);
     await s.say('Elowen', 'Aurelian had a choice. He could hold the light with both hands — pour every scrap of himself into the lamp until it caught again. Or he could let it go, and run for his children.');
@@ -346,7 +346,7 @@ export const C4V = {
     await s.say('Elowen', 'Cassian stood at the end of that street until morning, calling her name. When the sun came up — when we sang it up, all seven of us, with our voices breaking — he was still calling.');
     await s.say('Elowen', 'I carried him home myself. He weighed nothing at all.');
     await s.wait(1.5);
-    await s.say('Corvin', '_(very quietly)_ ...Cassian Lorne.');
+    await s.say('Corvin', '_(very quietly)_ Cassian Lorne.');
     await s.say('Elowen', 'He never cried, that I saw. He only asked his father, every day for a year: _why did you choose the light?_');
     await s.say('Elowen', 'Aurelian never had an answer. He died with that question still sitting at his table.');
     await s.say('Elowen', 'And the boy grew up, and became the Hierophant, and the whole world loves him. And I think he has spent forty years writing his father an answer.');
@@ -370,7 +370,7 @@ export const C4V = {
     s.stopMusic(2.0);
     await s.say('Sable', 'Am I her?', { speed: 0.6 });
     await s.wait(2.5);
-    await s.say('Elowen', 'Lysa Lorne would be fifty years old this summer. She would have grey in her hair. Children, perhaps. And she would still be afraid of geese.');
+    await s.say('Elowen', 'Lysa Lorne would be fifty years old this summer. She would have gray in her hair. Children, perhaps. And she would still be afraid of geese.');
     await s.say('Elowen', 'You are sixteen. And I think you will be sixteen for exactly as long as someone wants you to be.');
     await s.say('Sable', 'He made me.');
     await s.say('Elowen', 'Someone remembered her very hard, for a very long time, at the edge of the dark. And the dark is made of remembering.');
@@ -422,7 +422,7 @@ export const C4V = {
     await s.say('Elowen', 'I am told you have some, Captain.');
     await s.say('Corvin', '...Had.');
     await s.say('Corvin', 'The Halcyon should be on her cradle at Stormfoot by now, at the bottom of the Stormcrown. I paid a caravan every coin I had to haul her up out of the sand. She floats. She doesn\'t _climb_.');
-    await s.say('Corvin', 'Charge her Saltglass with enough lightning, though, and she might fly. Once. Maybe.');
+    await s.say('Corvin', 'Charge her saltglass with enough lightning, though, and she might fly. Once. Maybe.');
     await s.say('Pip', '"Maybe."');
     await s.say('Corvin', 'Maybe is a very respectable word in my profession, kid.');
     await s.say('Elowen', 'Rest tonight. The grove is safe, now that my Warden sleeps. In the morning, the forest will let you out the short way.');
@@ -475,7 +475,7 @@ export const C4V = {
     s.face(P.sable, P.wren);
     await s.say('Sable', 'Wren. When you named me. Did you know?');
     await s.say('Wren', 'Know what?');
-    await s.say('Sable', 'That I didn\'t have one. That there was nothing for me to remember.');
+    await s.say('Sable', 'That I did not have one. That there was nothing for me to remember.');
     await s.say('Wren', 'I just thought you looked like a Sable.');
     await s.wait(1.0);
     await s.say('Sable', 'I am going to keep it.');
