@@ -388,8 +388,11 @@ done directly this session:
   again, Load last save (newest manual or autosave; hidden if none) and the title.
   Leaving a battle clears hit-stop, shake, punch and the filter. Test: `battle_feel`.
 - **`docs/OVERHAUL_PROMPT.md`** is the polish brief rewritten for this codebase: what
-  is done, and work packages with acceptance tests for the rest (hold-to-skip, quest
-  levels and pinning, input buffer, corner sliding, a balance guard, save migration).
+  is done, the engine facts the work relies on, and seven work packages for the rest,
+  each with its reason, player-facing behaviour, files, and acceptance test
+  (hold-to-skip by fast-forwarding the script, quest levels and a pinned tracker, a
+  balance guard with a measured baseline, save migration with a fixture, corner
+  sliding and menu input — both to be proved first — and optional portraits / barks).
 
 ## Next
 Everything below is optional; the game is complete and the suite passes.
