@@ -283,6 +283,14 @@ await s.say('Garrick', [
   typing skips them.
 - Lines are type-checked (`LineSpec` in `src/types/data.d.ts`): a misspelled key is an error.
 
+**Skipping.** A player can hold Menu for a second to skip any scene. The skip
+fast-forwards your script — lines go to the backlog, waits, walks and fades finish at
+once, `s.give` popups become toasts — so it ends in the same state as watching, and it
+stops by itself at a choice, a battle, a shop or any other menu. Two things follow for
+authors: keep everything a scene does on the game clock (`s.wait`, `s.move`, `s.fadeOut`;
+never `setTimeout`), and call `s.noSkip()` at the top of the rare scene that must be
+seen (it lasts until that scene ends).
+
 **Voices.** Speakers type in their own blip voice (`src/data/voices.js`: add a named
 profile for anyone important; everyone else gets a steady one from their name). Every
 line also has a stable voice id, and a recording listed in `voice/manifest.json` plays

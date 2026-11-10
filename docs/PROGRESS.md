@@ -387,6 +387,21 @@ done directly this session:
   low-pass (`AudioEngine.muffle`) until the game-over theme; the screen offers Try
   again, Load last save (newest manual or autosave; hidden if none) and the title.
   Leaving a battle clears hit-stop, shake, punch and the filter. Test: `battle_feel`.
+- **Hold-to-skip and scene hints** (`Game.startSkip` / `stopSkip` / `watchSkip`,
+  `src/ui/SceneHints.js`). Holding Menu for 1.0 s of UI clock during a scene skips it by
+  fast-forwarding the same script: `speedFactor` 40, `UI.dialogue` sends lines straight
+  to the backlog, `UI.message` popups become toasts, SFX and blips are silent, a black
+  curtain (its own element, above `#fader`) covers the screen. It ends when the scene is
+  over for two frames (`!busy && !pendingScript && !_transitioning`, so it carries across
+  teleports into the next map's `onEnter`) or when something needs the player: any
+  blocking widget pushed on the UI stack (choices, menus, shops, fishing), a battle, the
+  world map; 20 s is the safety limit. `s.noSkip()` refuses for one scene. The corner
+  (top-left) shows `Z Next · ↑ Backlog · T Fast · Hold C Skip scene` after 0.8 s of a
+  scene, the Skip chip filling as the key is held, `>> ×3` while Fast Mode is on (the
+  top-centre badge reads `>> ×N` too) and `>>> Skipping` during a skip; Settings → Scene
+  Hints hides them. Test `skip`: skipped and watched runs of Nana's first scene and the
+  Kindling end in identical state (the Kindling, across a teleport, in about a second);
+  a skip stops at the brooch battle and at a choice.
 - **`docs/OVERHAUL_PROMPT.md`** is the polish brief rewritten for this codebase: what
   is done, the engine facts the work relies on, and seven work packages for the rest,
   each with its reason, player-facing behaviour, files, and acceptance test

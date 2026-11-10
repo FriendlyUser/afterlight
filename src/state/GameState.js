@@ -56,7 +56,7 @@ export class GameState {
     this.unlockedCrests = new Set();
     this.bestiary = {};
     this.stats = { battles: 0, steps: 0, escapes: 0 };
-    this.settings = { autoRun: false, musicVolume: 0.6, sfxVolume: 0.7, textSpeed: 1, battleSpeed: 0, difficulty: 1, encounters: 0, reduceEffects: false, hideMinimap: false, hideQuestGuide: false, hideSideQuests: false, autosave: true, voiceVolume: 0.8, autoAdvance: false, fastMode: false, fastSpeed: 3, keys: null };
+    this.settings = { autoRun: false, musicVolume: 0.6, sfxVolume: 0.7, textSpeed: 1, battleSpeed: 0, difficulty: 1, encounters: 0, reduceEffects: false, hideMinimap: false, hideQuestGuide: false, hideSideQuests: false, autosave: true, voiceVolume: 0.8, autoAdvance: false, hideSceneHints: false, fastMode: false, fastSpeed: 3, keys: null };
     this.musicOverride = null;
     this.lastBannerMap = null;
   }

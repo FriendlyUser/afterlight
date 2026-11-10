@@ -146,7 +146,7 @@ export const CH1 = {
     await s.say('Bram', 'Did he just call her "Lysa"?');
     await s.say('Ilse', 'Who\'s Lysa?');
     await s.say('Sable', 'I don\'t know. But I think I have heard it before. In the water.');
-    s.objective('Home at last. It has been a very long day — rest in your bed.');
+    s.objective('Rest in your bed at home. It has been a very long day.');
     s.journal('The Kindling. I am a Vanguard. Ilse is a Mender, like she always knew. When Sable stepped into the light, the Lantern went dark — and the Hierophant called her "Lysa."');
     s.setFlag('lfDusk');
     s.setFlag('ch1_evening');
@@ -167,7 +167,7 @@ export const CH1 = {
       s.setFlag('ch1_voices');
       await s.narrate('Late in the night, voices. Down the hill, carried up from the Lantern: your mother\'s, sharp as a gull\'s — and the Hierophant\'s.');
       await s.say('Wren', 'Mom? At this hour?');
-      s.objective('Voices from the Lantern — Mom and the Hierophant. Go and listen.');
+      s.objective('Voices from the Lantern: Mom and the Hierophant, arguing. Go up to the Lantern and listen.');
       return;
     }
     if (s.flag('ch1_evening') && !s.flag('ch1_rested') && !s.flag('ch1_home')) {

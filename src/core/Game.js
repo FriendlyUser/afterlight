@@ -5,6 +5,9 @@ import { Renderer } from '../render/Renderer.js';
 import { Input } from './Input.js';
 import { clamp } from './util.js';
 
+const SKIP_SPEED = 40; // game-clock multiplier while a scene is being skipped
+const SKIP_LIMIT = 20; // seconds: a skip never runs longer than this
+
 export class Game {
   constructor({ canvas, uiRoot, fader }) {
     this.canvas = canvas;
@@ -17,6 +20,9 @@ export class Game {
     this.tasks = new Set(); // per-frame updaters: fn(dt) -> true when done
     this.timeScale = 1;
     this.freeze = 0; // seconds of hit-stop left (see hitStop)
+    this.skipping = false; // a scene is being fast-forwarded (see startSkip)
+    /** @type {import('../ui/SceneHints.js').SceneHints | null} corner hints and the hold-to-skip */
+    this.sceneHints = null;
     // Wired up by main.js (and the test harness):
     this.autoConfirm = false; // headless tests: dialogue advances itself
     /** @type {import('../ui/Menus.js').MenuSystem | null} */
@@ -56,14 +62,14 @@ export class Game {
     this.showFastBadge(settings.fastMode ? settings.fastSpeed || 3 : 0);
   }
 
-  /** Small "▶▶ ×3" badge in the corner while Fast Mode is on. */
+  /** Small ">> ×3" badge at the top while Fast Mode is on (during scenes the corner hints show it). */
   showFastBadge(speed) {
     if (!this.fastBadge) {
       this.fastBadge = document.createElement('div');
       this.fastBadge.className = 'fast-badge';
       document.getElementById('app')?.appendChild(this.fastBadge);
     }
-    this.fastBadge.textContent = speed ? `▶▶ ×${speed}` : '';
+    this.fastBadge.textContent = speed ? `>> ×${speed}` : '';
     this.fastBadge.style.display = speed ? '' : 'none';
   }
 
@@ -96,8 +102,47 @@ export class Game {
    * key repeat and minigame timing stay real-time.
    */
   get speedFactor() {
+    if (this.skipping) return SKIP_SPEED;
     const s = this.state?.settings;
     return s?.fastMode ? s.fastSpeed || 3 : 1;
+  }
+
+  /**
+   * Skip the scene that is playing: the same script runs on, fast-forwarded. Lines go
+   * straight to the backlog (UI.dialogue), waits, walks and fades finish at once, and
+   * sound effects are muted, so the scene ends in exactly the state watching it would
+   * leave. It stops by itself when the scene is over or needs the player (stopSkip).
+   */
+  startSkip() {
+    if (this.skipping) return;
+    this.skipping = true;
+    this.skipT = 0;
+    this.skipIdle = 0;
+    this.voiceLines?.stop();
+    for (const w of [...(this.ui?.stack || [])]) if (w.isDialogue || w.isMessage) w.close(); // let the script run on
+  }
+
+  /** End a skip: 'end' (the scene is over) or because something needs the player. */
+  stopSkip(reason = 'input') {
+    if (!this.skipping) return;
+    this.skipping = false;
+    const sc = this.scene;
+    if (reason === 'end' && sc?.player && sc.updateCamera) {
+      // Back to the player, with the party behind them.
+      sc.camTarget = null;
+      sc.followers?.regroup?.();
+      sc.updateCamera(1, true);
+    }
+  }
+
+  /** While skipping: stop once the scene has been over for two frames (or after a safety limit). */
+  watchSkip(rawDt) {
+    const sc = this.scene;
+    const over = !sc?.busy && !sc?.pendingScript && !this._transitioning && !this.sceneStack?.length;
+    this.skipIdle = over ? this.skipIdle + 1 : 0;
+    this.skipT += rawDt;
+    if (this.skipIdle >= 2) this.stopSkip('end');
+    else if (this.skipT > SKIP_LIMIT) this.stopSkip('limit');
   }
 
   toggleFastMode() {
@@ -138,6 +183,8 @@ export class Game {
       if (++this._frame % this.renderEvery === 0) this.scene.render(this.time);
     }
     this.state?.tickPlaytime(rawDt);
+    if (this.skipping) this.watchSkip(rawDt);
+    this.sceneHints?.update(rawDt);
     if (this.debug) this.updateDebugHud(rawDt);
     this.input.endFrame();
   }

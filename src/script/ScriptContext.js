@@ -300,6 +300,12 @@ export class ScriptContext {
 
   saveMenu() { return this.game.menus.openSave(); }
 
+  /**
+   * This scene can't be skipped (hold Menu does nothing until it ends). For the few
+   * moments a player must not miss: a tutorial's first tip, the ending.
+   */
+  noSkip() { this.field.noSkip = true; }
+
   /** Run a shared/named event from the events registry. */
   run(fn) { return fn(this); }
 }

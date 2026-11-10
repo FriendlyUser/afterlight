@@ -5,6 +5,7 @@ import { UI } from './ui/UI.js';
 import { GameState, SaveStore } from './state/GameState.js';
 import { AudioEngine } from './audio/Audio.js';
 import { VoiceLines } from './audio/VoiceLines.js';
+import { SceneHints } from './ui/SceneHints.js';
 import { FieldScene } from './world/FieldScene.js';
 import { LOOKS } from './data/looks.js';
 import './data/fish.js'; // registers fish as items
@@ -21,6 +22,7 @@ const audio = new AudioEngine(game);
 const state = new GameState();
 game.attach({ ui, audio, state });
 game.voiceLines = new VoiceLines(audio); // recorded lines, if a voice pack is installed (voice/)
+game.sceneHints = new SceneHints(game); // corner hints during scenes, and hold-to-skip
 game.applySettings();
 
 // Speaker name -> portrait look

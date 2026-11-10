@@ -380,7 +380,7 @@ export class AudioEngine {
   // ------------------------------------------------------------------ sfx
 
   sfx(id) {
-    if (!this.ctx) return;
+    if (!this.ctx || this.game?.skipping) return; // a skipped scene is silent
     const fn = SFX[id];
     if (fn) fn(this, this.ctx.currentTime);
   }
@@ -393,7 +393,7 @@ export class AudioEngine {
    * @param {number} n  index of the character being typed
    */
   blip(profile, n) {
-    if (!this.ctx) return;
+    if (!this.ctx || this.game?.skipping) return;
     const jitter = 1 + 0.04 * (2 * (((Math.imul(n + 1, 0x9e3779b1) >>> 0) % 1000) / 999) - 1);
     this.tone(this.ctx.currentTime, profile.freq * jitter, profile.dur || 0.028, { type: profile.wave || 'triangle', vol: profile.vol ?? 0.035, filter: profile.filter || 0 });
   }

@@ -17,7 +17,7 @@ export const lfLantern = {
   onEnter: async (s) => {
     if (s.flag('ch1_named') && !s.flag('kindled')) await CH1.kindling(s);
     else if (s.flag('ch1_rested') && !s.flag('ch1_overheard')) await CH1.overhear(s);
-    else if (s.flag('ch1_evening') && !s.flag('ch1_rested')) await s.say('Wren', 'Empty. Everyone went home — like Mom said. I should too.');
+    else if (s.flag('ch1_evening') && !s.flag('ch1_rested')) await s.say('Wren', 'Empty. Mom and the Hierophant must be up in the lamp room. She said home — and I\'m asleep on my feet. Bed first.');
   },
 };
 

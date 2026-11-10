@@ -18,11 +18,12 @@ const ENTRIES = [
 
   // ------------------------------------------------------------------ Chapter 1 (Lanternfall)
   { text: 'The Kindling begins at noon. Go to the Lantern on the northwest bluff.', at: { map: 'lf_lantern' } },
-  // Nothing happens at home: entering the Lantern again (onEnter) plays the overheard argument.
-  // Legacy: saves from before resting moved home — the bed now moves the story on.
+  // After the Kindling: rest in the bed at home (it brings the night and the voices), then
+  // the Lantern. The first two are earlier wordings, kept for saves that hold them.
   { text: 'Rest at home. Something tells you to come back to the Lantern tonight...', at: { map: 'lf_wren_house', x: 1, y: 2 } },
-  { text: 'Home at last. It has been a very long day — rest in your bed.', at: { map: 'lf_wren_house', x: 1, y: 2 } },
-  { text: 'Voices from the Lantern — Mom and the Hierophant. Go and listen.', at: { map: 'lf_lantern' } },
+  { text: 'Home at last. It has been a very long day — rest in your bed.', at: { map: 'lf_wren_house', x: 1, y: 2 } }, // earlier wording
+  { text: 'Rest in your bed at home. It has been a very long day.', at: { map: 'lf_wren_house', x: 1, y: 2 } },
+  { text: 'Voices from the Lantern', at: { map: 'lf_lantern' } },
   // The 'depart' trigger on the dock (Tobias is spawned by the scene).
   { text: 'Leave for the mainland at dawn. Tobias will sail you from the docks.', at: { map: 'lanternfall', x: 23, y: 28 } }, // legacy
   { text: 'Leave for the mainland. Tobias will sail you from the docks.', at: { map: 'lanternfall', x: 23, y: 28 } },

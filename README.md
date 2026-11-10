@@ -54,6 +54,7 @@ or import one.
 | Open the menu | <kbd>C</kbd> <kbd>Tab</kbd> <kbd>Esc</kbd> | <kbd>Y</kbd> / <kbd>Start</kbd> |
 | Switch leader (field) · Surge (battle) | <kbd>Q</kbd> / <kbd>E</kbd> | <kbd>LB</kbd> / <kbd>RB</kbd> |
 | Backlog: reread the last 100 lines (during dialogue) | <kbd>↑</kbd> | D-pad up |
+| Skip a scene (hold for 1 second) | <kbd>C</kbd> <kbd>Tab</kbd> <kbd>Esc</kbd> | <kbd>Y</kbd> / <kbd>Start</kbd> |
 | Auto-battle (battle) · Optimize (Equipment) · Export / Import (save slots) | <kbd>F</kbd> | <kbd>Back</kbd> |
 | Fast Mode on / off (2–4×, set in Settings) | <kbd>T</kbd> | Left-stick click |
 
@@ -62,7 +63,7 @@ keys per action; <kbd>Esc</kbd> always cancels and opens the menu). Your binding
 saved with your game and travel with exported save files.
 
 New Game asks for a difficulty (Story / Normal / Hard) before the opening movie; you can
-change it any time in Settings, along with text size and speed, auto-advancing text,
+change it any time in Settings, along with text size and speed, auto-advancing text, scene hints,
 encounter rate, battle speed, Fast Mode speed, the minimap, the Quest Guide, and reduced
 flashes & screen shake.
 
@@ -82,7 +83,8 @@ members mid-fight, or hand it to auto-battle — and turn on Fast Mode to fly th
 fights and cutscenes. If the party falls: try again, load the last save, or the title.
 
 **Dialogue** — every speaker has their own typing voice, a backlog keeps the last
-hundred lines, and Auto-Advance lets scenes play themselves. Scenes are written in a
+hundred lines, and Auto-Advance lets scenes play themselves. Hold Menu to skip a scene
+you have seen; hints in the corner show how, and `>>` when Fast Mode is on. Scenes are written in a
 small line language with conditional lines and branches, so characters react to who is
 in the party and what you have done. Recorded voice lines are optional: drop files into
 [`voice/`](voice/README.md) and they play in place of the typing blips.

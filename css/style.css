@@ -135,6 +135,19 @@ em { color: #e8dcff; }
 .chapter-card.show .cc-line { opacity: 1; }
 
 /* ---------- HUD ---------- */
+.scene-hints { position: absolute; left: 18px; top: 16px; z-index: 62; display: flex; gap: 8px; align-items: center; opacity: 0; transition: opacity 0.35s; pointer-events: none; font-family: var(--font-caps); font-size: 13px; letter-spacing: 0.06em; color: var(--ink-dim); }
+.scene-hints.show { opacity: 0.92; }
+.scene-hints .sh-item { position: relative; display: flex; gap: 5px; align-items: center; padding: 3px 9px; background: rgba(12, 10, 20, 0.6); border: 1px solid rgba(255, 228, 180, 0.22); border-radius: 11px; overflow: hidden; white-space: nowrap; }
+.scene-hints .sh-item b { color: #ffd36a; letter-spacing: -1px; font-weight: 700; }
+.scene-hints .sh-fast.on { color: #ffe0a0; border-color: rgba(255, 210, 140, 0.55); }
+.scene-hints .sh-skip > span { position: relative; display: flex; gap: 5px; align-items: center; }
+.scene-hints .sh-skip > i { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(255, 200, 100, 0.45); }
+.scene-hints .sh-skip.off { opacity: 0.55; }
+.scene-hints .sh-skipping { color: #ffe0a0; border-color: rgba(255, 210, 140, 0.55); }
+.scene-hints .sh-skipping b { animation: sh-run 0.7s steps(3) infinite; }
+@keyframes sh-run { 0% { opacity: 0.35; } 100% { opacity: 1; } }
+.scene-hints .key { font-size: 11px; padding: 0 5px; min-width: 0; }
+.skip-curtain { position: absolute; inset: 0; background: #000; opacity: 0; z-index: 60; pointer-events: none; }
 .fast-badge { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); padding: 3px 12px; font-family: var(--font-caps); font-size: 14px; letter-spacing: 0.12em; color: #ffe0a0; background: rgba(12, 10, 20, 0.6); border: 1px solid rgba(255, 210, 140, 0.45); border-radius: 12px; pointer-events: none; z-index: 40; }
 .minimap { position: absolute; right: 18px; top: 18px; padding: 5px; background: rgba(12, 10, 20, 0.55); border: 1px solid rgba(255, 228, 180, 0.3); border-radius: 4px; pointer-events: none; }
 .minimap canvas { display: block; max-width: 168px; max-height: 168px; image-rendering: pixelated; opacity: 0.92; }

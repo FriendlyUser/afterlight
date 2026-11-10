@@ -58,6 +58,8 @@ export class UI {
   get blocking() { return this.stack.some((w) => w.blocking !== false); }
 
   push(widget, layer = 'menus') {
+    // Anything that asks the player something ends a skip: choices, menus, shops, fishing.
+    if (this.game.skipping && widget.blocking !== false && !widget.isDialogue && !widget.isMessage) this.game.stopSkip('input');
     this.stack.push(widget);
     if (widget.el && !widget.el.parentNode) this.layers[layer].appendChild(widget.el);
     widget.onPush?.();
@@ -97,6 +99,7 @@ export class UI {
   dialogue(speaker, text, opts = {}) {
     this.history.push({ speaker, text: plainText(text), style: opts.style });
     if (this.history.length > HISTORY_LINES) this.history.splice(0, this.history.length - HISTORY_LINES);
+    if (this.game.skipping) return Promise.resolve(); // a skipped scene: the line is in the backlog
     return new Promise((resolve) => {
       const w = new DialogueBox(this, speaker, text, opts, resolve);
       this.push(w, 'dialog');
@@ -149,18 +152,20 @@ export class UI {
     c.remove();
   }
 
-  /** Simple "press confirm" popup message. */
+  /** Simple "press confirm" popup message ("Obtained …"). In a skipped scene it becomes a toast. */
   message(html) {
+    if (this.game.skipping) { this.toast(richText(html), 3200); return Promise.resolve(); }
     return new Promise((resolve) => {
       const box = el('div', 'panel message-box', `<div class="msg-body">${html}</div><div class="msg-hint">▼</div>`);
       const w = {
         el: box,
+        isMessage: true,
+        close: () => { this.remove(w); resolve(); },
         handleInput: (input) => {
           if (input.pressed('confirm') || input.pressed('cancel')) {
             input.consumeAll();
             this.sfx('confirm');
-            this.remove(w);
-            resolve();
+            w.close();
           }
         },
       };
@@ -182,6 +187,7 @@ class DialogueBox {
     this.ui = ui;
     this.resolve = resolve;
     this.opts = opts;
+    this.isDialogue = true;
     this.el = el('div', `dialogue-box ${opts.style || ''}`);
     const look = speaker ? ui.lookups.look(speaker) : null;
     if (look && opts.portrait !== false) {

@@ -268,6 +268,7 @@ export class FieldScene {
   }
 
   async openWorldMap() {
+    this.game.stopSkip('map');
     const { WorldMapScene } = await import('./WorldMapScene.js');
     this.busy = true;
     const dest = await this.game.pushScene(new WorldMapScene(this.game), {});
@@ -617,6 +618,7 @@ export class FieldScene {
   }
 
   async startBattle(troopId, opts = {}) {
+    this.game.stopSkip('battle'); // a skipped scene stops at its battle
     const { BattleScene } = await import('../battle/BattleScene.js');
     this.player.moving = false;
     this.game.audio?.sfx('encounter');
@@ -658,6 +660,7 @@ export class FieldScene {
       console.error('Script error:', err);
     } finally {
       this.busy = false;
+      this.noSkip = false;
       this.game.autosaver?.noteScript(before, storySnapshot(this.state)); // saved once the player is free
       if (this.game.scene === this) { this.refreshNpcs(); this.quest.refresh(); }
     }

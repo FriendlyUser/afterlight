@@ -10,7 +10,7 @@ export async function run(game, h) {
   const st = game.state;
   st.joinParty('wren');
   st.flags.p_woke = true;
-  await game.start(new FieldScene(game), { mapId: 'port_gale', x: 10, y: 19, dir: 'down' });
+  await game.start(new FieldScene(game), { mapId: 'port_gale', x: 10, y: 19, dir: 'down', skipEnterScript: true }); // no arrival scene: its dialogue would take the input
   await h.wait(1);
   SaveStore.write(0, st);
 

@@ -124,7 +124,7 @@ def tokens_from(src, i, closer):
         ch = src[i]
         if ch in '\'"`':
             value, j = read_string(src, i)
-            out.append(('str', value, i))
+            out.append(('str', value, i, j))  # value, and where the literal starts and ends
             i = j
             continue
         m = TOKEN.match(src, i)
@@ -196,13 +196,15 @@ NODE_KEYS = ('text', 'narrate', 'lines', 'pick', 'ask', 'options', 'set', 'run')
 class Sink:
     def __init__(self):
         self.rows = []      # (speaker | None, text, kind, source)
+        self.spots = []     # per row: the string token it came from (tools/text_pass.py rewrites these)
         self.dynamic = Counter()
 
-    def line(self, by, text, kind, source):
+    def line(self, by, text, kind, source, tok=None):
         if by is DYNAMIC or text is DYNAMIC:
             self.dynamic[source.split(':')[0]] += 1
         elif re.search(r'[^\W_]', spoken_text(text)):  # '...' and other wordless beats have nothing to voice
             self.rows.append((by, text, kind, source))
+            self.spots.append(tok)
 
 
 def literal(tokens):
@@ -250,9 +252,9 @@ def lines_from(tokens, by, sink, kind, source, talk=False, loose=False):
         text = tokens[0][1]
         if text is not DYNAMIC and talk:
             who, text = split_speaker(text)
-            sink.line(who, text, kind if who else 'narrate', source)
+            sink.line(who, text, kind if who else 'narrate', source, tokens[0])
         else:
-            sink.line(by, text, kind, source)
+            sink.line(by, text, kind, source, tokens[0])
     elif len(tokens) == 1 and tokens[0][0] == 'id' and tokens[0][1] in ('null', 'undefined', 'false', 'true'):
         pass
     elif wrapped(tokens, '['):
