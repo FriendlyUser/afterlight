@@ -58,7 +58,7 @@ export async function run(game, h) {
   h.expect(rows.length === 4 && rows.every((r) => cs.list.renderItem(r).includes('??? (Lost Crest)')), 'four "??? (Lost Crest)" rows on the Crest screen');
   cs.list.index = cs.list.items.indexOf(rows[0]);
   cs.renderDetail();
-  h.expect(cs.detail.innerHTML.includes('Rumour') && cs.detail.innerHTML.includes(rows[0].c.rumour), 'with a rumour of where to look');
+  h.expect(cs.detail.innerHTML.includes('Rumor') && cs.detail.innerHTML.includes(rows[0].c.rumour), 'with a rumour of where to look');
 
   // 4. Each quest: talk, go to the glass, beat the guardian, wear the Crest.
   let first = true;

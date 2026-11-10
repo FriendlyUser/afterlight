@@ -113,7 +113,7 @@ export class CrestScreen extends MemberScreen {
       // A Lost Calling not yet remembered: only the rumour of where to look.
       this.detail.innerHTML = `<div class="cd-name" style="color:#8a8098">??? </div><div class="cd-tier">${TIER_NAMES[4]}</div>
         <div class="cd-desc">A calling the Choir struck from its rolls long ago. Somewhere in the broken world, its crest-glass is still guarded.</div>
-        <div class="cd-legacy"><span class="k">Rumour</span> ${c.rumour || ''}</div>`;
+        <div class="cd-legacy"><span class="k">Rumor</span> ${c.rumour || ''}</div>`;
       return;
     }
     if (e.known) this.renderPreview(e.id);

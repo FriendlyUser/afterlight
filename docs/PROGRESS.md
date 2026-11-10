@@ -409,6 +409,19 @@ done directly this session:
   balance guard with a measured baseline, save migration with a fixture, corner
   sliding and menu input — both to be proved first — and optional portraits / barks).
 
+## Paused 2026-11-09: text line edit
+
+A line edit of all player-facing text (8,912 strings) is two-thirds done and **not yet
+applied to the source**. Parts 1–6 of 9 are edited and validated (353 changes); parts 7–9
+(late chapters, endings, descriptions) are not started. The patches, the reviews and the
+steps to finish are in `/home/david/claude_space/afterlight-text-pass/RESUME.md` (outside
+the repo). The patches use character offsets into the source at commit `03ffd8b`: do not
+edit `src/story/*` or `src/data/**` before applying them, or re-extract with
+`tools/text_pass.py` and redo.
+
+Still owed: a full test run over the dialogue language, battle feel, skip and scene-hint
+work (only the touched tests and the typecheck were run).
+
 ## Next
 Everything below is optional; the game is complete and the suite passes.
 - **Human playtest** of the first few hours: encounter rate, EXP pacing, how often
