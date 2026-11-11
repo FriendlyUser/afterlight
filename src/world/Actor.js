@@ -27,6 +27,11 @@ function blobShadowTexture() {
   return shadowTex;
 }
 
+/** Walking height at a point: follows stairs on a map grid (TileGrid.surfaceAt). */
+function heightAt(grid, px, pz) {
+  return grid.surfaceAt ? grid.surfaceAt(px, pz) : grid.surface(Math.floor(px), Math.floor(pz));
+}
+
 export class Actor {
   /**
    * @param {object} look  sprite look descriptor
@@ -106,7 +111,7 @@ export class Actor {
   placeAt(tx, ty, grid) {
     this.x = tx + 0.5;
     this.z = ty + 0.5;
-    if (grid) this.elev = grid.surface(tx, ty);
+    if (grid) this.elev = heightAt(grid, tx + 0.5, ty + 0.5);
     this.syncMesh();
   }
 
@@ -150,7 +155,7 @@ export class Actor {
       this.animT = 0;
       this.setFrame(this.dir, 0);
     }
-    if (grid) this.elev = damp(this.elev, grid.surface(this.tileX, this.tileY), 14, dt);
+    if (grid) this.elev = damp(this.elev, heightAt(grid, this.x, this.z), 14, dt);
     this.syncMesh();
   }
 
@@ -176,7 +181,7 @@ export class Actor {
         if (!this.lockFacing) this.dir = dirFromVector(dx, dz, this.dir);
         if (dist <= step) { this.x = gx; this.z = gz; i++; } else { this.x += (dx / dist) * step; this.z += (dz / dist) * step; }
         this.update(0, null);
-        if (grid) this.elev = damp(this.elev, grid.surface(this.tileX, this.tileY), 14, dt);
+        if (grid) this.elev = damp(this.elev, heightAt(grid, this.x, this.z), 14, dt);
         this.animT += (dt * speed) / this.stride;
         this.setFrame(this.dir, this.walkSeq[Math.floor(this.animT) % this.walkSeq.length]);
         this.syncMesh();

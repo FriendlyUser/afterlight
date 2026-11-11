@@ -455,6 +455,26 @@ The full suite has since passed over it (70/70).
 - Tests: `enemy_ai` (judgement, packs, thieves, learned immunity, difficulty), `hunt`
   (the book, Greer, a mark hunted, payment, the Sundering move, the finished Ledger).
 
+## Maps: stairs, ground transitions, water (2026-11-10)
+
+A look over the maps found three things that made them read as blocks: stairs were
+cliff faces one half-step high (three dirt blocks for a flight), every change of ground
+was a hard square edge (paths cut into grass in stair-steps, saltglass in squares), and
+water was one flat blob pattern with a fixed white rim (one-tile tide pools went solid
+white). All fixed in the renderer, for every map at once (`docs/AUTHORING.md`, "What the
+renderer adds"):
+- Stairs get real steps: a half-step on each climbing tile and riser textures with a
+  lit nosing (`riser_*` in TextureFactory), and walking follows them smoothly.
+- Ground transitions: ragged spill-over masks (`render/TransitionMasks.js`) between
+  grounds by priority, plus ragged grass and snow lips over cliff tops.
+- Water: a shader over a distance-to-shore field and the floor's depth: clear shallows,
+  opaque deeps with darkened seabeds, drifting two-tone wavelets, foam that breathes and
+  rolls in, shallow caustics, swamp bubbles; exact in-tile shore distance for pools.
+- Trees, bushes and rocks vary in position, size and facing, so forest edges read as
+  growth rather than a fence.
+- Test `map_render`: stair direction and walking height, fringes (never on paving),
+  lips, water attributes, deterministic prop variation.
+
 ## Next
 Everything below is optional; the game is complete and the suite passes.
 - **Human playtest** of the first few hours: encounter rate, EXP pacing, how often

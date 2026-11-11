@@ -165,6 +165,22 @@ the void isn't visible; for coasts use `backdrop: 'ocean'` in the map file.
 Walls are solid blocks raised above the tile height. Walking between tiles is allowed
 when heights differ by ≤ 1 level, or across `ramp`/`stair` tiles.
 
+What the renderer adds on its own (`world/MapBuilder.js`), so maps need no extra chars:
+- **Stairs** (`ramp`/`stair` tiles) are drawn as steps: each climbing tile gets a
+  half-step toward the tile above it and riser faces matched to its ground (stone,
+  marble, wood, ruin, cave, or timber-edged earth for natural ground), and feet climb
+  them smoothly (`TileGrid.surfaceAt`). A stair tile with nothing higher beside it
+  stays flat (a landing).
+- **Ground transitions**: where two grounds meet on one level, the more natural one
+  spills a ragged edge over the other (snow > grasses > moss > dead grass > ash >
+  sand > path > dirt > mud; cobble, ruin, cave, ice and saltglass receive; paving,
+  marble, wood and carpet stay crisp). Grassy and snowy cliff tops hang a ragged lip.
+- **Water** knows its distance to the shore and its depth: shallows are clear, deep
+  water opaque, wavelets drift, foam breathes on the shore. Shallow `w` pools one tile
+  wide keep open water in the middle.
+- **Trees, bushes, rocks, cacti and crystals** are nudged off the tile center, sized and
+  mirrored a little differently (the same every load), so rows read as growth.
+
 ### Prop chars
 `T` tree (or `treeType` of the map) · `P` pine · `Y` palm · `D` dead tree · `K` cherry ·
 `Z` gloam-crystal tree · `b` bush · `B` flowering bush · `R` rock · `o` pebble* ·

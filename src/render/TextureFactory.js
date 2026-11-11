@@ -315,6 +315,23 @@ const PAINTERS = {
   wall_ice(pc, rng) { PAINTERS.ice(pc, rng); },
   wall_gloam(pc, rng) { PAINTERS.gloam(pc, rng); cracks(pc, rng, 5, hex('#b07aff')); },
 
+  // ----- stair risers (MapBuilder: stairs) -----
+  riser_stone(pc, rng) { riser(pc, G.stone, rng, blockFace(G.stone)); },
+  riser_marble(pc, rng) { riser(pc, G.marble, rng, blockFace(G.marble)); },
+  riser_ruin(pc, rng) { riser(pc, G.ruin, rng, blockFace(G.ruin)); },
+  riser_cave(pc, rng) { riser(pc, G.cave, rng, blockFace(G.cave)); },
+  riser_wood(pc, rng) {
+    riser(pc, G.wood, rng, (p, x, y) => { const g = fbm(x / 9, y, 17, 2, 32 / 9); p.set(x, y, g > 0.62 ? G.wood[3] : g > 0.4 ? G.wood[2] : G.wood[1]); });
+  },
+  // Earth steps edged with a timber: the log on top, packed dirt under it.
+  riser_earth(pc, rng) {
+    riser(pc, G.woodDark, rng, (p, x, y) => {
+      const r = y % 8;
+      if (r <= 3) { const g = fbm(x / 6, y, 23, 2, 32 / 6); p.set(x, y, g > 0.55 ? G.woodDark[3] : G.woodDark[2]); return; }
+      const n = fbm(x / 5, y / 5, 29, 2, 32 / 5);
+      p.set(x, y, n > 0.6 ? G.dirt[2] : n > 0.4 ? G.dirt[1] : G.dirt[0]);
+    });
+  },
   // ----- roofs -----
   roof_red(pc) { roofTiles(pc, G.roofRed); },
   roof_blue(pc) { roofTiles(pc, G.roofBlue); },
@@ -351,6 +368,35 @@ const PAINTERS = {
     pc.rect(15, 3, 2, 26, W[1]); pc.rect(3, 15, 26, 2, W[1]);
   },
 };
+
+/**
+ * Stair risers: four 8-pixel steps stacked in one tile, each with a lit nosing on top
+ * and a shadow line under it, so a riser of any height (a quarter tile per step, the
+ * same pixel density as the ground) reads as a flight of steps.
+ * face(pc, x, y, band) paints the step face; rmp gives nosing, edge and shadow tones.
+ */
+function riser(pc, rmp, rng, face) {
+  for (let band = 0; band < 4; band++) {
+    const y0 = band * 8;
+    for (let x = 0; x < 32; x++) {
+      pc.set(x, y0, rmp[4]);
+      pc.set(x, y0 + 1, rmp[3]);
+      for (let y = y0 + 2; y < y0 + 7; y++) face(pc, x, y, band);
+      pc.set(x, y0 + 7, rmp[0]);
+    }
+  }
+  speckle(pc, rng, 10, [rmp[1]]);
+}
+
+/** Block joints on a stone riser: each step its own row of blocks. */
+function blockFace(rmp) {
+  return (pc, x, y, band) => {
+    const off = (band * 11) % 16;
+    const seam = (x + off) % 16 === 0;
+    const n = fbm(x / 7, y / 4, 41 + band, 2, 32 / 7);
+    pc.set(x, y, seam ? rmp[0] : n > 0.6 ? rmp[3] : n > 0.4 ? rmp[2] : rmp[1]);
+  };
+}
 
 function roofTiles(pc, rmp, rowH = 5) {
   for (let y = 0; y < 32; y++) {
