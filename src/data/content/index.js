@@ -1,8 +1,12 @@
 // Chapter content packs. Each module default-exports a ContentPack:
-//   { maps: [], enemies: [], troops: {}, looks: {}, bossAI: {}, shops: {}, worldNodes: [] }
-// Packs load independently: a broken pack logs an error instead of breaking the game.
+//   { maps: [], enemies: [], troops: {}, looks: {}, bossAI: {}, shops: {}, worldNodes: [],
+//     encounters: { mapId: [[troopId, weight], ...] }, npcs: { mapId: [npcDef, ...] },
+//     triggers: { mapId: [triggerDef, ...] } }
+// `encounters`, `npcs` and `triggers` add to maps other packs own; they are applied once
+// every pack has loaded. Packs load independently: a broken pack logs an error instead of
+// breaking the game.
 
-import { registerMaps } from '../maps/index.js';
+import { registerMaps, MAPS } from '../maps/index.js';
 import { registerEnemies } from '../enemies.js';
 import { registerTroops } from '../troops.js';
 import { registerBossAI } from '../../battle/AI.js';
@@ -29,6 +33,8 @@ const LOADERS = {
   side: () => import('./side.js'),
   colosseum: () => import('./colosseum.js'),
   lost: () => import('./lost.js'),
+  wilds: () => import('./wilds.js'),
+  hunt: () => import('./hunt.js'),
 };
 
 export const PACK_NAMES = Object.keys(LOADERS);
@@ -45,6 +51,22 @@ function register(name, pack) {
   PACKS[name] = pack;
 }
 
+/** A pack's additions to maps it doesn't own: encounter-table rows, NPCs and triggers. */
+function amend(name, pack) {
+  for (const [mapId, rows] of Object.entries(pack.encounters || {})) {
+    const enc = MAPS[mapId]?.encounters;
+    if (!enc?.troops) { console.error(`Content pack '${name}': no encounter table on '${mapId}'`); continue; }
+    enc.troops.push(...rows);
+  }
+  for (const key of ['npcs', 'triggers']) {
+    for (const [mapId, list] of Object.entries(pack[key] || {})) {
+      const map = MAPS[mapId];
+      if (!map) { console.error(`Content pack '${name}': no map '${mapId}'`); continue; }
+      map[key] = [...(map[key] || []), ...list];
+    }
+  }
+}
+
 export const contentReady = Promise.all(PACK_NAMES.map(async (name) => {
   try {
     const mod = await LOADERS[name]();
@@ -52,4 +74,6 @@ export const contentReady = Promise.all(PACK_NAMES.map(async (name) => {
   } catch (e) {
     console.error(`Content pack '${name}' failed to load: ${e.message}`, e);
   }
-}));
+})).then(() => {
+  for (const name of PACK_NAMES) if (PACKS[name]) amend(name, PACKS[name]);
+});

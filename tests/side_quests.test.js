@@ -8,6 +8,7 @@ import { contentReady } from '../src/data/content/index.js';
 import { SIDE_TARGETS, sideQuestEntry } from '../src/data/objectives/side.js';
 import { BOUNTIES } from '../src/story/side.js';
 import { LOST } from '../src/story/lost.js';
+import { HUNT_STEPS } from '../src/story/hunt.js';
 import { TileGrid } from '../src/world/MapBuilder.js';
 
 const STR = String.raw`'((?:\\.|[^'\\])*)'`;
@@ -50,6 +51,12 @@ export async function run(game, h) {
     seen.add(id);
     steps++;
     if (!sideQuestEntry(id, L.quest)) errors.push(`lost.js: ${id}: no marker entry for step "${L.quest.slice(0, 70)}"`);
+  }
+  // The Hunter's Ledger sets its steps from story/hunt.js's constants.
+  seen.add('hunt');
+  for (const desc of HUNT_STEPS) {
+    steps++;
+    if (!sideQuestEntry('hunt', desc)) errors.push(`hunt.js: hunt: no marker entry for step "${desc.slice(0, 70)}"`);
   }
   // Bounties set their quests from templates (story/side.js).
   for (const b of BOUNTIES) {

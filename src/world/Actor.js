@@ -4,6 +4,7 @@
 import * as THREE from 'three';
 import { getCharacterSheet, FIELD_W, FIELD_H } from '../render/SpriteFactory.js';
 import { getMountSheet } from '../render/MountFactory.js';
+import { getMonsterFieldSheet } from '../render/MonsterFactory.js';
 import { PX_PER_UNIT } from '../render/PropFactory.js';
 import { makeSpriteMaterial, makeDepthMaterial } from './MapBuilder.js';
 import { damp, dirFromVector } from '../core/util.js';
@@ -35,9 +36,11 @@ export class Actor {
     this.id = opts.id || look.id || 'actor';
     this.name = opts.name || '';
     this.look = look;
-    // A look of kind 'mount' is Kindle the Emberhart (carrying look.rider, if any).
+    // A look of kind 'mount' is Kindle the Emberhart (carrying look.rider, if any); one
+    // of kind 'monster' is a creature's battle sprite standing in the field (a hunt mark).
     /** @type {any} */
-    this.sheet = look.kind === 'mount' ? getMountSheet(look.rider) : getCharacterSheet(look);
+    this.sheet = look.kind === 'mount' ? getMountSheet(look.rider)
+      : look.kind === 'monster' ? getMonsterFieldSheet(look.sprite) : getCharacterSheet(look);
     this.walkSeq = this.sheet.walkSeq || WALK_SEQ;
     this.stride = this.sheet.stride || WALK_STRIDE;
     this.x = (opts.x ?? 0) + 0.5;
@@ -69,7 +72,7 @@ export class Actor {
     this.mesh.rotation.x = -0.22;
     this.mesh.userData.actor = this;
 
-    const big = look.kind === 'mount';
+    const big = look.kind === 'mount' || look.kind === 'monster';
     const sh = new THREE.Mesh(
       new THREE.PlaneGeometry(big ? 1.7 : 0.9, big ? 0.8 : 0.5),
       new THREE.MeshBasicMaterial({ map: blobShadowTexture(), transparent: true, depthWrite: false }),

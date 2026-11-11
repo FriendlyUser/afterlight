@@ -357,6 +357,7 @@ export class BattleScene {
         case 'flee': await this.fleeAnim(); break;
         case 'jump': await this.jumpAnim(e.user, e.up, action); break;
         case 'summon': await this.summoned(e); break;
+        case 'enemyFlee': await this.enemyFled(e); break;
         case 'ko': break;
         case 'swap': await this.swapAnim(e.out, e.in); break;
         default: break;
@@ -559,6 +560,20 @@ export class BattleScene {
     this.punch = 1.4;
     this.ui.refreshEnemyTag(b);
     await this.game.wait(0.45);
+  }
+
+  /** A foe bolts off the left of the field and is gone. */
+  async enemyFled(e) {
+    const b = e.target;
+    const s = this.sprites.get(b);
+    this.game.audio?.sfx('flee');
+    if (s) {
+      s.mesh.material.transparent = true;
+      await this.game.tween(0.45, (k) => { s.offset.x = -k * 6; s.mesh.material.opacity = 1 - k; });
+      s.mesh.visible = false;
+    }
+    this.ui.refreshEnemyTag(b);
+    if (e.text) await this.ui.message(e.text, 1.0);
   }
 
   async summoned(e) {

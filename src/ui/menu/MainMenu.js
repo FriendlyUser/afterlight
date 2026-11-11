@@ -5,6 +5,7 @@ import { Screen, ListView, partyCard, header, KEYS } from './common.js';
 import { formatTime } from '../../core/util.js';
 import { ACTIVE_PARTY_SIZE } from '../../state/GameState.js';
 import { openNodes } from '../../data/worldmap.js';
+import { compendiumOpen } from '../../data/monsterInfo.js';
 
 const COMMANDS = [
   { id: 'items', label: 'Items', icon: '⚗' },
@@ -15,7 +16,7 @@ const COMMANDS = [
   { id: 'status', label: 'Status', icon: '☰', pick: true },
   { id: 'formation', label: 'Formation', icon: '⇅' },
   { id: 'travel', label: 'Travel', icon: '✈' },
-  { id: 'bestiary', label: 'Bestiary', icon: '❦' },
+  { id: 'bestiary', label: 'Compendium', icon: '❦' },
   { id: 'journal', label: 'Journal', icon: '✎' },
   { id: 'guide', label: 'Guide', icon: '?' },
   { id: 'settings', label: 'Settings', icon: '⚙' },
@@ -29,7 +30,9 @@ export class MainMenu extends Screen {
     this.field = field;
     this.mode = 'commands';
     this.cmdList = new ListView({
-      items: COMMANDS.map((c) => ({ ...c, disabled: (c.id === 'save' && !this.canSave()) || (c.id === 'travel' && !this.canTravel()) })),
+      // The Compendium appears once Greer gives it (story/hunt.js).
+      items: COMMANDS.filter((c) => c.id !== 'bestiary' || compendiumOpen(this.state))
+        .map((c) => ({ ...c, disabled: (c.id === 'save' && !this.canSave()) || (c.id === 'travel' && !this.canTravel()) })),
       render: (c) => `<span class="mi-icon">${c.icon}</span>${c.label}`,
       pageSize: 12,
       cls: 'cmd-col',

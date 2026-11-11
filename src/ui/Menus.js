@@ -4,7 +4,8 @@ import { MainMenu } from './menu/MainMenu.js';
 import { CrestScreen, SupportScreen } from './menu/CrestScreen.js';
 import { ArtsScreen } from './menu/ArtsScreen.js';
 import { EquipScreen } from './menu/EquipScreen.js';
-import { ItemsScreen, StatusScreen, FormationScreen, SettingsScreen, BestiaryScreen, JournalScreen, GuideScreen } from './menu/screens.js';
+import { ItemsScreen, StatusScreen, FormationScreen, SettingsScreen, JournalScreen, GuideScreen } from './menu/screens.js';
+import { CompendiumScreen } from './menu/CompendiumScreen.js';
 import { SaveScreen } from './menu/SaveScreen.js';
 import { ShopScreen } from './menu/ShopScreen.js';
 
@@ -17,7 +18,7 @@ const SCREENS = {
   status: StatusScreen,
   formation: FormationScreen,
   settings: SettingsScreen,
-  bestiary: BestiaryScreen,
+  bestiary: CompendiumScreen,
   journal: JournalScreen,
   guide: GuideScreen,
 };

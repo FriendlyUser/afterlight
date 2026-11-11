@@ -18,7 +18,7 @@ const MENU_TRAVEL_COST = 4;
 const allSet = (f, st) => [].concat(f).every((x) => st.flags[x]);
 
 /** Targets that apply now: done parts (unless) dropped, later steps (after) not yet shown. */
-const live = (targets, st) => targets.filter((t) => !(t.unless && allSet(t.unless, st)) && !(t.after && !allSet(t.after, st)));
+const live = (targets, st) => targets.filter((t) => !(t.unless && allSet(t.unless, st)) && !(t.after && !allSet(t.after, st)) && !(t.when && !t.when(st)));
 
 /** The objective's targets that apply now. */
 export function activeTargets(st) {

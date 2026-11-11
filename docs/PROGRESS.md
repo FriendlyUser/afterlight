@@ -16,7 +16,7 @@ Debug: `?map=<id>&x=&y=&party=ilse,bram&lv=20` jumps into a map; add `&battle=<t
   300+ Arts, Supports, statuses, telegraphs that Break can interrupt, scripted boss AI,
   Swap, auto-battle, retry on loss, difficulty and battle speed.
 - Menus: main, items, Crests (primary/secondary), Supports, equipment (optimize),
-  status, formation, bestiary, journal + quest log, Guide, settings, save/load
+  status, formation, Compendium, journal + quest log, Guide, settings, save/load
   (6 slots + autosave), shops, world map with fast travel (towns + attuned Hearthstones), fishing.
 - Audio: WebAudio synth + sequencer, 30 songs, 46 SFX.
 - Title, New Game (difficulty picker → opening movie), New Game+, credits; two endings
@@ -26,7 +26,7 @@ Debug: `?map=<id>&x=&y=&party=ilse,bram&lv=20` jumps into a map; add `&battle=<t
 The 14 story chapters of `docs/STORY.md` (code packs `prologue`, `ch2`–`ch12`), side
 content and a post-game, all written and wired end to end (Prologue → `gameClear`).
 ~74k words of scripted scenes (~6,300 dialogue beats), 145 hand-laid maps + the 30-floor
-generated Abyss, 144 quests, 100 scripted battles, 395 enemies, 447 troops, 370 chests.
+generated Abyss, 145 quests, 100 scripted battles, 446 enemies, 498 troops, 370 chests.
 Estimated 40–60 hours with side content.
 
 | Pack | Story chapter(s) | Smoke tests |
@@ -417,8 +417,43 @@ decide are in `docs/WRITING_REVIEW.md`; the wording conventions it settled on ar
 `docs/STYLE.md`. The editors' numbered notes are outside the repo, in
 `/home/david/claude_space/afterlight-text-pass/`.
 
-Still owed: a full test run over the dialogue language, battle feel, skip, scene hints
-and this edit (only the touched tests and the typecheck were run).
+The full suite has since passed over it (70/70).
+
+## Monsters, the Compendium and the Hunter's Ledger (2026-11-10)
+
+- **Foes think** (`battle/EnemyMind.js`). Every unscripted enemy turn, and every open
+  pick in a boss script, weighs each skill's authored weight by how much sense it makes
+  now, then judges the target the same way: heals only for the hurt (the worst first),
+  no ailment re-inflicted or tried again on someone it bounced off (the foes learn
+  immunities), whole-party moves while the party is whole, finishing blows, resisted
+  elements avoided, drains when hurt. Traits: packs pile onto one quarry or a Marked
+  party member, thieves steal and run (felling one first returns the gold), enrage,
+  guardian, coward. Judgement scales with difficulty (Story 0.5, Normal 0.85, Hard 1)
+  and with the creature (about half at level 1, full from level 12), so the prologue
+  stays gentle (a level-1 pair clears it 88% of runs). Balance barely moved: normal
+  fights 99.9% won, HP left 84.8% → 83.8%; bosses 96.7% → 96.1%.
+- **More kinds of foe and more shapes of fight** (`content/wilds.js`): 23 species for
+  the thinnest rosters, each with a role (a cave healer, the Wold Alpha that Marks prey
+  for its pack, a thief, a guardian scarab, a hastening sprite), and 41 formations
+  added to 26 encounter tables, from swarms of four or five to leader-and-pack groups.
+- **The Compendium** (`ui/menu/CompendiumScreen.js`, `data/monsterInfo.js`) replaces the
+  Bestiary: every creature numbered in book order by chapter (plus side paths, marks,
+  arenas, the Abyss), "???" for the unmet, and entries that fill in from battle —
+  weaknesses struck or Scanned, resistances and immunities met, moves seen, then the
+  foe's tactics once three are felled (one, for a boss). It unlocks in Chapter 3, when
+  Greer Thackery the bestiarist meets the party on Aurenne's canal bridge (old saves
+  from Chapter 5 on simply have it).
+- **The Hunter's Ledger** (`data/hunt.js`, `content/hunt.js`, `story/hunt.js`): ten marks,
+  named rare beasts standing in the field as monsters (Actor look `kind: 'monster'`),
+  five posted in Act I and five after the Sundering, when Greer turns up in Keelhaven;
+  Act I marks left alive come through the Sundering to a new spot, so none is missable.
+  Each has a scripted fight with a tell to Guard or Break (81–100% won at its level).
+  Greer pays per mark, gives a keepsake at 3, 6 and 10, and pays for 25–200 kinds in the
+  Compendium. Blue markers in `objectives/side6.js` (targets can now take `when`).
+- Content packs can add encounter rows, NPCs and triggers to other packs' maps
+  (`encounters`, `npcs`, `triggers`, applied after every pack loads).
+- Tests: `enemy_ai` (judgement, packs, thieves, learned immunity, difficulty), `hunt`
+  (the book, Greer, a mark hunted, payment, the Sundering move, the finished Ledger).
 
 ## Next
 Everything below is optional; the game is complete and the suite passes.

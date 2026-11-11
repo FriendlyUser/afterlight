@@ -65,6 +65,7 @@ export class Battler {
       this.level = def.level;
       this.phase = 0;
       this.memory = {}; // AI scratchpad
+      this.fled = false; // ran from the fight (a thief or a coward, EnemyMind)
     }
   }
 

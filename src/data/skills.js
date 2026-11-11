@@ -411,6 +411,19 @@ export const SKILLS = {
   e_stillness: { name: 'Stillness', kind: 'special', target: 'enemies', special: 'delayAll', anim: 'dark' },
   e_noon: { name: 'High Noon', kind: 'mag', target: 'enemies', power: 260, elem: 'light', anim: 'meteor' },
   e_lament: { name: 'Lament', kind: 'mag', target: 'enemies', power: 150, elem: 'dark', status: [['silence', 0.3]], anim: 'song' },
+  // Moves of the smarter foes (battle/EnemyMind.js)
+  e_flee: { name: 'Flee', kind: 'special', target: 'self', special: 'enemyFlee', anim: 'status' },
+  e_enrage: { name: 'Enrage', kind: 'support', target: 'self', selfBuffs: { str: 2 }, anim: 'buff' },
+  e_mark: { name: 'Mark Prey', kind: 'support', target: 'enemy', status: [['marked', 1]], anim: 'debuff' },
+  e_bulwark: { name: 'Bulwark', kind: 'support', target: 'ally', status: [['protect', 1]], anim: 'buff' },
+  e_quicken: { name: 'Quicken', kind: 'support', target: 'ally', status: [['haste', 1]], anim: 'buff' },
+  e_web: { name: 'Web', kind: 'support', target: 'enemy', status: [['slow', 0.7]], anim: 'status' },
+  e_cleanse: { name: 'Cleanse', kind: 'heal', target: 'allies', power: 0, cure: 'bad', anim: 'heal' },
+  e_rally: { name: 'War Cry', kind: 'support', target: 'allies', buffs: { str: 1, mag: 1 }, anim: 'buff' },
+  e_gather: { name: 'Gathering...', kind: 'support', target: 'self', selfStatus: ['windup'], anim: 'buff' },
+  e_tangle: { name: 'Tangle', kind: 'support', target: 'enemy', status: [['slow', 0.6]], anim: 'status' },
+  e_soot: { name: 'Soot Cloud', kind: 'support', target: 'enemies', status: [['blind', 0.4]], anim: 'status' },
+  e_glow: { name: 'Soothing Glow', kind: 'heal', target: 'allyAny', power: 35, anim: 'heal' },
 };
 
 export function skill(id) {

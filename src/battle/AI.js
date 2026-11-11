@@ -1,42 +1,12 @@
-// Enemy decision making. Default AI picks weighted skills with sensible
-// targeting; bosses use named scripts with phases and telegraphs.
+// Enemy decision making. Ordinary turns are weighed by EnemyMind (weighted skills
+// bent by circumstance, judged targets, a few reflexes); bosses use named scripts
+// with phases and telegraphs, and their open picks are judged the same way.
 
 import { SKILLS } from '../data/skills.js';
-
-function weighted(list, rnd) {
-  const total = list.reduce((s, [, w]) => s + w, 0);
-  let r = rnd() * total;
-  for (const [v, w] of list) if ((r -= w) <= 0) return v;
-  return list[list.length - 1][0];
-}
-
-/** Pick a party target, honoring Taunt and leaning toward the wounded. */
-export function pickPartyTarget(sys, rnd) {
-  const pool = sys.party.filter((p) => p.alive && !p.hasStatus('airborne'));
-  if (!pool.length) return null;
-  const taunters = pool.filter((p) => p.hasStatus('taunt'));
-  if (taunters.length && rnd() < 0.85) return taunters[0];
-  const weights = pool.map((p) => [p, 1 + (1 - p.hp / p.maxHp) * 0.8]);
-  return weighted(weights, rnd);
-}
-
-function targetsFor(sys, self, skillId, rnd) {
-  const s = SKILLS[skillId];
-  switch (s.target) {
-    case 'enemy': return [pickPartyTarget(sys, rnd)].filter(Boolean);
-    case 'ally':
-    case 'allyAny': {
-      const allies = sys.enemies.filter((e) => e.alive);
-      allies.sort((a, b) => a.hp / a.maxHp - b.hp / b.maxHp);
-      return [allies[0]];
-    }
-    case 'self': return [self];
-    default: return [];
-  }
-}
+import { judge, targetsFor, reflex, notePackTarget, judgementOf } from './EnemyMind.js';
 
 function action(sys, self, id, rnd, targets) {
-  return { kind: 'skill', id, targets: targets || targetsFor(sys, self, id, rnd) };
+  return { kind: 'skill', id, targets: targets || targetsFor(sys, self, id) };
 }
 
 /** Context object handed to boss scripts. */
@@ -51,7 +21,7 @@ function makeCtx(sys, self) {
     partyAlive: sys.party.filter((p) => p.alive),
     allies: sys.enemies.filter((e) => e.alive && e !== self),
     use: (id, targets) => action(sys, self, id, rnd, targets),
-    pick: (list) => action(sys, self, weighted(list, rnd), rnd),
+    pick: (list) => judge(sys, self, list, judgementOf(sys, self) * 0.8),
     once: (key) => { if (m[key]) return false; m[key] = true; onceKeys.add(key); return true; },
     say: (text) => sys.queueText(text),
   };
@@ -103,17 +73,14 @@ export function chooseEnemyAction(sys, self) {
     if (a) return a;
   }
 
-  let list = self.def.skills || [['attack', 1]];
-  // Don't heal when nobody is hurt; don't use magic while silenced.
-  list = list.filter(([id]) => {
-    const s = SKILLS[id];
-    if (!s) return false;
-    if (s.kind === 'heal') return sys.enemies.some((e) => e.alive && e.hp < e.maxHp * 0.6);
-    if (self.hasStatus('silence') && (s.kind === 'mag' || s.kind === 'heal')) return false;
-    return true;
-  });
-  if (!list.length) list = [['attack', 1]];
-  return action(sys, self, weighted(list, rnd), rnd);
+  const r = reflex(sys, self);
+  if (r) {
+    if (r.id === 'e_enrage') sys.queueText(`${self.name} flies into a rage!`);
+    return r;
+  }
+  const a = judge(sys, self, self.def.skills || [['attack', 1]]);
+  notePackTarget(sys, self, a);
+  return a;
 }
 
 // ---------------------------------------------------------------------------

@@ -14,19 +14,20 @@
 // tests/side_quests.test.js checks every quest step the story sets has an entry, and
 // every target names a real map, tile and NPC.
 //
-// Split in four files by act so they stay readable: side1 (prologue to Aurenne, the
+// Split into files by act so they stay readable: side1 (prologue to Aurenne, the
 // Bellring, Kindle), side2 (the Pilgrim Road, Act I bounties), side3 (Act II to
 // Kiteholm), side4 (Corvin's Roost to the post-game, Act II bounties), side5 (the Lost
-// Callings).
+// Callings), side6 (the Hunter's Ledger).
 
 import side1 from './side1.js';
 import side2 from './side2.js';
 import side3 from './side3.js';
 import side4 from './side4.js';
 import side5 from './side5.js';
+import side6 from './side6.js';
 
 /** @type {import('../../types/data').SideQuestEntry[]} */
-export const SIDE_TARGETS = [...side1, ...side2, ...side3, ...side4, ...side5];
+export const SIDE_TARGETS = [...side1, ...side2, ...side3, ...side4, ...side5, ...side6];
 
 /**
  * The entry for a quest at its current step (desc), or null when there is none.

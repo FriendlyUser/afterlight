@@ -209,6 +209,7 @@ export class BattleSystem {
       const nb = this.swap(actor, action.ch);
       return [{ t: 'swap', out: actor, in: nb }];
     }
+    if (actor.isEnemy && action.kind === 'skill') this.noteMove(actor, action.id);
     const ev = action.kind === 'flee' ? this.tryFlee() : this.resolver.execute(actor, action);
     // Counters triggered during the action
     while (this.pendingCounters.length) {
@@ -273,6 +274,10 @@ export class BattleSystem {
 
   // ------------------------------------------------------------------ bestiary
 
+  // Records (data/monsterInfo.js reads them for the Compendium): seen and felled counts,
+  // and what the party has learned — weaknesses struck, resistances and immunities
+  // met, moves seen used.
+
   noteSeen(e) {
     const b = this.state.bestiary;
     const id = e.def.id;
@@ -281,9 +286,24 @@ export class BattleSystem {
     for (const w of b[id].weak) if (e.weak.has(w)) e.revealed.add(w);
   }
 
-  noteWeakness(e, elem) {
-    const rec = this.state.bestiary[e.def.id];
-    if (rec && !rec.weak.includes(elem)) rec.weak.push(elem);
+  /** Add `value` to record list `key` of foe e (once). */
+  noteIn(e, key, value) {
+    const rec = e.isEnemy && this.state.bestiary[e.def.id];
+    if (!rec) return;
+    const list = (rec[key] ||= []);
+    if (!list.includes(value)) list.push(value);
+  }
+
+  noteWeakness(e, elem) { this.noteIn(e, 'weak', elem); }
+  noteResist(e, elem) { if (elem && elem !== 'none' && e.resist?.[elem] !== undefined) this.noteIn(e, 'res', elem); }
+  noteImmune(e, status) { this.noteIn(e, 'imm', status); }
+  noteMove(e, id) { if (id !== 'e_charge' && id !== 'e_flee') this.noteIn(e, 'moves', id); }
+
+  /** A Scan reads everything about the foe into the record. */
+  noteScan(e) {
+    for (const w of e.weak) this.noteWeakness(e, w);
+    for (const elem of Object.keys(e.resist || {})) this.noteIn(e, 'res', elem);
+    for (const st of e.immune || []) this.noteImmune(e, st);
   }
 
   noteDefeat(e) {
@@ -301,6 +321,7 @@ export class BattleSystem {
     const living = this.party.filter((p) => p.alive);
     const dropBonus = Math.max(0, ...this.party.map((p) => p.mods?.dropPct || 0)) / 100;
     for (const e of this.enemies) {
+      if (e.fled) continue;
       const s = e.base;
       exp += s.exp;
       gold += s.gold;

@@ -1,4 +1,4 @@
-// Items, Status, Formation, Settings, Bestiary and Journal screens.
+// Items, Status, Formation, Settings, Journal and Guide screens (the Compendium is CompendiumScreen.js).
 
 import { el, richText } from '../UI.js';
 import { ControlsScreen } from './ControlsScreen.js';
@@ -9,9 +9,6 @@ import { ITEMS } from '../../data/items.js';
 import { EQUIPMENT } from '../../data/equipment.js';
 import { CRESTS, MAX_RANK, starText } from '../../data/crests.js';
 import { DIFFICULTIES, DEFAULT_DIFFICULTY } from '../../data/difficulty.js';
-import { ENEMIES, enemyStats } from '../../data/enemies.js';
-import { getMonsterSprite } from '../../render/MonsterFactory.js';
-import { ELEM_ICONS } from '../../battle/BattleUI.js';
 import { ACTIVE_PARTY_SIZE } from '../../state/GameState.js';
 import { formatTime } from '../../core/util.js';
 import { MAPS } from '../../data/maps/index.js';
@@ -290,60 +287,6 @@ export class SettingsScreen extends Screen {
 }
 
 // =====================================================================
-// Bestiary
-// =====================================================================
-
-export class BestiaryScreen extends Screen {
-  constructor(menus) {
-    super(menus, 'bestiary-screen');
-    const b = this.state.bestiary;
-    this.entries = Object.keys(ENEMIES).filter((id) => b[id]).map((id) => ({ id, e: ENEMIES[id], rec: b[id] }));
-    this.build();
-  }
-
-  build() {
-    const total = Object.keys(ENEMIES).length;
-    this.el.innerHTML = header(`Bestiary — ${this.entries.length} / ${total}`, `${KEYS.nav} ${KEYS.back}`);
-    const body = el('div', 'bs-body');
-    const left = el('div', 'bs-left panel');
-    this.list = new ListView({
-      items: this.entries, pageSize: 15, empty: 'No creatures recorded yet.',
-      render: (it) => `<span class="in">${it.e.name}</span><span class="cnt">${it.rec.defeated}</span>`,
-    });
-    left.appendChild(this.list.el);
-    this.detail = el('div', 'bs-detail panel');
-    body.append(left, this.detail);
-    this.el.appendChild(body);
-    this.renderDetail();
-  }
-
-  renderDetail() {
-    const it = this.list.current;
-    if (!it) { this.detail.innerHTML = ''; return; }
-    const s = enemyStats(it.e);
-    const weak = it.rec.weak.map((w) => `<span style="color:${ELEM_ICONS[w]?.[1]}">${ELEM_ICONS[w]?.[0]} ${w}</span>`).join(' ') || '???';
-    const drops = it.rec.defeated ? (it.e.drops || []).map(([id]) => this.state.inventory.itemName(id)).join(', ') || 'None' : '???';
-    this.detail.innerHTML = `<div class="cd-name">${it.e.name}</div><div class="cd-tier">Lv ${it.e.level}${it.e.boss ? ' · Boss' : ''} · Defeated ${it.rec.defeated}</div>
-      <div class="bs-art"></div>
-      <div class="cd-desc">${it.e.desc || ''}</div>
-      <div class="bs-row">HP ${it.rec.defeated ? s.hp : '???'} · EXP ${s.exp} · Gold ${s.gold}</div>
-      <div class="bs-row">Weaknesses: ${weak}</div><div class="bs-row">Drops: ${drops}</div>`;
-    const art = getMonsterSprite(it.e.sprite).canvas;
-    const img = document.createElement('canvas');
-    img.width = art.width; img.height = art.height;
-    img.getContext('2d').drawImage(art, 0, 0);
-    img.style.width = `${art.width * 3}px`;
-    this.detail.querySelector('.bs-art').appendChild(img);
-  }
-
-  handleInput(input) {
-    const r = this.list.handle(input, (s) => this.sfx(s));
-    if (r === 'move') this.renderDetail();
-    if (r === 'cancel' || r === 'confirm') { this.sfx('cancel'); this.close(); }
-  }
-}
-
-// =====================================================================
 // Journal: current objective and story so far
 // =====================================================================
 
@@ -391,6 +334,9 @@ const GUIDE = [
   ['Poise & Breaks', 'Every foe carries a *Poise* shield (the number under it). Hitting a *weakness* chips one point. At zero the foe *Breaks*: it loses its next turn and takes 50% more damage until it recovers. Weaknesses start hidden — experiment, or use *Scan*.'],
   ['Afterglow', 'The party shares the *Afterglow* gauge (three segments). It fills when you hit weaknesses, Break foes, land criticals and take hits. Spend it on *Surge* (Q/E before acting: up to +150% power and extra Poise damage) or on *Link Arts* — combination techniques between specific friends.'],
   ['Big Attacks', 'When a foe is *Charging* (⚡) or *Winding Up* (⚠), its next move is a big one — charged blows hit 1.5× harder. *Guard* halves damage until your next turn and acts sooner. Better still: *Break* a foe while it winds up and the attack is interrupted.'],
+  ['How Foes Fight', 'Foes think. A *healer* mends the most hurt of its side, so put it down first. A *pack* piles onto one target, above all one its leader has *Marked*. A *thief* steals gold and runs; fell it first to get the gold back. Foes don\'t waste turns re-inflicting an ailment, and once a status bounces off someone they stop trying it. On Story difficulty they think less clearly.'],
+  ['Compendium', 'Greer Thackery\'s *Compendium* (in the menu once she gives it to you in Aurenne) records every creature you meet, numbered by chapter, with *???* where something is still out there. It fills in as you learn: weaknesses you strike or Scan, resistances and immunities you run into, moves you see used. Fell three of a kind (one, for a boss) to learn its *tactics*. Q/E turns the sections.'],
+  ['Marks', 'Greer posts *marks* on the Hunter\'s Ledger: named rare beasts that stand where they live, shown in blue. Talk to one to hunt it. Marks hit hard, can\'t be fled and wind up for a big move. Tell Greer when you fell one: she pays for each, gives a keepsake at three, six and ten, and pays as the Compendium grows. Marks you leave alive come through the Sundering.'],
   ['Crests', '_One Crest, one life_ — or so they say. Your *primary* Crest sets your stats, weapons and armor, and grants its Arts. A *secondary* Crest adds its learned Arts too. Crests rank up (1–10) with CP earned in battle; each rank teaches an Art or a Support. Braided (Tier II) Crests open when two prerequisite Crests reach rank 5. After the Sundering, four *Lost Crests* — callings the Choir struck from its rolls — can be found: the Crest screen shows a rumor of where each one starts.'],
   ['Mastery & Ascension', 'A Crest at rank 10 is *mastered*: it leaves a *Legacy*, a small bonus that stays with you whatever Crest you wear, and every mastered Crest adds +1% to all stats. CP keeps flowing past mastery into five *Ascension stars* ★. Each star gives +1% to all stats while that Crest is primary and makes its Arts 3% stronger, wherever you use them. The first and third stars each teach one of the Crest\'s two *Mastery Arts* — its signature techniques, usable whenever the Crest is primary or secondary. A fully Ascended Crest (★★★★★) adds a Support Point, up to three.'],
   ['Arts', 'Open *Arts* in the menu to read every Art a character knows: what kind it is, whom it hits, its power, element and MP, and every effect (ailments, stat changes, cures, piercing, speed). Arts of the primary and secondary Crests can be used in battle; Mastery Arts still to come show when they unlock. The same details appear in the Crest screen and in battle as you pick an Art.'],

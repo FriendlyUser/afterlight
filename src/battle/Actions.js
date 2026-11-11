@@ -11,6 +11,7 @@ import { ITEMS } from '../data/items.js';
 import { STATUSES, BAD_STATUSES } from '../data/statuses.js';
 import { computeDamage, computeHeal, isPhysical, PRISM } from './Formulas.js';
 import { interruptTell } from './AI.js';
+import { learnImmunity } from './EnemyMind.js';
 
 export const AFTERGLOW_MAX = 300;
 /** A telegraphed (e_charge) blow hits this much harder; Guard halves it back. */
@@ -154,6 +155,7 @@ export class ActionResolver {
         if (target.flags.has('evadeCounter')) this.queueCounter(target, user);
         return;
       }
+      if (r.immune || r.absorbed || r.resisted) this.b.noteResist(target, r.elem);
       if (r.immune) { ev.push({ t: 'damage', target, amount: 0, immune: true, elem: r.elem }); return; }
       if (r.absorbed) {
         const h = target.heal(r.amount);
@@ -233,6 +235,14 @@ export class ActionResolver {
     target.stages = {};
     if (target.isParty) this.gainAfterglow(target, 15, ev);
     if (target.isEnemy) this.b.noteDefeat(target);
+    if (target.isEnemy && target.memory?.pilfered) {
+      // A felled thief drops what it took.
+      const g = target.memory.pilfered;
+      target.memory.pilfered = 0;
+      this.b.goldStolen -= g;
+      this.b.state.gold += g;
+      ev.push({ t: 'text', text: `Recovered ${g} gold from ${target.name}.` });
+    }
     if (reraise) {
       target.revive(0.25);
       ev.push({ t: 'revive', target, text: 'Reraise!' });
@@ -284,7 +294,12 @@ export class ActionResolver {
   }
 
   tryStatus(user, target, id, chance, ev) {
-    if (!target.alive || target.immune.has(id)) return false;
+    if (!target.alive) return false;
+    if (target.immune.has(id)) {
+      if (user.isEnemy && target.isParty) learnImmunity(this.b, target, id); // the foes remember
+      if (target.isEnemy) this.b.noteImmune(target, id); // and so does the Compendium
+      return false;
+    }
     if (target.isEnemy && target.def.boss && ['doom', 'stun', 'charm', 'sleep'].includes(id)) chance *= 0.25;
     const luck = (user.lck - target.lck) / 200;
     if (this.rnd() > chance + luck) return false;
@@ -446,6 +461,7 @@ const SPECIALS = {
       if (!t.isEnemy) continue;
       for (const e of t.weak) { t.revealed.add(e); r.b.noteWeakness(t, e); }
       t.scanned = true;
+      r.b.noteScan(t);
       ev.push({ t: 'scan', target: t });
     }
   },
@@ -591,7 +607,31 @@ const SPECIALS = {
     if (g <= 0) { ev.push({ t: 'text', text: 'Nothing to steal!' }); return; }
     r.b.state.gold -= g;
     r.b.goldStolen += g;
+    if (user.memory) {
+      user.memory.pilfered = (user.memory.pilfered || 0) + g;
+      user.memory.pilfers = (user.memory.pilfers || 0) + 1;
+    }
     ev.push({ t: 'text', text: `${user.name} pinched ${g} gold!` });
+  },
+  /** A foe eats one of its own side to mend itself (a quarter of its HP). */
+  devour(r, user, skill, targets, action, ev) {
+    const meal = targets.find((t) => t && t !== user && t.alive);
+    ev.push({ t: 'anim', user, anim: 'bite', targets: meal ? [meal] : [user] });
+    if (!meal) { ev.push({ t: 'text', text: 'Nothing to eat.' }); return; }
+    meal.damage(meal.hp);
+    ev.push({ t: 'damage', target: meal, amount: 0, ko: true, silent: true });
+    r.onKo(meal, ev);
+    const h = user.heal(Math.round(user.maxHp * 0.25));
+    if (h) ev.push({ t: 'heal', target: user, amount: h });
+  },
+  /** A foe runs from the fight: gone, with no EXP, gold or drops for it (or what it stole). */
+  enemyFlee(r, user, skill, targets, action, ev) {
+    if (!user.isEnemy || user.def?.boss || r.b.boss) { ev.push({ t: 'text', text: `${user.name} stands its ground.` }); return; }
+    const g = user.memory.pilfered || 0;
+    user.alive = false;
+    user.fled = true;
+    user.statuses.clear();
+    ev.push({ t: 'enemyFlee', target: user, text: g ? `${user.name} runs off with ${g} gold!` : `${user.name} runs away!` });
   },
   mpDrain(r, user, skill, targets, action, ev) {
     ev.push({ t: 'anim', user, anim: 'dark', targets });

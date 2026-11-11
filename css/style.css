@@ -648,3 +648,21 @@ em { color: #e8dcff; }
 .fs-pips { margin-top: 10px; color: var(--gold); font-size: 18px; } .fs-miss { color: #ff7a6a; }
 .fs-hint { margin-top: 6px; font-family: var(--font-caps); font-size: 13px; color: var(--ink-dim); }
 .cs-lock { padding: 12px; font-size: 16px; border-top: 1px solid var(--line-faint); margin-top: 8px; }
+
+/* Compendium (ui/menu/CompendiumScreen.js) */
+.compendium .bs-body { grid-template-columns: 420px 1fr; }
+.cp-section { margin-bottom: 8px; border-bottom: 1px solid var(--line-faint); padding-bottom: 6px; }
+.cp-sec-name { font-family: var(--font-caps); font-size: 19px; color: var(--gold); }
+.cp-sec-sub { font-size: 14px; color: var(--ink-dim); }
+.cp-full { color: #9ae070; }
+.cp-no { color: var(--ink-dim); font-size: 13px; margin-right: 8px; font-variant-numeric: tabular-nums; }
+.cp-tag { font-family: var(--font-caps); font-size: 11px; padding: 0 5px; margin-left: 6px; border: 1px solid; border-radius: 3px; }
+.cp-tag.boss { color: #ff9a7a; border-color: #ff9a7a; }
+.cp-tag.mark { color: #7ab8ff; border-color: #7ab8ff; }
+.cp-stars { color: var(--gold); letter-spacing: 1px; }
+.cp-top { display: flex; gap: 14px; align-items: center; }
+.cp-top .bs-art { flex: none; min-width: 120px; text-align: center; }
+.cp-elem { white-space: nowrap; }
+.cp-tactics { margin: 2px 0 0 18px; padding: 0; font-size: 15px; line-height: 1.35; }
+.cp-tactics-locked { font-size: 15px; margin-top: 2px; }
+.compendium .bs-detail { overflow-y: auto; overflow-x: hidden; max-height: calc(100vh - 160px); }

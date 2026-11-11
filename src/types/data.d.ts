@@ -299,6 +299,13 @@ export interface EnemyDef {
   attackElem?: string;
   attackAnim?: string;
   desc?: string;
+  /** How it fights, for EnemyMind and the Compendium: pack, thief, enrage, guardian, coward. */
+  traits?: string[];
+  /** A hunt mark (story/hunt.js): a named rare beast posted by the Collegium. */
+  mark?: boolean;
+  /** The Compendium section it belongs to (a chapter number, or 'side' / 'postgame'). */
+  chapter?: number | string;
+  flags?: string[];
 }
 
 export interface TroopDef {
@@ -482,6 +489,12 @@ export interface ContentPack {
   bossAI?: Record<string, any>;
   shops?: Record<string, ShopDef>;
   worldNodes?: WorldNode[];
+  /** Rows added to other packs' maps' encounter tables, applied once every pack has loaded. */
+  encounters?: Record<string, Array<[string, number]>>;
+  /** NPCs added to other packs' maps, applied once every pack has loaded. */
+  npcs?: Record<string, any[]>;
+  /** Triggers added to other packs' maps, applied once every pack has loaded. */
+  triggers?: Record<string, any[]>;
 }
 
 // ---------------------------------------------------------------- quest guide
@@ -496,6 +509,8 @@ export interface ObjectiveTarget {
   unless?: string | string[];
   /** Shown only once this flag (or every flag in the list) is set. */
   after?: string | string[];
+  /** Shown only while this holds (for conditions flags alone can't say). */
+  when?: (st: any) => boolean;
 }
 
 export interface ObjectiveEntry {

@@ -365,8 +365,29 @@ e_spit e_howl e_peck e_gust e_spore e_ember e_firebreath e_frost e_icebreath e_s
 e_thunder e_dark e_darkwave e_drain e_heal e_healall e_buff e_shell e_poison e_blind
 e_silence e_sleep e_stun e_sweep e_rampage e_cleave e_crush e_quake e_charge e_steal
 e_arrow e_volley e_spear e_slash e_holy e_holyall e_doom e_gravity e_tidal e_constrict
-e_wail e_mpdrain e_selfdestruct e_summon e_bigbreath e_vesper e_stillness e_noon e_lament`,
+e_wail e_mpdrain e_selfdestruct e_summon e_bigbreath e_vesper e_stillness e_noon e_lament
+e_mark e_bulwark e_quicken e_web e_tangle e_soot e_cleanse e_rally e_enrage e_gather e_flee`,
 plus `attack`. Party skills can also be used by enemies (e.g. `blizzard`, `holy`).
+
+How ordinary foes choose (`battle/EnemyMind.js`): each skill's weight is bent by how much
+sense it makes this turn (heals only for the hurt, no re-inflicting an ailment already
+on a target or tried on someone immune, whole-party moves while the party is whole,
+finishing blows, elements the target resists avoided), then the target is judged the
+same way. Judgement scales with difficulty (`JUDGEMENT`) and level (`judgementOf`:
+low-level critters are dimmer). `traits` on an enemy adds
+behavior: `pack` (packmates pile onto one quarry, or a Marked party member; hounds are
+packs by default), `thief` (steals with `e_steal`, then runs; felling it returns the
+gold), `enrage` (STR up once when badly hurt), `guardian` (shields the hurt/Broken; implied
+by `e_bulwark`), `coward` (runs when last and hurt). Give a foe a role through its kit:
+a healer (`e_heal`, `e_cleanse`), a leader (`e_mark`, `e_rally`), a support (`e_quicken`).
+The Compendium writes the foe's tactics from the same kit (`data/monsterInfo.js`), so a
+new enemy needs no extra text. `chapter` (a number, or `'side'`) puts it in a Compendium
+section when its id has no `cN_` prefix.
+
+Hunt marks (`data/hunt.js`, `content/hunt.js`, `story/hunt.js`): an entry in `MARKS` (its
+enemy, act, `home` spot and for Act I an `after` spot, rumor, approach and reward), an
+enemy with `mark: true` and a boss script, and a troop `hm_<id>`; the pack puts it on
+its maps as a monster-look NPC and side6.js marks it blue.
 
 Boss AI script (ctx): `c.turn`, `c.hpPct`, `c.partyAlive`, `c.allies`, `c.rnd()`,
 `c.m` (memory object), `c.use(skillId, targets?)`, `c.pick([[skill, weight], ...])`,

@@ -463,3 +463,24 @@ function shadeHex(h) {
 }
 
 export const MONSTER_TYPES = Object.keys(ARCHETYPES);
+
+/**
+ * A monster's battle sprite dressed as a field sheet (Actor look { kind: 'monster',
+ * sprite }): one frame, mirrored to face left, scaled so a big beast stands about two
+ * tiles tall on the field instead of filling the screen.
+ * @param {object} sprite  an EnemyDef sprite descriptor
+ * @param {number} [maxH]  tallest it may stand, in field pixels
+ */
+export function getMonsterFieldSheet(sprite, maxH = 44) {
+  const m = getMonsterSprite(sprite);
+  const k = Math.min(1, maxH / m.canvas.height);
+  return {
+    texture: m.texture,
+    w: m.canvas.width * k,
+    h: m.canvas.height * k,
+    walkSeq: [0, 0, 0, 0],
+    stride: 1,
+    // Painted facing right (toward the party in battle).
+    fieldFrame: (dir) => (dir === 'left' ? { u0: 1, u1: 0, v0: 0, v1: 1 } : { u0: 0, u1: 1, v0: 0, v1: 1 }),
+  };
+}

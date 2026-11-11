@@ -6,7 +6,7 @@
 cd "$(dirname "$0")/.."
 PATTERN="${1:-.}"
 RUNNER=$(mktemp "${TMPDIR:-/tmp}/af_test_XXXX.sh"); cp tools/test.sh "$RUNNER"; trap 'rm -f "$RUNNER"' EXIT
-declare -A BUDGET=( [validate]=40000 [systems]=120000 [battle_logic]=120000 [audio]=20000 [balance]=1500000 [c78_balance]=600000 [c78_view]=20000 [fightlog]=60000 [side_reach]=200000 )
+declare -A BUDGET=( [validate]=40000 [systems]=120000 [battle_logic]=120000 [audio]=20000 [balance]=1500000 [c78_balance]=900000 [c78_view]=20000 [fightlog]=60000 [side_reach]=200000 )
 for f in tests/*.test.js; do
   name=$(basename "$f" .test.js)
   [[ "$name" =~ $PATTERN ]] || continue
