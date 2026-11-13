@@ -291,7 +291,7 @@ export const PRO = {
     await s.say('Ilse', 'Wren! You saw it too? From my window, the lightning—');
     await s.say('Wren', 'Ilse, stay back—');
     await s.say('Ilse', 'Absolutely not. Who do you think is going to patch you up?');
-    await s.system('Tip — Each foe has a *Poise* shield. Hit its *weaknesses* to chip it away. At zero, it *Breaks*: it loses its turn and takes extra damage.');
+    await s.tutorial('poise');
     let r = await s.battle('pups2', { bg: 'beach_night', music: 'battle' });
     if (r !== 'win') return;
     s.remove('pup1');
@@ -310,7 +310,7 @@ export const PRO = {
     await s.say('Bram', 'I saw your lanterns from the inn. Also I may have been awake for unrelated reasons. Stand behind me!');
     s.remove('bram_n');
     await s.join('bram', true);
-    await s.system('Tip — Fill the *Afterglow* gauge by striking weaknesses and breaking foes. Press *Q* / *E* in the command menu to *Surge*, spending it to strengthen an action.');
+    await s.tutorial('afterglow');
     r = await s.battle('boss_drowned_hound', { bg: 'beach_night' });
     if (r !== 'win') return;
     s.music('sad');

@@ -1,6 +1,7 @@
 // Exploration scene: builds a map diorama, moves the party leader, runs NPCs,
 // triggers, exits, chests, random encounters and event scripts.
 
+import { flushTutorials } from '../ui/Tutorial.js';
 import * as THREE from 'three';
 import { keyCap } from '../core/Input.js';
 import { buildMap, windUniform, makeSpriteMaterial, glowMaskFor } from './MapBuilder.js';
@@ -303,6 +304,11 @@ export class FieldScene {
     this.player.update(dt, this.grid);
     this.followers.update(dt);
     this.game.autosaver?.update(dt, this);
+    // A tutorial card waiting for a calm moment (ui/Tutorial.js).
+    if (this.game.pendingTutorials?.length && !this.busy && !this.pendingScript && !this.game.ui.top?.() && !this.game._transitioning && !this.tutorialOpen) {
+      this.tutorialOpen = true;
+      flushTutorials(this.game).then(() => { this.tutorialOpen = false; });
+    }
     this.quest.update(dt);
     this.minimap.update();
 
@@ -508,6 +514,7 @@ export class FieldScene {
         s.sfx('save');
         s.heal();
         await s.system('The Hearthstone\'s warmth restores you.');
+        await s.tutorial('saving');
         await s.saveMenu();
       });
       case 'sign': return this.runScript(async (s) => s.say(null, t.data.text, { style: 'system', portrait: false }));

@@ -92,6 +92,7 @@ export const LOST_QUESTS = {
     if (s.state.vars.quests?.[questId(id)]?.status === 'active') return s.say(L.giver, L.active);
     await s.say(L.giver, L.intro);
     s.quest(questId(id), title(id), L.quest);
+    await s.tutorial('lost_crests');
     return null;
   },
 

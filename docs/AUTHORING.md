@@ -400,6 +400,13 @@ The Compendium writes the foe's tactics from the same kit (`data/monsterInfo.js`
 new enemy needs no extra text. `chapter` (a number, or `'side'`) puts it in a Compendium
 section when its id has no `cN_` prefix.
 
+Tutorials (`data/tutorials.js`): a new system gets a card there (title, two short
+paragraphs, the Guide entry it points to; `{key:action}` shows a bound key) and a
+trigger: `await s.tutorial('id')` in a script, or `queueTutorial(game, 'id')` from code
+(it shows at the next calm moment). Give the system a Guide entry too
+(`GUIDE` in `ui/menu/screens.js`); `tests/tutorials.test.js` checks every card's entry
+exists.
+
 Hunt marks (`data/hunt.js`, `content/hunt.js`, `story/hunt.js`): an entry in `MARKS` (its
 enemy, act, `home` spot and for Act I an `after` spot, rumor, approach and reward), an
 enemy with `mark: true` and a boss script, and a troop `hm_<id>`; the pack puts it on

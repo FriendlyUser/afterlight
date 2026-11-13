@@ -2,6 +2,9 @@
 // loop from BattleSystem and choreographs every event (lunges, spells,
 // popups, breaks, KOs) before returning the outcome to the field.
 
+import { LINKS } from '../data/links.js';
+import { queueTutorial, flushTutorials } from '../ui/Tutorial.js';
+import { SKILLS } from '../data/skills.js';
 import * as THREE from 'three';
 import { keyCap } from '../core/Input.js';
 import { autoAction } from './AutoPlay.js';
@@ -20,6 +23,11 @@ import { TROOPS } from '../data/troops.js';
 import { BATTLE_BACKGROUNDS } from './Backgrounds.js';
 import { el } from '../ui/UI.js';
 import { SaveStore } from '../state/GameState.js';
+
+/** Tutorial cards shown mid-battle (the others wait for the field). */
+const BATTLE_TUTORIALS = new Set(['battle', 'big_attacks', 'link_arts', 'foes']);
+/** Foe moves that show how foes think (the 'foes' card): Marking prey, stealing, running, raging, shielding. */
+const FOE_TELLS = new Set(['e_mark', 'e_steal', 'e_flee', 'e_enrage', 'e_bulwark']);
 
 const LETTERS = 'ABCDEFG';
 const FOV = 33;
@@ -88,8 +96,14 @@ export class BattleScene {
     const music = params.music || troop.music || (troop.boss ? 'boss' : 'battle');
     game.audio?.playMusic(music, { restart: true });
     this.done = false;
-    this.autoToggle = false;
-    this.autoEl = el('div', 'b-auto', 'AUTO');
+    // Auto-battle (F, the Auto command, or Settings → Auto-Battle for random or all
+    // battles) lets the party fight on its own; Skip (or Settings → Skip Random Battles)
+    // plays the fight out at once behind the skip veil and shows the results.
+    const autoSetting = game.state.settings.autoBattle || 0;
+    this.autoToggle = autoSetting === 2 || (autoSetting === 1 && this.sys.random);
+    this.quick = false;
+    this.isBattle = true;
+    this.autoEl = el('div', `b-auto${this.autoToggle ? ' on' : ''}`, 'AUTO');
     this.ui.root.appendChild(this.autoEl);
     this.ui.root.appendChild(el('div', 'b-keys', `${keyCap('info')} Auto`));
     game.timeScale = [1, 1.5, 2][game.state.settings.battleSpeed || 0];
@@ -143,11 +157,30 @@ export class BattleScene {
     return same.length < 2 ? '' : LETTERS[same.indexOf(b)] || '';
   }
 
-  /** Toggle auto-battle (F). */
+  /** Toggle auto-battle (F, or the Auto command). Turning it off also ends a skip. */
   setAuto(on) {
     this.autoToggle = on;
     this.autoEl.classList.toggle('on', on);
     this.game.audio?.sfx(on ? 'confirm' : 'cancel');
+    if (!on && this.quick) this.stopQuickSkip();
+  }
+
+  /**
+   * Skip the fight: auto-battle, fast-forwarded the way a skipped scene is (game.startSkip:
+   * the same turns, effects and rewards, at once, silent, behind the veil) until the
+   * battle is decided. F brings it back to normal speed.
+   */
+  startQuickSkip() {
+    if (this.quick || this.done) return;
+    this.quick = true;
+    if (!this.autoToggle) this.setAuto(true);
+    this.game.startSkip();
+  }
+
+  stopQuickSkip() {
+    if (!this.quick) return;
+    this.quick = false;
+    this.game.stopSkip('battle');
   }
 
   exit() {
@@ -223,6 +256,8 @@ export class BattleScene {
     const opening = sys.start();
     this.trace('intro');
     await this.intro(opening);
+    // Settings → Skip Random Battles (never on a retry, which you chose to fight).
+    if (this.game.state.settings.skipBattles && this.sys.random && !this.params.retried) this.startQuickSkip();
     this.trace('loop');
     let outcome = null;
     while (!(outcome = sys.outcome())) {
@@ -244,12 +279,19 @@ export class BattleScene {
           action = this.autoAction(actor);
           await this.game.wait(0.2);
         } else if (actor.isParty) {
+          await this.tutorialPoint(actor);
           this.setPose(actor, 'ready');
           this.stepForward(actor, true);
           action = await this.ui.chooseAction(actor);
           this.stepForward(actor, false);
+          if (action.kind === 'auto' || action.kind === 'skip') {
+            if (!this.autoToggle) this.setAuto(true);
+            if (action.kind === 'skip') this.startQuickSkip();
+            action = this.autoAction(actor);
+          }
         } else {
           action = sys.enemyAction(actor);
+          if (FOE_TELLS.has(action.id) || (SKILLS[action.id]?.kind === 'heal' && !actor.def?.boss)) queueTutorial(this.game, 'foes');
           await this.game.wait(0.25);
         }
       }
@@ -288,6 +330,21 @@ export class BattleScene {
     await this.ui.message(text, 0.9);
   }
 
+  /**
+   * Before a party command: the first battle's card, Link Arts the first time one is
+   * ready, and whatever the fight has queued (a wind-up, a foe's tactic). One per turn;
+   * the rest (random battles, mastery) wait for the field.
+   */
+  async tutorialPoint(actor) {
+    const game = this.game, sys = this.sys;
+    queueTutorial(game, 'battle');
+    if (sys.random) queueTutorial(game, 'encounters');
+    const ready = LINKS.some((l) => l.members.includes(actor.id) && sys.afterglow >= l.cost
+      && l.members.every((m) => sys.party.some((p) => p.id === m && p.alive)) && (!l.requiresFlag || game.state.flags[l.requiresFlag]));
+    if (ready) queueTutorial(game, 'link_arts');
+    await flushTutorials(game, BATTLE_TUTORIALS);
+  }
+
   /** Auto-battle: shared party AI (src/battle/AutoPlay.js). */
   autoAction(actor) { return autoAction(this.sys, actor); }
 
@@ -320,7 +377,7 @@ export class BattleScene {
           await this.game.wait(0.15);
           break;
         case 'status':
-          if (e.on && (e.id === 'charging' || e.id === 'windup')) this.game.audio?.sfx('windup');
+          if (e.on && (e.id === 'charging' || e.id === 'windup')) { this.game.audio?.sfx('windup'); if (e.target.isEnemy) queueTutorial(this.game, 'big_attacks'); }
           if (STATUSES[e.id]) this.ui.popup(this.ui_screen(e.target, 'mid'), `${e.on ? '' : '−'}${STATUSES[e.id].name}`, e.on ? (STATUSES[e.id].bad ? 'status-bad' : 'status-good') : 'status-off');
           this.refreshBattler(e.target);
           await this.game.wait(0.08);
@@ -635,6 +692,7 @@ export class BattleScene {
     if (this.done) return;
     this.done = true;
     const game = this.game;
+    this.stopQuickSkip(); // the results (and any scene after the fight) play at normal speed
     this.ui.setActive(null);
     if (outcome === 'win') {
       game.audio?.playMusic('victory', { once: true });
@@ -644,6 +702,7 @@ export class BattleScene {
       this.sys.commit('win');
       await this.ui.showVictory(summary);
       await this.ui.showLevelUps(summary);
+      if (summary.results.some((r) => r.ranks.some((k) => k.legacy || k.star))) queueTutorial(game, 'mastery');
     } else if (outcome === 'flee') {
       this.sys.commit('flee');
       game.state.stats.escapes++;
@@ -663,7 +722,7 @@ export class BattleScene {
           this.exit();
           this.sprites.clear();
           this.time = 0;
-          this.enter(this.params);
+          this.enter({ ...this.params, retried: true });
           await game.fadeIn(0.5);
           return;
         }

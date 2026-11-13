@@ -481,6 +481,25 @@ renderer adds"):
 - Test `map_render`: stair direction and walking height, fringes (never on paving),
   lips, water attributes, deterministic prop variation.
 
+## Auto-battle, skipping and tutorials (2026-11-12)
+
+- **Battle choices.** Every battle's command menu has *Auto* (the party fights on its
+  own; F toggles it, as before) and *Skip* (the fight plays out at once on auto behind
+  the skip veil, at the scene-skip speed, then the results show as usual — same turns,
+  EXP, gold and drops; a defeat offers Try again, which is then fought normally).
+  Settings → *Auto-Battle* (Off / Random battles / All battles) starts fights on auto,
+  and *Skip Random Battles* skips every random encounter. With *Encounter Rate* (Half /
+  Off), players can now avoid, automate or skip battles as they like.
+- **Tutorials** (`data/tutorials.js`, `ui/Tutorial.js`): a card the first time the player
+  meets each of 18 systems — battle commands with Auto/Skip, random battles and the
+  settings that tame them, Poise, Afterglow, big attacks, Link Arts, how foes fight,
+  Crests and Supports, Mastery, Formation, equipment, saving, the world map, side
+  quests, riding, the Compendium, marks and Lost Callings. Each names its Guide entry
+  (new: Auto-Battle & Skipping, Formation, Travel, Tutorials), shows once per save,
+  waits out a skip, and Settings → *Tutorials* turns them off. The old "Tip —" lines
+  are now these cards (they also fixed key names showing as raw HTML in two tips).
+- Test `tutorials` (cards, queue, settings, the first battle, Auto-Battle, Skip).
+
 ## Next
 Everything below is optional; the game is complete and the suite passes.
 - **Human playtest** of the first few hours: encounter rate, EXP pacing, how often

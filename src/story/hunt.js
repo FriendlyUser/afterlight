@@ -10,7 +10,6 @@
 
 import { MARKS, MARK_IDS, RANKS, KIND_MILESTONES, felled, paid, posted, marksFelled, markAt } from '../data/hunt.js';
 import { kindsDefeated } from '../data/monsterInfo.js';
-import { keyCap } from '../core/Input.js';
 
 const QUEST = 'hunt';
 const TITLE = 'The Hunter\'s Ledger';
@@ -27,7 +26,7 @@ async function giveBook(s) {
   s.setFlag('compendium');
   s.setFlag('hunt_met');
   if (!s.has('hm_compendium')) await s.give('hm_compendium');
-  await s.system(`*The Compendium* is in the menu (${keyCap('menu')}). It records every creature you meet: weaknesses you strike, moves you see, and how each one fights once you fell a few.`);
+  await s.tutorial('compendium');
   s.quest(QUEST, TITLE, DESC_I);
   s.journal('On a bridge in Aurenne, Greer Thackery the bestiarist gave us her spare Compendium, and five marks to hunt for the Collegium.');
 }
@@ -156,6 +155,7 @@ export const HUNT = {
     const m = MARKS[id];
     if (felled(s.state, id) || !markAt(s.state, id)) return;
     const back = m.act === 1 && s.flag('sundered');
+    await s.tutorial('marks');
     await s.narrate(back ? `${m.approach} Scarred and thinner, but alive. It came through the Sundering like you did.` : m.approach);
     const pick = await s.choice(['Hunt it', 'Leave it be'], { prompt: `${m.name}, a mark on Greer's Ledger.`, cancel: 1 });
     if (pick !== 0) return;

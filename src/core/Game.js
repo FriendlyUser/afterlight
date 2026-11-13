@@ -25,6 +25,8 @@ export class Game {
     this.sceneHints = null;
     // Wired up by main.js (and the test harness):
     this.autoConfirm = false; // headless tests: dialogue advances itself
+    this.testing = false; // set by the headless test harness
+    this.allowTutorials = false; // a test that wants tutorial cards (game.testing hides them)
     /** @type {import('../ui/Menus.js').MenuSystem | null} */
     this.menus = null;
     /** @type {(() => Promise<void>) | null} */
@@ -144,7 +146,7 @@ export class Game {
     this.skipIdle = over ? this.skipIdle + 1 : 0;
     this.skipT += rawDt;
     if (this.skipIdle >= 2) this.stopSkip('end');
-    else if (this.skipT > SKIP_LIMIT) this.stopSkip('limit');
+    else if (this.skipT > (sc?.isBattle ? SKIP_LIMIT * 3 : SKIP_LIMIT)) this.stopSkip('limit'); // a long boss fight gets longer
   }
 
   toggleFastMode() {
@@ -159,7 +161,7 @@ export class Game {
    * Hit-stop: hold the world still for a few frames (a heavy blow landing). Game
    * time, tweens and scenes pause; input, the UI and sound carry on.
    */
-  hitStop(seconds) { this.freeze = Math.max(this.freeze, seconds); }
+  hitStop(seconds) { if (!this.skipping) this.freeze = Math.max(this.freeze, seconds); }
 
   tick(rawDt) {
     let dt = rawDt * this.timeScale * this.speedFactor;

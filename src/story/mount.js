@@ -3,7 +3,6 @@
 // whose antlers burn like a Lantern. After the Sundering, Kindle finds Wren in the ash
 // of Lanternfall either way — a reunion, or (if she never went looking) a first meeting.
 
-import { keyCap } from '../core/Input.js';
 import { MOUNT, HART_LOOK, hasMount } from '../data/mount.js';
 
 const QUEST = 'mount_kindle';
@@ -13,7 +12,7 @@ async function bond(s, journal) {
   s.setFlag(MOUNT.flag);
   s.sfx('hart');
   if (!s.state.inventory.count(MOUNT.item)) await s.give(MOUNT.item);
-  await s.system(`*${MOUNT.name}* the Emberhart will carry you on open roads and in the wilds. Press ${keyCap('ride')} to ride, and again to get down. Nothing from the Gloam can catch you while you ride.`);
+  await s.tutorial('riding');
   s.journal(journal);
 }
 

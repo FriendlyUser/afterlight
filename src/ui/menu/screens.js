@@ -240,9 +240,12 @@ export class SettingsScreen extends Screen {
       { key: 'textSpeed', label: 'Text Speed', value: ['Slow', 'Normal', 'Fast', 'Instant'][s.textSpeed] || 'Normal', step: 1, min: 0, max: 3 },
       { key: 'autoAdvance', label: 'Auto-Advance Text', value: s.autoAdvance ? 'On' : 'Off', toggle: true },
       { key: 'hideSceneHints', label: 'Scene Hints', value: s.hideSceneHints ? 'Off' : 'On', toggle: true },
+      { key: 'tutorials', label: 'Tutorials', value: s.tutorials === false ? 'Off' : 'On', toggle: true },
       { key: 'encounters', label: 'Encounter Rate', value: ['Normal', 'Half', 'Off (story only)'][s.encounters || 0], step: 1, min: 0, max: 2 },
       { key: 'difficulty', label: 'Difficulty', value: DIFFICULTIES[s.difficulty ?? DEFAULT_DIFFICULTY].name, step: 1, min: 0, max: DIFFICULTIES.length - 1 },
       { key: 'battleSpeed', label: 'Battle Speed', value: ['Normal', 'Fast', 'Fastest'][s.battleSpeed || 0], step: 1, min: 0, max: 2 },
+      { key: 'autoBattle', label: 'Auto-Battle', value: ['Off', 'Random battles', 'All battles'][s.autoBattle || 0], step: 1, min: 0, max: 2 },
+      { key: 'skipBattles', label: 'Skip Random Battles', value: s.skipBattles ? 'On' : 'Off', toggle: true },
       { key: 'fastMode', label: `Fast Mode (${keysFor('fast')[0] ?? '—'})`, value: s.fastMode ? 'On' : 'Off', toggle: true },
       { key: 'fastSpeed', label: 'Fast Mode Speed', value: `${s.fastSpeed || 3}×`, step: 1, min: 2, max: 4 },
       { key: 'reduceEffects', label: 'Flashes & Shake', value: s.reduceEffects ? 'Reduced' : 'Full', toggle: true },
@@ -323,7 +326,7 @@ export class JournalScreen extends Screen {
 // Guide: in-game reference for the systems
 // =====================================================================
 
-const GUIDE = [
+export const GUIDE = [
   ['Controls', 'Move with the arrow keys or WASD; hold *Shift* to run. *Z*/*Enter* confirms and talks, *X*/*Esc* cancels, *C* opens the menu. In battle, *Q*/*E* adjusts Surge and *F* toggles Auto-battle. *T* toggles *Fast Mode*, which runs walking, cutscenes and battles at 2–4× (set the speed in Settings). *M* opens the area map (or click ⤢ on the minimap), and *R* rides Kindle once you have met the Emberhart. These are the default keys: remap any of them in *Settings → Controls* (Esc always cancels and opens the menu). Your keys are saved with your game, export included. Gamepads work too.'],
   ['Quest Guide', 'The *Objective* in the top-left corner says what to do next, and a gold *◆* marks where: the person or place, or the exit or door that leads toward it. When it is off screen, an arrow at the edge points the way; the minimap, the area map (*M*) and the world map mark it too. Turn it off in *Settings → Quest Guide*.'],
   ['Side Quests', 'Optional quests in your *Journal* are marked in *blue*: a blue *◆* over the people and places they need on the map you are in (or over the door of the building they are in), on the minimap and area map, and floating over their stops on the world map. The Journal says where each one leads. Turn them off in *Settings → Side Quest Markers*.'],
@@ -343,7 +346,11 @@ const GUIDE = [
   ['Supports', 'Supports are passive abilities learned from any Crest rank. Once learned they belong to you, whatever Crest you wear. Equip them in *Supports* within your Support Point budget, which grows with level.'],
   ['Equipment', 'Weapons and armor depend on your primary Crest. In *Equipment*, press *F* to Optimize. Accessories fit anyone.'],
   ['Saving', 'Golden *Hearthstones* restore the party and let you save; you can also save from the menu almost anywhere. The game also *autosaves* — when you enter an area, after story moments and won battles, at each new chapter and every few minutes — into three rotating autosave slots (*A1* newest to *A3*), so there is always an older one to go back to; a small ✦ *Autosaved* shows in the corner. Load them like any save; turn autosave off in *Settings*. Saves live in this browser. Press *F* on a save slot to *export* it to a file or *import* one, to keep a backup or carry your game to another computer.'],
-  ['Encounters', 'The orb in the lower-left warms from green to red as a random battle approaches. Settings can halve or disable random encounters.'],
+  ['Encounters', 'The orb in the lower-left warms from green to red as a random battle approaches. Settings → *Encounter Rate* halves random battles or turns them off (story battles still happen), and *Skip Random Battles* resolves them at once.'],
+  ['Auto-Battle & Skipping', 'Pick *Auto* in the command menu (or press *F*) and the party fights on its own; F again takes back control. *Skip* plays the whole battle out at once on auto, behind a dark screen, and shows the results: the same turns, EXP, gold and drops as watching it. If the party falls during a skip, *Try again* fights it normally. Settings → *Auto-Battle* starts random battles, or all battles, on auto; *Skip Random Battles* skips every random battle for you.'],
+  ['Formation', 'Only the first four in your *Formation* fight; the rest wait in reserve and earn half the EXP. Change the order on the menu\'s Formation screen. In battle, *Swap* brings a reserve member in for the one whose turn it is.'],
+  ['Travel', 'Leave a town or region by its edge to reach the *world map*, then pick a place and go: a marker shows where your objective lies, blue ones mark side quests. *Travel* in the menu jumps straight to towns and to every Hearthstone you have touched, from anywhere outside a dungeon.'],
+  ['Tutorials', 'A card explains each system the first time you meet it, and names the Guide entry with the rest. Each shows once per save. Settings → *Tutorials* turns them off.'],
   ['Riding Kindle', 'Once *Kindle* the Emberhart is with you, press *R* (Ride) on open roads and in the wilds to ride, and again to get down. Kindle runs faster than you can, and nothing from the Gloam catches you while you ride — no random battles. Towns, buildings and dungeons are on foot; talking to someone or opening a chest gets you down. On the world map, Kindle carries you to where you are going.'],
 ];
 

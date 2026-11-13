@@ -377,6 +377,8 @@ class CommandMenu {
     entries.push({ label: 'Guard', kind: 'skill', id: 'guard' });
     if (this.sys.reserves().length) entries.push({ label: 'Swap', kind: 'swap' });
     if (!this.sys.boss) entries.push({ label: 'Flee', kind: 'flee' });
+    entries.push({ label: 'Auto', kind: 'auto' });
+    entries.push({ label: 'Skip', kind: 'skip' });
     return entries;
   }
 
@@ -482,6 +484,10 @@ class CommandMenu {
         return;
       case 'flee':
         this.finish({ kind: 'flee' });
+        return;
+      case 'auto': // the party fights on its own from here (BattleScene.setAuto)
+      case 'skip': // ...and the fight plays out at once (BattleScene.startQuickSkip)
+        this.finish({ kind: e.kind });
         return;
       case 'swap':
         this.pushList('Swap in', this.sys.reserves().map((ch) => ({

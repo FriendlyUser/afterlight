@@ -4,6 +4,7 @@
 // Hearthstones nearby (world/Waystones.js) asks where to arrive. With Kindle the
 // Emberhart (data/mount.js), the leader rides there across the map before arriving.
 
+import { showTutorial } from '../ui/Tutorial.js';
 import { el } from '../ui/UI.js';
 import { keyCap } from '../core/Input.js';
 import { WORLD_NODES, openNodes } from '../data/worldmap.js';
@@ -77,6 +78,7 @@ export class WorldMapScene {
     this.widget = { el: null, handleInput: (input) => this.handleInput(input) };
     this.game.ui.push(this.widget);
     this.game.audio?.playMusic(act === 1 ? 'field' : 'ruin');
+    showTutorial(this.game, 'world_map');
   }
 
   exit() {

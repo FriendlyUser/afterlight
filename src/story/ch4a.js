@@ -250,7 +250,7 @@ export const C4A = {
     s.remove('corvin_n');
     dismiss(s, PARTY);
     await s.join('corvin');
-    await s.system('Tip — Only the first four in your *Formation* fight. Change the order from the menu, or *Swap* a reserve member in during battle.');
+    await s.tutorial('formation');
     s.objective('Cross the Sunscar east to Saltglass.');
     s.journal('We found a crashed airship called the Halcyon, and a sand wyrm trying to eat it, and a sky-pirate called Corvin Ashe trying very hard not to be eaten. He says he owes the Hierophant his life. He\'s coming with us to Saltglass. Ilse has rules.');
   },

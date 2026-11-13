@@ -10,6 +10,7 @@ import { GameState, SaveStore } from '../state/GameState.js';
 export async function runTest(game, name) {
   game.autoBattle = true;
   game.autoConfirm = true;
+  game.testing = true; // e.g. no tutorial cards unless a test asks (ui/Tutorial.js)
   const log = (m) => { document.title = `${document.title.slice(-600)} | ${m}`; };
   const h = {
     log,

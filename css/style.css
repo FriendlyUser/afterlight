@@ -666,3 +666,10 @@ em { color: #e8dcff; }
 .cp-tactics { margin: 2px 0 0 18px; padding: 0; font-size: 15px; line-height: 1.35; }
 .cp-tactics-locked { font-size: 15px; margin-top: 2px; }
 .compendium .bs-detail { overflow-y: auto; overflow-x: hidden; max-height: calc(100vh - 160px); }
+
+/* Tutorial cards (ui/Tutorial.js) */
+.tutorial-card { position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%); width: min(620px, 90vw); padding: 18px 24px 14px; border-color: var(--gold); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); z-index: 40; }
+.tutorial-card .tut-kicker { font-family: var(--font-caps); font-size: 13px; letter-spacing: 2px; color: var(--ink-dim); text-transform: uppercase; }
+.tutorial-card .tut-title { font-family: var(--font-caps); font-size: 26px; color: var(--gold); margin: 2px 0 10px; }
+.tutorial-card p { font-size: 18px; line-height: 1.45; margin: 0 0 10px; }
+.tutorial-card .tut-foot { display: flex; justify-content: space-between; font-size: 14px; color: var(--ink-dim); border-top: 1px solid var(--line-faint); padding-top: 8px; margin-top: 4px; }

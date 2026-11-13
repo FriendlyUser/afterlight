@@ -98,7 +98,7 @@ export const THISTLE = {
     await s.say('Bethan', 'Every Crest grows on its own as you fight with it. Each rank teaches you an Art — or a *Support*. A habit. A knack.');
     await s.say('Bethan', 'And here\'s the bit the Choir hates: a Support you\'ve learned is yours forever. Learn to counter as a Pugilist and you\'ll still counter as a Mender. Your *Support Points* decide how many knacks you can carry.');
     await s.say('Bethan', 'Raise two Crests to rank five and they\'ll braid into something new. I won\'t spoil it. Experiment.');
-    await s.system('Open the menu: *Crests* to set Primary and Secondary Crests; *Supports* to equip learned passives. Braided (Tier II) Crests need rank 5 in two Crests.');
+    await s.tutorial('crests');
     await s.say('Bethan', 'And a gift. Cantor — the singer\'s Crest. Songs that steady the heart. I learned it at forty to annoy that bishop. It\'ll suit at least one of you.');
     await s.learnCrest('cantor');
     await s.say('Bethan', 'Pedrick at the trading post sells Crest Stones — bits of old Lantern-glass that remember a calling. Dear. Worth it.');

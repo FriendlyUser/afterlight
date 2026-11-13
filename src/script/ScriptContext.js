@@ -2,6 +2,8 @@
 // It wraps the game, the active field scene and the persistent state so story
 // content reads like a screenplay.
 
+import { showTutorial, queueTutorial } from '../ui/Tutorial.js';
+import { EQUIPMENT } from '../data/equipment.js';
 import { routeAround } from '../world/CutscenePath.js';
 import { CHAPTERS } from '../story/chapters.js';
 import { LOOKS } from '../data/looks.js';
@@ -188,8 +190,12 @@ export class ScriptContext {
   setFlag(name, value = true) { this.state.flags[name] = value; }
   get vars() { return this.state.vars; }
 
+  /** Show a tutorial card, once per save (ui/Tutorial.js, data/tutorials.js). */
+  tutorial(id) { return showTutorial(this.game, id); }
+
   async give(itemId, count = 1, quiet = false) {
     this.state.inventory.add(itemId, count);
+    if (EQUIPMENT[itemId]) queueTutorial(this.game, 'equipment');
     if (!quiet) {
       this.sfx('item');
       await this.ui.message(`Obtained *${this.state.inventory.itemName(itemId)}*${count > 1 ? ` ×${count}` : ''}.`);
@@ -252,6 +258,7 @@ export class ScriptContext {
     const prev = q[id];
     q[id] = { id, title: title || prev?.title || id, desc: desc ?? prev?.desc ?? '', status };
     const label = status === 'done' ? 'Quest complete' : prev ? 'Quest updated' : 'New quest';
+    if (!prev && status === 'active') queueTutorial(this.game, 'side_quests');
     this.ui.toast(`<span class="hl">${label}</span> — ${q[id].title}`, 2800);
   }
 
