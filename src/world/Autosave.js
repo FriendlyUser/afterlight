@@ -73,6 +73,7 @@ export class Autosaver {
     this.timer = 0;
     this.count++;
     this.last = { slot, reason };
+    this.game.onAutosave?.(slot, reason); // test tooling records save points (tools/make_saves.sh)
     this.show();
   }
 

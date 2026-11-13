@@ -35,6 +35,8 @@ export class Game {
     this.loadSave = null;
     /** @type {'load' | null} what the player chose on the defeat screen, for onGameOver */
     this.defeatChoice = null;
+    /** @type {((slot: string, reason: string) => void) | null} called after each autosave (save-point tooling) */
+    this.onAutosave = null;
     /** @type {((msg: string) => void) | null} battle tracing for ?debug runs */
     this.debugTrace = null;
     /** @type {import('../audio/VoiceLines.js').VoiceLines | null} recorded dialogue, if installed */

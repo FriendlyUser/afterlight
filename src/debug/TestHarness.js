@@ -5,6 +5,7 @@
 import { FieldScene } from '../world/FieldScene.js';
 import { startNewGame } from '../story/newGame.js';
 import { ScriptContext } from '../script/ScriptContext.js';
+import { GameState, SaveStore } from '../state/GameState.js';
 
 export async function runTest(game, name) {
   game.autoBattle = true;
@@ -77,14 +78,62 @@ export async function runTest(game, name) {
     if (m && setObjectives.has(m[1])) questMisses.add(m[0]);
     warn(...args);
   };
+  const points = new URLSearchParams(location.search).has('savepoints') ? recordSavePoints(game, name) : null;
   try {
     const mod = await import(`../../tests/${name}.test.js`);
     log(`start ${name}`);
     await mod.run(game, h);
     if (questMisses.size) { log(`quest-guide misses ${questMisses.size}`); console.error([...questMisses].join('\n')); }
+    points?.finish();
     log('PASS');
   } catch (e) {
     console.error(e);
     log(`FAIL ${e.message}`);
   }
+  points?.write();
+}
+
+/**
+ * ?savepoints (tools/make_saves.sh): let the game autosave as it would for a player, and
+ * keep a save file for each new chapter, for the first arrival in each outdoor area,
+ * and for where the test ends — exported files with default settings (Normal
+ * difficulty, not the tests' Easy), written into the page as <pre id="savepoints">.
+ */
+function recordSavePoints(game, test) {
+  game.allowAutosave = true;
+  // Autosave waits for the prologue's first scene (p_woke); tests that start mid-story
+  // skip it, as no real save past that scene would. (A new game clears it again.)
+  game.state.flags.p_woke = true;
+  const out = [];
+  const maps = new Set();
+  const keep = (slot, reason) => {
+    const st = game.state;
+    const rec = JSON.parse(SaveStore.exportFile(slot));
+    rec.data.settings = { ...new GameState().settings };
+    rec.point = { test, reason, chapter: st.chapter, map: st.location?.mapId, place: st.location?.name, objective: st.vars.objective || '' };
+    out.push(rec);
+  };
+  game.onAutosave = (slot, reason) => {
+    const field = game.scene;
+    const map = game.state.location?.mapId;
+    if (reason === 'chapter') { maps.add(map); keep(slot, reason); return; }
+    if (reason !== 'arrival' || maps.has(map) || field?.map?.mood === 'interior' || field?.map?.noSave) return;
+    maps.add(map);
+    keep(slot, reason);
+  };
+  return {
+    /** The state the test leaves behind, if the player is free to move in it. */
+    finish() {
+      const field = game.scene;
+      if (!field?.map || field.busy || field.pendingScript || field.map.noSave) return;
+      if (SaveStore.write('savepoint_end', game.state)) keep('savepoint_end', 'end');
+    },
+    write() {
+      game.onAutosave = null;
+      const pre = document.createElement('pre');
+      pre.id = 'savepoints';
+      pre.textContent = JSON.stringify(out);
+      document.body.appendChild(pre);
+    },
+  };
 }

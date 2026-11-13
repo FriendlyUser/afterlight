@@ -80,6 +80,12 @@ Headless Windows Chrome via WSL, against the local server.
   as primary against six mid/late bosses.
 - Visuals: `tools/shot.sh "<url>" out.png 9000` (page + UI); `tools/frame.sh
   "map=…&battle=…" out.jpg` (the rendered 3D frame — use it for battles).
+- Save points for playtesting: `saves/` holds save files at every chapter start and
+  first arrival in each area (index: `saves/README.md`). Open one with
+  `http://localhost:8765/?load=saves/<file>`, or import it on the Load screen (F).
+  `tools/make_saves.sh [test ...]` remakes them by playing the story tests with
+  `?savepoints` (autosaves kept, settings reset to Normal); `tests/saves.test.js` checks
+  every file opens on a tile the player can stand on.
 
 ## Build
 `npm run build` (or `tools/npm.sh run build` from WSL) bundles the game with Vite into

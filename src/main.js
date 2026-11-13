@@ -96,6 +96,24 @@ async function boot() {
     await runTest(game, params.get('test'));
     return;
   }
+  if (params.has('load')) {
+    // Testing: open a save file straight into its field, e.g. ?load=saves/ch05_01_lf_sunset.json
+    // (the save points in saves/, made by tools/make_saves.sh). Falls through to the title
+    // if the file can't be read.
+    try {
+      const res = await fetch(params.get('load'));
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      const rec = SaveStore.parseFile(await res.text());
+      Object.assign(game.state, GameState.deserialize(rec.data));
+      game.applySettings();
+      const loc = game.state.location;
+      await game.start(new FieldScene(game), { mapId: loc.mapId, x: loc.x, y: loc.y, dir: loc.dir });
+      game.fadeIn(0.6);
+      return;
+    } catch (e) {
+      console.error(`Couldn't load ${params.get('load')}: ${e.message}`);
+    }
+  }
   if (params.has('map')) {
     // Debug: jump straight into a map with a starter party.
     state.joinParty('wren');

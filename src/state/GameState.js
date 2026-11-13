@@ -247,16 +247,25 @@ export const SaveStore = {
   },
 
   /**
-   * Store a save file's contents in `slot`. Throws an Error with a player-facing
-   * message if the text isn't an intact Afterlight save; the slot is untouched then.
+   * Read a save file's text: { summary, data }. Throws an Error with a player-facing
+   * message if it isn't an intact Afterlight save.
    */
-  importFile(slot, text) {
+  parseFile(text) {
     if (text.length > MAX_SAVE_FILE) throw new Error('That file is far too large to be a save.');
     let rec;
     try { rec = JSON.parse(text); } catch { throw new Error('That file is not a save file.'); }
     if (rec?.format !== SAVE_FILE_FORMAT || !rec.data || !rec.summary) throw new Error('That file is not an Afterlight save.');
     if ((rec.data.version || 1) > SAVE_VERSION) throw new Error('That save is from a newer version of the game.');
     try { GameState.deserialize(rec.data); } catch { throw new Error('That save file is damaged.'); }
+    return rec;
+  },
+
+  /**
+   * Store a save file's contents in `slot`. Throws an Error with a player-facing
+   * message if the text isn't an intact Afterlight save; the slot is untouched then.
+   */
+  importFile(slot, text) {
+    const rec = this.parseFile(text);
     try {
       localStorage.setItem(SLOT_KEY(slot), JSON.stringify({ summary: rec.summary, data: rec.data }));
     } catch {
