@@ -1,0 +1,95 @@
+<!doctype html>
+<!-- The app icon, drawn as SVG and exported at every size Android and Google Play want.
+     tools/android/make-icons.sh opens this page headlessly and reads the PNGs out of it.
+     Open it in a browser to look at the icon: http://localhost:8765/tools/android/art/icon.html -->
+<meta charset="utf-8">
+<title>Afterlight icon</title>
+<style>
+  body { margin: 0; padding: 24px; background: #333; color: #ddd; font: 14px sans-serif; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-end; }
+  figure { margin: 0; text-align: center; } canvas { display: block; margin-bottom: 6px; background: repeating-conic-gradient(#555 0 25%, #666 0 50%) 0 0 / 16px 16px; }
+  pre { display: none; }
+</style>
+<body>
+<script>
+// One drawing in a 108-unit box, the size of an Android adaptive icon layer. Android
+// only promises to show the middle 66 units (a circle of radius 33), so the lighthouse
+// stays inside that and only the glow and the beams run out to the edges.
+const DEFS = `
+  <defs>
+    <radialGradient id="sky" cx="50%" cy="60%" r="75%">
+      <stop offset="0" stop-color="#7a3a34"/><stop offset="0.38" stop-color="#3a1f47"/><stop offset="1" stop-color="#0e0a18"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="54" cy="46.5" r="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffd58a" stop-opacity="0.95"/><stop offset="0.18" stop-color="#ffb060" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#ff8a4a" stop-opacity="0.16"/><stop offset="1" stop-color="#ff8a4a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="beamL" x1="54" y1="0" x2="0" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff0c0" stop-opacity="0.75"/><stop offset="1" stop-color="#fff0c0" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="beamR" x1="54" y1="0" x2="108" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff0c0" stop-opacity="0.75"/><stop offset="1" stop-color="#fff0c0" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="tower" x1="47" y1="0" x2="61" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3b2a4d"/><stop offset="0.55" stop-color="#241733"/><stop offset="1" stop-color="#140d1f"/>
+    </linearGradient>
+  </defs>`;
+const BACKGROUND = `<rect width="108" height="108" fill="#14101f"/><rect width="108" height="108" fill="url(#sky)"/>`;
+const FOREGROUND = `
+  <rect width="108" height="108" fill="url(#glow)"/>
+  <path d="M54 46.5 L-6 30 L-6 44 Z" fill="url(#beamL)"/>
+  <path d="M54 46.5 L114 52 L114 66 Z" fill="url(#beamR)"/>
+  <path d="M38 83 Q54 76 70 83 L70 86 L38 86 Z" fill="#0d0915"/>
+  <path d="M49.6 52 L58.4 52 L61.2 81 L46.8 81 Z" fill="url(#tower)"/>
+  <path d="M48.9 60.2 L59.1 60.2 L59.6 65.4 L48.4 65.4 Z" fill="#e3c27a" opacity="0.9"/>
+  <path d="M47.9 70.6 L60.1 70.6 L60.6 75.8 L47.4 75.8 Z" fill="#e3c27a" opacity="0.9"/>
+  <rect x="47.4" y="50.6" width="13.2" height="2.2" rx="0.6" fill="#140d1f"/>
+  <rect x="49.4" y="42.4" width="9.2" height="8.4" rx="0.8" fill="#fff3c8"/>
+  <rect x="49.4" y="42.4" width="9.2" height="8.4" rx="0.8" fill="none" stroke="#140d1f" stroke-width="0.9"/>
+  <path d="M54 42.4 V50.8" stroke="#140d1f" stroke-width="0.7" opacity="0.55"/>
+  <path d="M47.6 42.6 L54 35.4 L60.4 42.6 Z" fill="#140d1f"/>
+  <circle cx="54" cy="34.4" r="1.1" fill="#e3c27a"/>
+  <path d="M54 38.5 L55.3 45.2 L62 46.5 L55.3 47.8 L54 54.5 L52.7 47.8 L46 46.5 L52.7 45.2 Z" fill="#fffbe6" opacity="0.92"/>`;
+const svg = (body, clip = '') => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108">${DEFS}${clip}${body}</svg>`;
+const LAYERS = {
+  foreground: svg(FOREGROUND),
+  // A launcher icon shows roughly the middle two thirds of the layers: crop to match.
+  full: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="15 15 78 78">${DEFS}${BACKGROUND}${FOREGROUND}</svg>`,
+  round: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="15 15 78 78">${DEFS}<clipPath id="c"><circle cx="54" cy="54" r="39"/></clipPath><g clip-path="url(#c)">${BACKGROUND}${FOREGROUND}</g></svg>`,
+};
+const DENSITIES = { mdpi: 1, hdpi: 1.5, xhdpi: 2, xxhdpi: 3, xxxhdpi: 4 };
+const jobs = [{ file: 'store/android/icon-512.png', layer: 'full', size: 512 }];
+for (const [d, k] of Object.entries(DENSITIES)) {
+  const res = `android/app/src/main/res/mipmap-${d}`;
+  jobs.push({ file: `${res}/ic_launcher.png`, layer: 'full', size: 48 * k });
+  jobs.push({ file: `${res}/ic_launcher_round.png`, layer: 'round', size: 48 * k });
+  jobs.push({ file: `${res}/ic_launcher_foreground.png`, layer: 'foreground', size: 108 * k });
+}
+const load = (markup) => new Promise((resolve, reject) => {
+  const img = new Image();
+  img.onload = () => resolve(img);
+  img.onerror = reject;
+  img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(markup)}`;
+});
+(async () => {
+  const out = {};
+  for (const job of jobs) {
+    const img = await load(LAYERS[job.layer]);
+    const c = document.createElement('canvas');
+    c.width = c.height = job.size;
+    const g = c.getContext('2d');
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(img, 0, 0, job.size, job.size);
+    out[job.file] = c.toDataURL('image/png');
+    if (job.size >= 192) {
+      const fig = document.createElement('figure');
+      c.style.width = c.style.height = `${Math.min(job.size, 256)}px`;
+      fig.append(c, `${job.layer} ${job.size}`);
+      document.body.append(fig);
+    }
+  }
+  const pre = document.createElement('pre');
+  pre.id = 'icons';
+  pre.textContent = JSON.stringify(out);
+  document.body.append(pre);
+})();
+</script>

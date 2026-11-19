@@ -1,7 +1,8 @@
-// Keyboard + gamepad input mapped to abstract actions.
+// Keyboard, gamepad and on-screen touch input mapped to abstract actions.
 // pressed(a): edge this frame. down(a): held. repeat(a): edge + auto-repeat (menus).
 // Keyboard bindings are remappable (Settings → Controls) and stored in settings.keys,
-// so they travel with save files; the gamepad uses the standard layout below.
+// so they travel with save files; the gamepad uses the standard layout below, and the
+// touch buttons (src/ui/TouchControls.js) press actions directly.
 
 /** Remappable actions, in the order the Controls screen lists them. */
 export const ACTIONS = [
@@ -84,8 +85,22 @@ export function keyName(code) {
 
 let active = normalizeBindings(DEFAULT_BINDINGS);
 
+/** What the on-screen buttons are called, so hints name them while touch is in use. */
+export const TOUCH_NAMES = {
+  up: '▲', down: '▼', left: '◀', right: '▶', confirm: 'A', cancel: 'B', menu: '☰', run: 'Run',
+  pageLeft: 'L', pageRight: 'R', info: 'Y', fast: '»', ride: 'Ride', map: 'Map',
+};
+
+let hintDevice = 'keyboard';
+
+/** Name keys ('keyboard') or the on-screen buttons ('touch') in hints drawn from now on. */
+export function setHintDevice(device) { hintDevice = device === 'touch' ? 'touch' : 'keyboard'; }
+
+/** True while hints name the on-screen buttons. */
+export const touchHints = () => hintDevice === 'touch';
+
 /** The keys currently bound to an action (display names), for on-screen hints. */
-export function keysFor(action) { return active[action].map(keyName); }
+export function keysFor(action) { return hintDevice === 'touch' ? [TOUCH_NAMES[action]] : active[action].map(keyName); }
 
 /** Hint markup for an action's first key, e.g. <span class="key">Z</span>. */
 export function keyCap(action) { return `<span class="key">${keysFor(action)[0] ?? '?'}</span>`; }
@@ -100,6 +115,7 @@ export class Input {
     this.held = new Set();
     this.edges = new Set();
     this.padHeld = new Set();
+    this.touchHeld = new Set();
     this.holdTime = new Map();
     this.repeatFired = new Set();
     this.listeners = [];
@@ -128,7 +144,31 @@ export class Input {
       if (!acts) return;
       for (const a of acts) this.held.delete(a);
     });
-    window.addEventListener('blur', () => this.held.clear());
+    window.addEventListener('blur', () => this.releaseAll());
+  }
+
+  /** An on-screen button went down. */
+  touchPress(action) {
+    this.lastDevice = 'touch';
+    if (this.touchHeld.has(action)) return;
+    this.touchHeld.add(action);
+    this.edges.add(action);
+    this.listeners.forEach((fn) => fn());
+  }
+
+  /** An on-screen button came up. */
+  touchRelease(action) { this.touchHeld.delete(action); }
+
+  /** Press and release at once: a tap on the dialogue box, the Android back button. */
+  tap(...actions) {
+    for (const a of actions) this.edges.add(a);
+    this.listeners.forEach((fn) => fn());
+  }
+
+  /** Let go of everything (the window lost focus, the app went to the background). */
+  releaseAll() {
+    this.held.clear();
+    this.touchHeld.clear();
   }
 
   /** Use these keyboard bindings ({ action: [codes] }; invalid parts are repaired). */
@@ -185,7 +225,7 @@ export class Input {
     this.analog = { x: Math.abs(ax) > 0.2 ? ax : 0, y: Math.abs(ay) > 0.2 ? ay : 0 };
   }
 
-  down(a) { return this.held.has(a) || this.padHeld.has(a); }
+  down(a) { return this.held.has(a) || this.padHeld.has(a) || this.touchHeld.has(a); }
   pressed(a) { return this.edges.has(a); }
   repeat(a) { return this.edges.has(a) || this.repeatFired.has(a); }
 

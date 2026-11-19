@@ -1,15 +1,20 @@
 // Afterlight — entry point. Wires subsystems together and starts on the title.
 
+import { fitViewport } from './platform/Device.js';
+import { initNative } from './platform/Native.js';
 import { Game } from './core/Game.js';
 import { UI } from './ui/UI.js';
 import { GameState, SaveStore } from './state/GameState.js';
 import { AudioEngine } from './audio/Audio.js';
 import { VoiceLines } from './audio/VoiceLines.js';
 import { SceneHints } from './ui/SceneHints.js';
+import { TouchControls } from './ui/TouchControls.js';
 import { FieldScene } from './world/FieldScene.js';
 import { LOOKS } from './data/looks.js';
 import './data/fish.js'; // registers fish as items
 import { contentReady } from './data/content/index.js';
+
+fitViewport(); // phones: a layout the UI fits in, before anything measures the window
 
 const game = new Game({
   canvas: document.getElementById('view'),
@@ -23,6 +28,8 @@ const state = new GameState();
 game.attach({ ui, audio, state });
 game.voiceLines = new VoiceLines(audio); // recorded lines, if a voice pack is installed (voice/)
 game.sceneHints = new SceneHints(game); // corner hints during scenes, and hold-to-skip
+game.touch = new TouchControls(game); // on-screen buttons, shown once a finger is used
+initNative(game); // the Android app: back button, pausing in the background
 game.applySettings();
 
 // Speaker name -> portrait look

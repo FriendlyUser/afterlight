@@ -1,0 +1,92 @@
+# Build the Android app (Capacitor) for Google Play.
+#
+# Runs only when asked: tools/android/release.sh starts it, waits, downloads the
+# result and signs it with the upload key, which never leaves the developer's machine.
+# You can also start it by hand from the Actions tab and download the artifact.
+#
+# The artifact holds:
+#   app-release.aab   the app bundle, UNSIGNED: sign it before uploading to Play
+#   app-debug.apk     the same game as an APK you can install straight onto a phone
+#   version.txt       the version name and code that were built
+name: Android bundle
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: 'Version players see, e.g. 1.0.0 (default: "version" in package.json)'
+        required: false
+        default: ''
+      version_code:
+        description: 'Version code; must be higher than every upload before it (default: UTC date as YYMMDDHH)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # Capacitor 8 compiles with Java 21. The runner image already has the Android SDK.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the web game
+        run: npm run build
+
+      - name: Copy it into the Android project
+        run: npx cap sync android
+
+      - name: Choose the version
+        id: version
+        env:
+          NAME_INPUT: ${{ inputs.version_name }}
+          CODE_INPUT: ${{ inputs.version_code }}
+        run: |
+          NAME="${NAME_INPUT:-$(node -p "require('./package.json').version")}"
+          CODE="${CODE_INPUT:-$(date -u +%y%m%d%H)}"
+          APP="$(node -p "require('./package.json').name")"
+          [[ "$CODE" =~ ^[0-9]+$ ]] || { echo "version_code must be a whole number, got '$CODE'"; exit 1; }
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "app=$APP" >> "$GITHUB_OUTPUT"
+          printf 'app=%s\nversionName=%s\nversionCode=%s\ncommit=%s\n' "$APP" "$NAME" "$CODE" "$GITHUB_SHA" > version.txt
+          cat version.txt
+
+      - name: Build the bundle and a debug APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon bundleRelease assembleDebug \
+            -PversionCode=${{ steps.version.outputs.code }} -PversionName=${{ steps.version.outputs.name }}
+
+      - name: Collect
+        run: |
+          mkdir out
+          cp android/app/build/outputs/bundle/release/app-release.aab out/
+          cp android/app/build/outputs/apk/debug/app-debug.apk out/
+          cp version.txt out/
+          ls -la out
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.version.outputs.app }}-android
+          path: out/
+          if-no-files-found: error
+          retention-days: 30

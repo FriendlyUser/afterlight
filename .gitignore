@@ -27,3 +27,6 @@ __pycache__/
 # The voice-line script is generated: tools/voice.py export
 voice/lines.csv
 saves/raw/
+
+# Signed Android bundles (tools/android/release.sh) and anything else built for release
+release/

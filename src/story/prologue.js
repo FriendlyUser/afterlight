@@ -1,7 +1,7 @@
 // PROLOGUE — "The Eve of Kindling"
 // Lanternfall, the day before Wren's sixteenth birthday.
 
-import { keyCap } from '../core/Input.js';
+import { keyCap, touchHints } from '../core/Input.js';
 
 /** @type {import('../types/data').StoryScripts} */
 export const PRO = {
@@ -53,7 +53,9 @@ export const PRO = {
     s.objective('Fetch Fisher Tobias\'s mended net from Nana Brisa\'s house.');
     s.journal('The day before the Kindling. The Hierophant himself is coming to Lanternfall. Mom read my letters.');
     await s.wait(0.3);
-    s.toast(`${keyCap('menu')} / <span class="key">Esc</span> opens the menu · hold ${keyCap('run')} to run`);
+    s.toast(touchHints()
+      ? `${keyCap('menu')} opens the menu · <span class="key">⋯</span> then ${keyCap('run')} to run`
+      : `${keyCap('menu')} / <span class="key">Esc</span> opens the menu · hold ${keyCap('run')} to run`);
   },
 
   async ysoldeTalk(s) {

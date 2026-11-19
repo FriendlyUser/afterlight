@@ -23,6 +23,8 @@ export class Game {
     this.skipping = false; // a scene is being fast-forwarded (see startSkip)
     /** @type {import('../ui/SceneHints.js').SceneHints | null} corner hints and the hold-to-skip */
     this.sceneHints = null;
+    /** @type {import('../ui/TouchControls.js').TouchControls | null} */
+    this.touch = null;
     // Wired up by main.js (and the test harness):
     this.autoConfirm = false; // headless tests: dialogue advances itself
     this.testing = false; // set by the headless test harness
@@ -189,6 +191,7 @@ export class Game {
     this.state?.tickPlaytime(rawDt);
     if (this.skipping) this.watchSkip(rawDt);
     this.sceneHints?.update(rawDt);
+    this.touch?.update();
     if (this.debug) this.updateDebugHud(rawDt);
     this.input.endFrame();
   }

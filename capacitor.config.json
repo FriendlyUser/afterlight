@@ -1,0 +1,16 @@
+{
+  "appId": "io.github.friendlyuser.afterlight",
+  "appName": "Afterlight",
+  "webDir": "dist",
+  "backgroundColor": "#000000",
+  "android": {
+    "backgroundColor": "#000000"
+  },
+  "plugins": {
+    "SystemBars": {
+      "hidden": true,
+      "insetsHandling": "native",
+      "style": "DARK"
+    }
+  }
+}

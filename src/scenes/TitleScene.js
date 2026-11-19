@@ -3,7 +3,7 @@
 // plays the movie too and comes back.
 
 import * as THREE from 'three';
-import { keysFor } from '../core/Input.js';
+import { keyCap, keysFor, touchHints } from '../core/Input.js';
 import { buildMap, windUniform } from '../world/MapBuilder.js';
 import { applyMood } from '../render/Moods.js';
 import { ParticleSystem } from '../render/Particles.js';
@@ -22,6 +22,7 @@ export class TitleScene {
     this.game = game;
     this.time = 0;
     this.idle = 0;
+    this.isTitle = true; // the Android back button leaves the app from here
   }
 
   enter() {
@@ -52,7 +53,9 @@ export class TitleScene {
       <div class="ts-logo"><div class="ts-pre">A coming-of-age at the end of the world</div><div class="ts-name">AFTERLIGHT</div><div class="ts-rule"></div></div>
       <div class="ts-menu"></div>
       <div class="ts-diff" style="display:none"></div>
-      <div class="ts-foot">${keysFor('up').join(' / ')} and the other arrows to move · ${keysFor('confirm').slice(0, 2).join(' / ')} to confirm · ${[...keysFor('cancel').slice(0, 1), 'Esc'].join(' / ')} to cancel · ${keysFor('menu')[0] ?? 'Esc'} for the menu · remap in Settings → Controls</div>`;
+      <div class="ts-foot">${touchHints()
+    ? `D-pad to move · ${keyCap('confirm')} to confirm · ${keyCap('cancel')} to cancel · ${keyCap('menu')} for the menu`
+    : `${keysFor('up').join(' / ')} and the other arrows to move · ${keysFor('confirm').slice(0, 2).join(' / ')} to confirm · ${[...keysFor('cancel').slice(0, 1), 'Esc'].join(' / ')} to cancel · ${keysFor('menu')[0] ?? 'Esc'} for the menu · remap in Settings → Controls`}</div>`;
     game.ui.layers.hud.appendChild(this.root);
     this.menuEl = this.root.querySelector('.ts-menu');
     this.diffEl = this.root.querySelector('.ts-diff');

@@ -7,6 +7,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { renderScale } from '../platform/Device.js';
 
 const HD2DShader = {
   uniforms: {
@@ -94,7 +95,7 @@ export class Renderer {
     /** @type {((w: number, h: number) => void) | null} called after the canvas resizes */
     this.onResize = null;
     this.gl = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
-    this.gl.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    this.gl.setPixelRatio(renderScale());
     this.gl.shadowMap.enabled = true;
     this.gl.shadowMap.type = THREE.PCFSoftShadowMap;
     this.gl.toneMapping = THREE.NeutralToneMapping;
@@ -122,6 +123,9 @@ export class Renderer {
 
   resize() {
     const w = window.innerWidth, h = window.innerHeight;
+    // A phone page is scaled to fit the UI (platform/Device.js), which changes how many
+    // screen pixels a CSS pixel covers every time the window changes shape.
+    if (this.gl.getPixelRatio() !== renderScale()) this.gl.setPixelRatio(renderScale());
     this.gl.setSize(w, h, false);
     this.canvas.style.width = `${w}px`;
     this.canvas.style.height = `${h}px`;
