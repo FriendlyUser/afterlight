@@ -703,4 +703,10 @@ em { color: #e8dcff; }
 .tc-pill { min-width: 232px; padding: 13px 22px; border-radius: 27px; font-size: 22px; letter-spacing: 0.08em; color: rgba(255, 240, 215, 0.92); background: rgba(12, 10, 20, 0.78); border: 2px solid rgba(255, 228, 180, 0.34); text-shadow: 0 1px 3px #000; }
 .tc-pill.lit { color: #ffe0a0; border-color: #ffe0a0; background: rgba(60, 44, 20, 0.85); }
 .tc-pill.lit::after { content: ' · on'; opacity: 0.8; }
+.touch-controls.in-menu .tc-pad, .touch-controls.in-menu .tc-btn { background: none; box-shadow: none; border-color: rgba(255, 228, 180, 0.2); color: rgba(255, 240, 215, 0.5); }
+.touch-controls.in-menu .tc-pad b { background: none; border-color: rgba(255, 228, 180, 0.22); }
+.touch-controls.in-menu .tc-pad i { color: rgba(255, 240, 215, 0.3); }
+.touch-controls.in-menu .tc-btn.on { background: rgba(227, 194, 122, 0.4); border-color: #ffe0a0; color: #fff; }
+/* The encounter gauge lives where the D-pad is: move it beside the pad. */
+html.touch .danger { left: 288px; bottom: 30px; }
 

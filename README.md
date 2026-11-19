@@ -143,6 +143,20 @@ across that share. Windows npm can't delete a `node_modules/` on the share, so r
 that folder from WSL before `npm ci`.
 </details>
 
+
+## Android
+
+The same build runs as an Android app (Capacitor), with on-screen touch controls and a
+layout scaled to phones. One command builds the Google Play bundle on GitHub Actions
+and signs it locally:
+
+```bash
+tools/android/release.sh
+```
+
+The guide — releasing, the Play Console checklist, the store listing text and pictures,
+and what has and has not been tested — is [docs/ANDROID.md](docs/ANDROID.md).
+
 ## Development
 
 <details>

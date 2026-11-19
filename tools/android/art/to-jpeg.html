@@ -1,0 +1,28 @@
+<!doctype html>
+<!-- Turns a PNG into a JPEG of a given size (Google Play wants screenshots without an
+     alpha channel). tools/android/store-shots.sh reads the result out of the page.
+     ?src=<url>&w=1920&h=1080&q=0.92 -->
+<meta charset="utf-8">
+<title>to-jpeg</title>
+<body>
+<script>
+const p = new URLSearchParams(location.search);
+const img = new Image();
+img.onload = () => {
+  const c = document.createElement('canvas');
+  c.width = Number(p.get('w')) || img.naturalWidth;
+  c.height = Number(p.get('h')) || img.naturalHeight;
+  const g = c.getContext('2d');
+  g.fillStyle = '#000';
+  g.fillRect(0, 0, c.width, c.height);
+  g.imageSmoothingQuality = 'high';
+  g.drawImage(img, 0, 0, c.width, c.height);
+  const pre = document.createElement('pre');
+  pre.id = 'jpeg';
+  pre.dataset.size = `${img.naturalWidth}x${img.naturalHeight}`;
+  pre.textContent = c.toDataURL('image/jpeg', Number(p.get('q')) || 0.92);
+  document.body.append(pre);
+};
+img.onerror = () => { document.title = 'to-jpeg: could not load the image'; };
+img.src = p.get('src');
+</script>

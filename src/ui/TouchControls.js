@@ -82,10 +82,14 @@ export class TouchControls {
     if (want !== this.shown) {
       this.shown = want;
       this.root.classList.toggle('on', want);
+      document.documentElement.classList.toggle('touch', want); // lets the HUD move out from under the thumbs
       setHintDevice(want ? 'touch' : 'keyboard');
       if (!want) { this.releasePad(); this.closeTray(); }
     }
     if (!want) return;
+    // Over a menu the buttons go faint, so the screen underneath stays readable.
+    const top = /** @type {any} */ (this.game.ui.top());
+    this.root.classList.toggle('in-menu', !!top && !top.isDialogue && !top.isMessage);
     const s = this.game.state?.settings;
     if (!s) return;
     this.tray.children[0]?.classList.toggle('lit', !!s.fastMode);

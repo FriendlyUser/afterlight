@@ -500,6 +500,18 @@ renderer adds"):
   are now these cards (they also fixed key names showing as raw HTML in two tips).
 - Test `tutorials` (cards, queue, settings, the first battle, Auto-Battle, Skip).
 
+## Android app (2026-11-19)
+
+The game is packaged for Google Play with Capacitor 8 (`io.github.friendlyuser.afterlight`,
+target API 36): on-screen touch controls, a phone-scaled layout, a signed app bundle
+built by `tools/android/release.sh`, and the store listing text, icon, feature graphic
+and eight screenshots in `store/android/`. Guide: `docs/ANDROID.md`. The upload key is
+shared by all games and lives outside the repo (`~/.android-release/`, kit in
+`/home/david/claude_space/android-release/`).
+
+**Not yet run on a real phone.** Only the web side was tested (desktop Chrome, touch
+events). Nothing has been uploaded to Play Console.
+
 ## Next
 Everything below is optional; the game is complete and the suite passes.
 - **Human playtest** of the first few hours: encounter rate, EXP pacing, how often

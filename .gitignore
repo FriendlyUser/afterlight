@@ -30,3 +30,5 @@ saves/raw/
 
 # Signed Android bundles (tools/android/release.sh) and anything else built for release
 release/
+store/android/preview/
+store/android/.af_*
